@@ -1,0 +1,172 @@
+import React, {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {useNavigate, useOutletContext} from "react-router";
+import {Outlet} from "react-router-dom";
+
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import interactionPlugin from '@fullcalendar/interaction';
+
+import {formDateFromArray} from "../../../../utils/time";
+import {onTaskClicked} from "../../../../features/editedTaskSlice";
+
+import "primereact/resources/themes/saga-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
+import "./monthCalendar.css";
+
+
+
+export function TaskViewer() {
+    const navigate = useNavigate();
+
+    const [tasks, /*setTasks*/] = useOutletContext();
+    const [calendarTasks, setCalendarTasks] = useState([]);
+    const dispatch = useDispatch();
+
+    const calendarRef = React.createRef();
+    let calendarApi = null;
+
+
+    useEffect(() => {
+        // WARNING: do not merge code in one line: `React.createRef().current.getApi();` !
+        // calendarRef is bounded to FullCalendar component after rendering!
+        calendarApi = calendarRef.current.getApi();
+
+        // set on resize handler
+        let wrapper = document.querySelector("#full-calendar-wrapper");
+        let lastWidth = wrapper.offsetWidth;
+        const onChangeWidthCalendarWrapper = function () {
+            let currentWidth = wrapper.offsetWidth;
+            if (lastWidth !== currentWidth) {
+                lastWidth = currentWidth;
+                calendarApi.updateSize();
+            }
+        };
+        setInterval(onChangeWidthCalendarWrapper, 100);
+
+        fetchTaskData();
+    }, [tasks]);
+
+    function fetchTaskData() {
+        if (!tasks || !tasks.length) return;
+        let calTasks = [];
+        for (let task of tasks) {
+            calTasks.push({
+                title: task.name,
+                id: task.id,
+                groupId: task.team.id,
+
+                start: formDateFromArray(task.creationTime),  // TODO: refactor this bullshit
+                end: formDateFromArray(task.expirationTime),  // TODO: refactor this bullshit
+
+                extendedProps: {
+                    description: task.description,
+                    groupName: task.team.name,
+                },
+                // eventColor: (formDateFromArray(task.expirationTime) < Date.now()) ? "red" : "#010023",
+                className: "monthEvent",
+                eventDisplay: "block",
+
+                // backgroundColor: "",
+                // borderColor: "",
+                // textColor: "",
+            });
+        }
+        setCalendarTasks(calTasks);
+    }
+
+    const onTaskClick = (e) => {
+        const task = e.event._def;
+        const taskId = task.publicId;
+
+        dispatch(onTaskClicked(calendarTasks.find((task) => +task.id === +taskId)));
+        navigate(`../${taskId.toString()}`);
+    }
+
+    const onDateClick = (conf) => {
+        console.log(conf.date);
+        navigate(`new/${conf.date.toJSON()}`);
+
+    }
+
+    /*    const ListViewSpecificOptions = {
+            listDayFormat: true,
+            listDaySideFormat: true,
+        }
+
+        const MonthViewSpecificOptions = {
+            fixedWeekCount: false,
+            showNonCurrentDates: false,
+        };*/
+
+
+    return (
+        <div id="full-calendar-wrapper">
+            <FullCalendar
+                ref={calendarRef}
+                plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+
+                allDaySlot={false}
+                buttonText={
+                    {
+                        today: 'Сегодня',
+                        month: 'Месяц',
+                        week: 'Неделя',
+                        day: 'День',
+                        list: 'Списком'
+                    }
+                }
+                contentHeight="auto"
+                dateClick={onDateClick}
+                views={
+                    {
+                        dayGridMonth: {
+                        },
+                        timeGridWeek: {
+                        },
+                        timeGridDay: {
+                        },
+                    }
+                }
+                display="block"
+
+                editable={true}
+                events={calendarTasks}
+                eventColor="#010023"
+                eventTimeFormat={
+                    {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        meridiem: false,
+                        hour12: false
+                    }
+                }
+                eventClick={onTaskClick}
+                firstDay={1}
+                headerToolbar={
+                    {
+                        left: 'dayGridMonth timeGridWeek timeGridDay',
+                        center: 'title',
+                        right: 'list today prev,next',
+                    }
+                }
+                height="auto"
+
+                // available: 'dayGridWeek', 'timeGridDay', 'listWeek'
+                initialView="dayGridMonth"
+                locale="ru"
+                stickyHeaderDates={true}
+
+                timeZone="Asia/Krasnoyarsk"
+                titleFormat={
+                    {year: 'numeric', month: 'long', day: 'numeric'}
+                }
+            />
+            <Outlet />
+        </div>
+    );
+}

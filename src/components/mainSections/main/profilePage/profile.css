@@ -1,0 +1,16 @@
+.profilePageTitle {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.inputErrMsg {
+    color: #fc3535;
+}
+
+.successMsg {
+    color: #0D721D;
+}
+
+.disabledBtn {
+    background: #bdbdbd !important;
+}

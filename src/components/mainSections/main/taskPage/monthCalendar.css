@@ -1,0 +1,35 @@
+.fc-toolbar-title {
+    color: #070036;
+}
+
+.fc-toolbar-chunk .fc-today-button {
+    background: #030039 !important;
+    color: #fff !important;
+}
+
+.fc-toolbar-chunk .fc-button-group button {
+    background: whitesmoke !important;
+    color: #030039 !important;
+}
+
+.fc.fc-theme-standard .fc-view-harness th a,
+.fc.fc-theme-standard .fc-view-harness td a {
+    color: #030039 !important;
+}
+
+
+.monthEvent {
+    font-weight: bold;
+    font-size: 1em;
+}
+
+/*
+Full-calendar overlaps header
+*/
+.fc .fc-scrollgrid-section-header.fc-scrollgrid-section-sticky > * {
+    top: 40px;
+}
+
+.taskInfo {
+    font-weight: bold;
+}

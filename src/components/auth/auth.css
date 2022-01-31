@@ -1,0 +1,9 @@
+.authForm {
+    margin: 200px auto auto;
+    border: 4px solid #030017;
+    border-radius: 2px;
+    color: white;
+    background: #080618;
+    display: flex;
+    flex-direction: column;
+}

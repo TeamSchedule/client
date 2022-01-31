@@ -1,0 +1,32 @@
+.main-header {
+    border-bottom: 3px solid #0d041a;
+    background: #111125;
+    height: 40px;
+    z-index: 2;
+}
+
+.headerLink {
+    color: white;
+    margin-left: 15px;
+}
+
+.headerLink:hover {
+    color: white;
+}
+
+/*.main-header .btn-group a {
+    text-decoration: none;
+    color: #030039;
+    padding-left: 15px;
+    padding-right: 15px;
+}*/
+
+.username {
+    color: white;
+}
+
+.userIconImg {
+    border-radius: 50%;
+    width: 1.5em;
+    height: 1.5em;
+}
