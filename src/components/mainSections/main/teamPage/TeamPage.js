@@ -1,11 +1,21 @@
 import React, {useEffect, useState} from "react";
 import "./teamPage.css";
-import {Link, Outlet} from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import {API} from "../../../../api-server/api";
 import {useDispatch, useSelector} from "react-redux";
 import {selectUserInfo} from "../../../../features/userInfoSlice";
 import {useNavigate} from "react-router";
 import {onTeamClicked} from "../../../../features/editedTeamSlice";
+
+import Badge from '@mui/material/Badge';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import TeamInvitation from "./TeamInvitation";
+import List from "@mui/material/List";
+import {Link} from "react-router-dom";
+import InvitationList from "./InvitationList";
 
 
 function Team(props) {
@@ -68,9 +78,9 @@ function TeamPage() {
 
     return (
         <div className="p-3 teamPage">
+
             <div>
                 <div className="d-flex justify-content-between align-items-center">
-                    <h1 className="teamPage_title">My teams</h1>
                     <Link to="new">
                         <div className="d-flex align-items-center px-2 py-1 createTeamBtn">
                             <svg className="createTeamIcon m-2" viewBox="0 0 24 24">
@@ -80,10 +90,8 @@ function TeamPage() {
                             <span>Create new team</span>
                         </div>
                     </Link>
-
                 </div>
-
-                <TeamsList teams={teams} />
+                <BasicTabs teams={teams} />
                 <Outlet />
             </div>
         </div>
@@ -92,3 +100,55 @@ function TeamPage() {
 
 
 export default TeamPage;
+
+
+function TabPanel(props) {
+    const {children, value, index, ...other} = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{p: 3}}>
+                    <Typography component='div'>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+function BasicTabs(props) {
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    return (
+        <Box sx={{width: '100%'}}>
+            <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                <Tabs value={value} onChange={handleChange}>
+                    <Tab label="My teams" />
+                    <Tab label={
+                        <Badge badgeContent={0} color="success">
+                            Invites
+                        </Badge>
+                    } />
+                </Tabs>
+            </Box>
+
+            <TabPanel value={value} index={0}>
+                <TeamsList teams={props.teams} />
+            </TabPanel>
+
+            <TabPanel value={value} index={1}>
+                <InvitationList data={[1, 2, 3]}/>
+            </TabPanel>
+        </Box>
+    );
+}
