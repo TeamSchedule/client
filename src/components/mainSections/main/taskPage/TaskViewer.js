@@ -60,7 +60,7 @@ export function TaskViewer() {
                 id: task.id,
                 groupId: task.team.id,
 
-                start: formDateFromArray(task.creationTime),  // TODO: refactor this bullshit
+                start: formDateFromArray(task.expirationTime),  // TODO: refactor this bullshit
                 end: formDateFromArray(task.expirationTime),  // TODO: refactor this bullshit
 
                 extendedProps: {

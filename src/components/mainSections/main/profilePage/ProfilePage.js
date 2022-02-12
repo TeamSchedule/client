@@ -62,8 +62,8 @@ function ProfilePage() {
 
         let data = {
             // "login": document.getElementById("username").value,
-            "password": document.getElementById("password").value,
-            "password2": document.getElementById("password2").value,
+            // "password": document.getElementById("password").value,
+            // "password2": document.getElementById("password2").value,
             "email": document.getElementById("email").value,
         };
 
@@ -112,7 +112,7 @@ function ProfilePage() {
 
                 <button id="signupSubmit"
                         type="submit"
-                        disabled={formValid}
+                        // disabled={formValid}
                         className={"w-100 mt-4 p-2 px-3 submit-button"}>Save changes
                 </button>
 
