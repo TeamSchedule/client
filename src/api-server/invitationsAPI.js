@@ -25,7 +25,7 @@ export class invitationsAPI {
     }
 
     static deleteInvitation(invitationId) {
-        return $axios.delete(`${this.apiPrefix}/${invitationId}`).then(res => {
+        return $axios.post(`/team/inviteput`, {"status": "CLOSED", id: invitationId}).then(res => {
             return res.data;
         }).catch(() => {
             return null;
@@ -33,7 +33,7 @@ export class invitationsAPI {
     }
 
     static async acceptInvitation(invitationId) {
-        return $axios.post(`/team/inviteput`, {"status": "ACCEPTED", id: invitationId}).then(res => {
+        return $axios.patch(`/team/invite`, {"status": "ACCEPTED", id: invitationId}).then(res => {
             return res.data;
         }).catch(() => {
             return null;
@@ -41,7 +41,7 @@ export class invitationsAPI {
     }
 
     static async rejectInvitation(invitationId) {
-        return $axios.post(`/team/inviteput`, {"status": "REJECTED", id: invitationId}).then(res => {
+        return $axios.patch(`/team/invite`, {"status": "REJECTED", id: invitationId}).then(res => {
             return res.data;
         }).catch(() => {
             return null;

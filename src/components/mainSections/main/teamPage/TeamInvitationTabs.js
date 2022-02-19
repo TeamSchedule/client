@@ -4,43 +4,51 @@ import React, {useEffect, useState} from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Badge from "@mui/material/Badge";
-import {Outlet} from "react-router-dom";
-import {useNavigate} from "react-router";
 import {API} from "../../../../api-server/api";
+import TeamList from "./TeamList";
+import IncomingInvitationList from "./invitation-components/IncomingInvitationList";
 
 
-export default function TeamInvitationTabs(props) {
+export default function TeamInvitationTabs() {
     const [value, setValue] = React.useState(0);
-    const navigate = useNavigate();
 
     const [incomingInvitations, setIncomingInvitations] = useState([]);
 
-    useEffect(() => {
+    function fetchIncomingTeamInvitations() {
         API.invitations.getIncomingTeamInvitations().then(data => {
             setIncomingInvitations(data.filter(invitation => invitation.inviteStatus === "OPEN"));
         });
+    }
+
+    useEffect(() => {
+        fetchIncomingTeamInvitations();
     }, []);
+
+    useEffect(() => {
+        fetchIncomingTeamInvitations();
+    }, [value]);
 
 
     return (
         <Box sx={{width: '100%'}}>
             <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                 <Tabs value={value} onChange={(event, newValue) => setValue(newValue)}>
-                    <Tab label="My teams" onClick={() => navigate("", {replace: true})} />
+                    <Tab label="My teams" onClick={() => {setValue(0)}} />
                     <Tab label={
-                        <Badge badgeContent={1} color="success">
+                        <Badge badgeContent={incomingInvitations.length} color="success">
                             Invites
                         </Badge>
-                    } onClick={() => navigate("invitations")} />
+                    } onClick={() => {setValue(1)}} />
                 </Tabs>
             </Box>
 
             <TabPanel value={value} index={0}>
-                <Outlet />
+                <TeamList />
             </TabPanel>
 
             <TabPanel value={value} index={1}>
-                <Outlet context={[incomingInvitations, setIncomingInvitations]} />
+                <IncomingInvitationList incomingInvitations={incomingInvitations}
+                                        setIncomingInvitations={setIncomingInvitations} />
             </TabPanel>
         </Box>
     );

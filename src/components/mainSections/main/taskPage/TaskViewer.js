@@ -66,6 +66,7 @@ export function TaskViewer() {
                 extendedProps: {
                     description: task.description,
                     groupName: task.team.name,
+                    closed: task.closed,
                 },
                 // eventColor: (formDateFromArray(task.expirationTime) < Date.now()) ? "red" : "#010023",
                 className: "monthEvent",

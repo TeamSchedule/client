@@ -3,7 +3,7 @@ export function formDateFromArray(expirationDateTimeArr) {
     date.setFullYear(expirationDateTimeArr[0]);
     date.setMonth(expirationDateTimeArr[1] - 1);
     date.setDate(expirationDateTimeArr[2] + 1);
-    date.setHours(expirationDateTimeArr[3]);
+    date.setHours(expirationDateTimeArr[3] - 10);
     date.setMinutes(expirationDateTimeArr[4]);
     return date;
 }

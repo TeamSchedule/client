@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {useNavigate, useParams} from "react-router";
+import {useNavigate, useOutletContext, useParams} from "react-router";
 
 import {API} from "../../api-server/api";
 import {selectUserInfo} from "../../features/userInfoSlice";
@@ -23,8 +23,8 @@ function TeamItem(props) {
 function TaskForm() {
     const userInfo = useSelector(selectUserInfo);
     const navigate = useNavigate();
-
     const [groupItems, setGroupItems] = useState([]);
+    const [tasks, setTasks] = useOutletContext();
 
     const {date} = useParams();
     const [taskDescription, setTaskDescription] = useState("");
@@ -54,7 +54,10 @@ function TaskForm() {
         };
 
         API.tasks.createTask(data).then(res => {
-            navigate("../");
+            let updTasks = tasks.slice();
+            updTasks.push(res.data);
+            setTasks(updTasks);
+            navigate(-1);
         });
     }
 

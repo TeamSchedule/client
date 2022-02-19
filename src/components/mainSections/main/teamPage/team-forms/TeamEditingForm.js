@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {API} from "../../../../../api-server/api";
 import {useSelector} from "react-redux";
 import {selectEditedTeam} from "../../../../../features/editedTeamSlice";
-import {TeamDescriptionItem, TeamNameItem, TeamSubmitButton} from "./team-form-items";
+import {TeamNameItem, TeamSubmitButton} from "./team-form-items";
 import "../teamPage.css";
 import {Autocomplete, TextField} from "@mui/material";
 import CloseFormIcon from "../../../../generic/CloseFormIcon";
@@ -15,7 +15,7 @@ export default function TeamEditingForm() {
     const editedTeam = useSelector(selectEditedTeam);
 
     const [teamName, setTeamName] = useState(editedTeam.name);
-    const [teamDescription, setTeamDescription] = useState(editedTeam.description || "");
+    // const [teamDescription, setTeamDescription] = useState(editedTeam.description || "");
 
     const [unprocessedInvitations, setUnprocessedInvitations] = useState([]);
     const [rejectedInvitations, setRejectedInvitations] = useState([]);
@@ -53,6 +53,20 @@ export default function TeamEditingForm() {
         });
     }
 
+    function onDeleteInvitation(id) {
+        API.invitations.deleteInvitation(id).then(data => {
+            setRejectedInvitations(rejectedInvitations.filter(invitation => +invitation.id !== +id));
+        });
+    }
+
+    function onUndoInvitation(id) {
+        API.invitations.deleteInvitation(id).then(data => {
+            API.invitations.deleteInvitation(id).then(data => {
+                setUnprocessedInvitations(unprocessedInvitations.filter(invitation => +invitation.id !== +id));
+            });
+        });
+    }
+
     return (
         <form className="p-3 teamCreationForm" onSubmit={onEditTeam} autoComplete="off">
             <div className="d-flex justify-content-between">
@@ -69,13 +83,15 @@ export default function TeamEditingForm() {
             <p className="mt-4">Invite participants:</p>
             <AutocompleteUsers onSendInvites={onSendInvites}
                                usersToInvite={usersToInvite}
-                               setUsersToInvite={setUsersToInvite}/>
+                               setUsersToInvite={setUsersToInvite} />
 
             <p className="mt-4">Unprocessed invites:</p>
-            {unprocessedInvitations.map(invitation => <UnprocessedOutgoingInvitation {...invitation} />)}
+            {unprocessedInvitations.map(invitation => <UnprocessedOutgoingInvitation {...invitation}
+                                                                                     onUndoInvitation={onUndoInvitation} />)}
 
             <p className="mt-4">Rejected invites:</p>
-            {rejectedInvitations.map(invitation => <RejectedOutgoingInvitation {...invitation} />)}
+            {rejectedInvitations.map(invitation => <RejectedOutgoingInvitation {...invitation}
+                                                                               onDeleteInvitation={onDeleteInvitation} />)}
 
         </form>
     );
@@ -114,7 +130,7 @@ function AutocompleteUsers(props) {
 
             <TeamSubmitButton btnText="Send invites"
                               onClick={props.onSendInvites}
-                              disabled={!props.usersToInvite || +props.usersToInvite.length === 0}/>
+                              disabled={!props.usersToInvite || +props.usersToInvite.length === 0} />
         </div>
     );
 }

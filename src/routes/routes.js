@@ -33,12 +33,9 @@ export default function AppRoutes() {
                     <Route path="profile" element={<ProfilePage />} />
 
                     <Route path="teams/" element={<TeamPage />}>
-                        <Route path="" element={<TeamInvitationTabs />}>
-                            <Route index element={<TeamList />} />
-                            <Route path="new" element={<TeamCreationForm />} />
-                            <Route path=":teamId" element={<TeamEditingForm />} />
-                            <Route path="invitations" element={<IncomingInvitationList />} />
-                        </Route>
+                        <Route index element={<TeamInvitationTabs />}/>
+                        <Route path="new" element={<TeamCreationForm />} />
+                        <Route path=":teamId" element={<TeamEditingForm />} />
 
                     </Route>
 
