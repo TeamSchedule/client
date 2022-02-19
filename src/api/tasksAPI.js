@@ -9,16 +9,17 @@ export class tasksAPI {
         return await $axios.post(`${this.prefixUrl}`, data);
     }
 
-
     static async getTasks(params) {
         return await $axios.get(`${this.prefixUrl}?from=${params.from}&to=${params.to}`);
     }
 
+    static async getTask(id) {
+        return (await $axios.get(`${this.prefixUrl}/${id}`)).data;
+    }
 
     static async updateTask(id, data) {
         return await $axios.patch(`${this.prefixUrl}/${id}`, data);
     }
-
 
     static async deleteTask(taskId) {
         return await $axios.post("/task/" + taskId);

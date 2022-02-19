@@ -3,8 +3,8 @@ import {useDispatch} from "react-redux";
 import {useNavigate} from 'react-router';
 import {Link} from 'react-router-dom';
 
-import {API} from "../../api-server/api";
-import {setAccessToken} from "../../api-server/axiosRequests";
+import {API} from "../../api/api";
+import {setAccessToken} from "../../api/axiosRequests";
 import {login} from "../../features/isAuthSlice";
 import {set} from "../../features/userInfoSlice";
 import {
@@ -33,7 +33,6 @@ export default function LoginForm() {
         };
 
         API.auth.signIn(data).then(data => {
-            console.log(data.token);
             setPassword("");
             const token = data.token;
             setAccessToken(token);

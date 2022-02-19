@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {Route, Routes} from "react-router-dom";
 
 import Login from "../../../auth/LoginForm";
-import {API} from "../../../../api-server/api";
+import {API} from "../../../../api/api";
 import {selectUserInfo} from "../../../../features/userInfoSlice";
 
 import "./profile.css";

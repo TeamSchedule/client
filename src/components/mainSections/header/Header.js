@@ -3,7 +3,7 @@ import {useNavigate} from "react-router";
 import {Link} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 
-import {deleteAccessToken} from "../../../api-server/axiosRequests";
+import {deleteAccessToken} from "../../../api/axiosRequests";
 import {onLogout, selectIsAuth} from "../../../features/isAuthSlice";
 import {onDeleteUserInfo, selectUserInfo} from "../../../features/userInfoSlice";
 

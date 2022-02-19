@@ -1,37 +1,49 @@
-import React, {useState} from 'react';
-import {useNavigate, useOutletContext} from "react-router";
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useParams} from "react-router";
 import {useSelector} from "react-redux";
+import {Checkbox, FormControlLabel} from "@mui/material";
 
-import {API} from "../../api-server/api";
-import {selectEditedTask} from "../../features/editedTaskSlice";
+import {API} from "../../api/api";
 import {selectUserInfo} from "../../features/userInfoSlice";
 import {SubmitFormButton, TaskDatetimeInput, TaskDescriptionInput, TaskNameInput} from "./task-form-items";
-import "./taskForm.css";
 import CloseFormIcon from "../generic/CloseFormIcon";
-import {Checkbox, FormControlLabel} from "@mui/material";
+import {formDateFromArray} from "../../utils/time";
+import "./taskForm.css";
 
 
 export default function EditionTaskForm() {
     const navigate = useNavigate();
-    const task = useSelector(selectEditedTask);
-    const userInfo = useSelector(selectUserInfo);
-    const [tasks, setTasks] = useOutletContext();
 
-    const [taskName, setTaskName] = useState(task.title);
-    const [taskDescription, setTaskDescription] = useState(task.extendedProps.description);
-    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(task.end.toString().split('.')[0]);
-    const [taskClosedStatus, setTaskClosedStatus] = useState(Boolean(task.extendedProps.closed));
+    const {taskId} = useParams();
+    const userInfo = useSelector(selectUserInfo);
+
+    const [taskName, setTaskName] = useState("");
+    const [taskDescription, setTaskDescription] = useState("");
+    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState();
+    const [taskClosedStatus, setTaskClosedStatus] = useState(false);
+    const [taskTeamName, setTaskTeamName] = useState("");
+
+    useEffect(() => {
+        API.tasks.getTask(taskId).then(data => {
+            // Available use full info about task in data
+            setTaskName(data.name);
+            setTaskDescription(data.description);
+            setTaskClosedStatus(data.closed);
+            setTaskExpirationDatetime(formDateFromArray(data.expirationTime).toJSON().split('.')[0]);
+            setTaskTeamName(data.team.name);
+        });
+    }, []);
+
 
     function onSubmit(e) {
         e.preventDefault();
 
-        API.tasks.updateTask(task.id, {
+        API.tasks.updateTask(taskId, {
             name: taskName,
             description: taskDescription,
             expirationTime: new Date(taskExpirationDatetime).toJSON(),
             closed: taskClosedStatus,
-        }).then(res => {
-            // TODO: update data
+        }).then(() => {
             navigate(-1);
         });
     }
@@ -39,8 +51,7 @@ export default function EditionTaskForm() {
     function onDeleteTaskBtn(e) {
         e.preventDefault();
 
-        API.tasks.deleteTask(task.id).then(r => {
-            setTasks(tasks.filter(t => +t.id !== +task.id))
+        API.tasks.deleteTask(taskId).then(() => {
             navigate(-1);
         });
     }
@@ -58,7 +69,7 @@ export default function EditionTaskForm() {
 
             <div>
                 <p className="my-1">
-                    {task.extendedProps.groupName === userInfo.username ? "private task" : `Team: ${task.extendedProps.groupName}`}
+                    {taskTeamName === userInfo.username ? "private task" : `Team: ${taskTeamName}`}
                 </p>
 
                 <FormControlLabel

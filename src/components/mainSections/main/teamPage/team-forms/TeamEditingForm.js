@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {API} from "../../../../../api-server/api";
+import {API} from "../../../../../api/api";
 import {useSelector} from "react-redux";
 import {selectEditedTeam} from "../../../../../features/editedTeamSlice";
 import {TeamNameItem, TeamSubmitButton} from "./team-form-items";

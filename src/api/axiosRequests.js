@@ -1,10 +1,10 @@
 import axios from "axios";
-import {BASE_URL} from "../config/config";
+import {DOMAIN_URL, ENABLE_HTTPS} from "../config/config";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 
 const AXIOS_CONFIG = {
-    baseURL: BASE_URL,
+    baseURL: `http${ENABLE_HTTPS ? "s" : ""}://${DOMAIN_URL}/`,
 };
 
 

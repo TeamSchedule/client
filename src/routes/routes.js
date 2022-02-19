@@ -14,10 +14,7 @@ import {TaskViewer} from "../components/mainSections/main/taskPage/TaskViewer";
 import EditionTaskForm from "../components/taskForms/EditionTaskForm";
 import TaskForm from "../components/taskForms/taskForm";
 import Welcome from "../components/Welcome";
-import IncomingInvitationList
-    from "../components/mainSections/main/teamPage/invitation-components/IncomingInvitationList";
 import TeamInvitationTabs from "../components/mainSections/main/teamPage/TeamInvitationTabs";
-import TeamList from "../components/mainSections/main/teamPage/TeamList";
 
 
 export default function AppRoutes() {
@@ -33,7 +30,7 @@ export default function AppRoutes() {
                     <Route path="profile" element={<ProfilePage />} />
 
                     <Route path="teams/" element={<TeamPage />}>
-                        <Route index element={<TeamInvitationTabs />}/>
+                        <Route index element={<TeamInvitationTabs />} />
                         <Route path="new" element={<TeamCreationForm />} />
                         <Route path=":teamId" element={<TeamEditingForm />} />
 

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {API} from "../../../../../api-server/api";
+import {API} from "../../../../../api/api";
 
 import {CloseTeamFormIcon, TeamNameItem, TeamSubmitButton} from "./team-form-items";
 import {useNavigate} from "react-router";

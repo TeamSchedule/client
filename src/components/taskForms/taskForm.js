@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {useNavigate, useOutletContext, useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 
-import {API} from "../../api-server/api";
+import {API} from "../../api/api";
 import {selectUserInfo} from "../../features/userInfoSlice";
-import "./taskForm.css";
 import CloseFormIcon from "../generic/CloseFormIcon";
-import {TaskDatetimeInput, TaskDescriptionInput, TaskNameInput} from "./task-form-items";
-import {SubmitFormButton} from "./task-form-items";
+import {SubmitFormButton, TaskDatetimeInput, TaskDescriptionInput, TaskNameInput} from "./task-form-items";
+import "./taskForm.css";
 
 
 function TeamItem(props) {
@@ -21,10 +20,10 @@ function TeamItem(props) {
 
 
 function TaskForm() {
-    const userInfo = useSelector(selectUserInfo);
     const navigate = useNavigate();
+    const userInfo = useSelector(selectUserInfo);
+
     const [groupItems, setGroupItems] = useState([]);
-    const [tasks, setTasks] = useOutletContext();
 
     const {date} = useParams();
     const [taskDescription, setTaskDescription] = useState("");
@@ -54,9 +53,6 @@ function TaskForm() {
         };
 
         API.tasks.createTask(data).then(res => {
-            let updTasks = tasks.slice();
-            updTasks.push(res.data);
-            setTasks(updTasks);
             navigate(-1);
         });
     }
