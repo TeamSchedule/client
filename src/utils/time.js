@@ -2,8 +2,8 @@ export function formDateFromArray(expirationDateTimeArr) {
     let date = new Date();
     date.setFullYear(expirationDateTimeArr[0]);
     date.setMonth(expirationDateTimeArr[1] - 1);
-    date.setDate(expirationDateTimeArr[2]);
-    date.setHours(expirationDateTimeArr[3]);
+    date.setDate(expirationDateTimeArr[2] + 1);
+    date.setHours(expirationDateTimeArr[3] - 10);
     date.setMinutes(expirationDateTimeArr[4]);
     return date;
 }

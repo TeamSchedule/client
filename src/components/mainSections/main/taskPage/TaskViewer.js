@@ -60,12 +60,13 @@ export function TaskViewer() {
                 id: task.id,
                 groupId: task.team.id,
 
-                start: formDateFromArray(task.creationTime),  // TODO: refactor this bullshit
+                start: formDateFromArray(task.expirationTime),  // TODO: refactor this bullshit
                 end: formDateFromArray(task.expirationTime),  // TODO: refactor this bullshit
 
                 extendedProps: {
                     description: task.description,
                     groupName: task.team.name,
+                    closed: task.closed,
                 },
                 // eventColor: (formDateFromArray(task.expirationTime) < Date.now()) ? "red" : "#010023",
                 className: "monthEvent",

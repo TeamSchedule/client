@@ -8,12 +8,16 @@ import ProfilePage from "../components/mainSections/main/profilePage/ProfilePage
 import {Main} from "../components/mainSections/main/Main";
 import TeamPage from "../components/mainSections/main/teamPage/TeamPage";
 import {TaskPage} from "../components/mainSections/main/taskPage/TaskPage";
-import TeamCreationForm from "../components/mainSections/main/teamPage/TeamCreationForm";
-import TeamEditingForm from "../components/mainSections/main/teamPage/TeamEditingForm";
+import TeamCreationForm from "../components/mainSections/main/teamPage/team-forms/TeamCreationForm";
+import TeamEditingForm from "../components/mainSections/main/teamPage/team-forms/TeamEditingForm";
 import {TaskViewer} from "../components/mainSections/main/taskPage/TaskViewer";
 import EditionTaskForm from "../components/taskForms/EditionTaskForm";
 import TaskForm from "../components/taskForms/taskForm";
 import Welcome from "../components/Welcome";
+import IncomingInvitationList
+    from "../components/mainSections/main/teamPage/invitation-components/IncomingInvitationList";
+import TeamInvitationTabs from "../components/mainSections/main/teamPage/TeamInvitationTabs";
+import TeamList from "../components/mainSections/main/teamPage/TeamList";
 
 
 export default function AppRoutes() {
@@ -29,8 +33,10 @@ export default function AppRoutes() {
                     <Route path="profile" element={<ProfilePage />} />
 
                     <Route path="teams/" element={<TeamPage />}>
+                        <Route index element={<TeamInvitationTabs />}/>
                         <Route path="new" element={<TeamCreationForm />} />
                         <Route path=":teamId" element={<TeamEditingForm />} />
+
                     </Route>
 
                     <Route path="tasks/" element={<TaskPage />}>

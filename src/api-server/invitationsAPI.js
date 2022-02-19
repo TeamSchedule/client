@@ -4,22 +4,36 @@ import $axios from "./axiosRequests";
 export class invitationsAPI {
     static apiPrefix = "/invitations";
 
-    static async getUnprocessedInvitations() {
-        return (await $axios.get(`${this.apiPrefix}`)).data;
+    static async getOutgoingTeamInvitations() {
+        return $axios.get(`/team/invite?criteria=inviting`).then(res => {
+            return res.data;
+        }).catch(() => {
+            return [];
+        });
+    }
+
+    static async getIncomingTeamInvitations() {
+        return $axios.get(`/team/invite?criteria=invited`).then(res => {
+            return res.data;
+        }).catch(() => {
+            return [];
+        });
     }
 
     static async createInvitation(data) {
-        return (await $axios.post(`${this.apiPrefix}`, data)).data;
+        return (await $axios.post(`/team/invite`, data)).data;
     }
 
     static deleteInvitation(invitationId) {
-        return $axios.delete(`${this.apiPrefix}/${invitationId}`).then(res => {
+        return $axios.post(`/team/inviteput`, {"status": "CLOSED", id: invitationId}).then(res => {
             return res.data;
-        }).catch(() => null);
+        }).catch(() => {
+            return null;
+        });
     }
 
     static async acceptInvitation(invitationId) {
-        return $axios.post(`${this.apiPrefix}/${invitationId}`, {"accepted": true}).then(res => {
+        return $axios.patch(`/team/invite`, {"status": "ACCEPTED", id: invitationId}).then(res => {
             return res.data;
         }).catch(() => {
             return null;
@@ -27,7 +41,7 @@ export class invitationsAPI {
     }
 
     static async rejectInvitation(invitationId) {
-        return $axios.post(`${this.apiPrefix}/${invitationId}`, {"accepted": false}).then(res => {
+        return $axios.patch(`/team/invite`, {"status": "REJECTED", id: invitationId}).then(res => {
             return res.data;
         }).catch(() => {
             return null;
