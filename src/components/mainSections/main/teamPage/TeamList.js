@@ -2,7 +2,7 @@ import {useSelector} from "react-redux";
 import {selectUserInfo} from "../../../../features/userInfoSlice";
 import React, {useEffect, useState} from "react";
 import Team from "./Team";
-import {API} from "../../../../api-server/api";
+import {API} from "../../../../api/api";
 
 
 export default function TeamList() {

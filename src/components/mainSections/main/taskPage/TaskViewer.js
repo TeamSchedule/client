@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
-import {useNavigate, useOutletContext} from "react-router";
+import {useNavigate} from "react-router";
 import {Outlet} from "react-router-dom";
 
 import FullCalendar from '@fullcalendar/react';
@@ -12,6 +12,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import {formDateFromArray} from "../../../../utils/time";
 import {onTaskClicked} from "../../../../features/editedTaskSlice";
 
+import {API} from "../../../../api/api";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -19,17 +20,25 @@ import "primeflex/primeflex.css";
 import "./monthCalendar.css";
 
 
-
 export function TaskViewer() {
     const navigate = useNavigate();
 
-    const [tasks, /*setTasks*/] = useOutletContext();
+    const [tasks, setTasks] = useState([]);
+
     const [calendarTasks, setCalendarTasks] = useState([]);
     const dispatch = useDispatch();
 
     const calendarRef = React.createRef();
     let calendarApi = null;
 
+    useEffect(() => {
+        API.tasks.getTasks({
+            "from": (new Date("2020-01-01")).toJSON(),
+            "to": (new Date("2023-01-01")).toJSON(),
+        }).then(res => {
+            setTasks(res.data.slice());
+        });
+    }, []);
 
     useEffect(() => {
         // WARNING: do not merge code in one line: `React.createRef().current.getApi();` !
@@ -68,11 +77,11 @@ export function TaskViewer() {
                     groupName: task.team.name,
                     closed: task.closed,
                 },
-                // eventColor: (formDateFromArray(task.expirationTime) < Date.now()) ? "red" : "#010023",
+                // eventColor: "#0f0",
                 className: "monthEvent",
                 eventDisplay: "block",
 
-                // backgroundColor: "",
+                backgroundColor: task.closed ? "#006e00" : "#010023",
                 // borderColor: "",
                 // textColor: "",
             });
@@ -125,12 +134,9 @@ export function TaskViewer() {
                 dateClick={onDateClick}
                 views={
                     {
-                        dayGridMonth: {
-                        },
-                        timeGridWeek: {
-                        },
-                        timeGridDay: {
-                        },
+                        dayGridMonth: {},
+                        timeGridWeek: {},
+                        timeGridDay: {},
                     }
                 }
                 display="block"

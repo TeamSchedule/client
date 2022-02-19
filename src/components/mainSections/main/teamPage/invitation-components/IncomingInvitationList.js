@@ -1,7 +1,7 @@
 import List from "@mui/material/List";
 import IncomingInvitation from "./IncomingInvitation";
 import React from "react";
-import {API} from "../../../../../api-server/api";
+import {API} from "../../../../../api/api";
 
 
 export default function IncomingInvitationList(props) {

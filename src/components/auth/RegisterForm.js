@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router";
 import {Link} from 'react-router-dom';
-import {API} from "../../api-server/api";
+import {API} from "../../api/api";
 import {
     AuthForm,
     AuthSubmitButton,
