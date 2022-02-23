@@ -10,7 +10,6 @@ import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 
 import {formDateFromArray} from "../../../../utils/time";
-import {onTaskClicked} from "../../../../features/editedTaskSlice";
 
 import {API} from "../../../../api/api";
 import "primereact/resources/themes/saga-blue/theme.css";
@@ -93,7 +92,6 @@ export function TaskViewer() {
         const task = e.event._def;
         const taskId = task.publicId;
 
-        dispatch(onTaskClicked(calendarTasks.find((task) => +task.id === +taskId)));
         navigate(`../${taskId.toString()}`);
     }
 

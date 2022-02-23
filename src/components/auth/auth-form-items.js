@@ -6,7 +6,7 @@ export function AuthPasswordInput(props) {
     return (
         <div className="d-flex flex-column my-1">
             <label className={props.labelClassName} htmlFor={props.labelHtmlFor}>
-                Password
+                {props.labelText || "Password"}
             </label>
             <input className="py-1 my-1" type="password"
                    value={props.value}
