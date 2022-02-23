@@ -32,7 +32,7 @@ function TaskForm() {
     const [selectedTeam, setSelectedTeam] = useState();
 
     useEffect(() => {
-        API.teams.getUserTeams().then(data => {
+        API.teams.all().then(data => {
             let val = data;
             setGroupItems(val.map(
                 (group) => <TeamItem id={`group${group.id}`} key={group.id} groupTitle={group.name}

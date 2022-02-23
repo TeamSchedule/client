@@ -10,7 +10,7 @@ export default function TeamList() {
     const [teams, setTeams] = useState([]);
 
     useEffect(() => {
-        API.teams.getUserTeams().then(data => {
+        API.teams.all().then(data => {
             setTeams(data || []);
         });
     }, []);

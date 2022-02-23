@@ -1,26 +1,34 @@
 import React, {useEffect, useState} from "react";
-import {API} from "../../../../../api/api";
 import {useSelector} from "react-redux";
+import {Autocomplete, TextField} from "@mui/material";
+import List from "@mui/material/List";
+
+import {useParams} from "react-router";
+import {API} from "../../../../../api/api";
 import {selectEditedTeam} from "../../../../../features/editedTeamSlice";
 import {TeamNameItem, TeamSubmitButton} from "./team-form-items";
-import "../teamPage.css";
-import {Autocomplete, TextField} from "@mui/material";
 import CloseFormIcon from "../../../../generic/CloseFormIcon";
 import {ParticipantItem} from "./ParticipantItem";
-import List from "@mui/material/List";
 import {RejectedOutgoingInvitation, UnprocessedOutgoingInvitation} from "../invitation-components/OutgoingInvitation";
+import "../teamPage.css";
 
 
 export default function TeamEditingForm() {
+    const {teamId} = useParams();
     const editedTeam = useSelector(selectEditedTeam);
 
     const [teamName, setTeamName] = useState(editedTeam.name);
-    // const [teamDescription, setTeamDescription] = useState(editedTeam.description || "");
 
     const [unprocessedInvitations, setUnprocessedInvitations] = useState([]);
     const [rejectedInvitations, setRejectedInvitations] = useState([]);
 
     const [usersToInvite, setUsersToInvite] = useState([]);
+
+    function getTeamData() {
+        API.teams.get(teamId).then(data => {
+            setTeamName(data.name);
+        });
+    }
 
     useEffect(() => {
         API.invitations.getOutgoingTeamInvitations().then(data => {
@@ -34,7 +42,7 @@ export default function TeamEditingForm() {
     function onEditTeam(e) {
         e.preventDefault();
 
-        API.teams.editTeam({
+        API.teams.update({
             id: editedTeam.id,
             name: document.getElementById("teamName").value,
         }).then(data => {
@@ -75,8 +83,7 @@ export default function TeamEditingForm() {
             </div>
 
             <TeamNameItem value={teamName} setValue={setTeamName} />
-            {/*<TeamDescriptionItem value={teamDescription} setValue={setTeamDescription} />*/}
-            {/*<TeamSubmitButton btnText="Save changes" />*/}
+            <TeamSubmitButton btnText="Save changes" />
 
             <ParticipantList participants={editedTeam.users} />
 
