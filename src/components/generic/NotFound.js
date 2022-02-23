@@ -2,14 +2,14 @@ import {Link} from "react-router-dom";
 import {useNavigate} from "react-router";
 
 
-export default function NoMatch() {
+export default function NotFound() {
     const navigate = useNavigate();
 
     return (
-        <main>
+        <main className="p-3">
             <h1>There's nothing here!</h1>
             <p>You can get back to the
-                <span onClick={() => navigate(-1)}>previous page</span> or move to
+                <a href="#" onClick={() => navigate(-1)}>&nbsp;previous page&nbsp;</a> or move to&nbsp;
                 <Link to="/">main page</Link>.
             </p>
         </main>

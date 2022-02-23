@@ -1,39 +1,44 @@
 import React from "react";
-import {Route, Routes} from "react-router-dom";
-import NoMatch from "../components/generic/no-match";
+import {useSelector} from "react-redux";
+import {selectUserInfo} from "../features/userInfoSlice";
+import {Navigate, Route, Routes} from "react-router-dom";
 import App from "../components/App";
-import LoginForm from "../components/auth/LoginForm";
-import RegisterForm from "../components/auth/RegisterForm";
-import ProfilePage from "../components/mainSections/main/profilePage/ProfilePage";
 import {Main} from "../components/mainSections/main/Main";
+import ProfilePage from "../components/mainSections/main/profilePage/ProfilePage";
+import OverviewTab from "../components/mainSections/main/profilePage/tabs/OverviewTab";
+import SettingsTab from "../components/mainSections/main/profilePage/tabs/SettingsTab";
+import AvatarEditorTab from "../components/mainSections/main/profilePage/AvatarEditorTab";
 import TeamPage from "../components/mainSections/main/teamPage/TeamPage";
-import {TaskPage} from "../components/mainSections/main/taskPage/TaskPage";
+import TeamInvitationTabs from "../components/mainSections/main/teamPage/TeamInvitationTabs";
 import TeamCreationForm from "../components/mainSections/main/teamPage/team-forms/TeamCreationForm";
 import TeamEditingForm from "../components/mainSections/main/teamPage/team-forms/TeamEditingForm";
+import {TaskPage} from "../components/mainSections/main/taskPage/TaskPage";
 import {TaskViewer} from "../components/mainSections/main/taskPage/TaskViewer";
-import EditionTaskForm from "../components/taskForms/EditionTaskForm";
 import TaskForm from "../components/taskForms/taskForm";
-import Welcome from "../components/Welcome";
-import TeamInvitationTabs from "../components/mainSections/main/teamPage/TeamInvitationTabs";
+import EditionTaskForm from "../components/taskForms/EditionTaskForm";
+import NotFound from "../components/generic/NotFound";
 
 
-export default function AppRoutes() {
+export default function AuthorizedRoutes() {
+    const userInfo = useSelector(selectUserInfo);
+
     return (
         <Routes>
             <Route path="/" element={<App />}>
-                <Route index element={<Welcome />} />
-
-                <Route path="login" element={<LoginForm />} />
-                <Route path="signup" element={<RegisterForm />} />
+                <Route index element={<Navigate to={`/${userInfo.username}/profile`} replace={true} />} />
 
                 <Route path=":username/" element={<Main />}>
-                    <Route path="profile" element={<ProfilePage />} />
+
+                    <Route path="profile/" element={<ProfilePage />}>
+                        <Route path="overview" element={<OverviewTab />} />
+                        <Route path="settings" element={<SettingsTab />} />
+                        <Route path="avatar" element={<AvatarEditorTab />} />
+                    </Route>
 
                     <Route path="teams/" element={<TeamPage />}>
                         <Route index element={<TeamInvitationTabs />} />
                         <Route path="new" element={<TeamCreationForm />} />
                         <Route path=":teamId" element={<TeamEditingForm />} />
-
                     </Route>
 
                     <Route path="tasks/" element={<TaskPage />}>
@@ -46,7 +51,7 @@ export default function AppRoutes() {
                 </Route>
             </Route>
 
-            <Route path="*" element={<NoMatch />} />
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }
