@@ -13,6 +13,10 @@ export class teamsAPI {
         return (await $axios.get(`${this.apiPrefix}/${id}`)).data;
     }
 
+    static async leave(teamId) {
+        return (await $axios.delete(`${this.apiPrefix}/${teamId}/user`)).data;
+    }
+
     static async create(data) {
         return (await $axios.post(`${this.apiPrefix}`, data)).data;
     }

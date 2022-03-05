@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import CloseFormIcon from "../../../../generic/CloseFormIcon";
+import InputColor from 'react-input-color';
 
 
 export function TeamNameItem(props) {
@@ -43,5 +44,22 @@ export function CloseTeamFormIcon() {
             <p className="fw-bold">Create new team</p>
             <CloseFormIcon />
         </div>
+    );
+}
+
+
+export function TeamColorInput(props) {
+    return (
+        <>
+            <div className="my-2 d-flex">
+                <p className="mr-3">Change color for team's task</p>
+                <InputColor
+                    initialValue="#5e72e4"
+                    onChange={props.setValue}
+                    value={props.value}
+                    placement="right"
+                />
+            </div>
+        </>
     );
 }
