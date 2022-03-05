@@ -1,17 +1,3 @@
-.teamPage_title {
-    font-weight: bold;
-    font-size: 2em;
-}
-
-.teamItem {
-    border-bottom: 2px solid #070036ac;
-    border-radius: 2px;
-}
-
-.teamItemName {
-    font-weight: bold;
-}
-
 .createTeamBtn {
     border: 2px solid black;
     border-radius: 3px;
@@ -21,41 +7,10 @@
     width: 2em;
 }
 
-.foundUserIcon {
-    height: 32px;
-    border-radius: 50%;
-}
-
-.foundUserItem {
-    border: 1px solid #c5c3ce;
-    cursor: pointer;
-}
-
-
 .teamCreationForm {
-    /*background: #ffffff;*/
     border: 2px solid #e7e7e7;
     border-radius: 3px;
     min-width: 380px;
-}
-
-.closeIcon {
-    right: -5px;
-    top: -5px;
-}
-
-.actionUserTeamIcon {
-    width: 24px;
-}
-
-.addUserToTeamBtn {
-    background: none;
-    border: none;
-}
-
-.searchUserInput {
-    border: 1px solid #bdbdbd;
-    border-radius: 2px;
 }
 
 .teamEditLink, .teamEditLink:hover {
@@ -66,10 +21,4 @@
 
 .teamEditLink:hover {
     color: #070036;
-}
-
-
-.teamCreator {
-    border: 1px solid #850f35;
-    border-radius: 3px;
 }

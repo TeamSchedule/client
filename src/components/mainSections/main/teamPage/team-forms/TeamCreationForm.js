@@ -10,15 +10,12 @@ export default function TeamCreationForm() {
 
     const [teamName, setTeamName] = useState();
 
-    // const [teamDescription, setTeamDescription] = useState();
-
 
     function createTeamSbm(e) {
         e.preventDefault();
 
-        API.teams.createTeam({
+        API.teams.create({
             "name": teamName,
-            // "description": teamDescription,
             "membersLogins": [],
         }).then(data => {
             navigate(-1);
@@ -28,10 +25,7 @@ export default function TeamCreationForm() {
     return (
         <form className="p-3 teamCreationForm" onSubmit={createTeamSbm} autoComplete="off">
             <CloseTeamFormIcon />
-
             <TeamNameItem value={teamName} setValue={setTeamName} />
-            {/*<TeamDescriptionItem value={teamDescription} setValue={setTeamDescription} />*/}
-
             <TeamSubmitButton btnText="Create team" />
         </form>
     );
