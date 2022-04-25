@@ -6,6 +6,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `docker build -t deps-builder -f Cache.dockerfile .`
+Run for caching node_modules deps in another image.
+
 ### `npm run start`
 
 Runs the app in the development mode.\
