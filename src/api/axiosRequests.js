@@ -1,20 +1,34 @@
 import axios from "axios";
-import {DOMAIN_URL, ENABLE_HTTPS} from "../config/config";
+import {SERVER_ORIGIN} from "../config/config";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 
 const AXIOS_CONFIG = {
-    baseURL: `http${ENABLE_HTTPS ? "s" : ""}://${DOMAIN_URL}/`,
+    baseURL: SERVER_ORIGIN,
 };
 
 
 const $axios = axios.create(AXIOS_CONFIG);
 
+
+$axios.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+}, function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    if (error.response.status === 404) {
+        alert("404");
+    }
+    return Promise.reject(error);
+});
+
 // TODO: Function that will be called to refresh authorization
 // https://github.com/Flyrell/axios-auth-refresh
 
 const refreshAuthLogic = async (failedRequest) => {
-    setAccessToken(JSON.parse(localStorage.getItem("token")));
+    setAccessToken(JSON.parse(localStorage.getItem("access")));
     return (await $axios.request(failedRequest.config)).data;
 };
 

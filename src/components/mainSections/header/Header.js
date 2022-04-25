@@ -34,7 +34,6 @@ function AuthorizedHeader() {
         deleteAccessToken();
         window.localStorage.clear();
         navigate("/");
-        // });
     }
 
     const userInfo = useSelector(selectUserInfo);
@@ -43,7 +42,7 @@ function AuthorizedHeader() {
         <header className="row justify-content-end py-2 main-header mx-0 px-2 position-fixed left-0 top-0 right-0">
             <div className="d-flex justify-content-end">
                 <Link className="mx-3 no-underline username"
-                      to={`/${userInfo.username}/profile`}>{userInfo.username}</Link>
+                      to={`/${userInfo.login}/profile`}>{userInfo.login}</Link>
                 <div className="btn-group dropleft">
                     <img src={userIcon}
                          alt="user-icon"
@@ -52,9 +51,9 @@ function AuthorizedHeader() {
                          data-bs-display="static"
                          aria-haspopup="true" aria-expanded="false" />
                     <div className="dropdown-menu">
-                        <Link className="dropdown-item" to={`/${userInfo.username}/profile`}>Profile</Link>
-                        <Link className="dropdown-item" to={`/${userInfo.username}/teams`}>Teams</Link>
-                        <Link className="dropdown-item" to={`/${userInfo.username}/tasks`}>Tasks</Link>
+                        <Link className="dropdown-item" to={`/${userInfo.login}/profile`}>Profile</Link>
+                        <Link className="dropdown-item" to={`/${userInfo.login}/teams`}>Teams</Link>
+                        <Link className="dropdown-item" to={`/${userInfo.login}/tasks`}>Tasks</Link>
                         <div className="dropdown-divider"></div>
                         <Link className="dropdown-item" to="/" onClick={logout}>Sign out</Link>
                     </div>
