@@ -27,22 +27,22 @@ export default function LoginForm() {
 
     function signin(e) {
         e.preventDefault();
-        let data = {
+
+        API.auth.signIn({
             "login": username,
             "password": password,
-        };
-
-        API.auth.signIn(data).then(data => {
+        }).then(data => {
             setPassword("");
-            const token = data.token;
+            const token = data.access;
             setAccessToken(token);
-            localStorage.setItem("token", JSON.stringify(token));
+            localStorage.setItem("access", JSON.stringify(token));
             dispatch(login());
 
-            API.users.getUserInfo().then(res => {
-                dispatch(set(res.data));
-                navigate(`/${username}/profile`);
-            });
+            API.users.getUserInfo()
+                .then(res => {
+                    dispatch(set(res.data.user));
+                    navigate(`/${res.data.user.login}/profile`);
+                });
         });
     }
 

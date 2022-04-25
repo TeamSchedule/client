@@ -5,7 +5,7 @@ export class usersAPI {
     static apiPrefix = "/user";
 
     static async getUserInfo() {
-        return await $axios.get(this.apiPrefix);
+        return await $axios.get(`${this.apiPrefix}/me`);
     }
 
     static async updateUserInfo(data) {
