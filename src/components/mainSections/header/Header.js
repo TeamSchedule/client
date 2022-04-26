@@ -1,14 +1,14 @@
 import React from 'react';
 import {useNavigate} from "react-router";
 import {Link} from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 import {deleteAccessToken} from "../../../api/axiosRequests";
-import {onLogout, selectIsAuth} from "../../../features/isAuthSlice";
-import {onDeleteUserInfo, selectUserInfo} from "../../../features/userInfoSlice";
+import {selectUserInfo} from "../../../features/userInfoSlice";
 
 import "./header.css";
 import userIcon from "./userIcon.png";
+import isAuthenticated from "../../../utils/isAuthenticated";
 
 
 function UnauthorizedHeader() {
@@ -25,12 +25,8 @@ function UnauthorizedHeader() {
 
 function AuthorizedHeader() {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     function logout() {
-        // TODO: API.auth.signOut().then(() => {
-        dispatch(onDeleteUserInfo());
-        dispatch(onLogout());
         deleteAccessToken();
         window.localStorage.clear();
         navigate("/");
@@ -49,7 +45,9 @@ function AuthorizedHeader() {
                          className="dropdown-toggle cursor-pointer userIconImg"
                          data-toggle="dropdown"
                          data-bs-display="static"
-                         aria-haspopup="true" aria-expanded="false" />
+                        // aria-haspopup="true"
+                        // aria-expanded="false"
+                    />
                     <div className="dropdown-menu">
                         <Link className="dropdown-item" to={`/${userInfo.login}/profile`}>Profile</Link>
                         <Link className="dropdown-item" to={`/${userInfo.login}/teams`}>Teams</Link>
@@ -65,7 +63,5 @@ function AuthorizedHeader() {
 
 
 export default function Header() {
-    const isAuth = useSelector(selectIsAuth);
-
-    return (isAuth ? <AuthorizedHeader /> : <UnauthorizedHeader />);
+    return (isAuthenticated() ? <AuthorizedHeader /> : <UnauthorizedHeader />);
 }

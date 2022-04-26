@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom';
 
 import {API} from "../../api/api";
 import {setAccessToken} from "../../api/axiosRequests";
-import {login} from "../../features/isAuthSlice";
 import {set} from "../../features/userInfoSlice";
 import {
     AuthForm,
@@ -36,7 +35,6 @@ export default function LoginForm() {
             const token = data.access;
             setAccessToken(token);
             localStorage.setItem("access", JSON.stringify(token));
-            dispatch(login());
 
             API.users.getUserInfo()
                 .then(res => {

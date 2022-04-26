@@ -1,6 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit'
 
-import isAuthReducer from "../features/isAuthSlice";
 import userInfoReducer from "../features/userInfoSlice";
 import selectedDateReducer from "../features/selectedDateSlice";
 import teamsReducer from "../features/teamsSlice";
@@ -12,7 +11,6 @@ const REDUX_STORE_KEY_IN_LOCALSTORAGE = 'reduxState';
 
 const store = configureStore({
     reducer: {
-        isAuth: isAuthReducer,
         userInfo: userInfoReducer,
         teams: teamsReducer,
 
