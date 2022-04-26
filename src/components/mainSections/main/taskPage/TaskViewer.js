@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
 import {Outlet} from "react-router-dom";
 
@@ -25,7 +24,6 @@ export function TaskViewer() {
     const [tasks, setTasks] = useState([]);
 
     const [calendarTasks, setCalendarTasks] = useState([]);
-    const dispatch = useDispatch();
 
     const calendarRef = React.createRef();
     let calendarApi = null;
