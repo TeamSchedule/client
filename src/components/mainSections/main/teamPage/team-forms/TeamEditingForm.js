@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
 import {Autocomplete, TextField} from "@mui/material";
 import List from "@mui/material/List";
 
 import {useNavigate, useParams} from "react-router";
 import {API} from "../../../../../api/api";
-import {selectEditedTeam} from "../../../../../features/editedTeamSlice";
 import {TeamColorInput, TeamNameItem, TeamSubmitButton} from "./team-form-items";
 import CloseFormIcon from "../../../../generic/CloseFormIcon";
 import {ParticipantItem} from "./ParticipantItem";
@@ -17,7 +15,6 @@ import "../teamPage.css";
 export default function TeamEditingForm() {
     const {teamId} = useParams();
     const [color, setColor] = useState();
-    const editedTeam = useSelector(selectEditedTeam);
     const navigate = useNavigate();
 
     const [teamName, setTeamName] = useState("");
@@ -103,7 +100,8 @@ export default function TeamEditingForm() {
             <TeamColorInput value={color} setValue={setColor} />
             <TeamSubmitButton btnText="Save changes" />
 
-            <ParticipantList participants={editedTeam.users} />
+            {/* TODO: populate members */}
+            <ParticipantList participants={[]} />
 
             <p className="mt-4">Invite participants:</p>
             <AutocompleteUsers onSendInvites={onSendInvites}

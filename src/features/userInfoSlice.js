@@ -11,14 +11,10 @@ export const userInfoSlice = createSlice({
         set: (state, action) => {
             state.value = action.payload;
         },
-
-        onDeleteUserInfo: state => {
-            state.value = {};
-        },
     },
 });
 
-export const {set, onDeleteUserInfo} = userInfoSlice.actions;
+export const {set} = userInfoSlice.actions;
 export const selectUserInfo = state => state.userInfo.value;
 
 export default userInfoSlice.reducer;
