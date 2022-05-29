@@ -52,15 +52,15 @@ export default function LoginForm() {
                   innerForm={
                       <>
                           <FormHeader headerText={
-                              <>Sign in to&nbsp;<Link to="/">"Командное расписание"</Link>&nbsp;!</>
+                              <>Войти в &nbsp;<Link to="/">Командное расписание</Link>&nbsp;!</>
                           } />
 
 
                           <AuthUsernameInput value={username} setValue={setUsername} />
                           <AuthPasswordInput value={password} setValue={setPassword} />
 
-                          <AuthSubmitButton btnText="Sign in" />
-                          <FormFooter toggleAuthFormLink={<Link to="/signup">Don't have an account? Sign up</Link>} />
+                          <AuthSubmitButton btnText="ВОЙТИ" />
+                          <FormFooter toggleAuthFormLink={<Link to="/signup">Ещё не создали аккаунт? Создать</Link>} />
                       </>
                   } />
     );

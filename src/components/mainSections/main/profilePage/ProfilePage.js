@@ -19,7 +19,7 @@ export default function ProfilePage() {
 
     return (
         <>
-            <div className="row w-50 m-auto">
+            <div className="row w-75 m-auto">
                 <div className="col-auto">
                     <button className="" style={{background: "none", border: "none"}} onClick={() => navigate('avatar')}>
                             <Avatar alt={userInfo.username} src={userIcon} sx={{width: 200, height: 200}} />
@@ -33,13 +33,13 @@ export default function ProfilePage() {
                     <Box sx={{width: '100%'}}>
                         <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                             <Tabs value={value} onChange={(event, newValue) => setValue(newValue)}>
-                                <Tab label="Overview" onClick={() => {
+                                <Tab label="Основное" onClick={() => {
                                     setValue(0);
                                     navigate('overview');
                                 }} />
                                 <Tab label={
                                     <Badge color="success">
-                                        Settings
+                                        Настройки
                                     </Badge>
                                 } onClick={() => {
                                     setValue(1);

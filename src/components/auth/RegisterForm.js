@@ -41,15 +41,15 @@ export default function RegisterForm() {
                       innerForm={
                           <>
                               <FormHeader headerText={
-                                  <>Sign up to&nbsp;<Link to="/">"Командное расписание"</Link>&nbsp;!</>
+                                  <>Зарегистрироваться в&nbsp;<Link to="/">Командном расписании</Link>&nbsp;!</>
                               } />
 
                               <AuthEmailInput value={email} setValue={setEmail} />
                               <AuthUsernameInput value={username} setValue={setUsername} />
                               <AuthPasswordInput value={password} setValue={setPassword} />
 
-                              <AuthSubmitButton btnText="Sign up" />
-                              <FormFooter toggleAuthFormLink={<Link to="/login">Already have account? Sign in</Link>} />
+                              <AuthSubmitButton btnText="ЗАРЕГИСТРИРОВАТЬСЯ" />
+                              <FormFooter toggleAuthFormLink={<Link to="/login">Уже зарегистрировались? Войти</Link>} />
                           </>
                       }
             />

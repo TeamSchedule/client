@@ -15,8 +15,8 @@ function UnauthorizedHeader() {
     return (
         <header className="row justify-content-end main-header m-0 py-2 px-2">
             <div className="d-flex justify-content-end">
-                <Link to="signup" className="headerLink">Sign up</Link>
-                <Link to="login" className="headerLink">Log in</Link>
+                <Link to="signup" className="headerLink">Зарегистрироваться</Link>
+                <Link to="login" className="headerLink">Войти</Link>
             </div>
         </header>
     );
@@ -51,11 +51,11 @@ function AuthorizedHeader() {
                          data-bs-display="static"
                          aria-haspopup="true" aria-expanded="false" />
                     <div className="dropdown-menu">
-                        <Link className="dropdown-item" to={`/${userInfo.login}/profile`}>Profile</Link>
-                        <Link className="dropdown-item" to={`/${userInfo.login}/teams`}>Teams</Link>
-                        <Link className="dropdown-item" to={`/${userInfo.login}/tasks`}>Tasks</Link>
+                        <Link className="dropdown-item" to={`/${userInfo.login}/profile`}>Профиль</Link>
+                        <Link className="dropdown-item" to={`/${userInfo.login}/teams`}>Команды</Link>
+                        <Link className="dropdown-item" to={`/${userInfo.login}/tasks`}>Задачи</Link>
                         <div className="dropdown-divider"></div>
-                        <Link className="dropdown-item" to="/" onClick={logout}>Sign out</Link>
+                        <Link className="dropdown-item" to="/" onClick={logout}>Выйти</Link>
                     </div>
                 </div>
             </div>

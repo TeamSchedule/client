@@ -75,7 +75,7 @@ function TaskForm() {
     return (
         <form className="p-3 creationTaskForm" onSubmit={onSubmit}>
             <div className="d-flex justify-content-between position-relative">
-                <p className="fw-bold">New task</p>
+                <p className="fw-bold">Новая задача</p>
                 <CloseFormIcon/>
             </div>
 
@@ -84,11 +84,6 @@ function TaskForm() {
             <TaskDatetimeInput value={taskExpirationDatetime} setValue={setTaskExpirationDatetime}/>
 
             <div>
-                <p className="my-1">
-                    <label htmlFor="taskGroup">Выберите команду из списка. (`{userInfo.login}` если
-                        приватная)</label>
-                </p>
-
                 <FormControlLabel
                     control={
                         <Checkbox checked={isPrivateFlag}
@@ -107,7 +102,7 @@ function TaskForm() {
 
             </div>
 
-            <SubmitFormButton buttonText="Create task"/>
+            <SubmitFormButton buttonText="СОЗДАТЬ ЗАДАЧУ"/>
         </form>
     );
 }

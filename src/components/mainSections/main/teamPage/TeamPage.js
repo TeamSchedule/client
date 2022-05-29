@@ -12,7 +12,7 @@ export default function TeamPage() {
                 <Link to="new">
                     <Button className="p-2 px-3" variant="outlined"
                             startIcon={<GroupsIcon fontSize="large" sx={{width: 28, height: 28}} />}>
-                        Create new team
+                        Создать новую команду
                     </Button>
                 </Link>
             </div>

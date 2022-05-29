@@ -76,7 +76,7 @@ export default function AvatarEditorTab() {
                                 <Button className="p-2 px-3"
                                         startIcon={<AddPhotoAlternateIcon fontSize="large"
                                                                           sx={{width: 64, height: 64}} />}>
-                                    Click&nbsp;to&nbsp;upload&nbsp;image<br />or<br />Drag&nbsp;&&nbsp;Drop&nbsp;it
+                                    Нажмите,&nbsp;чтобы&nbsp;загрузить<br />или<br />перетащите&nbsp;изображение
                                 </Button>
                                 <input {...getInputProps()} className="w-100" />
                             </div>
@@ -87,7 +87,7 @@ export default function AvatarEditorTab() {
             <div className="d-flex px-0">
                 <div className="col px-0 mr-2">
                     <div className="py-2">
-                        <Typography>Scale</Typography>
+                        <Typography>Масштаб</Typography>
                         <Slider value={scale}
                                 onChange={e => setScale(e.target.value)}
                                 step={0.01}
@@ -97,7 +97,7 @@ export default function AvatarEditorTab() {
                                 aria-label="Slider" />
                     </div>
                     <div className="py-2">
-                        <Typography>Rotate</Typography>
+                        <Typography>Вращение</Typography>
                         <Slider value={rotate}
                                 onChange={e => setRotate(e.target.value)}
                                 step={0.1}
@@ -109,12 +109,13 @@ export default function AvatarEditorTab() {
                     <Button variant="outlined" fullWidth={true} onClick={() => {
                         setRotate(0);
                         setScale(1);
-                    }}>Reset styles</Button>
+                    }}>Сбросить настройки</Button>
                 </div>
                 <div
                     className="p-2 d-flex flex-column-reverse col px-0 ml-2">
-                    <Button variant="outlined" fullWidth={true} onClick={onClickSave} disabled={!enabledToSave}>Show
-                        preview</Button>
+                    <Button variant="outlined" fullWidth={true} onClick={onClickSave} disabled={!enabledToSave}>
+                        Показать превью
+                    </Button>
                     <img src={croppedImg} alt="Avatar preview" width="125" height="125" className="m-auto"
                          style={{borderRadius: "50%"}} />
                 </div>
@@ -123,13 +124,13 @@ export default function AvatarEditorTab() {
             <Button variant="contained"
                     fullWidth={true}
                     onClick={onClickSave}
-                    className="my-2" disabled={!enabledToSave}>Save</Button>
+                    className="my-2" disabled={!enabledToSave}>СОХРАНИТЬ</Button>
 
             <Button variant="contained"
                     fullWidth={true}
                     onClick={onDeleteImage}
                     color="error"
-                    className="mt-4">Delete image</Button>
+                    className="mt-4">УДАЛИТЬ ИЗОБРАЖЕНИЕ</Button>
         </>
     );
 }

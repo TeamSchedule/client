@@ -18,7 +18,7 @@ export default function IncomingInvitationList(props) {
     }
 
     if (!props.incomingInvitations || +props.incomingInvitations.length === 0) {
-        return <span>You have no any invites</span>;
+        return <span>У вас нет приглашений</span>;
     }
 
     return (

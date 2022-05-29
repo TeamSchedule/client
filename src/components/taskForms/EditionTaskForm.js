@@ -59,7 +59,7 @@ export default function EditionTaskForm() {
     return (
         <form className="p-3 editionTaskForm" onSubmit={onSubmit}>
             <div className="d-flex justify-content-between">
-                <p className="fw-bold">Edit task</p>
+                <p className="fw-bold">Изменить задачу</p>
                 <CloseFormIcon />
             </div>
 
@@ -69,7 +69,7 @@ export default function EditionTaskForm() {
 
             <div>
                 <p className="my-1">
-                    {taskTeamName === userInfo.username ? "private task" : `Team: ${taskTeamName}`}
+                    {taskTeamName === userInfo.username ? "персональная задача" : `Команда: ${taskTeamName}`}
                 </p>
 
                 <FormControlLabel
@@ -79,15 +79,15 @@ export default function EditionTaskForm() {
                                   onChange={() => setTaskClosedStatus(!taskClosedStatus)}
                                   name="closed" />
                     }
-                    label="Mark as Done"
+                    label="Отметить выполненной"
                 />
             </div>
 
-            <SubmitFormButton buttonText="Save changes" />
+            <SubmitFormButton buttonText="СОХРАНИТЬ ИЗМЕНЕНИЯ" />
 
             <button onClick={onDeleteTaskBtn}
                     className="w-100 d-inline-block text-center bg-danger border-0 p-2 rounded deleteTaskBtn">
-                Delete task
+                УДАЛИТЬ ЗАДАЧУ
             </button>
         </form>
     );

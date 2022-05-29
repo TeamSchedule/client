@@ -16,7 +16,7 @@ export default function TeamList() {
         .map((team) => <Team data={team} key={team.id} />);
 
     if (teamsList.length === 0) {
-        return <p>You are not a member of any team</p>;
+        return <p>Вы не состоите в командах</p>;
     }
 
     return (

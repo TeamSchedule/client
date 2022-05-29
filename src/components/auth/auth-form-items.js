@@ -6,7 +6,7 @@ export function AuthPasswordInput(props) {
     return (
         <div className="d-flex flex-column my-1">
             <label className={props.labelClassName} htmlFor={props.labelHtmlFor}>
-                {props.labelText || "Password"}
+                {props.labelText || "Пароль"}
             </label>
             <input className="py-1 my-1" type="password"
                    value={props.value}
@@ -20,7 +20,7 @@ export function AuthUsernameInput(props) {
     return (
         <div className="d-flex flex-column my-1">
             <label className={props.labelClassName} htmlFor={props.labelHtmlFor}>
-                Username
+                Имя пользователя
             </label>
             <input className="py-1 my-1" type="text"
                    value={props.value}
@@ -34,7 +34,7 @@ export function AuthEmailInput(props) {
     return (
         <div className="d-flex flex-column my-1">
             <label className={props.labelClassName} htmlFor={props.labelHtmlFor}>
-                Email
+                Электронная почта
             </label>
             <input className="py-1 my-1" type="email"
                    value={props.value}

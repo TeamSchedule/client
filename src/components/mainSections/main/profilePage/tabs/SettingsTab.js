@@ -31,10 +31,10 @@ export default function SettingsTab() {
     return (
         <form action="#" onSubmit={changeUserInfo}>
             <div className="mb-4">
-                <h4>Edit profile</h4>
+                <h4>Изменить профиль</h4>
                 <hr />
                 <Button variant="outlined" onClick={() => navigate('../avatar', { replace: true })} fullWidth={true}>
-                    Change avatar
+                    Сменить аватар
                 </Button>
             </div>
 
@@ -43,11 +43,11 @@ export default function SettingsTab() {
                 <hr />
                 <AuthEmailInput value={email} setValue={setEmail} />
 
-                <AuthPasswordInput value={password} setValue={setPassword} labelText={"New password"} />
-                <AuthPasswordInput value={password2} setValue={setPassword2} labelText={"Repeat password"} />
+                <AuthPasswordInput value={password} setValue={setPassword} labelText={"Новый пароль"} />
+                <AuthPasswordInput value={password2} setValue={setPassword2} labelText={"Сменить пароль"} />
 
                 <Button variant="contained" color="success" fullWidth={true} className="mt-3" onClick={changeUserInfo}>
-                    Save changes
+                    СОХРАНИТЬ
                 </Button>
             </div>
         </form>

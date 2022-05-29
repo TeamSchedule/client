@@ -5,7 +5,7 @@ export function TaskNameInput(props) {
     return (
         <div className="d-flex flex-column my-1">
             <label className={props.labelClassName} htmlFor={props.labelHtmlFor}>
-                Title
+                Название
             </label>
             <input className="py-1 my-1" type="text"
                    value={props.value}
@@ -19,7 +19,7 @@ export function TaskDescriptionInput(props) {
     return (
         <div className="my-2">
             <label className={props.labelClassName} htmlFor={props.labelHtmlFor}>
-                Description
+                Описание
             </label>
             <textarea className="col" cols="30" rows="3"
                       value={props.value}
@@ -33,7 +33,7 @@ export function TaskDatetimeInput(props) {
     return (
         <div className="my-2">
             <label className={props.labelClassName} htmlFor={props.labelHtmlFor}>
-                Datetime
+                Дата и время
             </label>
             <input className="py-1 my-1"
                 // min={props.min}

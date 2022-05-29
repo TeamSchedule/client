@@ -33,10 +33,10 @@ export default function TeamInvitationTabs() {
         <Box sx={{width: '100%'}}>
             <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
                 <Tabs value={value} onChange={(event, newValue) => setValue(newValue)}>
-                    <Tab label="My teams" onClick={() => {setValue(0)}} />
+                    <Tab label="Мои команды" onClick={() => {setValue(0)}} />
                     <Tab label={
                         <Badge badgeContent={incomingInvitations.length} color="success">
-                            Invites
+                            Приглашения
                         </Badge>
                     } onClick={() => {setValue(1)}} />
                 </Tabs>

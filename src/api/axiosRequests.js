@@ -10,30 +10,6 @@ const AXIOS_CONFIG = {
 
 const $axios = axios.create(AXIOS_CONFIG);
 
-// TODO: Function that will be called to refresh authorization
-// https://github.com/Flyrell/axios-auth-refresh
-
-/*const refreshAuthLogic = (failedRequest) => {
-    alert("JSON.parse(localStorage.getItem(access))");
-    setAccessToken(JSON.parse(localStorage.getItem("access")));
-    console.log($axios.defaults.headers);
-    return $axios.request(failedRequest.config);
-};*/
-
-
-/*const refreshAuthLogic = (failedRequest) => {
-    alert("Make refresh");
-    return API.auth.refreshAccessToken({"token": localStorage.getItem("refresh")})
-        .then(tokenRefreshResponse => {
-            alert("Refresh OK");
-            localStorage.setItem('access', tokenRefreshResponse.data.access);
-            localStorage.setItem('refresh', tokenRefreshResponse.data.refresh);
-            failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.access;
-            return Promise.resolve();
-        })
-};*/
-
-
 // https://github.com/Flyrell/axios-auth-refresh
 // Function that will be called to refresh authorization
 const refreshAuthLogic = failedRequest => API.auth.refreshAccessToken({

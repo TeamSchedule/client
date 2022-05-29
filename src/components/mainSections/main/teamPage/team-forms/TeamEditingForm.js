@@ -89,27 +89,27 @@ export default function TeamEditingForm() {
     return (
         <form className="p-3 teamCreationForm" onSubmit={onEditTeam} autoComplete="off">
             <div className="d-flex justify-content-between">
-                <p className="fw-bold">Edit team</p>
+                <p className="fw-bold">Редактировать команду</p>
                 <CloseFormIcon />
             </div>
 
             <TeamNameItem value={teamName} setValue={setTeamName} />
             <TeamColorInput value={color} setValue={setColor} initialColor={initialColor} />
-            <TeamSubmitButton btnText="Save changes" />
+            <TeamSubmitButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ" />
 
             <ParticipantList participants={editedTeam.users} />
 
-            <p className="mt-4">Invite participants:</p>
+            <p className="mt-4">Пригласить новых пользователей:</p>
             <AutocompleteUsers onSendInvites={onSendInvites}
                                usersToInvite={usersToInvite}
                                setUsersToInvite={setUsersToInvite} />
 
-            <p className="mt-4">Unprocessed invites:</p>
+            <p className="mt-4">Отправленные приглашения:</p>
             {unprocessedInvitations.map(invitation => <UnprocessedOutgoingInvitation {...invitation}
                                                                                      onUndoInvitation={onUndoInvitation} />)}
 
             <Button variant="contained" color="error" onClick={onLeaveTeam} fullWidth={true}>
-                Leave team
+                Покинуть команду
             </Button>
         </form>
     );
@@ -140,13 +140,13 @@ function AutocompleteUsers(props) {
                 getOptionLabel={(option) => option.login}
                 onChange={(e, v) => props.setUsersToInvite(v)}
                 renderInput={(params) => (
-                    <TextField {...params} label="Usernames" placeholder="Username"
+                    <TextField {...params} label="Имя пользователя" placeholder="Имя пользователя"
                                value={username}
                                onChange={e => setUsername(e.target.value)} />
                 )}
             />
 
-            <TeamSubmitButton btnText="Send invites"
+            <TeamSubmitButton btnText="Пригласить"
                               onClick={props.onSendInvites}
                               disabled={!props.usersToInvite || +props.usersToInvite.length === 0} />
         </div>

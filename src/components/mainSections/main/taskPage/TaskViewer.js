@@ -30,12 +30,14 @@ export function TaskViewer() {
 
     useEffect(() => {
         API.teams.all().then(allTeams => {
+            // Collect ids of all teams (created and default)
             let teams = allTeams["teams"].map(t => t.id);
             teams.push(allTeams.defaultTeamId);
+
             API.tasks.getTasks({
                 "from": (new Date("2020-01-01")).toJSON(),
                 "to": (new Date("2023-01-01")).toJSON(),
-                "teams": allTeams["teams"].map(t => t.id).join(",")
+                "teams": teams.join(",")
             }).then(tasks => {
                 setTasks(tasks);
             });

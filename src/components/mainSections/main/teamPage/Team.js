@@ -34,9 +34,6 @@ export default function Team(props) {
                             {/*<Avatars users={props.data.users} />*/}
                         </div>
                     }
-                    secondary={
-                        <span>{props.description || "Team description"}</span>
-                    }
                 />
             </ListItem>
             <Divider variant="inset" />
