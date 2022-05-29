@@ -16,7 +16,7 @@ export default function TeamInvitationTabs() {
 
     function fetchIncomingTeamInvitations() {
         API.invitations.getIncomingTeamInvitations().then(data => {
-            setIncomingInvitations(data.filter(invitation => invitation.inviteStatus === "OPEN"));
+            setIncomingInvitations(data.filter(invitation => invitation.inviteStatus === "open"));
         });
     }
 

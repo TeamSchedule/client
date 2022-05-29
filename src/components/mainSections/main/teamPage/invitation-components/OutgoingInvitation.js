@@ -15,7 +15,7 @@ export function RejectedOutgoingInvitation(props) {
                 </ListItemAvatar>
                 <ListItemText
                     primary={
-                        <span>{props.invited.username}</span>
+                        <span>{props.invitedId}</span>
                     }
                 />
                 <Button variant="contained" color="error" onClick={() => props.onDeleteInvitation(props.id)}>
@@ -37,7 +37,7 @@ export function UnprocessedOutgoingInvitation(props) {
                 </ListItemAvatar>
                 <ListItemText
                     primary={
-                        <span>{props.invited.username}</span>
+                        <span>{props.invitedId}</span>
                     }
                 />
 

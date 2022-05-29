@@ -16,14 +16,14 @@ import "../teamPage.css";
 
 export default function TeamEditingForm() {
     const {teamId} = useParams();
-    const [color, setColor] = useState();
+    const [color, setColor] = useState("#000000");
+    const [initialColor, setInitialColor] = useState("#ffffff")
     const editedTeam = useSelector(selectEditedTeam);
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
     const [teamName, setTeamName] = useState("");
     const [teamParticipants, setTeamParticipants] = useState([]);
     const [teamAdmin, setTeamAdmin] = useState("");
-
     const [unprocessedInvitations, setUnprocessedInvitations] = useState([]);
     const [rejectedInvitations, setRejectedInvitations] = useState([]);
 
@@ -32,32 +32,29 @@ export default function TeamEditingForm() {
     function getTeamData() {
         API.teams.get(teamId).then(data => {
             setTeamName(data.name);
-            setTeamParticipants(data.users.slice());
+            // setTeamParticipants(data.users.slice());
             setTeamAdmin(data.admin || "");
+            setInitialColor(data.color);
         });
     }
 
     useEffect(() => {
         getTeamData();
-        // if (teamAdmin === userInfo.username) {
-        if (true) {
-            API.invitations.getOutgoingTeamInvitations().then(data => {
-                const invitations = data.filter(invitation => +invitation.team.id === +teamId);
-                setUnprocessedInvitations(invitations.filter(invitation => invitation.inviteStatus === "OPEN"));
-                setRejectedInvitations(invitations.filter(invitation => invitation.inviteStatus === "REJECTED"));
-            });
-        }
+
+        API.invitations.getOutgoingTeamInvitations().then(data => {
+            const invitations = data.filter(invitation => +invitation.team.id === +teamId);
+            setUnprocessedInvitations(invitations.filter(invitation => invitation.inviteStatus === "open"));
+            setRejectedInvitations(invitations.filter(invitation => invitation.inviteStatus === "rejected"));
+        });
     }, []);
 
 
     function onEditTeam(e) {
         e.preventDefault();
 
-        API.teams.update({
-            id: teamId,
-            name: document.getElementById("teamName").value,
-            // color: color.hex.toString(),
-        }).then(() => {
+        API.teams.update(teamId, {
+            newName: document.getElementById("teamName").value,
+            color: color.hex.toString(),
         });
     }
 
@@ -66,7 +63,7 @@ export default function TeamEditingForm() {
 
         API.invitations.createInvitation({
             teamId: teamId,
-            membersLogins: usersToInvite.map(user => user.login),
+            invitedIds: usersToInvite.map(user => user.id),
         });
     }
 
@@ -88,10 +85,7 @@ export default function TeamEditingForm() {
             setUnprocessedInvitations(unprocessedInvitations.filter(invitation => +invitation.id !== +id));
         });
     }
-
-    useEffect(() => {
-        console.log(color);
-    }, [color])
+    
     return (
         <form className="p-3 teamCreationForm" onSubmit={onEditTeam} autoComplete="off">
             <div className="d-flex justify-content-between">
@@ -100,7 +94,7 @@ export default function TeamEditingForm() {
             </div>
 
             <TeamNameItem value={teamName} setValue={setTeamName} />
-            <TeamColorInput value={color} setValue={setColor} />
+            <TeamColorInput value={color} setValue={setColor} initialColor={initialColor} />
             <TeamSubmitButton btnText="Save changes" />
 
             <ParticipantList participants={editedTeam.users} />
@@ -130,8 +124,8 @@ function AutocompleteUsers(props) {
         if (username.length > 2) {
             API.users.filterByUsername({
                 "username": username,
-            }).then(res => {
-                setFoundUsers(res.data);
+            }).then(users => {
+                setFoundUsers(users);
             });
         }
     }, [username]);
@@ -143,7 +137,7 @@ function AutocompleteUsers(props) {
                 limitTags={2}
                 id="multiple-limit-tags"
                 options={foundUsers}
-                getOptionLabel={(option) => option.username}
+                getOptionLabel={(option) => option.login}
                 onChange={(e, v) => props.setUsersToInvite(v)}
                 renderInput={(params) => (
                     <TextField {...params} label="Usernames" placeholder="Username"

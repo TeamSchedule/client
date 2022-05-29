@@ -54,7 +54,7 @@ export function TeamColorInput(props) {
             <div className="my-2 d-flex">
                 <p className="mr-3">Change color for team's task</p>
                 <InputColor
-                    initialValue="#5e72e4"
+                    initialValue={props.initialColor}
                     onChange={props.setValue}
                     value={props.value}
                     placement="right"

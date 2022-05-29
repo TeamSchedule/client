@@ -2,15 +2,15 @@ import $axios from "./axiosRequests";
 
 
 export class tasksAPI {
-    // TODO: static prefixUrl = "/tasks";
-    static prefixUrl = "/task";
+    static prefixUrl = "/schedule/task";
 
     static async createTask(data) {
         return await $axios.post(`${this.prefixUrl}`, data);
     }
 
     static async getTasks(params) {
-        return await $axios.get(`${this.prefixUrl}?from=${params.from}&to=${params.to}`);
+        return (await $axios.get(`${this.prefixUrl}?from=${params.from}&to=${params.to}&teams=${params.teams}`))
+            .data["tasks"];
     }
 
     static async getTask(id) {
@@ -22,15 +22,6 @@ export class tasksAPI {
     }
 
     static async deleteTask(taskId) {
-        return await $axios.post("/task/" + taskId);
-    }
-
-    static async markTaskAsDone(data) {
-        return await $axios.post("/task/" + data.id + "/done", data);
-    }
-
-
-    static async markTaskAsOpen(data) {
-        return await $axios.post("/task/" + data.id + "/opened", data);
+        return await $axios.delete(`${this.prefixUrl}/${taskId}`);
     }
 }

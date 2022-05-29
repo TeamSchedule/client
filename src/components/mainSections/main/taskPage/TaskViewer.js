@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
 import {Outlet} from "react-router-dom";
 
@@ -25,17 +24,19 @@ export function TaskViewer() {
     const [tasks, setTasks] = useState([]);
 
     const [calendarTasks, setCalendarTasks] = useState([]);
-    const dispatch = useDispatch();
 
     const calendarRef = React.createRef();
     let calendarApi = null;
 
     useEffect(() => {
-        API.tasks.getTasks({
-            "from": (new Date("2020-01-01")).toJSON(),
-            "to": (new Date("2023-01-01")).toJSON(),
-        }).then(res => {
-            setTasks(res.data.slice());
+        API.teams.all().then(allTeams => {
+            API.tasks.getTasks({
+                "from": (new Date("2020-01-01")).toJSON(),
+                "to": (new Date("2023-01-01")).toJSON(),
+                "teams": allTeams["teams"].map(t => t.id).join(",") + "," + allTeams.defaultTeamId
+            }).then(tasks => {
+                setTasks(tasks);
+            });
         });
     }, []);
 
@@ -66,7 +67,7 @@ export function TaskViewer() {
             calTasks.push({
                 title: task.name,
                 id: task.id,
-                groupId: task.team.id,
+                groupId: task.teamId,
 
                 start: formDateFromArray(task.expirationTime),  // TODO: refactor this bullshit
                 end: formDateFromArray(task.expirationTime),  // TODO: refactor this bullshit
@@ -91,26 +92,12 @@ export function TaskViewer() {
     const onTaskClick = (e) => {
         const task = e.event._def;
         const taskId = task.publicId;
-
         navigate(`../${taskId.toString()}`);
     }
 
     const onDateClick = (conf) => {
-        console.log(conf.date);
         navigate(`new/${conf.date.toJSON()}`);
-
     }
-
-    /*    const ListViewSpecificOptions = {
-            listDayFormat: true,
-            listDaySideFormat: true,
-        }
-
-        const MonthViewSpecificOptions = {
-            fixedWeekCount: false,
-            showNonCurrentDates: false,
-        };*/
-
 
     return (
         <div id="full-calendar-wrapper">
@@ -171,7 +158,7 @@ export function TaskViewer() {
                     {year: 'numeric', month: 'long', day: 'numeric'}
                 }
             />
-            <Outlet />
+            <Outlet/>
         </div>
     );
 }

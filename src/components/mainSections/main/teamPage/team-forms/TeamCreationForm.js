@@ -15,9 +15,8 @@ export default function TeamCreationForm() {
         e.preventDefault();
 
         API.teams.create({
-            "name": teamName,
-            "membersLogins": [],
-        }).then(data => {
+            "name": teamName
+        }).then(() => {
             navigate(-1);
         });
     }

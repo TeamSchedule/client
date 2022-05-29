@@ -16,11 +16,8 @@ export default function IncomingInvitation(props) {
                 </ListItemAvatar>
                 <ListItemText
                     primary={
-                        <span>{props.team.name}&nbsp;(Invited by {props.inviting.username})</span>
+                        <span>{props.team.name}&nbsp;(Invited by {props.invitingId})</span>
                     }
-                    /*                            secondary={
-                                                    <span>{props.description || "Team description"}</span>
-                                                }*/
                 />
                 <Button variant="contained" color="success" sx={{marginRight: '15px'}}
                         onClick={() => props.onAcceptClick(props.id)}>Accept</Button>

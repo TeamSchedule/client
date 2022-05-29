@@ -2,3 +2,8 @@
     /* Full-calendar overlaps header */
     top: 40px;
 }
+
+/* Fix overlay (top-menu)*/
+.fc.fc-theme-standard .fc-view-harness th {
+    z-index: 0;
+}

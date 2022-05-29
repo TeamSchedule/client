@@ -12,11 +12,9 @@ export class usersAPI {
         return await $axios.patch(this.apiPrefix, data);
     }
 
-    static async checkUsernameExisting(username) {
-        return await $axios.get(`${this.apiPrefix}/existed?username=${username}`);
-    }
+    // TODO: check if username exists
 
     static async filterByUsername(params) {
-        return await $axios.get(`/user/search?username=${params.username}`);
+        return (await $axios.get(`/user?criteria=${params.username}`)).data["users"];
     }
 }

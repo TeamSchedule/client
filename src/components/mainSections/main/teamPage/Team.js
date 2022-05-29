@@ -26,12 +26,12 @@ export default function Team(props) {
                     <Avatar alt="T" src="/" sx={{width: 64, height: 64, marginRight: 2,}} />
                 </ListItemAvatar>
                 <div className="mr-3"
-                     style={{width: 20, height: "5em", backgroundColor: "#2948c7", borderRadius: 5,}}></div>
+                     style={{width: 20, height: "5em", backgroundColor: props.data.color, borderRadius: 5,}}></div>
                 <ListItemText
                     primary={
                         <div className="d-flex align-items-center">
                             <strong className="mr-2">{props.data.name}</strong>
-                            <Avatars users={props.data.users} />
+                            {/*<Avatars users={props.data.users} />*/}
                         </div>
                     }
                     secondary={

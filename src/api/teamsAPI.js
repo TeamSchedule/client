@@ -2,15 +2,14 @@ import $axios from "./axiosRequests";
 
 
 export class teamsAPI {
-    // TODO: should be: static apiPrefix = "/teams";
-    static apiPrefix = "/team";
+    static apiPrefix = "/schedule/team";
 
     static async all() {
         return (await $axios.get(`${this.apiPrefix}`)).data;
     }
 
     static async get(id) {
-        return (await $axios.get(`${this.apiPrefix}/${id}`)).data;
+        return (await $axios.get(`${this.apiPrefix}/${id}`)).data["team"];
     }
 
     static async leave(teamId) {
@@ -21,7 +20,7 @@ export class teamsAPI {
         return (await $axios.post(`${this.apiPrefix}`, data)).data;
     }
 
-    static async update(data) {
-        return (await $axios.put(`${this.apiPrefix}/${data.id}`, data)).data;
+    static async update(teamId, data) {
+        return (await $axios.patch(`${this.apiPrefix}/${teamId}`, data)).data;
     }
 }
