@@ -10,7 +10,7 @@ export class authAPI {
         return (await $axios.post(`/registration`, data)).data;
     }
 
-    static async refreshAccessToken() {
-        return (await $axios.get(`/jwt/refresh`)).data;
+    static refreshAccessToken(token) {
+        return $axios.post(`/jwt/refresh`, token);
     }
 }

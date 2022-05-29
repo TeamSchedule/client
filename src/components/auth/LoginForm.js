@@ -35,7 +35,8 @@ export default function LoginForm() {
             setPassword("");
             const token = data.access;
             setAccessToken(token);
-            localStorage.setItem("access", JSON.stringify(token));
+            localStorage.setItem("access", token);
+            localStorage.setItem("refresh", data.refresh);
             dispatch(login());
 
             API.users.getUserInfo()
