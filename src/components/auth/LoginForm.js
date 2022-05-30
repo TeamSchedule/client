@@ -39,7 +39,7 @@ export default function LoginForm() {
             localStorage.setItem("refresh", data.refresh);
             dispatch(login());
 
-            API.users.getUserInfo()
+            API.users.get()
                 .then(res => {
                     dispatch(set(res.data.user));
                     navigate(`/${res.data.user.login}/profile`);

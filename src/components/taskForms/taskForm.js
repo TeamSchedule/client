@@ -55,7 +55,7 @@ function TaskForm() {
     function onSubmit(e) {
         e.preventDefault();
 
-        API.tasks.createTask({
+        API.tasks.create({
             "name": taskName,
             "description": taskDescription,
             "expirationTime": new Date(taskExpirationDatetime).toJSON(),

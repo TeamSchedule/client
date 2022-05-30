@@ -2,9 +2,10 @@ import $axios from "../axiosRequests";
 
 
 export class invitations {
+    static prefixUrl = "/schedule/team";
 
     static async getOutgoingTeamInvitations() {
-        return $axios.get(`/schedule/team/invite?criteria=inviting`).then(res => {
+        return $axios.get(`${this.prefixUrl}/invite?criteria=inviting`).then(res => {
             return res.data["teamInvites"];
         }).catch(() => {
             return [];
@@ -12,27 +13,27 @@ export class invitations {
     }
 
     static async getIncomingTeamInvitations() {
-        return $axios.get(`/schedule/team/invite?criteria=invited`).then(res => {
+        return $axios.get(`${this.prefixUrl}/invite?criteria=invited`).then(res => {
             return res.data["teamInvites"];
         }).catch(() => {
             return [];
         });
     }
 
-    static async createInvitation(data) {
-        return (await $axios.post(`/schedule/team/invite`, data)).data;
+    static async create(data) {
+        return (await $axios.post(`${this.prefixUrl}/invite`, data)).data;
     }
 
-    static async acceptInvitation(invitationId) {
-        return $axios.patch(`/schedule/team/invite`, {"status": "accepted", id: invitationId}).then(res => {
+    static async accept(invitationId) {
+        return $axios.patch(`${this.prefixUrl}/invite`, {"status": "accepted", id: invitationId}).then(res => {
             return res.data;
         }).catch(() => {
             return null;
         });
     }
 
-    static async rejectInvitation(invitationId) {
-        return $axios.patch(`/schedule/team/invite`, {"status": "rejected", id: invitationId}).then(res => {
+    static async reject(invitationId) {
+        return $axios.patch(`${this.prefixUrl}/invite`, {"status": "rejected", id: invitationId}).then(res => {
             return res.data;
         }).catch(() => {
             return null;

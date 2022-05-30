@@ -61,7 +61,7 @@ export default function TeamEditingForm() {
     function onSendInvites(e) {
         e.preventDefault();
 
-        API.invitations.createInvitation({
+        API.invitations.create({
             teamId: teamId,
             invitedIds: usersToInvite.map(user => user.id),
         });

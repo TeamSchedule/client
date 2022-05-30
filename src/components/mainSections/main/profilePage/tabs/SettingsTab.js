@@ -19,7 +19,7 @@ export default function SettingsTab() {
     function changeUserInfo(e) {
         e.preventDefault();
 
-        API.users.updateUserInfo({
+        API.users.update({
             "password": password,
             "password2": password2,
             "email": email,

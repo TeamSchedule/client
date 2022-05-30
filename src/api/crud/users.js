@@ -4,11 +4,11 @@ import $axios from "../axiosRequests";
 export class users {
     static apiPrefix = "/user";
 
-    static async getUserInfo() {
+    static async get() {
         return await $axios.get(`${this.apiPrefix}/me`);
     }
 
-    static async updateUserInfo(data) {
+    static async update(data) {
         return await $axios.patch(this.apiPrefix, data);
     }
 

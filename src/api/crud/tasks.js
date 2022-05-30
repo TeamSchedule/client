@@ -4,7 +4,7 @@ import $axios from "../axiosRequests";
 export class tasks {
     static prefixUrl = "/schedule/task";
 
-    static async createTask(data) {
+    static async create(data) {
         return await $axios.post(`${this.prefixUrl}`, data);
     }
 
@@ -13,15 +13,15 @@ export class tasks {
             .data["tasks"];
     }
 
-    static async getTask(id) {
+    static async get(id) {
         return (await $axios.get(`${this.prefixUrl}/${id}`)).data;
     }
 
-    static async updateTask(id, data) {
+    static async update(id, data) {
         return await $axios.patch(`${this.prefixUrl}/${id}`, data);
     }
 
-    static async deleteTask(taskId) {
+    static async delete(taskId) {
         return await $axios.delete(`${this.prefixUrl}/${taskId}`);
     }
 }

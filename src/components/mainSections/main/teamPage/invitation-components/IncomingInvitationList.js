@@ -6,13 +6,13 @@ import {API} from "../../../../../api/api";
 
 export default function IncomingInvitationList(props) {
     function onAcceptClick(id) {
-        API.invitations.acceptInvitation(id).then(() => {
+        API.invitations.accept(id).then(() => {
             props.setIncomingInvitations(props.incomingInvitations.filter(invitation => invitation.id !== id));
         });
     }
 
     function onRejectClick(id) {
-        API.invitations.rejectInvitation(id).then(() => {
+        API.invitations.reject(id).then(() => {
             props.setIncomingInvitations(props.incomingInvitations.filter(invitation => invitation.id !== id));
         });
     }

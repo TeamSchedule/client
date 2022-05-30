@@ -23,7 +23,7 @@ export default function EditionTaskForm() {
     const [taskTeamName, setTaskTeamName] = useState("");
 
     useEffect(() => {
-        API.tasks.getTask(taskId).then(data => {
+        API.tasks.get(taskId).then(data => {
             // Available use full info about task in data
             setTaskName(data.name);
             setTaskDescription(data.description);
@@ -37,7 +37,7 @@ export default function EditionTaskForm() {
     function onSubmit(e) {
         e.preventDefault();
 
-        API.tasks.updateTask(taskId, {
+        API.tasks.update(taskId, {
             name: taskName,
             description: taskDescription,
             expirationTime: new Date(taskExpirationDatetime).toJSON(),
@@ -50,7 +50,7 @@ export default function EditionTaskForm() {
     function onDeleteTaskBtn(e) {
         e.preventDefault();
 
-        API.tasks.deleteTask(taskId).then(() => {
+        API.tasks.delete(taskId).then(() => {
             navigate(-1);
         });
     }
