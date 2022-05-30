@@ -1,7 +1,7 @@
-import $axios from "./axiosRequests";
+import $axios from "../axiosRequests";
 
 
-export class tasksAPI {
+export class tasks {
     static prefixUrl = "/schedule/task";
 
     static async createTask(data) {

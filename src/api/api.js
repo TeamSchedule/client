@@ -1,14 +1,14 @@
-import {authAPI} from "./authAPI";
-import {usersAPI} from "./usersAPI";
-import {teamsAPI} from "./teamsAPI";
-import {tasksAPI} from "./tasksAPI";
-import {invitationsAPI} from "./invitationsAPI";
+import {auth} from "./crud/auth";
+import {users} from "./crud/users";
+import {teams} from "./crud/teams";
+import {tasks} from "./crud/tasks";
+import {invitations} from "./crud/invitations";
 
 
 export class API {
-    static auth = authAPI;
-    static tasks = tasksAPI;
-    static teams = teamsAPI;
-    static users = usersAPI;
-    static invitations = invitationsAPI;
+    static auth = auth;
+    static tasks = tasks;
+    static teams = teams;
+    static users = users;
+    static invitations = invitations;
 }

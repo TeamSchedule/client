@@ -1,7 +1,7 @@
-import $axios from "./axiosRequests";
+import $axios from "../axiosRequests";
 
 
-export class usersAPI {
+export class users {
     static apiPrefix = "/user";
 
     static async getUserInfo() {

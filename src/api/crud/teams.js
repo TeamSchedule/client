@@ -1,7 +1,7 @@
-import $axios from "./axiosRequests";
+import $axios from "../axiosRequests";
 
 
-export class teamsAPI {
+export class teams {
     static apiPrefix = "/schedule/team";
 
     static async all() {

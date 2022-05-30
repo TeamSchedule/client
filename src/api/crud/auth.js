@@ -1,7 +1,7 @@
-import $axios from "./axiosRequests";
+import $axios from "../axiosRequests";
 
 
-export class authAPI {
+export class auth {
     static async signIn(data) {
         return (await $axios.post(`/jwt/obtain`, data)).data;
     }

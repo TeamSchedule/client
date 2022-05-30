@@ -1,7 +1,7 @@
-import $axios from "./axiosRequests";
+import $axios from "../axiosRequests";
 
 
-export class invitationsAPI {
+export class invitations {
 
     static async getOutgoingTeamInvitations() {
         return $axios.get(`/schedule/team/invite?criteria=inviting`).then(res => {
