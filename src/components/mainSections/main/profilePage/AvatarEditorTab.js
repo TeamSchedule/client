@@ -116,7 +116,7 @@ export default function AvatarEditorTab() {
                     <Button variant="outlined" fullWidth={true} onClick={onClickSave} disabled={!enabledToSave}>
                         Показать превью
                     </Button>
-                    <img src={croppedImg} alt="Avatar preview" width="125" height="125" className="m-auto"
+                    <img src={croppedImg} alt="Предварительный&nbsp;просмотр" width="125" height="125" className="m-auto"
                          style={{borderRadius: "50%"}} />
                 </div>
             </div>

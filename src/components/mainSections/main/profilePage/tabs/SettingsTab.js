@@ -39,7 +39,6 @@ export default function SettingsTab() {
             </div>
 
             <div className="mb-4">
-                <h4>Change credentials</h4>
                 <hr />
                 <AuthEmailInput value={email} setValue={setEmail} />
 

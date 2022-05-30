@@ -8,8 +8,6 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 
-import {formDateFromArray} from "../../../../utils/time";
-
 import {API} from "../../../../api/api";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -72,9 +70,9 @@ export function TaskViewer() {
                 title: task.name,
                 id: task.id,
                 groupId: task.teamId,
-
-                start: formDateFromArray(task.expirationTime),  // TODO: refactor this bullshit
-                end: formDateFromArray(task.expirationTime),  // TODO: refactor this bullshit
+                
+                start: new Date(task.expirationTime),
+                end: new Date(task.expirationTime),
 
                 extendedProps: {
                     description: task.description,

@@ -7,7 +7,6 @@ import {API} from "../../api/api";
 import {selectUserInfo} from "../../features/userInfoSlice";
 import {SubmitFormButton, TaskDatetimeInput, TaskDescriptionInput, TaskNameInput} from "./task-form-items";
 import CloseFormIcon from "../generic/CloseFormIcon";
-import {formDateFromArray} from "../../utils/time";
 import "./taskForm.css";
 
 
@@ -29,7 +28,7 @@ export default function EditionTaskForm() {
             setTaskName(data.name);
             setTaskDescription(data.description);
             setTaskClosedStatus(data.closed);
-            setTaskExpirationDatetime(formDateFromArray(data.expirationTime).toJSON().split('.')[0]);
+            setTaskExpirationDatetime(new Date(data.expirationTime).toJSON().split('.')[0]);
             setTaskTeamName(data.team.name);
         });
     }, []);
