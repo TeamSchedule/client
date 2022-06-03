@@ -2,7 +2,6 @@ import {configureStore} from '@reduxjs/toolkit'
 
 import isAuthReducer from "../features/isAuthSlice";
 import userInfoReducer from "../features/userInfoSlice";
-import selectedDateReducer from "../features/selectedDateSlice";
 import teamsReducer from "../features/teamsSlice";
 import editedTeamReducer from "../features/editedTeamSlice";
 
@@ -17,7 +16,6 @@ const store = configureStore({
         teams: teamsReducer,
 
         // TODO: Don't save in localStorage:
-        selectedDate: selectedDateReducer,
         editedTeam: editedTeamReducer,
     },
 
