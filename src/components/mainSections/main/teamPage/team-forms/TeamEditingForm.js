@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
 import {Autocomplete, TextField} from "@mui/material";
 import List from "@mui/material/List";
 
 import {useNavigate, useParams} from "react-router";
 import {API} from "../../../../../api/api";
-import {selectEditedTeam} from "../../../../../features/editedTeamSlice";
 import {TeamColorInput, TeamNameItem, TeamSubmitButton} from "./team-form-items";
 import CloseFormIcon from "../../../../generic/CloseFormIcon";
 import {ParticipantItem} from "./ParticipantItem";
@@ -18,7 +16,7 @@ export default function TeamEditingForm() {
     const {teamId} = useParams();
     const [color, setColor] = useState("#000000");
     const [initialColor, setInitialColor] = useState("#ffffff")
-    const editedTeam = useSelector(selectEditedTeam);
+    // const editedTeam = useSelector(selectEditedTeam);
 
     const navigate = useNavigate();
     const [teamName, setTeamName] = useState("");
@@ -72,28 +70,28 @@ export default function TeamEditingForm() {
             setUnprocessedInvitations(unprocessedInvitations.filter(invitation => +invitation.id !== +id));
         });
     }
-    
+
     return (
         <form className="p-3 teamCreationForm" onSubmit={onEditTeam} autoComplete="off">
             <div className="d-flex justify-content-between">
                 <p className="fw-bold">Редактировать команду</p>
-                <CloseFormIcon />
+                <CloseFormIcon/>
             </div>
 
-            <TeamNameItem value={teamName} setValue={setTeamName} />
-            <TeamColorInput value={color} setValue={setColor} initialColor={initialColor} />
-            <TeamSubmitButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ" />
+            <TeamNameItem value={teamName} setValue={setTeamName}/>
+            <TeamColorInput value={color} setValue={setColor} initialColor={initialColor}/>
+            <TeamSubmitButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ"/>
 
-            <ParticipantList participants={editedTeam.users} />
+            <ParticipantList participants={[]} />
 
             <p className="mt-4">Пригласить новых пользователей:</p>
             <AutocompleteUsers onSendInvites={onSendInvites}
                                usersToInvite={usersToInvite}
-                               setUsersToInvite={setUsersToInvite} />
+                               setUsersToInvite={setUsersToInvite}/>
 
             <p className="mt-4">Отправленные приглашения:</p>
             {unprocessedInvitations.map(invitation => <UnprocessedOutgoingInvitation {...invitation}
-                                                                                     onUndoInvitation={onUndoInvitation} />)}
+                                                                                     onUndoInvitation={onUndoInvitation}/>)}
 
             <Button variant="contained" color="error" onClick={onLeaveTeam} fullWidth={true}>
                 Покинуть команду
@@ -129,13 +127,13 @@ function AutocompleteUsers(props) {
                 renderInput={(params) => (
                     <TextField {...params} label="Имя пользователя" placeholder="Имя пользователя"
                                value={username}
-                               onChange={e => setUsername(e.target.value)} />
+                               onChange={e => setUsername(e.target.value)}/>
                 )}
             />
 
             <TeamSubmitButton btnText="Пригласить"
                               onClick={props.onSendInvites}
-                              disabled={!props.usersToInvite || +props.usersToInvite.length === 0} />
+                              disabled={!props.usersToInvite || +props.usersToInvite.length === 0}/>
         </div>
     );
 }

@@ -2,7 +2,6 @@ import {configureStore} from '@reduxjs/toolkit'
 
 import isAuthReducer from "../features/isAuthSlice";
 import userInfoReducer from "../features/userInfoSlice";
-import editedTeamReducer from "../features/editedTeamSlice";
 
 
 const REDUX_STORE_KEY_IN_LOCALSTORAGE = 'reduxState';
@@ -12,9 +11,6 @@ const store = configureStore({
     reducer: {
         isAuth: isAuthReducer,
         userInfo: userInfoReducer,
-
-        // TODO: Don't save in localStorage:
-        editedTeam: editedTeamReducer,
     },
 
     preloadedState: JSON.parse(localStorage.getItem(REDUX_STORE_KEY_IN_LOCALSTORAGE)) || {},

@@ -1,6 +1,4 @@
-import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router";
-import {onTeamClicked} from "../../../../features/editedTeamSlice";
 import React from "react";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
@@ -10,11 +8,9 @@ import ListItemText from "@mui/material/ListItemText";
 
 
 export default function Team(props) {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     function onTeamClick() {
-        dispatch(onTeamClicked(props.data));
         navigate(props.data.id.toString());
     }
 
