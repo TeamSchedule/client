@@ -13,10 +13,10 @@ const $axios = axios.create(AXIOS_CONFIG);
 // https://github.com/Flyrell/axios-auth-refresh
 // Function that will be called to refresh authorization
 const refreshAuthLogic = failedRequest => API.auth.refreshAccessToken({
-    token: JSON.parse(localStorage.getItem('refresh')),
+    token: localStorage.getItem('refresh'),
 }).then(tokenRefreshResponse => {
     failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.access;
-    document.cookie = 'X-Authorization=' + tokenRefreshResponse.data.access +'; path=/;';
+    $axios.defaults.headers['Authorization'] = `Bearer ${tokenRefreshResponse.data.access}`;
     return tokenRefreshResponse.data.access;
 });
 
