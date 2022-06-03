@@ -42,7 +42,7 @@ export function UnprocessedOutgoingInvitation(props) {
                 />
 
                 <Button variant="contained" color="error" onClick={() => props.onUndoInvitation(props.id)}>
-                    Undo invitation
+                    Отменить приглашение
                 </Button>
             </ListItem>
             <Divider variant="inset" component="div" />

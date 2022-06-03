@@ -67,7 +67,8 @@ export default function TeamEditingForm() {
 
     function onUndoInvitation(id) {
         API.invitations.deleteInvitation(id).then(() => {
-            setUnprocessedInvitations(unprocessedInvitations.filter(invitation => +invitation.id !== +id));
+            API.invitations.getOutgoingTeamInvitations("OPEN", teamId)
+                .then(setUnprocessedInvitations);
         });
     }
 
@@ -82,7 +83,7 @@ export default function TeamEditingForm() {
             <TeamColorInput value={color} setValue={setColor} initialColor={initialColor}/>
             <TeamSubmitButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ"/>
 
-            <ParticipantList participants={[]} />
+            <ParticipantList participants={[]}/>
 
             <p className="mt-4">Пригласить новых пользователей:</p>
             <AutocompleteUsers onSendInvites={onSendInvites}

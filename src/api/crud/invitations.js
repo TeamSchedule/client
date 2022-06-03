@@ -41,4 +41,14 @@ export class invitations {
                 return null;
             });
     }
+
+
+    static async deleteInvitation(invitationId) {
+        return $axios.patch(`${this.prefixUrl}/invite/${invitationId}`, {"status": "closed"})
+            .then(res => {
+                return res.data;
+            }).catch(() => {
+                return null;
+            });
+    }
 }
