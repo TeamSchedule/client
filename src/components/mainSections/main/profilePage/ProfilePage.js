@@ -35,7 +35,7 @@ export default function ProfilePage() {
                             <Tabs value={value} onChange={(event, newValue) => setValue(newValue)}>
                                 <Tab label="Основное" onClick={() => {
                                     setValue(0);
-                                    navigate('overview');
+                                    navigate('');
                                 }} />
                                 <Tab label={
                                     <Badge color="success">

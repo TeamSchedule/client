@@ -30,7 +30,7 @@ export default function AuthorizedRoutes() {
                 <Route path=":username/" element={<Main />}>
 
                     <Route path="profile/" element={<ProfilePage />}>
-                        <Route path="overview" element={<OverviewTab />} />
+                        <Route index element={<OverviewTab />} />
                         <Route path="settings" element={<SettingsTab />} />
                         <Route path="avatar" element={<AvatarEditorTab />} />
                     </Route>
