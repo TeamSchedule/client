@@ -7,7 +7,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
-import Avatars from "./Avatars";
 
 
 export default function Team(props) {
@@ -23,7 +22,7 @@ export default function Team(props) {
         <div onClick={() => onTeamClick()} className="teamEditLink h-100">
             <ListItem alignItems="center">
                 <ListItemAvatar>
-                    <Avatar alt="T" src="/" sx={{width: 64, height: 64, marginRight: 2,}} />
+                    <Avatar alt="T" src="/" sx={{width: 64, height: 64, marginRight: 2,}}/>
                 </ListItemAvatar>
                 <div className="mr-3"
                      style={{width: 20, height: "5em", backgroundColor: props.data.color, borderRadius: 5,}}></div>
@@ -36,7 +35,7 @@ export default function Team(props) {
                     }
                 />
             </ListItem>
-            <Divider variant="inset" />
+            <Divider variant="inset"/>
         </div>
     );
 }

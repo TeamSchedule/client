@@ -30,7 +30,6 @@ export function TaskViewer() {
         API.teams.all().then(allTeams => {
             // Collect ids of all teams (created and default)
             let teams = allTeams["teams"].map(t => t.id);
-            teams.push(allTeams.defaultTeamId);
 
             API.tasks.getTasks({
                 "from": (new Date("2020-01-01")).toJSON(),
@@ -45,6 +44,7 @@ export function TaskViewer() {
     useEffect(() => {
         // WARNING: do not merge code in one line: `React.createRef().current.getApi();` !
         // calendarRef is bounded to FullCalendar component after rendering!
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         calendarApi = calendarRef.current.getApi();
 
         // set on resize handler

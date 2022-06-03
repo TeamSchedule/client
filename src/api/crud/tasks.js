@@ -9,7 +9,7 @@ export class tasks {
     }
 
     static async getTasks(params) {
-        return (await $axios.get(`${this.prefixUrl}?from=${params.from}&to=${params.to}&teams=${params.teams}`))
+        return (await $axios.get(`${this.prefixUrl}?from=${params.from}&to=${params.to}&teams=${params.teams}&private=true`))
             .data["tasks"];
     }
 

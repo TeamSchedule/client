@@ -32,8 +32,7 @@ function TaskForm() {
     const [isPrivateFlag, setIsPrivateFlag] = useState(true);
     const [taskName, setTaskName] = useState("");
     const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(date ? date.split('.')[0] : new Date().toJSON().split('.')[0]);
-    const [selectedTeam, setSelectedTeam] = useState();
-    const [privateTeamId, setPrivateTeamId] = useState();
+    const [selectedTeam, setSelectedTeam] = useState(0);
 
     useEffect(() => {
         API.teams.all().then(data => {
@@ -48,18 +47,19 @@ function TaskForm() {
                                     groupTitle={team.name}
                                     groupID={team.id}/>
             ));
-            setPrivateTeamId(data["defaultTeamId"]);
         });
     }, []);
 
     function onSubmit(e) {
         e.preventDefault();
+        let expDate = new Date(taskExpirationDatetime);
+        expDate.setDate(new Date(date).getDate() + 1);
 
         API.tasks.create({
             "name": taskName,
             "description": taskDescription,
-            "expirationTime": new Date(taskExpirationDatetime).toJSON(),
-            "teamId": isPrivateFlag ? privateTeamId : selectedTeam,
+            "expirationTime": expDate.toJSON(),
+            "teamId": isPrivateFlag ? null : selectedTeam,
             "assigneeId": userInfo.id
         }).then(() => {
             navigate(-1);

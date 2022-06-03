@@ -49,7 +49,7 @@ function AuthorizedHeader() {
                          className="dropdown-toggle cursor-pointer userIconImg"
                          data-toggle="dropdown"
                          data-bs-display="static"
-                         aria-haspopup="true" aria-expanded="false" />
+                    />
                     <div className="dropdown-menu">
                         <Link className="dropdown-item" to={`/${userInfo.login}/profile`}>Профиль</Link>
                         <Link className="dropdown-item" to={`/${userInfo.login}/teams`}>Команды</Link>

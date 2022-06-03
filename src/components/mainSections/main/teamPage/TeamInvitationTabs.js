@@ -15,14 +15,9 @@ export default function TeamInvitationTabs() {
     const [incomingInvitations, setIncomingInvitations] = useState([]);
 
     function fetchIncomingTeamInvitations() {
-        API.invitations.getIncomingTeamInvitations().then(data => {
-            setIncomingInvitations(data.filter(invitation => invitation.inviteStatus === "open"));
-        });
+        API.invitations.getIncomingTeamInvitations()
+            .then(setIncomingInvitations);
     }
-
-    useEffect(() => {
-        fetchIncomingTeamInvitations();
-    }, []);
 
     useEffect(() => {
         fetchIncomingTeamInvitations();

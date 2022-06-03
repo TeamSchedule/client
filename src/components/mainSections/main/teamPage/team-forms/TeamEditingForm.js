@@ -22,31 +22,24 @@ export default function TeamEditingForm() {
 
     const navigate = useNavigate();
     const [teamName, setTeamName] = useState("");
-    const [teamParticipants, setTeamParticipants] = useState([]);
-    const [teamAdmin, setTeamAdmin] = useState("");
+    // const [teamParticipants, setTeamParticipants] = useState([]);
+    // const [teamAdmin, setTeamAdmin] = useState("");
     const [unprocessedInvitations, setUnprocessedInvitations] = useState([]);
-    const [rejectedInvitations, setRejectedInvitations] = useState([]);
+    // const [rejectedInvitations, setRejectedInvitations] = useState([]);
 
     const [usersToInvite, setUsersToInvite] = useState([]);
 
-    function getTeamData() {
+    useEffect(() => {
         API.teams.get(teamId).then(data => {
             setTeamName(data.name);
             // setTeamParticipants(data.users.slice());
-            setTeamAdmin(data.admin || "");
+            // setTeamAdmin(data.admin || "");
             setInitialColor(data.color);
         });
-    }
 
-    useEffect(() => {
-        getTeamData();
-
-        API.invitations.getOutgoingTeamInvitations().then(data => {
-            const invitations = data.filter(invitation => +invitation.team.id === +teamId);
-            setUnprocessedInvitations(invitations.filter(invitation => invitation.inviteStatus === "open"));
-            setRejectedInvitations(invitations.filter(invitation => invitation.inviteStatus === "rejected"));
-        });
-    }, []);
+        API.invitations.getOutgoingTeamInvitations("OPEN", teamId)
+            .then(setUnprocessedInvitations);
+    }, [teamId]);
 
 
     function onEditTeam(e) {
@@ -64,12 +57,6 @@ export default function TeamEditingForm() {
         API.invitations.create({
             teamId: teamId,
             invitedIds: usersToInvite.map(user => user.id),
-        });
-    }
-
-    function onDeleteInvitation(id) {
-        API.invitations.deleteInvitation(id).then(() => {
-            setRejectedInvitations(rejectedInvitations.filter(invitation => +invitation.id !== +id));
         });
     }
 

@@ -31,7 +31,7 @@ export default function EditionTaskForm() {
             setTaskExpirationDatetime(new Date(data.expirationTime).toJSON().split('.')[0]);
             setTaskTeamName(data.team.name);
         });
-    }, []);
+    }, [taskId]);
 
 
     function onSubmit(e) {
