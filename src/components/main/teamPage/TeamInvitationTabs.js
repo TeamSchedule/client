@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Badge from "@mui/material/Badge";
-import {API} from "../../../../api/api";
+import {API} from "../../../api/api";
 import TeamList from "./TeamList";
 import IncomingInvitationList from "./invitation-components/IncomingInvitationList";
 

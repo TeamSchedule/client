@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import {AuthEmailInput, AuthPasswordInput} from "../../../../auth/auth-form-items";
+import {AuthEmailInput, AuthPasswordInput} from "../../../auth/auth-form-items";
 import {useSelector} from "react-redux";
-import {selectUserInfo} from "../../../../../features/userInfoSlice";
-import {API} from "../../../../../api/api";
+import {selectUserInfo} from "../../../../features/userInfoSlice";
+import {API} from "../../../../api/api";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router";
 
@@ -29,7 +29,7 @@ export default function SettingsTab() {
     }
 
     return (
-        <form action="#" onSubmit={changeUserInfo}>
+        <form action="src/components/main/profilePage/tabs/SettingsTab#" onSubmit={changeUserInfo}>
             <div className="mb-4">
                 <h4>Изменить профиль</h4>
                 <hr />

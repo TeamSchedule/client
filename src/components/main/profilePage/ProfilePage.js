@@ -1,6 +1,6 @@
 import React from "react";
 import {useSelector} from "react-redux";
-import {selectUserInfo} from "../../../../features/userInfoSlice";
+import {selectUserInfo} from "../../../features/userInfoSlice";
 import {Outlet} from "react-router-dom";
 import {useNavigate} from "react-router";
 import Avatar from "@mui/material/Avatar";
@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Badge from "@mui/material/Badge";
-import userIcon from "../../header/userIcon.png";
+import userIcon from "../../../assets/userIcon.png";
 
 
 export default function ProfilePage() {

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Team from "./Team";
-import {API} from "../../../../api/api";
+import {API} from "../../../api/api";
 
 
 export default function TeamList() {
