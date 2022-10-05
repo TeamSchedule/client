@@ -14,32 +14,52 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "./monthCalendar.css";
+import {FilterColumn} from "./FilterColumn";
 
 
 export function TaskViewer() {
     const navigate = useNavigate();
 
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState([]);  // все задачи
+    const [filteredTasks, setFilteredTasks] = useState([]);  // задачи для выбранных команд
+
+    const [teams, setTeams] = useState([]);  // все команды
+    const [showedTeams, setShowedTeams] = useState([]);  // команды, выбранные в фильтре
 
     const [calendarTasks, setCalendarTasks] = useState([]);
 
     const calendarRef = React.createRef();
     let calendarApi = null;
 
+    function changeShowedTeams(teamId) {
+        if (showedTeams.includes(teamId)) {
+            setShowedTeams(() => showedTeams.filter(tId => tId !== teamId));
+        } else {
+            setShowedTeams(() => [...showedTeams, teamId]);
+        }
+    }
+
     useEffect(() => {
         API.teams.all().then(allTeams => {
+            setTeams(allTeams["teams"]);
             // Collect ids of all teams (created and default)
-            let teams = allTeams["teams"].map(t => t.id);
+            let teamIds = allTeams["teams"].map(t => t.id);
+            setShowedTeams(teamIds);
 
             API.tasks.getTasks({
                 "from": (new Date("2020-01-01")).toJSON(),
                 "to": (new Date("2023-01-01")).toJSON(),
-                "teams": teams.join(",")
+                "teams": teamIds.join(",")
             }).then(tasks => {
                 setTasks(tasks);
+                setFilteredTasks(() => tasks);
             });
         });
     }, []);
+
+    useEffect(() => {
+        setFilteredTasks(tasks.filter(task => showedTeams.includes(task.team.id)));
+    }, [showedTeams]);
 
     useEffect(() => {
         // WARNING: do not merge code in one line: `React.createRef().current.getApi();` !
@@ -60,17 +80,23 @@ export function TaskViewer() {
         setInterval(onChangeWidthCalendarWrapper, 100);
 
         fetchTaskData();
-    }, [tasks]);
+    }, [filteredTasks]);
 
     function fetchTaskData() {
-        if (!tasks || !tasks.length) return;
+        if (!filteredTasks || !filteredTasks.length) {
+            setCalendarTasks([]);
+            return;
+        }
         let calTasks = [];
-        for (let task of tasks) {
+        for (let task of filteredTasks) {
+            let taskTeam = teams.find(t => t.id === task.team.id);
+            task.color = taskTeam ? taskTeam.color: "white";
+
             calTasks.push({
                 title: task.name,
                 id: task.id,
                 groupId: task.teamId,
-                
+
                 start: new Date(task.expirationTime),
                 end: new Date(task.expirationTime),
 
@@ -79,16 +105,13 @@ export function TaskViewer() {
                     groupName: task.team.name,
                     closed: task.closed,
                 },
-                // eventColor: "#0f0",
-                className: "monthEvent",
-                eventDisplay: "block",
-
-                backgroundColor: task.closed ? "#006e00" : "#010023",
-                // borderColor: "",
-                // textColor: "",
+                textColor: task.team.name ? "white": "black",
+                backgroundColor: task.team.name ? task.color: "#eef1ff",
+                borderColor: task.color,
+                className: "calendarEvent",
             });
         }
-        setCalendarTasks(calTasks);
+        setCalendarTasks(() => calTasks);
     }
 
     const onTaskClick = (e) => {
@@ -102,7 +125,8 @@ export function TaskViewer() {
     }
 
     return (
-        <div id="full-calendar-wrapper">
+        <div id="full-calendar-wrapper" className="d-flex">
+            <FilterColumn teams={teams} changeShowedTeams={changeShowedTeams} />
             <FullCalendar
                 ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
@@ -127,6 +151,7 @@ export function TaskViewer() {
                     }
                 }
                 display="block"
+                eventDisplay="block"
 
                 editable={true}
                 events={calendarTasks}
