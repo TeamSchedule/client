@@ -3,12 +3,12 @@ import {useNavigate} from "react-router";
 import {Link} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 
-import {deleteAccessToken} from "../../../api/axiosRequests";
-import {onLogout, selectIsAuth} from "../../../features/isAuthSlice";
-import {onDeleteUserInfo, selectUserInfo} from "../../../features/userInfoSlice";
+import {deleteAccessToken} from "../../api/axiosRequests";
+import {onLogout, selectIsAuth} from "../../features/isAuthSlice";
+import {onDeleteUserInfo, selectUserInfo} from "../../features/userInfoSlice";
 
 import "./header.css";
-import userIcon from "./userIcon.png";
+import userIcon from "../../assets/userIcon.png";
 
 
 function UnauthorizedHeader() {

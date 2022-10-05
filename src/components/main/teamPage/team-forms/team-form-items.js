@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import CloseFormIcon from "../../../../generic/CloseFormIcon";
+import CloseFormIcon from "../../../generic/CloseFormIcon";
 import InputColor from 'react-input-color';
 
 

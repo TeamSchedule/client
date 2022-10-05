@@ -3,6 +3,9 @@ import {useNavigate} from "react-router";
 
 
 export default function NotFound() {
+    /*
+    * Страница 404 Not Found. Предлагает вернуться назад или на главную страницу.
+    * */
     const navigate = useNavigate();
 
     return (

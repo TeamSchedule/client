@@ -1,12 +1,12 @@
 import React from 'react';
 import {Outlet} from "react-router";
 
-import Header from "./mainSections/header/Header";
+import Header from "./header/Header";
 
 
 export default function App() {
     return (
-        <div className="h-100 container-fluid m-0 p-0">
+        <div className="h-100 container-fluid m-0 p-0 px-2">
             <Header />
             <div className="position-relative" style={{top:"50px"}}>
                 <Outlet />

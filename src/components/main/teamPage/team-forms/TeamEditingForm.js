@@ -3,9 +3,9 @@ import {Autocomplete, TextField} from "@mui/material";
 import List from "@mui/material/List";
 
 import {useNavigate, useParams} from "react-router";
-import {API} from "../../../../../api/api";
+import {API} from "../../../../api/api";
 import {TeamColorInput, TeamNameItem, TeamSubmitButton} from "./team-form-items";
-import CloseFormIcon from "../../../../generic/CloseFormIcon";
+import CloseFormIcon from "../../../generic/CloseFormIcon";
 import {ParticipantItem} from "./ParticipantItem";
 import {UnprocessedOutgoingInvitation} from "../invitation-components/OutgoingInvitation";
 import Button from "@mui/material/Button";
@@ -16,22 +16,16 @@ export default function TeamEditingForm() {
     const {teamId} = useParams();
     const [color, setColor] = useState("#000000");
     const [initialColor, setInitialColor] = useState("#ffffff")
-    // const editedTeam = useSelector(selectEditedTeam);
 
     const navigate = useNavigate();
     const [teamName, setTeamName] = useState("");
-    // const [teamParticipants, setTeamParticipants] = useState([]);
-    // const [teamAdmin, setTeamAdmin] = useState("");
     const [unprocessedInvitations, setUnprocessedInvitations] = useState([]);
-    // const [rejectedInvitations, setRejectedInvitations] = useState([]);
 
     const [usersToInvite, setUsersToInvite] = useState([]);
 
     useEffect(() => {
         API.teams.get(teamId).then(data => {
             setTeamName(data.name);
-            // setTeamParticipants(data.users.slice());
-            // setTeamAdmin(data.admin || "");
             setInitialColor(data.color);
         });
 
