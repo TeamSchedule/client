@@ -6,10 +6,12 @@ import Typography from "@mui/material/Typography";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import Dropzone from 'react-dropzone'
 import Button from "@mui/material/Button";
+import {API} from "../../../api/api";
+import {useSelector} from "react-redux";
+import {selectUserInfo} from "../../../features/userInfoSlice";
 
 
 export default function AvatarEditorTab() {
-
     const [avatarEditor, setAvatarEditor] = useState();
 
     const [scale, setScale] = useState(1);
@@ -19,16 +21,39 @@ export default function AvatarEditorTab() {
     const [loadedImg, setLoadedImg] = useState("");
 
     const [enabledToSave, setEnabledToSave] = useState(false);
+    const userInfo = useSelector(selectUserInfo);
 
-    const onClickSave = () => {
-        // https://www.npmjs.com/package/react-native-fs#usage-android
+    const onClickPreview = () => {
         if (avatarEditor) {
-            const canvas = avatarEditor.getImage().toDataURL();
+            const canvas = avatarEditor.getImageScaledToCanvas().toDataURL();
 
             fetch(canvas)
                 .then(res => res.blob())
                 .then(blob => {
-                    setCroppedImg(URL.createObjectURL(blob));
+                    const obUrl = URL.createObjectURL(blob);
+                    setCroppedImg(obUrl);
+                });
+        }
+    }
+
+    const onClickSave = () => {
+        // https://www.npmjs.com/package/react-native-fs#usage-android
+        if (avatarEditor) {
+            const canvas = avatarEditor.getImageScaledToCanvas().toDataURL();
+
+            fetch(canvas)
+                .then(res => res.blob())
+                .then(blob => {
+                    const obUrl = URL.createObjectURL(blob);
+                    setCroppedImg(obUrl);
+
+                    const myFile = new File([blob], 'image1.jpeg', {
+                        type: blob.type,
+                    });
+                    API.avatars.set(userInfo.id, myFile)
+                        .then(() => {
+                            window.location.reload();
+                        });
                 });
         }
     }
@@ -113,7 +138,7 @@ export default function AvatarEditorTab() {
                 </div>
                 <div
                     className="p-2 d-flex flex-column-reverse col px-0 ml-2">
-                    <Button variant="outlined" fullWidth={true} onClick={onClickSave} disabled={!enabledToSave}>
+                    <Button variant="outlined" fullWidth={true} onClick={onClickPreview} disabled={!enabledToSave}>
                         Показать превью
                     </Button>
                     <img src={croppedImg} alt="Предварительный&nbsp;просмотр" width="125" height="125" className="m-auto"

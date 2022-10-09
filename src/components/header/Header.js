@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router";
 import {Link} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
@@ -9,6 +9,7 @@ import {onDeleteUserInfo, selectUserInfo} from "../../features/userInfoSlice";
 
 import "./header.css";
 import userIcon from "../../assets/userIcon.png";
+import getUserAvatarImageSrc from "../../utils/getUserAvatarImageSrc";
 
 
 function UnauthorizedHeader() {
@@ -24,11 +25,12 @@ function UnauthorizedHeader() {
 
 
 function AuthorizedHeader() {
+    const [avatarSrc, setAvatarSrc] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const userInfo = useSelector(selectUserInfo);
 
     function logout() {
-        // TODO: API.auth.signOut().then(() => {
         dispatch(onDeleteUserInfo());
         dispatch(onLogout());
         deleteAccessToken();
@@ -36,7 +38,10 @@ function AuthorizedHeader() {
         navigate("/");
     }
 
-    const userInfo = useSelector(selectUserInfo);
+    useEffect(() => {
+        getUserAvatarImageSrc(userInfo.id)
+            .then(setAvatarSrc);
+    }, [userInfo.id]);
 
     return (
         <header className="row justify-content-end py-2 main-header mx-0 px-2 position-fixed left-0 top-0 right-0">
@@ -44,7 +49,7 @@ function AuthorizedHeader() {
                 <Link className="mx-3 no-underline username"
                       to={`/${userInfo.login}/profile`}>{userInfo.login}</Link>
                 <div className="btn-group dropleft">
-                    <img src={userIcon}
+                    <img src={avatarSrc.length >= 0 ? avatarSrc : userIcon}
                          alt="user-icon"
                          className="dropdown-toggle cursor-pointer userIconImg"
                          data-toggle="dropdown"
