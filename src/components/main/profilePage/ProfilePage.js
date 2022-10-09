@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {selectUserInfo} from "../../../features/userInfoSlice";
 import {Outlet} from "react-router-dom";
@@ -10,19 +10,31 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Badge from "@mui/material/Badge";
 import userIcon from "../../../assets/userIcon.png";
+import getUserAvatarImageSrc from "../../../utils/getUserAvatarImageSrc";
 
 
 export default function ProfilePage() {
     const userInfo = useSelector(selectUserInfo);
     const navigate = useNavigate();
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
+    const [avatarURL, setAvatarURL] = useState("")
+
+    useEffect(() => {
+        getUserAvatarImageSrc(userInfo.id)
+            .then(setAvatarURL);
+
+    }, [userInfo.id]);
 
     return (
         <>
             <div className="row w-75 m-auto">
                 <div className="col-auto">
                     <button className="" style={{background: "none", border: "none"}} onClick={() => navigate('avatar')}>
-                            <Avatar alt={userInfo.username} src={userIcon} sx={{width: 200, height: 200}} />
+                            <Avatar
+                                alt={userInfo.username}
+                                src={avatarURL.length > 0 ? avatarURL : userIcon}
+                                sx={{width: 200, height: 200}}
+                            />
                     </button>
 
                     <p className="mt-4 fw-bolder fs-3">{userInfo.username}</p>
