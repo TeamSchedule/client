@@ -7,6 +7,7 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import Dropzone from 'react-dropzone'
 import Button from "@mui/material/Button";
 import {API} from "../../../api/api";
+import {useNavigate} from "react-router";
 
 
 export default function AvatarEditorTab() {
@@ -20,6 +21,8 @@ export default function AvatarEditorTab() {
 
     const [enabledToSave, setEnabledToSave] = useState(false);
 
+    const navigate = useNavigate();
+
     const onClickPreview = () => {
         if (avatarEditor) {
             const canvas = avatarEditor.getImageScaledToCanvas().toDataURL();
@@ -32,6 +35,9 @@ export default function AvatarEditorTab() {
                 });
         }
     }
+    const onClickCancel = () => {
+        navigate(-1);
+    };
 
     const onClickSave = () => {
         // https://www.npmjs.com/package/react-native-fs#usage-android
@@ -56,11 +62,10 @@ export default function AvatarEditorTab() {
     }
 
     const onDeleteImage = () => {
-        setRotate(0);
-        setScale(1);
-        setEnabledToSave(true);
-        setCroppedImg("");
-        setLoadedImg("");
+        API.avatars.delete()
+            .then(() => {
+                window.location.reload();
+            });
     }
 
 
@@ -146,13 +151,24 @@ export default function AvatarEditorTab() {
             <Button variant="contained"
                     fullWidth={true}
                     onClick={onClickSave}
-                    className="my-2" disabled={!enabledToSave}>СОХРАНИТЬ</Button>
+                    className="my-2" disabled={!enabledToSave}>
+                СОХРАНИТЬ НОВЫЙ АВАТАР
+            </Button>
+
+            <Button
+                    fullWidth={true}
+                    onClick={onClickCancel}
+                    className="my-2">
+                ВЕРНУТЬСЯ НАЗАД
+            </Button>
 
             <Button variant="contained"
                     fullWidth={true}
                     onClick={onDeleteImage}
                     color="error"
-                    className="mt-4">УДАЛИТЬ ИЗОБРАЖЕНИЕ</Button>
+                    className="mt-5">
+                УДАЛИТЬ СУЩЕСТВУЮЩИЙ АВАТАР
+            </Button>
         </>
     );
 }
