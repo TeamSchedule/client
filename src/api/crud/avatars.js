@@ -4,8 +4,8 @@ import $axios from "../axiosRequests";
 export class Avatars {
     static apiPrefix = "/avatar";
 
-    static async get() {
-        return (await $axios.get(`${this.apiPrefix}`)).data['avatarSrc'];
+    static async get(id) {
+        return (await $axios.get(`${this.apiPrefix}?user=${id}`)).data['avatarSrc'];
     }
 
     static async set(avatarImage) {
