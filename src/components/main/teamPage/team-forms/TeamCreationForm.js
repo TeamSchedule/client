@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import {API} from "../../../../api/api";
 
-import {CloseTeamFormIcon, TeamNameItem, TeamSubmitButton} from "./team-form-items";
+import {CloseTeamFormIcon, TeamNameItem} from "./team-form-items";
 import {useNavigate} from "react-router";
+import SuccessFormButton from "../../../generic/SuccessFormButton";
 
 
 export default function TeamCreationForm() {
@@ -23,9 +24,9 @@ export default function TeamCreationForm() {
 
     return (
         <form className="p-3 teamCreationForm" onSubmit={createTeamSbm} autoComplete="off">
-            <CloseTeamFormIcon />
-            <TeamNameItem value={teamName} setValue={setTeamName} />
-            <TeamSubmitButton btnText="СОЗДАТЬ КОМАНДУ" />
+            <CloseTeamFormIcon/>
+            <TeamNameItem value={teamName} setValue={setTeamName}/>
+            <SuccessFormButton btnText="СОЗДАТЬ КОМАНДУ"/>
         </form>
     );
 }

@@ -5,6 +5,7 @@ import {selectUserInfo} from "../../../../features/userInfoSlice";
 import {API} from "../../../../api/api";
 import Button from "@mui/material/Button";
 import {useNavigate} from "react-router";
+import SuccessFormButton from "../../../generic/SuccessFormButton";
 
 
 export default function SettingsTab() {
@@ -32,22 +33,19 @@ export default function SettingsTab() {
         <form action="src/components/main/profilePage/tabs/SettingsTab#" onSubmit={changeUserInfo}>
             <div className="mb-4">
                 <h4>Изменить профиль</h4>
-                <hr />
-                <Button variant="outlined" onClick={() => navigate('../avatar', { replace: true })} fullWidth={true}>
+                <hr/>
+                <Button variant="outlined" onClick={() => navigate('../avatar', {replace: true})} fullWidth={true}>
                     Сменить аватар
                 </Button>
             </div>
 
             <div className="mb-4">
-                <hr />
-                <AuthEmailInput value={email} setValue={setEmail} />
+                <hr/>
+                <AuthEmailInput value={email} setValue={setEmail}/>
 
-                <AuthPasswordInput value={password} setValue={setPassword} labelText={"Новый пароль"} />
-                <AuthPasswordInput value={password2} setValue={setPassword2} labelText={"Сменить пароль"} />
-
-                <Button variant="contained" color="success" fullWidth={true} className="mt-3" onClick={changeUserInfo}>
-                    СОХРАНИТЬ
-                </Button>
+                <AuthPasswordInput value={password} setValue={setPassword} labelText={"Новый пароль"}/>
+                <AuthPasswordInput value={password2} setValue={setPassword2} labelText={"Сменить пароль"}/>
+                <SuccessFormButton btnText="СОХРАНИТЬ" onClick={changeUserInfo}/>
             </div>
         </form>
     );

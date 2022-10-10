@@ -43,11 +43,3 @@ export function TaskDatetimeInput(props) {
         </div>
     );
 }
-
-
-export function SubmitFormButton(props) {
-    return (
-        <input type="submit" className={"my-2 py-2 w-100 submit-button " + props.className} value={props.buttonText} />
-    );
-}
-
