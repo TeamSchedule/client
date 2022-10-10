@@ -5,9 +5,10 @@ import {Checkbox, FormControlLabel} from "@mui/material";
 
 import {API} from "../../api/api";
 import {selectUserInfo} from "../../features/userInfoSlice";
-import {SubmitFormButton, TaskDatetimeInput, TaskDescriptionInput, TaskNameInput} from "./task-form-items";
+import {TaskDatetimeInput, TaskDescriptionInput, TaskNameInput} from "./task-form-items";
 import CloseFormIcon from "../generic/CloseFormIcon";
 import "./taskForm.css";
+import SuccessFormButton from "../generic/SuccessFormButton";
 
 
 export default function EditionTaskForm() {
@@ -59,12 +60,12 @@ export default function EditionTaskForm() {
         <form className="p-3 editionTaskForm" onSubmit={onSubmit}>
             <div className="d-flex justify-content-between">
                 <p className="fw-bold">Изменить задачу</p>
-                <CloseFormIcon />
+                <CloseFormIcon/>
             </div>
 
-            <TaskNameInput value={taskName} setValue={setTaskName} />
-            <TaskDescriptionInput value={taskDescription} setValue={setTaskDescription} />
-            <TaskDatetimeInput value={taskExpirationDatetime} setValue={setTaskExpirationDatetime} />
+            <TaskNameInput value={taskName} setValue={setTaskName}/>
+            <TaskDescriptionInput value={taskDescription} setValue={setTaskDescription}/>
+            <TaskDatetimeInput value={taskExpirationDatetime} setValue={setTaskExpirationDatetime}/>
 
             <div>
                 <p className="my-1">
@@ -82,7 +83,7 @@ export default function EditionTaskForm() {
                 />
             </div>
 
-            <SubmitFormButton buttonText="СОХРАНИТЬ ИЗМЕНЕНИЯ" />
+            <SuccessFormButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ"/>
 
             <button onClick={onDeleteTaskBtn}
                     className="w-100 d-inline-block text-center bg-danger border-0 p-2 rounded deleteTaskBtn">

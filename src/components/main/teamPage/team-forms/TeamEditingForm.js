@@ -4,12 +4,13 @@ import List from "@mui/material/List";
 
 import {useNavigate, useParams} from "react-router";
 import {API} from "../../../../api/api";
-import {TeamColorInput, TeamNameItem, TeamSubmitButton} from "./team-form-items";
+import {TeamColorInput, TeamNameItem} from "./team-form-items";
 import CloseFormIcon from "../../../generic/CloseFormIcon";
 import {ParticipantItem} from "./ParticipantItem";
 import {UnprocessedOutgoingInvitation} from "../invitation-components/OutgoingInvitation";
 import Button from "@mui/material/Button";
 import "../teamPage.css";
+import SuccessFormButton from "../../../generic/SuccessFormButton";
 
 
 export default function TeamEditingForm() {
@@ -75,7 +76,7 @@ export default function TeamEditingForm() {
 
             <TeamNameItem value={teamName} setValue={setTeamName}/>
             <TeamColorInput value={color} setValue={setColor} initialColor={initialColor}/>
-            <TeamSubmitButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ"/>
+            <SuccessFormButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ"/>
 
             <ParticipantList participants={[]}/>
 
@@ -126,9 +127,11 @@ function AutocompleteUsers(props) {
                 )}
             />
 
-            <TeamSubmitButton btnText="Пригласить"
-                              onClick={props.onSendInvites}
-                              disabled={!props.usersToInvite || +props.usersToInvite.length === 0}/>
+            <SuccessFormButton
+                btnText="ПРИГЛАСИТЬ"
+                onClick={props.onSendInvites}
+                disabled={!props.usersToInvite || +props.usersToInvite.length === 0}
+            />
         </div>
     );
 }

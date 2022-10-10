@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "@mui/material/Button";
 import CloseFormIcon from "../../../generic/CloseFormIcon";
 import InputColor from 'react-input-color';
 
@@ -12,16 +11,6 @@ export function TeamNameItem(props) {
                    value={props.value}
                    onChange={e => props.setValue(e.target.value)} />
         </div>
-    );
-}
-
-
-export function TeamSubmitButton(props) {
-    return (
-        <Button variant="contained" color="success" className="my-2 w-100 mt-4" type="submit"
-                onClick={props.onClick} disabled={props.disabled}>
-            {props.btnText}
-        </Button>
     );
 }
 

@@ -5,9 +5,10 @@ import {useNavigate, useParams} from "react-router";
 import {API} from "../../api/api";
 import {selectUserInfo} from "../../features/userInfoSlice";
 import CloseFormIcon from "../generic/CloseFormIcon";
-import {SubmitFormButton, TaskDatetimeInput, TaskDescriptionInput, TaskNameInput} from "./task-form-items";
+import {TaskDatetimeInput, TaskDescriptionInput, TaskNameInput} from "./task-form-items";
 import "./taskForm.css";
 import {Checkbox, FormControlLabel} from "@mui/material";
+import SuccessFormButton from "../generic/SuccessFormButton";
 
 
 function TeamItem(props) {
@@ -102,7 +103,7 @@ function TaskForm() {
 
             </div>
 
-            <SubmitFormButton buttonText="СОЗДАТЬ ЗАДАЧУ"/>
+            <SuccessFormButton btnText="СОЗДАТЬ ЗАДАЧУ"/>
         </form>
     );
 }
