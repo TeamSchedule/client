@@ -4,11 +4,11 @@ import $axios from "../axiosRequests";
 export class Avatars {
     static apiPrefix = "/avatar";
 
-    static async get(id) {
-        return (await $axios.get(`${this.apiPrefix}?user=${id}`)).data['avatarSrc'];
+    static async get() {
+        return (await $axios.get(`${this.apiPrefix}`)).data['avatarSrc'];
     }
 
-    static async set(id, avatarImage) {
+    static async set(avatarImage) {
         const config = {
             headers: {
                 "Content-Type": "multipart/form-data"
@@ -17,7 +17,6 @@ export class Avatars {
 
         let formData = new FormData();
         formData.append("avatar", avatarImage);
-        formData.append("id", id);
 
         return (await $axios.post(
             `${this.apiPrefix}`,
@@ -26,5 +25,9 @@ export class Avatars {
         ).catch(() => {
             alert("Could not save image! Try later");
         }));
+    }
+
+    static async delete() {
+        return (await $axios.delete(`${this.apiPrefix}`));
     }
 }
