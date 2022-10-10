@@ -20,9 +20,7 @@ export default function ProfilePage() {
     const [avatarURL, setAvatarURL] = useState("")
 
     useEffect(() => {
-        getUserAvatarImageSrc(userInfo.id)
-            .then(setAvatarURL);
-
+        getUserAvatarImageSrc().then(setAvatarURL);
     }, [userInfo.id]);
 
     return (

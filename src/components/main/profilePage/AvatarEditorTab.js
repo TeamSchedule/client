@@ -7,8 +7,6 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import Dropzone from 'react-dropzone'
 import Button from "@mui/material/Button";
 import {API} from "../../../api/api";
-import {useSelector} from "react-redux";
-import {selectUserInfo} from "../../../features/userInfoSlice";
 
 
 export default function AvatarEditorTab() {
@@ -21,7 +19,6 @@ export default function AvatarEditorTab() {
     const [loadedImg, setLoadedImg] = useState("");
 
     const [enabledToSave, setEnabledToSave] = useState(false);
-    const userInfo = useSelector(selectUserInfo);
 
     const onClickPreview = () => {
         if (avatarEditor) {
@@ -50,7 +47,7 @@ export default function AvatarEditorTab() {
                     const myFile = new File([blob], 'image1.jpeg', {
                         type: blob.type,
                     });
-                    API.avatars.set(userInfo.id, myFile)
+                    API.avatars.set(myFile)
                         .then(() => {
                             window.location.reload();
                         });

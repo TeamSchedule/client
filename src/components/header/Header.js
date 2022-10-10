@@ -39,8 +39,7 @@ function AuthorizedHeader() {
     }
 
     useEffect(() => {
-        getUserAvatarImageSrc(userInfo.id)
-            .then(setAvatarSrc);
+        getUserAvatarImageSrc().then(setAvatarSrc);
     }, [userInfo.id]);
 
     return (
