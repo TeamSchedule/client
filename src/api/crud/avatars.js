@@ -26,4 +26,8 @@ export class Avatars {
             alert("Could not save image! Try later");
         }));
     }
+
+    static async delete() {
+        return (await $axios.delete(`${this.apiPrefix}`));
+    }
 }

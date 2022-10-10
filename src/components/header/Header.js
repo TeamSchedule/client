@@ -48,7 +48,7 @@ function AuthorizedHeader() {
                 <Link className="mx-3 no-underline username"
                       to={`/${userInfo.login}/profile`}>{userInfo.login}</Link>
                 <div className="btn-group dropleft">
-                    <img src={avatarSrc.length >= 0 ? avatarSrc : userIcon}
+                    <img src={avatarSrc.length > 0 ? avatarSrc : userIcon}
                          alt="user-icon"
                          className="dropdown-toggle cursor-pointer userIconImg"
                          data-toggle="dropdown"
