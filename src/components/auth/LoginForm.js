@@ -16,6 +16,7 @@ import {
 } from "./auth-form-items";
 import "./auth.css";
 import SuccessFormButton from "../buttons/SuccessFormButton";
+import { ServiceUnavailableErrorMsg, WrongCredentialsErrorMsg } from "./ErrMsgs";
 
 export default function LoginForm() {
     const navigate = useNavigate();
@@ -23,6 +24,8 @@ export default function LoginForm() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [isWrongCredentials, setIsWrongCredentials] = useState(false);
+    const [isServiceUnavailableErrShown, setIsServiceUnavailableErrShown] = useState(false);
 
     function signin(e) {
         e.preventDefault();
@@ -39,13 +42,22 @@ export default function LoginForm() {
                 localStorage.setItem("access", token);
                 localStorage.setItem("refresh", data.refresh);
                 dispatch(login());
-
                 API.users.get().then((res) => {
                     dispatch(set(res.data.user));
                     navigate(`/${res.data.user.login}/profile`);
                 });
             })
-            .catch((err) => {});
+            .catch((err) => {
+                setPassword("");
+                const statusCode = err.response.status;
+                if (statusCode >= 500) {
+                    setIsWrongCredentials(false);
+                    setIsServiceUnavailableErrShown(true);
+                } else if (statusCode >= 400) {
+                    setIsWrongCredentials(true);
+                    setIsServiceUnavailableErrShown(false);
+                }
+            });
     }
 
     return (
@@ -63,6 +75,9 @@ export default function LoginForm() {
 
                     <AuthUsernameInput value={username} setValue={setUsername} />
                     <AuthPasswordInput value={password} setValue={setPassword} />
+
+                    <WrongCredentialsErrorMsg visible={isWrongCredentials} />
+                    <ServiceUnavailableErrorMsg visible={isServiceUnavailableErrShown} />
 
                     <SuccessFormButton btnText="ВОЙТИ" />
                     <FormFooter

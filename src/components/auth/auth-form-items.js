@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 export function AuthPasswordInput(props) {
     return (
@@ -13,7 +13,7 @@ export function AuthPasswordInput(props) {
                 onChange={(e) => props.setValue(e.target.value)}
             />
         </div>
-    )
+    );
 }
 
 export function AuthUsernameInput(props) {
@@ -29,7 +29,7 @@ export function AuthUsernameInput(props) {
                 onChange={(e) => props.setValue(e.target.value)}
             />
         </div>
-    )
+    );
 }
 
 export function AuthEmailInput(props) {
@@ -45,11 +45,11 @@ export function AuthEmailInput(props) {
                 onChange={(e) => props.setValue(e.target.value)}
             />
         </div>
-    )
+    );
 }
 
 export function FormHeader(props) {
-    return <p className="text-center fw-bold fs-5">{props.headerText}</p>
+    return <p className="text-center fw-bold fs-5">{props.headerText}</p>;
 }
 
 export function FormFooter(props) {
@@ -58,7 +58,7 @@ export function FormFooter(props) {
             <span></span>
             {props.toggleAuthFormLink}
         </div>
-    )
+    );
 }
 
 export function AuthForm(props) {
@@ -70,5 +70,5 @@ export function AuthForm(props) {
         >
             {props.innerForm}
         </form>
-    )
+    );
 }
