@@ -1,10 +1,10 @@
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Divider from "@mui/material/Divider";
-
+import ListItem from "@mui/material/ListItem"
+import ListItemText from "@mui/material/ListItemText"
+import ListItemAvatar from "@mui/material/ListItemAvatar"
+import Avatar from "@mui/material/Avatar"
+import Divider from "@mui/material/Divider"
+import SuccessFormButton from "../../../buttons/SuccessFormButton"
+import RemovalFormButton from "../../../buttons/RemovalFormButton"
 
 export default function IncomingInvitation(props) {
     return (
@@ -16,14 +16,23 @@ export default function IncomingInvitation(props) {
                 </ListItemAvatar>
                 <ListItemText
                     primary={
-                        <span>{props.team.name}&nbsp;(Invited by {props.invitingId})</span>
+                        <span>
+                            {props.team.name}&nbsp;(Invited by {props.invitingId})
+                        </span>
                     }
                 />
-                <Button variant="contained" color="success" sx={{marginRight: '15px'}}
-                        onClick={() => props.onAcceptClick(props.id)}>Accept</Button>
-                <Button variant="contained" color="error" onClick={() => props.onRejectClick(props.id)}>Reject</Button>
+
+                <SuccessFormButton
+                    btnText="ВСТУПИТЬ"
+                    fullWidth={false}
+                    onClick={() => props.onRejectClick(props.id)}
+                />
+
+                <div style={{ width: "15px" }}></div>
+
+                <RemovalFormButton btnText="ОТКЛОНИТЬ" fullWidth={false} />
             </ListItem>
             <Divider variant="inset" component="li" />
         </>
-    );
+    )
 }
