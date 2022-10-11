@@ -1,7 +1,9 @@
-import React from 'react';
+import React from "react";
 
 export default function Welcome() {
     return (
-        <h1 className="fs- welcomeText">"Командное расписание"</h1>
+        <>
+            <h1 className="welcomeText">"Командное расписание"</h1>
+        </>
     );
 }
