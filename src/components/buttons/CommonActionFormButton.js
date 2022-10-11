@@ -7,6 +7,7 @@ function CommonActionFormButton({
     disabled = false,
     className = "",
     fullWidth = true,
+    loading = false,
 }) {
     /*
      * Кнопка для действий
@@ -20,6 +21,7 @@ function CommonActionFormButton({
                 disabled={disabled}
                 className={className}
                 fullWidth={fullWidth}
+                loading={loading}
             />
         </>
     );

@@ -1,5 +1,5 @@
-import React from "react"
-import BaseFormButton from "./BaseFormButton"
+import React from "react";
+import BaseFormButton from "./BaseFormButton";
 
 function RemovalFormButton({
     btnText,
@@ -7,6 +7,7 @@ function RemovalFormButton({
     disabled = false,
     className = "",
     fullWidth = true,
+    loading = false,
 }) {
     /*
      * Кнопка для "негативных" действий: "удалить", "покинуть" ...
@@ -20,9 +21,10 @@ function RemovalFormButton({
                 disabled={disabled}
                 className={className}
                 fullWidth={fullWidth}
+                loading={loading}
             />
         </>
-    )
+    );
 }
 
-export default RemovalFormButton
+export default RemovalFormButton;
