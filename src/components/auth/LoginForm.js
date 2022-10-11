@@ -24,18 +24,21 @@ export default function LoginForm() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const [isActionInProgress, setIsActionInProgress] = useState(false);
     const [isWrongCredentials, setIsWrongCredentials] = useState(false);
     const [isServiceUnavailableErrShown, setIsServiceUnavailableErrShown] = useState(false);
 
     function signin(e) {
         e.preventDefault();
-
+        setIsActionInProgress(true);
         API.auth
             .signIn({
                 login: username,
                 password: password,
             })
             .then((data) => {
+                setIsActionInProgress(false);
                 setPassword("");
                 const token = data.access;
                 setAccessToken(token);
@@ -48,6 +51,7 @@ export default function LoginForm() {
                 });
             })
             .catch((err) => {
+                setIsActionInProgress(false);
                 setPassword("");
                 const statusCode = err.response.status;
                 if (statusCode >= 500) {
@@ -79,7 +83,7 @@ export default function LoginForm() {
                     <WrongCredentialsErrorMsg visible={isWrongCredentials} />
                     <ServiceUnavailableErrorMsg visible={isServiceUnavailableErrShown} />
 
-                    <SuccessFormButton btnText="ВОЙТИ" />
+                    <SuccessFormButton btnText="ВОЙТИ" loading={isActionInProgress} />
                     <FormFooter
                         toggleAuthFormLink={
                             <Link to="/signup">Ещё не создали аккаунт? Создать</Link>

@@ -1,5 +1,5 @@
-import React from "react"
-import BaseFormButton from "./BaseFormButton"
+import React from "react";
+import BaseFormButton from "./BaseFormButton";
 
 function SuccessFormButton({
     btnText,
@@ -7,6 +7,7 @@ function SuccessFormButton({
     disabled = false,
     className = "",
     fullWidth = true,
+    loading = false,
 }) {
     /*
      * Кнопка для успешного выполнения: "добавить", "создать", "сохранить" ...
@@ -19,9 +20,10 @@ function SuccessFormButton({
                 disabled={disabled}
                 className={className}
                 fullWidth={fullWidth}
+                loading={loading}
             />
         </>
-    )
+    );
 }
 
-export default SuccessFormButton
+export default SuccessFormButton;

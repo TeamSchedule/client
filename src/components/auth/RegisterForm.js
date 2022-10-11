@@ -20,12 +20,13 @@ export default function RegisterForm() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isActionInProgress, setIsActionInProgress] = useState(false);
     const [isRegErrShown, setIsRegErrShown] = useState(false);
     const [isNameOccupiedErrShown, setIsNameOccupiedErrShown] = useState(false);
 
     function signup(e) {
         e.preventDefault();
-
+        setIsActionInProgress(true);
         API.auth
             .signUp({
                 email: email,
@@ -34,6 +35,7 @@ export default function RegisterForm() {
             })
             .then(() => {
                 setPassword("");
+                setIsActionInProgress(false);
                 navigate("/login");
             })
             .catch((err) => {
@@ -45,6 +47,7 @@ export default function RegisterForm() {
                     setIsNameOccupiedErrShown(true);
                     setIsRegErrShown(false);
                 }
+                setIsActionInProgress(false);
             });
     }
 
@@ -70,7 +73,10 @@ export default function RegisterForm() {
                         <NameAlreadyExistErrorMsg visible={isNameOccupiedErrShown} />
                         <ServiceUnavailableErrorMsg visible={isRegErrShown} />
 
-                        <SuccessFormButton btnText="ЗАРЕГИСТРИРОВАТЬСЯ" />
+                        <SuccessFormButton
+                            btnText="ЗАРЕГИСТРИРОВАТЬСЯ"
+                            loading={isActionInProgress}
+                        />
                         <FormFooter
                             toggleAuthFormLink={
                                 <Link to="/login">Уже зарегистрировались? Войти</Link>

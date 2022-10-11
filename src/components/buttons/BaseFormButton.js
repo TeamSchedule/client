@@ -1,5 +1,15 @@
-import React from "react"
-import Button from "@mui/material/Button"
+import React from "react";
+import Button from "@mui/material/Button";
+import { CircularProgress } from "@mui/material";
+
+function CircularLoading() {
+    /* Кружочек-индикатор загрузки */
+    return (
+        <>
+            <CircularProgress color="inherit" size={25} />
+        </>
+    );
+}
 
 function BaseFormButton({
     btnText,
@@ -9,6 +19,7 @@ function BaseFormButton({
     fullWidth = true,
     color = "success",
     variant = "contained",
+    loading = false,
 }) {
     /*
      * Базовый компонент кнопок
@@ -24,10 +35,10 @@ function BaseFormButton({
                 onClick={onClick}
                 disabled={disabled}
             >
-                {btnText}
+                {loading ? <CircularLoading /> : btnText}
             </Button>
         </>
-    )
+    );
 }
 
-export default BaseFormButton
+export default BaseFormButton;
