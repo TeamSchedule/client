@@ -35,7 +35,6 @@ export default function RegisterForm() {
             })
             .then(() => {
                 setPassword("");
-                setIsActionInProgress(false);
                 navigate("/login");
             })
             .catch((err) => {
@@ -47,6 +46,8 @@ export default function RegisterForm() {
                     setIsNameOccupiedErrShown(true);
                     setIsRegErrShown(false);
                 }
+            })
+            .finally(() => {
                 setIsActionInProgress(false);
             });
     }

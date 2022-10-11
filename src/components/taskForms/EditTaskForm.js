@@ -1,41 +1,41 @@
-import React, { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router"
-import { useSelector } from "react-redux"
-import { Checkbox, FormControlLabel } from "@mui/material"
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
+import { useSelector } from "react-redux";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
-import { API } from "../../api/api"
-import { selectUserInfo } from "../../features/userInfoSlice"
-import { TaskDatetimeInput, TaskDescriptionInput, TaskNameInput } from "./task-form-items"
-import CloseFormIcon from "../generic/CloseFormIcon"
-import "./taskForm.css"
-import SuccessFormButton from "../buttons/SuccessFormButton"
-import RemovalFormButton from "../buttons/RemovalFormButton"
+import { API } from "../../api/api";
+import { selectUserInfo } from "../../features/userInfoSlice";
+import { TaskDatetimeInput, TaskDescriptionInput, TaskNameInput } from "./task-form-items";
+import CloseFormIcon from "../generic/CloseFormIcon";
+import SuccessFormButton from "../buttons/SuccessFormButton";
+import RemovalFormButton from "../buttons/RemovalFormButton";
+import "./taskForm.css";
 
-export default function EditionTaskForm() {
-    const navigate = useNavigate()
+export default function EditTaskForm() {
+    const navigate = useNavigate();
 
-    const { taskId } = useParams()
-    const userInfo = useSelector(selectUserInfo)
+    const { taskId } = useParams();
+    const userInfo = useSelector(selectUserInfo);
 
-    const [taskName, setTaskName] = useState("")
-    const [taskDescription, setTaskDescription] = useState("")
-    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState()
-    const [taskClosedStatus, setTaskClosedStatus] = useState(false)
-    const [taskTeamName, setTaskTeamName] = useState("")
+    const [taskName, setTaskName] = useState("");
+    const [taskDescription, setTaskDescription] = useState("");
+    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState();
+    const [taskClosedStatus, setTaskClosedStatus] = useState(false);
+    const [taskTeamName, setTaskTeamName] = useState("");
 
     useEffect(() => {
         API.tasks.get(taskId).then((data) => {
             // Available use full info about task in data
-            setTaskName(data.name)
-            setTaskDescription(data.description)
-            setTaskClosedStatus(data.closed)
-            setTaskExpirationDatetime(new Date(data.expirationTime).toJSON().split(".")[0])
-            setTaskTeamName(data.team.name)
-        })
-    }, [taskId])
+            setTaskName(data.name);
+            setTaskDescription(data.description);
+            setTaskClosedStatus(data.closed);
+            setTaskExpirationDatetime(new Date(data.expirationTime).toJSON().split(".")[0]);
+            setTaskTeamName(data.team.name);
+        });
+    }, [taskId]);
 
     function onSubmit(e) {
-        e.preventDefault()
+        e.preventDefault();
 
         API.tasks
             .update(taskId, {
@@ -45,16 +45,16 @@ export default function EditionTaskForm() {
                 closed: taskClosedStatus,
             })
             .then(() => {
-                navigate(-1)
-            })
+                navigate(-1);
+            });
     }
 
     function onDeleteTaskBtn(e) {
-        e.preventDefault()
+        e.preventDefault();
 
         API.tasks.delete(taskId).then(() => {
-            navigate(-1)
-        })
+            navigate(-1);
+        });
     }
 
     return (
@@ -99,5 +99,5 @@ export default function EditionTaskForm() {
                 <RemovalFormButton btnText="УДАЛИТЬ ЗАДАЧУ" onClick={onDeleteTaskBtn} />
             </div>
         </form>
-    )
+    );
 }

@@ -38,7 +38,6 @@ export default function LoginForm() {
                 password: password,
             })
             .then((data) => {
-                setIsActionInProgress(false);
                 setPassword("");
                 const token = data.access;
                 setAccessToken(token);
@@ -51,7 +50,6 @@ export default function LoginForm() {
                 });
             })
             .catch((err) => {
-                setIsActionInProgress(false);
                 setPassword("");
                 const statusCode = err.response.status;
                 if (statusCode >= 500) {
@@ -61,6 +59,9 @@ export default function LoginForm() {
                     setIsWrongCredentials(true);
                     setIsServiceUnavailableErrShown(false);
                 }
+            })
+            .finally(() => {
+                setIsActionInProgress(false);
             });
     }
 
