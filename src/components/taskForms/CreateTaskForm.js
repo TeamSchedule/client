@@ -5,9 +5,11 @@ import { useNavigate, useParams } from "react-router";
 import { API } from "../../api/api";
 import { selectUserInfo } from "../../features/userInfoSlice";
 import CloseFormIcon from "../generic/CloseFormIcon";
-import { TaskDatetimeInput, TaskDescriptionInput, TaskNameInput } from "./task-form-items";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import SuccessFormButton from "../buttons/SuccessFormButton";
+import InputMultilineTextFormItem from "../inputs/InputMultilineTextFormItem";
+import InputTextFormItem from "../inputs/InputTextFormItem";
+import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import "./taskForm.css";
 
 function TeamItem(props) {
@@ -30,7 +32,7 @@ function CreateTaskForm() {
     const [isPrivateFlag, setIsPrivateFlag] = useState(true);
     const [taskName, setTaskName] = useState("");
     const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(
-        date ? date.split(".")[0] : new Date().toJSON().split(".")[0]
+        date ? Date.parse(date) : new Date()
     );
     const [selectedTeam, setSelectedTeam] = useState(0);
     const [isActionInProgress, setIsActionInProgress] = useState(false);
@@ -56,16 +58,19 @@ function CreateTaskForm() {
     }, []);
 
     function onSubmit(e) {
-        setIsActionInProgress(true);
         e.preventDefault();
-        let expDate = new Date(taskExpirationDatetime);
-        expDate.setDate(new Date(date).getDate() + 1);
+        setIsActionInProgress(true);
+        // поправляем время, так как toJSON() даст UTC время
+        const hoursDiff =
+            taskExpirationDatetime.getHours() - taskExpirationDatetime.getTimezoneOffset() / 60;
+        taskExpirationDatetime.setHours(hoursDiff);
+        const expDtString = taskExpirationDatetime.toJSON().split(".")[0];
 
         API.tasks
             .create({
                 name: taskName,
                 description: taskDescription,
-                expirationTime: expDate.toJSON(),
+                expirationTime: expDtString,
                 teamId: isPrivateFlag ? null : selectedTeam,
                 assigneeId: userInfo.id,
             })
@@ -84,17 +89,28 @@ function CreateTaskForm() {
     }
 
     return (
-        <form className="p-3 creationTaskForm" onSubmit={onSubmit}>
+        <form className="p-3 taskForm" style={{ width: "50%", margin: "auto" }}>
             <div className="d-flex justify-content-between position-relative">
                 <p className="fw-bold">Новая задача</p>
                 <CloseFormIcon />
             </div>
 
-            <TaskNameInput value={taskName} setValue={setTaskName} />
-            <TaskDescriptionInput value={taskDescription} setValue={setTaskDescription} />
-            <TaskDatetimeInput
+            <InputTextFormItem
+                label="Название задачи"
+                value={taskName}
+                handleChange={setTaskName}
+                className="mb-3"
+            />
+            <InputMultilineTextFormItem
+                label="Подробное описание"
+                value={taskDescription}
+                handleChange={setTaskDescription}
+                className="mb-3"
+            />
+            <InputDatetimeFormItem
+                label="Срок выполнения"
                 value={taskExpirationDatetime}
-                setValue={setTaskExpirationDatetime}
+                handleChange={setTaskExpirationDatetime}
             />
 
             <div>
@@ -121,7 +137,11 @@ function CreateTaskForm() {
                 )}
             </div>
 
-            <SuccessFormButton btnText="СОЗДАТЬ ЗАДАЧУ" loading={isActionInProgress} />
+            <SuccessFormButton
+                btnText="СОЗДАТЬ ЗАДАЧУ"
+                onClick={onSubmit}
+                loading={isActionInProgress}
+            />
         </form>
     );
 }

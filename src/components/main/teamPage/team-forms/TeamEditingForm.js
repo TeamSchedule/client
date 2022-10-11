@@ -24,6 +24,11 @@ export default function TeamEditingForm() {
 
     const [usersToInvite, setUsersToInvite] = useState([]);
 
+    // circular loaders
+    const [isUpdateActionInProgress, setIsUpdateActionInProgress] = useState(false);
+    const [isInviteActionInProgress, setIsInviteActionInProgress] = useState(false);
+    const [isLeaveActionInProgress, setIsLeaveActionInProgress] = useState(false);
+
     useEffect(() => {
         API.teams.get(teamId).then((data) => {
             setTeamName(data.name);
@@ -35,26 +40,47 @@ export default function TeamEditingForm() {
 
     function onEditTeam(e) {
         e.preventDefault();
+        setIsUpdateActionInProgress(true);
 
-        API.teams.update(teamId, {
-            newName: document.getElementById("teamName").value,
-            color: color.hex.toString(),
-        });
+        API.teams
+            .update(teamId, {
+                newName: document.getElementById("teamName").value,
+                color: color.hex.toString(),
+            })
+            .then(() => {
+                navigate(-1);
+            })
+            .finally(() => {
+                setIsUpdateActionInProgress(false);
+            });
     }
 
     function onSendInvites(e) {
         e.preventDefault();
-
-        API.invitations.create({
-            teamId: teamId,
-            invitedIds: usersToInvite.map((user) => user.id),
-        });
+        setIsInviteActionInProgress(true);
+        API.invitations
+            .create({
+                teamId: teamId,
+                invitedIds: usersToInvite.map((user) => user.id),
+            })
+            .then(() => {
+                navigate(-1);
+            })
+            .finally(() => {
+                setIsInviteActionInProgress(false);
+            });
     }
 
     function onLeaveTeam() {
-        API.teams.leave(teamId).then(() => {
-            navigate(-1);
-        });
+        setIsLeaveActionInProgress(true);
+        API.teams
+            .leave(teamId)
+            .then(() => {
+                navigate(-1);
+            })
+            .finally(() => {
+                setIsLeaveActionInProgress(false);
+            });
     }
 
     function onUndoInvitation(id) {
@@ -74,7 +100,7 @@ export default function TeamEditingForm() {
 
             <TeamNameItem value={teamName} setValue={setTeamName} />
             <TeamColorInput value={color} setValue={setColor} initialColor={initialColor} />
-            <SuccessFormButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ" />
+            <SuccessFormButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ" loading={isUpdateActionInProgress} />
 
             <ParticipantList participants={[]} />
 
@@ -83,6 +109,7 @@ export default function TeamEditingForm() {
                 onSendInvites={onSendInvites}
                 usersToInvite={usersToInvite}
                 setUsersToInvite={setUsersToInvite}
+                isInviteActionInProgress={isInviteActionInProgress}
             />
 
             <p className="mt-4">Отправленные приглашения:</p>
@@ -93,7 +120,11 @@ export default function TeamEditingForm() {
                 />
             ))}
 
-            <RemovalFormButton btnText="ПОКИНУТЬ КОМАНДУ" onClick={onLeaveTeam} />
+            <RemovalFormButton
+                btnText="ПОКИНУТЬ КОМАНДУ"
+                onClick={onLeaveTeam}
+                loading={isLeaveActionInProgress}
+            />
         </form>
     );
 }
@@ -136,8 +167,10 @@ function AutocompleteUsers(props) {
 
             <CommonActionFormButton
                 btnText="ПРИГЛАСИТЬ"
+                className="mt-3"
                 onClick={props.onSendInvites}
                 disabled={!props.usersToInvite || +props.usersToInvite.length === 0}
+                loading={props.isInviteActionInProgress}
             />
         </div>
     );

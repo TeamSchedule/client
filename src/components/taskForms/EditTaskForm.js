@@ -5,10 +5,12 @@ import { Checkbox, FormControlLabel } from "@mui/material";
 
 import { API } from "../../api/api";
 import { selectUserInfo } from "../../features/userInfoSlice";
-import { TaskDatetimeInput, TaskDescriptionInput, TaskNameInput } from "./task-form-items";
 import CloseFormIcon from "../generic/CloseFormIcon";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import RemovalFormButton from "../buttons/RemovalFormButton";
+import InputTextFormItem from "../inputs/InputTextFormItem";
+import InputMultilineTextFormItem from "../inputs/InputMultilineTextFormItem";
+import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import "./taskForm.css";
 
 export default function EditTaskForm() {
@@ -17,11 +19,16 @@ export default function EditTaskForm() {
     const { taskId } = useParams();
     const userInfo = useSelector(selectUserInfo);
 
+    // task data
     const [taskName, setTaskName] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
-    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState();
+    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(new Date());
     const [taskClosedStatus, setTaskClosedStatus] = useState(false);
     const [taskTeamName, setTaskTeamName] = useState("");
+
+    // circular loaders
+    const [isUpdateActionInProgress, setIsUpdateActionInProgress] = useState(false);
+    const [isDeleteActionInProgress, setIsDeleteActionInProgress] = useState(false);
 
     useEffect(() => {
         API.tasks.get(taskId).then((data) => {
@@ -29,14 +36,14 @@ export default function EditTaskForm() {
             setTaskName(data.name);
             setTaskDescription(data.description);
             setTaskClosedStatus(data.closed);
-            setTaskExpirationDatetime(new Date(data.expirationTime).toJSON().split(".")[0]);
+            setTaskExpirationDatetime(new Date(data.expirationTime));
             setTaskTeamName(data.team.name);
         });
     }, [taskId]);
 
     function onSubmit(e) {
         e.preventDefault();
-
+        setIsUpdateActionInProgress(true);
         API.tasks
             .update(taskId, {
                 name: taskName,
@@ -46,29 +53,48 @@ export default function EditTaskForm() {
             })
             .then(() => {
                 navigate(-1);
+            })
+            .finally(() => {
+                setIsUpdateActionInProgress(false);
             });
     }
 
     function onDeleteTaskBtn(e) {
         e.preventDefault();
-
-        API.tasks.delete(taskId).then(() => {
-            navigate(-1);
-        });
+        setIsDeleteActionInProgress(true);
+        API.tasks
+            .delete(taskId)
+            .then(() => {
+                navigate(-1);
+            })
+            .finally(() => {
+                setIsDeleteActionInProgress(false);
+            });
     }
 
     return (
-        <form className="p-3 editionTaskForm" onSubmit={onSubmit}>
+        <form className="p-3 taskForm">
             <div className="d-flex justify-content-between">
                 <p className="fw-bold">Изменить задачу</p>
                 <CloseFormIcon />
             </div>
 
-            <TaskNameInput value={taskName} setValue={setTaskName} />
-            <TaskDescriptionInput value={taskDescription} setValue={setTaskDescription} />
-            <TaskDatetimeInput
+            <InputTextFormItem
+                label="Название задачи"
+                value={taskName}
+                handleChange={setTaskName}
+                className="mb-3"
+            />
+            <InputMultilineTextFormItem
+                label="Подробное описание"
+                value={taskDescription}
+                handleChange={setTaskDescription}
+                className="mb-3"
+            />
+            <InputDatetimeFormItem
+                label="Срок выполнения"
                 value={taskExpirationDatetime}
-                setValue={setTaskExpirationDatetime}
+                handleChange={setTaskExpirationDatetime}
             />
 
             <div>
@@ -92,11 +118,19 @@ export default function EditTaskForm() {
             </div>
 
             <div className="mt-4">
-                <SuccessFormButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ" />
+                <SuccessFormButton
+                    btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ"
+                    onClick={onSubmit}
+                    loading={isUpdateActionInProgress}
+                />
             </div>
 
             <div className="mt-4">
-                <RemovalFormButton btnText="УДАЛИТЬ ЗАДАЧУ" onClick={onDeleteTaskBtn} />
+                <RemovalFormButton
+                    btnText="УДАЛИТЬ ЗАДАЧУ"
+                    onClick={onDeleteTaskBtn}
+                    loading={isDeleteActionInProgress}
+                />
             </div>
         </form>
     );

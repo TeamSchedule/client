@@ -1,6 +1,5 @@
 import $axios from "../axiosRequests";
 
-
 export class teams {
     static apiPrefix = "/schedule/team";
 
@@ -20,7 +19,7 @@ export class teams {
         return (await $axios.post(`${this.apiPrefix}`, data)).data;
     }
 
-    static async update(teamId, data) {
-        return (await $axios.patch(`${this.apiPrefix}/${teamId}`, data)).data;
+    static update(teamId, data) {
+        return $axios.patch(`${this.apiPrefix}/${teamId}`, data);
     }
 }

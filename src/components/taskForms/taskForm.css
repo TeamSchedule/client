@@ -1,16 +1,5 @@
-.creationTaskForm {
+.taskForm {
     min-width: 480px;
-    border-radius: 1px;
+    border-radius: 2px;
     background: #f3f3f3;
-}
-
-.editionTaskForm {
-    min-width: 480px;
-    border-radius: 1px;
-    background: #f3f3f3;
-}
-
-.deleteTaskBtn, .deleteTaskBtn:hover {
-    color: white;
-    text-decoration: none;
 }
