@@ -91,8 +91,13 @@ export default function EditionTaskForm() {
                 />
             </div>
 
-            <SuccessFormButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ" />
-            <RemovalFormButton btnText="УДАЛИТЬ ЗАДАЧУ" onClick={onDeleteTaskBtn} />
+            <div className="mt-4">
+                <SuccessFormButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ" />
+            </div>
+
+            <div className="mt-4">
+                <RemovalFormButton btnText="УДАЛИТЬ ЗАДАЧУ" onClick={onDeleteTaskBtn} />
+            </div>
         </form>
     )
 }

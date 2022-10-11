@@ -1,31 +1,31 @@
-import React, { useState } from "react"
-import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router"
-import { Link } from "react-router-dom"
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
-import { API } from "../../api/api"
-import { setAccessToken } from "../../api/axiosRequests"
-import { login } from "../../features/isAuthSlice"
-import { set } from "../../features/userInfoSlice"
+import { API } from "../../api/api";
+import { setAccessToken } from "../../api/axiosRequests";
+import { login } from "../../features/isAuthSlice";
+import { set } from "../../features/userInfoSlice";
 import {
     AuthForm,
     AuthPasswordInput,
     AuthUsernameInput,
     FormFooter,
     FormHeader,
-} from "./auth-form-items"
-import "./auth.css"
-import SuccessFormButton from "../buttons/SuccessFormButton"
+} from "./auth-form-items";
+import "./auth.css";
+import SuccessFormButton from "../buttons/SuccessFormButton";
 
 export default function LoginForm() {
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
     function signin(e) {
-        e.preventDefault()
+        e.preventDefault();
 
         API.auth
             .signIn({
@@ -33,18 +33,19 @@ export default function LoginForm() {
                 password: password,
             })
             .then((data) => {
-                setPassword("")
-                const token = data.access
-                setAccessToken(token)
-                localStorage.setItem("access", token)
-                localStorage.setItem("refresh", data.refresh)
-                dispatch(login())
+                setPassword("");
+                const token = data.access;
+                setAccessToken(token);
+                localStorage.setItem("access", token);
+                localStorage.setItem("refresh", data.refresh);
+                dispatch(login());
 
                 API.users.get().then((res) => {
-                    dispatch(set(res.data.user))
-                    navigate(`/${res.data.user.login}/profile`)
-                })
+                    dispatch(set(res.data.user));
+                    navigate(`/${res.data.user.login}/profile`);
+                });
             })
+            .catch((err) => {});
     }
 
     return (
@@ -72,5 +73,5 @@ export default function LoginForm() {
                 </>
             }
         />
-    )
+    );
 }

@@ -26,7 +26,9 @@ export default function TeamCreationForm() {
         <form className="p-3 teamCreationForm" onSubmit={createTeamSbm} autoComplete="off">
             <CloseTeamFormIcon />
             <TeamNameItem value={teamName} setValue={setTeamName} />
-            <SuccessFormButton btnText="СОЗДАТЬ КОМАНДУ" />
+            <div className="mt-4">
+                <SuccessFormButton btnText="СОЗДАТЬ КОМАНДУ" />
+            </div>
         </form>
     )
 }
