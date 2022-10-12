@@ -7,7 +7,11 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import Dropzone from "react-dropzone";
 import Button from "@mui/material/Button";
 import { API } from "../../api/api";
-import { useNavigate } from "react-router";
+import RemovalFormButton from "../buttons/RemovalFormButton";
+import SuccessFormButton from "../buttons/SuccessFormButton";
+import CommonActionFormButton from "../buttons/CommonActionFormButton";
+import GoBackActionButton from "../buttons/GoBackActionButton";
+import UserAvatar from "../avatars/UserAvatar";
 
 export default function AvatarEditorTab() {
     const [avatarEditor, setAvatarEditor] = useState();
@@ -20,46 +24,45 @@ export default function AvatarEditorTab() {
 
     const [enabledToSave, setEnabledToSave] = useState(false);
 
-    const navigate = useNavigate();
+    function resetEditorParams() {
+        setRotate(0);
+        setScale(1);
+    }
 
-    const onClickPreview = () => {
-        if (avatarEditor) {
-            const canvas = avatarEditor.getImageScaledToCanvas().toDataURL();
-
-            fetch(canvas)
-                .then((res) => res.blob())
-                .then((blob) => {
-                    const obUrl = URL.createObjectURL(blob);
-                    setCroppedImg(obUrl);
-                });
-        }
-    };
-    const onClickCancel = () => {
-        navigate(-1);
-    };
-
-    const onClickSave = () => {
+    function fetchBlobFromEditor() {
         // https://www.npmjs.com/package/react-native-fs#usage-android
         if (avatarEditor) {
             const canvas = avatarEditor.getImageScaledToCanvas().toDataURL();
+            return fetch(canvas).then((res) => res.blob());
+        }
+        return null;
+    }
 
-            fetch(canvas)
-                .then((res) => res.blob())
-                .then((blob) => {
-                    const obUrl = URL.createObjectURL(blob);
-                    setCroppedImg(obUrl);
-
-                    const myFile = new File([blob], "image1.jpeg", {
-                        type: blob.type,
-                    });
-                    API.avatars.set(myFile).then(() => {
-                        window.location.reload();
-                    });
-                });
+    const onClickPreview = () => {
+        const blobPromise = fetchBlobFromEditor();
+        if (blobPromise) {
+            blobPromise.then((blob) => {
+                const obUrl = URL.createObjectURL(blob);
+                setCroppedImg(obUrl);
+            });
         }
     };
 
-    const onDeleteImage = () => {
+    const onClickSave = () => {
+        const blobPromise = fetchBlobFromEditor();
+        if (blobPromise) {
+            blobPromise.then((blob) => {
+                const myFile = new File([blob], "image1.jpeg", {
+                    type: blob.type,
+                });
+                API.avatars.set(myFile).then(() => {
+                    window.location.reload();
+                });
+            });
+        }
+    };
+
+    const onClickDelete = () => {
         API.avatars.delete().then(() => {
             window.location.reload();
         });
@@ -119,6 +122,7 @@ export default function AvatarEditorTab() {
                     )}
                 </Dropzone>
             </div>
+
             <div className="d-flex px-0">
                 <div className="col px-0 mr-2">
                     <div className="py-2">
@@ -145,60 +149,43 @@ export default function AvatarEditorTab() {
                             aria-label="Slider"
                         />
                     </div>
-                    <Button
-                        variant="outlined"
-                        fullWidth={true}
-                        onClick={() => {
-                            setRotate(0);
-                            setScale(1);
-                        }}
-                    >
-                        Сбросить настройки
-                    </Button>
+                    <CommonActionFormButton
+                        btnText="СБРОСИТЬ НАСТРОЙКИ"
+                        onClick={resetEditorParams}
+                    />
                 </div>
                 <div className="p-2 d-flex flex-column-reverse col px-0 ml-2">
-                    <Button
-                        variant="outlined"
-                        fullWidth={true}
+                    <CommonActionFormButton
+                        btnText="ПОКАЗАТЬ ПРЕВЬЮ"
                         onClick={onClickPreview}
                         disabled={!enabledToSave}
-                    >
-                        Показать превью
-                    </Button>
-                    <img
-                        src={croppedImg}
-                        alt="Предварительный&nbsp;просмотр"
-                        width="125"
-                        height="125"
-                        className="m-auto"
-                        style={{ borderRadius: "50%" }}
                     />
+
+                    {croppedImg && (
+                        <UserAvatar
+                            alt="Предварительный&nbsp;просмотр"
+                            avatarSrc={croppedImg}
+                            width={125}
+                            height={125}
+                            className="m-auto"
+                        />
+                    )}
                 </div>
             </div>
 
-            <Button
-                variant="contained"
-                fullWidth={true}
+            <SuccessFormButton
+                btnText="СОХРАНИТЬ НОВЫЙ АВАТАР"
                 onClick={onClickSave}
-                className="my-2"
                 disabled={!enabledToSave}
-            >
-                СОХРАНИТЬ НОВЫЙ АВАТАР
-            </Button>
+                className="mt-4"
+            />
 
-            <Button fullWidth={true} onClick={onClickCancel} className="my-2">
-                ВЕРНУТЬСЯ НАЗАД
-            </Button>
-
-            <Button
-                variant="contained"
-                fullWidth={true}
-                onClick={onDeleteImage}
-                color="error"
-                className="mt-5"
-            >
-                УДАЛИТЬ СУЩЕСТВУЮЩИЙ АВАТАР
-            </Button>
+            <GoBackActionButton className="mt-5" />
+            <RemovalFormButton
+                btnText="УДАЛИТЬ СУЩЕСТВУЮЩИЙ АВАТАР"
+                onClick={onClickDelete}
+                className="mt-4"
+            />
         </>
     );
 }
