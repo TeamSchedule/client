@@ -3,7 +3,7 @@ import React from "react";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import TeamAvatar from "../../avatars/TeamAvatar";
+import TeamAvatar from "../avatars/TeamAvatar";
 
 export default function Team(props) {
     const navigate = useNavigate();

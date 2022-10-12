@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Outlet } from "react-router-dom";
-import { getNextDayDate } from "../../../utils/getPrevDayDate";
+import { getNextDayDate } from "../../utils/getPrevDayDate";
 import FilterColumn from "./FilterColumn";
 
 import FullCalendar from "@fullcalendar/react";
@@ -10,7 +10,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 
 import interactionPlugin from "@fullcalendar/interaction";
-import { API } from "../../../api/api";
+import { API } from "../../api/api";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";

@@ -3,15 +3,15 @@ import { Autocomplete, TextField } from "@mui/material";
 import List from "@mui/material/List";
 
 import { useNavigate, useParams } from "react-router";
-import { API } from "../../../../api/api";
+import { API } from "../../../api/api";
 import { TeamColorInput } from "./team-form-items";
 import { ParticipantItem } from "./ParticipantItem";
 import { UnprocessedOutgoingInvitation } from "../invitation-components/OutgoingInvitation";
-import SuccessFormButton from "../../../buttons/SuccessFormButton";
-import RemovalFormButton from "../../../buttons/RemovalFormButton";
-import CommonActionFormButton from "../../../buttons/CommonActionFormButton";
-import FormHeaderRow from "../../../generic/FormHeaderRow";
-import InputTextFormItem from "../../../inputs/InputTextFormItem";
+import SuccessFormButton from "../../buttons/SuccessFormButton";
+import RemovalFormButton from "../../buttons/RemovalFormButton";
+import CommonActionFormButton from "../../buttons/CommonActionFormButton";
+import FormHeaderRow from "../../generic/FormHeaderRow";
+import InputTextFormItem from "../../inputs/InputTextFormItem";
 import "../teamPage.css";
 
 export default function TeamEditingForm() {

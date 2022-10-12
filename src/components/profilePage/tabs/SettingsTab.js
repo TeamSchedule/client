@@ -1,22 +1,22 @@
-import React, { useState } from "react"
-import { AuthEmailInput, AuthPasswordInput } from "../../../auth/auth-form-items"
-import { useSelector } from "react-redux"
-import { selectUserInfo } from "../../../../features/userInfoSlice"
-import { API } from "../../../../api/api"
-import Button from "@mui/material/Button"
-import { useNavigate } from "react-router"
-import SuccessFormButton from "../../../buttons/SuccessFormButton"
+import React, { useState } from "react";
+import { AuthEmailInput, AuthPasswordInput } from "../../auth/auth-form-items";
+import { useSelector } from "react-redux";
+import { selectUserInfo } from "../../../features/userInfoSlice";
+import { API } from "../../../api/api";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router";
+import SuccessFormButton from "../../buttons/SuccessFormButton";
 
 export default function SettingsTab() {
-    const userInfo = useSelector(selectUserInfo)
+    const userInfo = useSelector(selectUserInfo);
 
-    const navigate = useNavigate()
-    const [email, setEmail] = useState(userInfo.email || "")
-    const [password, setPassword] = useState("")
-    const [password2, setPassword2] = useState("")
+    const navigate = useNavigate();
+    const [email, setEmail] = useState(userInfo.email || "");
+    const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
 
     function changeUserInfo(e) {
-        e.preventDefault()
+        e.preventDefault();
 
         API.users
             .update({
@@ -24,11 +24,11 @@ export default function SettingsTab() {
                 password2: password2,
                 email: email,
             })
-            .then(() => {})
+            .then(() => {});
     }
 
     return (
-        <form action="src/components/main/profilePage/tabs/SettingsTab#" onSubmit={changeUserInfo}>
+        <form action="src/components/profilePage/tabs/SettingsTab#" onSubmit={changeUserInfo}>
             <div className="mb-4">
                 <h4>Изменить профиль</h4>
                 <hr />
@@ -58,5 +58,5 @@ export default function SettingsTab() {
                 <SuccessFormButton btnText="СОХРАНИТЬ" onClick={changeUserInfo} />
             </div>
         </form>
-    )
+    );
 }

@@ -1,10 +1,10 @@
-import ListItem from "@mui/material/ListItem"
-import ListItemText from "@mui/material/ListItemText"
-import ListItemAvatar from "@mui/material/ListItemAvatar"
-import Avatar from "@mui/material/Avatar"
-import Divider from "@mui/material/Divider"
-import SuccessFormButton from "../../../buttons/SuccessFormButton"
-import RemovalFormButton from "../../../buttons/RemovalFormButton"
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import Divider from "@mui/material/Divider";
+import SuccessFormButton from "../../buttons/SuccessFormButton";
+import RemovalFormButton from "../../buttons/RemovalFormButton";
 
 export default function IncomingInvitation(props) {
     return (
@@ -34,5 +34,5 @@ export default function IncomingInvitation(props) {
             </ListItem>
             <Divider variant="inset" component="li" />
         </>
-    )
+    );
 }
