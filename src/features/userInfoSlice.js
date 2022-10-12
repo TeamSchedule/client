@@ -1,5 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
-
+import { createSlice } from "@reduxjs/toolkit";
 
 export const userInfoSlice = createSlice({
     name: "userInfo",
@@ -12,13 +11,13 @@ export const userInfoSlice = createSlice({
             state.value = action.payload;
         },
 
-        onDeleteUserInfo: state => {
+        onDeleteUserInfo: (state) => {
             state.value = {};
         },
     },
 });
 
-export const {set, onDeleteUserInfo} = userInfoSlice.actions;
-export const selectUserInfo = state => state.userInfo.value;
+export const { set, onDeleteUserInfo } = userInfoSlice.actions;
+export const selectUserInfo = (state) => state.userInfo.value;
 
 export default userInfoSlice.reducer;

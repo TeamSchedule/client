@@ -3,16 +3,16 @@ import { Autocomplete, TextField } from "@mui/material";
 import List from "@mui/material/List";
 
 import { useNavigate, useParams } from "react-router";
-import { API } from "../../../api/api";
-import { TeamColorInput } from "./team-form-items";
-import { ParticipantItem } from "./ParticipantItem";
-import { UnprocessedOutgoingInvitation } from "../invitation-components/OutgoingInvitation";
-import SuccessFormButton from "../../buttons/SuccessFormButton";
-import RemovalFormButton from "../../buttons/RemovalFormButton";
-import CommonActionFormButton from "../../buttons/CommonActionFormButton";
-import FormHeaderRow from "../../generic/FormHeaderRow";
-import InputTextFormItem from "../../inputs/InputTextFormItem";
-import "../teamPage.css";
+import { API } from "../../api/api";
+import { TeamMemberItem } from "./TeamMemberItem";
+import { UnprocessedOutgoingInvitationItem } from "../invitations/UnprocessedOutgoingInvitationItem";
+import SuccessFormButton from "../buttons/SuccessFormButton";
+import RemovalFormButton from "../buttons/RemovalFormButton";
+import CommonActionFormButton from "../buttons/CommonActionFormButton";
+import FormHeaderRow from "../generic/FormHeaderRow";
+import InputTextFormItem from "../inputs/InputTextFormItem";
+import "../teamPage/teamPage.css";
+import InputColorFormItem from "../inputs/InputColorFormItem";
 
 export default function TeamEditingForm() {
     const { teamId } = useParams();
@@ -102,7 +102,11 @@ export default function TeamEditingForm() {
                 handleChange={setTeamName}
             />
 
-            <TeamColorInput value={color} setValue={setColor} initialColor={initialColor} />
+            <div className="mt-4 d-flex">
+                <p className="mr-3">Цвет для задач этой команды</p>
+                <InputColorFormItem value={color} setValue={setColor} initialColor={initialColor} />
+            </div>
+
             <SuccessFormButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ" loading={isUpdateActionInProgress} />
 
             <ParticipantList participants={[]} />
@@ -117,8 +121,8 @@ export default function TeamEditingForm() {
 
             <p className="mt-4">Отправленные приглашения:</p>
             {unprocessedInvitations.map((invitation) => (
-                <UnprocessedOutgoingInvitation
-                    {...invitation}
+                <UnprocessedOutgoingInvitationItem
+                    invitation={invitation}
                     onUndoInvitation={onUndoInvitation}
                 />
             ))}
@@ -191,7 +195,7 @@ function ParticipantList(props) {
             <p className="mt-4">Participants:</p>
             <List>
                 {participants.map((participant) => (
-                    <ParticipantItem key={participant.id} {...participant} />
+                    <TeamMemberItem key={participant.id} participant={participant} />
                 ))}
             </List>
         </>
