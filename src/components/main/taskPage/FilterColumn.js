@@ -1,31 +1,26 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 
-
-export function FilterColumn({teams, changeShowedTeams}) {
+export default function FilterColumn({ teams, onChangeShowedTeams }) {
     return (
         <>
-            <div className="p-3" style={{ minWidth: "200px", }}>
+            <div className="p-3" style={{ minWidth: "200px" }}>
                 <h4>Фильтры</h4>
                 <h5>По командам:</h5>
-                {
-                    teams.map(
-                        team =>
-                            <FilterTeamItem
-                                key={team.id}
-                                teamName={team.name}
-                                teamColor={team.color}
-                                teamId={team.id}
-                                onCLick={changeShowedTeams}
-                            />
-                    )
-                }
+                {teams.map((team) => (
+                    <FilterTeamItem
+                        key={team.id}
+                        teamName={team.name}
+                        teamColor={team.color}
+                        teamId={team.id}
+                        onCLick={onChangeShowedTeams}
+                    />
+                ))}
             </div>
         </>
     );
 }
 
-
-function FilterTeamItem({teamId, teamName, teamColor, onCLick}) {
+function FilterTeamItem({ teamId, teamName, teamColor, onCLick }) {
     const [isChecked, setIsChecked] = useState(true);
 
     function onChangeCheckedStatus() {
@@ -40,10 +35,11 @@ function FilterTeamItem({teamId, teamName, teamColor, onCLick}) {
                 onClick={onChangeCheckedStatus}
             >
                 <input type="checkbox" checked={isChecked} />
-                <p className="m-0 mx-2 px-2 w-100 border-round text-white fs-6 fw-bolder"
-                   style={{
-                       backgroundColor: teamColor,
-                   }}
+                <p
+                    className="m-0 mx-2 px-2 w-100 border-round text-white fs-6 fw-bolder"
+                    style={{
+                        backgroundColor: teamColor,
+                    }}
                 >
                     {teamName}
                 </p>

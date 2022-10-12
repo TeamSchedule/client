@@ -10,6 +10,7 @@ import SuccessFormButton from "../buttons/SuccessFormButton";
 import InputMultilineTextFormItem from "../inputs/InputMultilineTextFormItem";
 import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
+import { getPrevDayDate } from "../../utils/getPrevDayDate";
 import "./taskForm.css";
 
 function TeamItem(props) {
@@ -31,13 +32,13 @@ function CreateTaskForm() {
     const [taskDescription, setTaskDescription] = useState("");
     const [isPrivateFlag, setIsPrivateFlag] = useState(true);
     const [taskName, setTaskName] = useState("");
-    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(
-        date ? Date.parse(date) : new Date()
-    );
+    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(null);
     const [selectedTeam, setSelectedTeam] = useState(0);
     const [isActionInProgress, setIsActionInProgress] = useState(false);
 
     useEffect(() => {
+        setTaskExpirationDatetime(getPrevDayDate(date));
+
         API.teams.all().then((data) => {
             const createdTeams = data["teams"];
             setTeams(createdTeams);

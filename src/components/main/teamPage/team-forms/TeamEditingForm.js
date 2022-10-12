@@ -4,14 +4,15 @@ import List from "@mui/material/List";
 
 import { useNavigate, useParams } from "react-router";
 import { API } from "../../../../api/api";
-import { TeamColorInput, TeamNameItem } from "./team-form-items";
-import CloseFormIcon from "../../../generic/CloseFormIcon";
+import { TeamColorInput } from "./team-form-items";
 import { ParticipantItem } from "./ParticipantItem";
 import { UnprocessedOutgoingInvitation } from "../invitation-components/OutgoingInvitation";
-import "../teamPage.css";
 import SuccessFormButton from "../../../buttons/SuccessFormButton";
 import RemovalFormButton from "../../../buttons/RemovalFormButton";
 import CommonActionFormButton from "../../../buttons/CommonActionFormButton";
+import FormHeaderRow from "../../../generic/FormHeaderRow";
+import InputTextFormItem from "../../../inputs/InputTextFormItem";
+import "../teamPage.css";
 
 export default function TeamEditingForm() {
     const { teamId } = useParams();
@@ -44,7 +45,7 @@ export default function TeamEditingForm() {
 
         API.teams
             .update(teamId, {
-                newName: document.getElementById("teamName").value,
+                newName: teamName,
                 color: color.hex.toString(),
             })
             .then(() => {
@@ -93,12 +94,14 @@ export default function TeamEditingForm() {
 
     return (
         <form className="p-3 teamCreationForm" onSubmit={onEditTeam} autoComplete="off">
-            <div className="d-flex justify-content-between">
-                <p className="fw-bold">Редактировать команду</p>
-                <CloseFormIcon />
-            </div>
+            <FormHeaderRow headerText="Редактировать команду" />
 
-            <TeamNameItem value={teamName} setValue={setTeamName} />
+            <InputTextFormItem
+                label="Название команды"
+                value={teamName}
+                handleChange={setTeamName}
+            />
+
             <TeamColorInput value={color} setValue={setColor} initialColor={initialColor} />
             <SuccessFormButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ" loading={isUpdateActionInProgress} />
 

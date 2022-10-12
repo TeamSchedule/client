@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Outlet } from "react-router-dom";
-import { FilterColumn } from "./FilterColumn";
+import { getNextDayDate } from "../../../utils/getPrevDayDate";
+import FilterColumn from "./FilterColumn";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -129,12 +130,13 @@ export function TaskViewer() {
     }
 
     const onDateClick = (conf) => {
-        navigate(`new/${conf.date.toJSON()}`);
+        const chosenDate = getNextDayDate(conf.date);
+        navigate(`new/${chosenDate.toJSON()}`);
     };
 
     return (
         <div id="full-calendar-wrapper" className="d-flex">
-            <FilterColumn teams={teams} changeShowedTeams={changeShowedTeams} />
+            <FilterColumn teams={teams} onChangeShowedTeams={changeShowedTeams} />
             <FullCalendar
                 ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
