@@ -11,7 +11,7 @@ import InputMultilineTextFormItem from "../inputs/InputMultilineTextFormItem";
 import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import { getPrevDayDate } from "../../utils/getPrevDayDate";
-import "./taskForm.css";
+import BaseForm from "../generic/BaseForm";
 
 function TeamItem(props) {
     return (
@@ -56,7 +56,7 @@ function CreateTaskForm() {
                 ))
             );
         });
-    }, []);
+    }, [date]);
 
     function onSubmit(e) {
         e.preventDefault();
@@ -90,7 +90,7 @@ function CreateTaskForm() {
     }
 
     return (
-        <form className="p-3 taskForm" style={{ width: "50%", margin: "auto" }}>
+        <BaseForm>
             <div className="d-flex justify-content-between position-relative">
                 <p className="fw-bold">Новая задача</p>
                 <CloseFormIcon />
@@ -143,7 +143,7 @@ function CreateTaskForm() {
                 onClick={onSubmit}
                 loading={isActionInProgress}
             />
-        </form>
+        </BaseForm>
     );
 }
 

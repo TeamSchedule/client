@@ -9,7 +9,7 @@ import OverviewTab from "../components/profilePage/tabs/OverviewTab";
 import SettingsTab from "../components/profilePage/tabs/SettingsTab";
 import AvatarEditorTab from "../components/profilePage/AvatarEditorTab";
 import TeamPage from "../components/teamPage/TeamPage";
-import TeamInvitationTabs from "../components/teamPage/TeamInvitationTabs";
+import IncomingInvitationsTab from "../components/teamPage/IncomingInvitationsTab";
 import TeamCreationForm from "../components/teamForms/TeamCreationForm";
 import TeamEditingForm from "../components/teamForms/TeamEditingForm";
 import { TaskPage } from "../components/taskPage/TaskPage";
@@ -37,7 +37,7 @@ export default function AuthorizedRoutes() {
                     </Route>
 
                     <Route path="teams/" element={<TeamPage />}>
-                        <Route index element={<TeamInvitationTabs />} />
+                        <Route index element={<IncomingInvitationsTab />} />
                         <Route path="new" element={<TeamCreationForm />} />
                         <Route path=":teamId" element={<TeamEditingForm />} />
                     </Route>

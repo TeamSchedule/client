@@ -18,13 +18,14 @@ export default function IncomingInvitationItem({ invitation, setIncomingInvitati
     return (
         <>
             <Divider variant="inset" component="li" />
-            <ListItem alignItems="center">
+            <ListItem alignItems="center" disableGutters>
                 <UserAvatar alt="T" avatarSrc="/" className="mr-2" />
                 <ListItemText
                     primary={
-                        <span>
-                            {invitation.team.name}&nbsp;(Invited by {invitation.invitingId})
-                        </span>
+                        <>
+                            <p className="my-0">{invitation.team.name}</p>
+                            <p className="my-0">От: {invitation.invitingId}</p>
+                        </>
                     }
                 />
 

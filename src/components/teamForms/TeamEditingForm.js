@@ -11,8 +11,9 @@ import RemovalFormButton from "../buttons/RemovalFormButton";
 import CommonActionFormButton from "../buttons/CommonActionFormButton";
 import FormHeaderRow from "../generic/FormHeaderRow";
 import InputTextFormItem from "../inputs/InputTextFormItem";
-import "../teamPage/teamPage.css";
 import InputColorFormItem from "../inputs/InputColorFormItem";
+import BaseForm from "../generic/BaseForm";
+import "../teamPage/teamPage.css";
 
 export default function TeamEditingForm() {
     const { teamId } = useParams();
@@ -93,7 +94,7 @@ export default function TeamEditingForm() {
     }
 
     return (
-        <form className="p-3 teamCreationForm" onSubmit={onEditTeam} autoComplete="off">
+        <BaseForm onSubmit={onEditTeam} autoComplete={false}>
             <FormHeaderRow headerText="Редактировать команду" />
 
             <InputTextFormItem
@@ -132,7 +133,7 @@ export default function TeamEditingForm() {
                 onClick={onLeaveTeam}
                 loading={isLeaveActionInProgress}
             />
-        </form>
+        </BaseForm>
     );
 }
 
@@ -183,9 +184,7 @@ function AutocompleteUsers(props) {
     );
 }
 
-function ParticipantList(props) {
-    const [participants /*setParticipants*/] = useState(props.participants || []);
-
+function ParticipantList({ participants }) {
     if (!participants || +participants.length === 0) {
         return null;
     }

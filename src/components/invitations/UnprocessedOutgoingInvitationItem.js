@@ -8,12 +8,13 @@ export function UnprocessedOutgoingInvitationItem({ invitation, onUndoInvitation
     return (
         <>
             <Divider variant="inset" component="div" />
-            <ListItem alignItems="center">
+            <ListItem alignItems="center" disableGutters>
                 <UserAvatar alt="T" avatarSrc="/" className="mr-2" />
                 <ListItemText primary={<span>{invitation.invitedId}</span>} />
                 <RemovalFormButton
-                    btnText="ОТМЕНИТЬ ПРИГЛАШЕНИЕ"
+                    btnText="ОТОЗВАТЬ ПРИГЛАШЕНИЕ"
                     onClick={() => onUndoInvitation(invitation.id)}
+                    fullWidth={false}
                 />
             </ListItem>
             <Divider variant="inset" component="div" />

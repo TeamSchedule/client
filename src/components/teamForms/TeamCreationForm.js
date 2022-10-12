@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import FormHeaderRow from "../generic/FormHeaderRow";
 import InputTextFormItem from "../inputs/InputTextFormItem";
+import BaseForm from "../generic/BaseForm";
 
 export default function TeamCreationForm() {
     const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function TeamCreationForm() {
     }
 
     return (
-        <form className="p-3 teamCreationForm" onSubmit={createTeamSbm} autoComplete="off">
+        <BaseForm onSubmit={createTeamSbm} autoComplete={false}>
             <FormHeaderRow headerText="Создать новую команду" />
             <InputTextFormItem
                 label="Название команды"
@@ -40,6 +41,6 @@ export default function TeamCreationForm() {
                 loading={isActionInProgress}
                 className="mt-4"
             />
-        </form>
+        </BaseForm>
     );
 }

@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import Team from "./Team";
 import { API } from "../../api/api";
 
-export default function TeamList() {
+export default function TeamListTab() {
     const [teams, setTeams] = useState([]);
 
     useEffect(() => {
-        API.teams.all().then((data) => {
-            setTeams(data["teams"] || []);
-        });
+        API.teams
+            .all()
+            .then((data) => {
+                setTeams(data["teams"] || []);
+            })
+            .catch(() => {
+                setTeams([]);
+            });
     }, []);
 
     let teamsList = teams.map((team) => <Team data={team} key={team.id} />);

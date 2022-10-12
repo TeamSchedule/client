@@ -5,10 +5,10 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Badge from "@mui/material/Badge";
 import { API } from "../../api/api";
-import TeamList from "./TeamList";
+import TeamListTab from "./TeamListTab";
 import IncomingInvitationList from "../invitations/IncomingInvitationList";
 
-export default function TeamInvitationTabs() {
+export default function IncomingInvitationsTab() {
     const [value, setValue] = React.useState(0);
     const [incomingInvitations, setIncomingInvitations] = useState([]);
 
@@ -44,7 +44,7 @@ export default function TeamInvitationTabs() {
             </Box>
 
             <TabPanel value={value} index={0}>
-                <TeamList />
+                <TeamListTab />
             </TabPanel>
 
             <TabPanel value={value} index={1}>

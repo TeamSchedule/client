@@ -11,7 +11,7 @@ import RemovalFormButton from "../buttons/RemovalFormButton";
 import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputMultilineTextFormItem from "../inputs/InputMultilineTextFormItem";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
-import "./taskForm.css";
+import BaseForm from "../generic/BaseForm";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
@@ -73,7 +73,7 @@ export default function EditTaskForm() {
     }
 
     return (
-        <form className="p-3 taskForm">
+        <BaseForm>
             <div className="d-flex justify-content-between">
                 <p className="fw-bold">Изменить задачу</p>
                 <CloseFormIcon />
@@ -132,6 +132,6 @@ export default function EditTaskForm() {
                     loading={isDeleteActionInProgress}
                 />
             </div>
-        </form>
+        </BaseForm>
     );
 }

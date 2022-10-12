@@ -48,15 +48,15 @@ export function AuthEmailInput(props) {
     );
 }
 
-export function FormHeader(props) {
-    return <p className="text-center fw-bold fs-5">{props.headerText}</p>;
+export function FormHeader({ headerText }) {
+    return <p className="text-center fw-bold fs-5">{headerText}</p>;
 }
 
-export function FormFooter(props) {
+export function FormFooter({ toggleAuthFormLink }) {
     return (
         <div className="d-flex justify-content-between mt-2">
             <span></span>
-            {props.toggleAuthFormLink}
+            {toggleAuthFormLink}
         </div>
     );
 }

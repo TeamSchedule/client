@@ -16,10 +16,12 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "./monthCalendar.css";
+import LoaderScreen from "../generic/LoaderScreen";
 
 export function TaskViewer() {
     const navigate = useNavigate();
 
+    const [isLoaded, setIsLoaded] = useState(false); // все задачи
     const [tasks, setTasks] = useState([]); // все задачи
     const [filteredTasks, setFilteredTasks] = useState([]); // задачи для выбранных команд
 
@@ -61,6 +63,7 @@ export function TaskViewer() {
                 .then((tasks) => {
                     setTasks(tasks);
                     setFilteredTasks(() => tasks);
+                    setIsLoaded(true);
                 });
         });
     }, [teamToColor]);
@@ -135,51 +138,54 @@ export function TaskViewer() {
     };
 
     return (
-        <div id="full-calendar-wrapper" className="d-flex">
-            <FilterColumn teams={teams} onChangeShowedTeams={changeShowedTeams} />
-            <FullCalendar
-                ref={calendarRef}
-                plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
-                allDaySlot={false}
-                buttonText={{
-                    today: "Сегодня",
-                    month: "Месяц",
-                    week: "Неделя",
-                    day: "День",
-                    list: "Списком",
-                }}
-                contentHeight="auto"
-                dateClick={onDateClick}
-                views={{
-                    dayGridMonth: {},
-                    timeGridWeek: {},
-                    timeGridDay: {},
-                }}
-                display="block"
-                eventDisplay="block"
-                editable={true}
-                events={calendarTasks}
-                eventColor="#010023"
-                eventTimeFormat={{
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    meridiem: false,
-                    hour12: false,
-                }}
-                eventClick={onTaskClick}
-                firstDay={1}
-                headerToolbar={{
-                    left: "dayGridMonth timeGridWeek timeGridDay",
-                    center: "title",
-                    right: "list today prev,next",
-                }}
-                height="auto"
-                initialView="dayGridMonth" // available: 'dayGridWeek', 'timeGridDay', 'listWeek'
-                locale="ru"
-                stickyHeaderDates={true}
-                titleFormat={{ year: "numeric", month: "long", day: "numeric" }}
-            />
-            <Outlet />
-        </div>
+        <>
+            <LoaderScreen loaded={isLoaded} />
+            <div id="full-calendar-wrapper" className="d-flex">
+                <FilterColumn teams={teams} onChangeShowedTeams={changeShowedTeams} />
+                <FullCalendar
+                    ref={calendarRef}
+                    plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}
+                    allDaySlot={false}
+                    buttonText={{
+                        today: "Сегодня",
+                        month: "Месяц",
+                        week: "Неделя",
+                        day: "День",
+                        list: "Списком",
+                    }}
+                    contentHeight="auto"
+                    dateClick={onDateClick}
+                    views={{
+                        dayGridMonth: {},
+                        timeGridWeek: {},
+                        timeGridDay: {},
+                    }}
+                    display="block"
+                    eventDisplay="block"
+                    editable={true}
+                    events={calendarTasks}
+                    eventColor="#010023"
+                    eventTimeFormat={{
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        meridiem: false,
+                        hour12: false,
+                    }}
+                    eventClick={onTaskClick}
+                    firstDay={1}
+                    headerToolbar={{
+                        left: "dayGridMonth timeGridWeek timeGridDay",
+                        center: "title",
+                        right: "list today prev,next",
+                    }}
+                    height="auto"
+                    initialView="dayGridMonth" // available: 'dayGridWeek', 'timeGridDay', 'listWeek'
+                    locale="ru"
+                    stickyHeaderDates={true}
+                    titleFormat={{ year: "numeric", month: "long", day: "numeric" }}
+                />
+                <Outlet />
+            </div>
+        </>
     );
 }
