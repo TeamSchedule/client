@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import React from "react";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";

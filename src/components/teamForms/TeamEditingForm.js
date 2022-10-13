@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 import List from "@mui/material/List";
 
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { API } from "../../api/api";
 import { TeamMemberItem } from "./TeamMemberItem";
 import { UnprocessedOutgoingInvitationItem } from "../invitations/UnprocessedOutgoingInvitationItem";

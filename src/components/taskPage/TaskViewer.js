@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { getNextDayDate } from "../../utils/getPrevDayDate";
 import FilterColumn from "./FilterColumn";
 

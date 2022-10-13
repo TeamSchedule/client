@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUserInfo } from "../../features/userInfoSlice";
 import { Outlet } from "react-router-dom";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";

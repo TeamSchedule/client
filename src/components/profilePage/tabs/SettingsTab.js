@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { selectUserInfo } from "../../../features/userInfoSlice";
 import { API } from "../../../api/api";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import SuccessFormButton from "../../buttons/SuccessFormButton";
 
 export default function SettingsTab() {

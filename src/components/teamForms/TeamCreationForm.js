@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { API } from "../../api/api";
 
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import FormHeaderRow from "../generic/FormHeaderRow";
 import InputTextFormItem from "../inputs/InputTextFormItem";
