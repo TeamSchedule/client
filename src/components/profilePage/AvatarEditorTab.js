@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import AvatarEditor from "react-avatar-editor";
 import { Slider } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import Dropzone from "react-dropzone";
 import Button from "@mui/material/Button";
 import { API } from "../../api/api";
@@ -12,6 +11,7 @@ import SuccessFormButton from "../buttons/SuccessFormButton";
 import CommonActionFormButton from "../buttons/CommonActionFormButton";
 import GoBackActionButton from "../buttons/GoBackActionButton";
 import UserAvatar from "../avatars/UserAvatar";
+import { AlternateAvatarImageIcon } from "../svg";
 
 export default function AvatarEditorTab() {
     const [avatarEditor, setAvatarEditor] = useState();
@@ -103,12 +103,7 @@ export default function AvatarEditorTab() {
                             <div className="p-3 d-flex justify-content-center align-items-center flex-grow-1">
                                 <Button
                                     className="p-2 px-3"
-                                    startIcon={
-                                        <AddPhotoAlternateIcon
-                                            fontSize="large"
-                                            sx={{ width: 64, height: 64 }}
-                                        />
-                                    }
+                                    startIcon={<AlternateAvatarImageIcon />}
                                 >
                                     Нажмите,&nbsp;чтобы&nbsp;загрузить
                                     <br />

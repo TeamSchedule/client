@@ -13,7 +13,6 @@ import FormHeaderRow from "../generic/FormHeaderRow";
 import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputColorFormItem from "../inputs/InputColorFormItem";
 import BaseForm from "../generic/BaseForm";
-import "../teamPage/teamPage.css";
 
 export default function TeamEditingForm() {
     const { teamId } = useParams();

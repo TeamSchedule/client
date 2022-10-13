@@ -1,9 +1,0 @@
-.teamEditLink, .teamEditLink:hover {
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
-}
-
-.teamEditLink:hover {
-    color: #070036;
-}

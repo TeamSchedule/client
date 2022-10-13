@@ -13,7 +13,7 @@ export default function Team(props) {
     }
 
     return (
-        <div onClick={onTeamClick} className="teamEditLink h-100 px-0">
+        <div onClick={onTeamClick} className="h-100 px-0 cursor-pointer text-decoration-none">
             <ListItem alignItems="center" disableGutters>
                 <TeamAvatar imgSrc="" />
                 <div
