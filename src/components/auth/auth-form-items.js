@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 export function AuthPasswordInput(props) {
     return (
@@ -13,7 +13,7 @@ export function AuthPasswordInput(props) {
                 onChange={(e) => props.setValue(e.target.value)}
             />
         </div>
-    )
+    );
 }
 
 export function AuthUsernameInput(props) {
@@ -29,7 +29,7 @@ export function AuthUsernameInput(props) {
                 onChange={(e) => props.setValue(e.target.value)}
             />
         </div>
-    )
+    );
 }
 
 export function AuthEmailInput(props) {
@@ -45,30 +45,30 @@ export function AuthEmailInput(props) {
                 onChange={(e) => props.setValue(e.target.value)}
             />
         </div>
-    )
+    );
 }
 
-export function FormHeader(props) {
-    return <p className="text-center fw-bold fs-5">{props.headerText}</p>
+export function FormHeader({ headerText }) {
+    return <p className="text-center fw-bold fs-5">{headerText}</p>;
 }
 
-export function FormFooter(props) {
+export function FormFooter({ toggleAuthFormLink }) {
     return (
         <div className="d-flex justify-content-between mt-2">
             <span></span>
-            {props.toggleAuthFormLink}
+            {toggleAuthFormLink}
         </div>
-    )
+    );
 }
 
-export function AuthForm(props) {
+export function AuthForm({ innerForm, onSubmit }) {
     return (
         <form
             action="#"
-            className="col-md-12 col-lg-8 col-xl-6 col-xxl-4 p-3 authForm"
-            onSubmit={props.onSubmit}
+            className="col-md-12 col-lg-8 col-xl-6 col-xxl-4 p-1 p-sm-2 p-md-3 p-xl-4 mx-auto mt-0 mt-md-2 mt-xl-5 authForm"
+            onSubmit={onSubmit}
         >
-            {props.innerForm}
+            {innerForm}
         </form>
-    )
+    );
 }

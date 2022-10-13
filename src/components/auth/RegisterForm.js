@@ -1,7 +1,6 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router"
-import { Link } from "react-router-dom"
-import { API } from "../../api/api"
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { API } from "../../api/api";
 import {
     AuthEmailInput,
     AuthForm,
@@ -9,20 +8,24 @@ import {
     AuthUsernameInput,
     FormFooter,
     FormHeader,
-} from "./auth-form-items"
-import "./auth.css"
-import SuccessFormButton from "../buttons/SuccessFormButton"
+} from "./auth-form-items";
+import SuccessFormButton from "../buttons/SuccessFormButton";
+import { NameAlreadyExistErrorMsg, ServiceUnavailableErrorMsg } from "./ErrMsgs";
+import "./auth.css";
 
 export default function RegisterForm() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isActionInProgress, setIsActionInProgress] = useState(false);
+    const [isRegErrShown, setIsRegErrShown] = useState(false);
+    const [isNameOccupiedErrShown, setIsNameOccupiedErrShown] = useState(false);
 
     function signup(e) {
-        e.preventDefault()
-
+        e.preventDefault();
+        setIsActionInProgress(true);
         API.auth
             .signUp({
                 email: email,
@@ -30,9 +33,22 @@ export default function RegisterForm() {
                 password: password,
             })
             .then(() => {
-                setPassword("")
-                navigate("/login")
+                setPassword("");
+                navigate("/login");
             })
+            .catch((err) => {
+                const statusCode = err.response.status;
+                if (statusCode >= 500) {
+                    setIsNameOccupiedErrShown(false);
+                    setIsRegErrShown(true);
+                } else if (statusCode >= 400) {
+                    setIsNameOccupiedErrShown(true);
+                    setIsRegErrShown(false);
+                }
+            })
+            .finally(() => {
+                setIsActionInProgress(false);
+            });
     }
 
     return (
@@ -54,7 +70,13 @@ export default function RegisterForm() {
                         <AuthUsernameInput value={username} setValue={setUsername} />
                         <AuthPasswordInput value={password} setValue={setPassword} />
 
-                        <SuccessFormButton btnText="ЗАРЕГИСТРИРОВАТЬСЯ" />
+                        <NameAlreadyExistErrorMsg visible={isNameOccupiedErrShown} />
+                        <ServiceUnavailableErrorMsg visible={isRegErrShown} />
+
+                        <SuccessFormButton
+                            btnText="ЗАРЕГИСТРИРОВАТЬСЯ"
+                            loading={isActionInProgress}
+                        />
                         <FormFooter
                             toggleAuthFormLink={
                                 <Link to="/login">Уже зарегистрировались? Войти</Link>
@@ -64,5 +86,5 @@ export default function RegisterForm() {
                 }
             />
         </>
-    )
+    );
 }

@@ -1,5 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
-
+import { createSlice } from "@reduxjs/toolkit";
 
 export const isAuthSlice = createSlice({
     name: "isAuth",
@@ -8,17 +7,17 @@ export const isAuthSlice = createSlice({
     },
 
     reducers: {
-        login: state => {
+        login: (state) => {
             state.value = true;
         },
 
-        onLogout: state => {
+        onLogout: (state) => {
             state.value = false;
         },
     },
 });
 
-export const {login, onLogout} = isAuthSlice.actions;
-export const selectIsAuth = state => state.isAuth.value;
+export const { login, onLogout } = isAuthSlice.actions;
+export const selectIsAuth = (state) => state.isAuth.value;
 
 export default isAuthSlice.reducer;
