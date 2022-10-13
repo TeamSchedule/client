@@ -7,11 +7,9 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
-
 import interactionPlugin from "@fullcalendar/interaction";
+
 import { API } from "../../api/api";
-import "primereact/resources/themes/saga-blue/theme.css";
-import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "./monthCalendar.css";
@@ -68,7 +66,9 @@ export function TaskViewer() {
     }, [teamToColor]);
 
     useEffect(() => {
-        setFilteredTasks(tasks.filter((task) => showedTeams.includes(task.team.id)));
+        setFilteredTasks(
+            tasks.filter((task) => showedTeams.includes(task.team.id) || task.team.name === null)
+        );
     }, [showedTeams, tasks]);
 
     useEffect(() => {
