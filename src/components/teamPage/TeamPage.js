@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import Button from "@mui/material/Button";
-import { TeamIcon } from "../svg";
+import { NewTeamIcon } from "../svg";
 
 function CreateNewTeamButton() {
     return (
@@ -10,7 +10,7 @@ function CreateNewTeamButton() {
                 <Button
                     className="p-2 px-3 w-100"
                     variant="outlined"
-                    startIcon={<TeamIcon size={28} />}
+                    startIcon={<NewTeamIcon size={28} />}
                 >
                     Создать новую команду
                 </Button>
