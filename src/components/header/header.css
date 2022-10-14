@@ -1,19 +1,7 @@
 .main-header {
-    border-bottom: 3px solid #0d041a;
-    background: #111125;
-    height: 40px;
+    border-bottom: 3px solid #6b6b6b;
+    background: #f6f8ff;
+    box-sizing: border-box;
+    min-height: 60px;
     z-index: 2;
-}
-
-.headerLink {
-    color: white;
-    margin-left: 15px;
-}
-
-.headerLink:hover {
-    color: white;
-}
-
-.username {
-    color: white;
 }
