@@ -1,6 +1,6 @@
 import React from "react";
 
-function AlternateAvatarImageIcon({ color = "#1976d2", size = 64 }) {
+function AlternateAvatarImageIcon({ color, size }) {
     return (
         <>
             <svg

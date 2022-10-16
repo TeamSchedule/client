@@ -42,10 +42,10 @@ export function TaskViewer() {
 
     useEffect(() => {
         API.teams.all().then((allTeams) => {
-            setTeams(allTeams["teams"]);
-            // Collect ids of all teams (created and default)
+            setTeams(allTeams);
+            // Collect ids of all previews (created and default)
             let teamIds = [];
-            allTeams["teams"].forEach((team) => {
+            allTeams.forEach((team) => {
                 teamIds.push(team.id);
                 teamToColor[team.id.toString()] = team.color;
             });

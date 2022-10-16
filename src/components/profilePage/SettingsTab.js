@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { AuthEmailInput, AuthPasswordInput } from "../../auth/auth-form-items";
+import { AuthEmailInput, AuthPasswordInput } from "../auth/auth-form-items";
 import { useSelector } from "react-redux";
-import { selectUserInfo } from "../../../features/userInfoSlice";
-import { API } from "../../../api/api";
-import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
-import SuccessFormButton from "../../buttons/SuccessFormButton";
+import { selectUserInfo } from "../../features/userInfoSlice";
+import { API } from "../../api/api";
+import SuccessFormButton from "../buttons/SuccessFormButton";
 
 export default function SettingsTab() {
     const userInfo = useSelector(selectUserInfo);
 
-    const navigate = useNavigate();
     const [email, setEmail] = useState(userInfo.email || "");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
@@ -28,19 +25,7 @@ export default function SettingsTab() {
     }
 
     return (
-        <form action="src/components/profilePage/tabs/SettingsTab#" onSubmit={changeUserInfo}>
-            <div className="mb-4">
-                <h4>Изменить профиль</h4>
-                <hr />
-                <Button
-                    variant="outlined"
-                    onClick={() => navigate("../avatar", { replace: true })}
-                    fullWidth={true}
-                >
-                    Сменить аватар
-                </Button>
-            </div>
-
+        <form onSubmit={changeUserInfo}>
             <div className="mb-4">
                 <hr />
                 <AuthEmailInput value={email} setValue={setEmail} />

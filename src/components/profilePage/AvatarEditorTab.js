@@ -12,6 +12,7 @@ import CommonActionFormButton from "../buttons/CommonActionFormButton";
 import GoBackActionButton from "../buttons/GoBackActionButton";
 import UserAvatar from "../avatars/UserAvatar";
 import { AlternateAvatarImageIcon } from "../svg";
+import { COLORS } from "../../consts";
 
 export default function AvatarEditorTab() {
     const [avatarEditor, setAvatarEditor] = useState();
@@ -69,7 +70,7 @@ export default function AvatarEditorTab() {
     };
 
     return (
-        <>
+        <div className="px-7">
             <div className="d-flex px-0">
                 <AvatarEditor
                     ref={(editor) => setAvatarEditor(editor)}
@@ -81,7 +82,7 @@ export default function AvatarEditorTab() {
                         setEnabledToSave(true);
                     }}
                     borderRadius={125} // width // 2
-                    color={[25, 118, 210]}
+                    color={[94, 140, 190]}
                     scale={scale}
                     rotate={rotate}
                     onLoadFailure={() => {
@@ -97,13 +98,18 @@ export default function AvatarEditorTab() {
                     {({ getRootProps, getInputProps }) => (
                         <div
                             {...getRootProps()}
-                            style={{ borderColor: "#1976d2" }}
+                            style={{ borderColor: COLORS.PRIMARY }}
                             className="d-flex w-100 align-items-stretch border-3 px-0"
                         >
                             <div className="p-3 d-flex justify-content-center align-items-center flex-grow-1">
                                 <Button
                                     className="p-2 px-3"
-                                    startIcon={<AlternateAvatarImageIcon />}
+                                    startIcon={
+                                        <AlternateAvatarImageIcon
+                                            color={COLORS.PRIMARY}
+                                            size={64}
+                                        />
+                                    }
                                 >
                                     Нажмите,&nbsp;чтобы&nbsp;загрузить
                                     <br />
@@ -130,6 +136,7 @@ export default function AvatarEditorTab() {
                             max={3}
                             valueLabelDisplay="auto"
                             aria-label="Slider"
+                            style={{ color: COLORS.PRIMARY }}
                         />
                     </div>
                     <div className="py-2">
@@ -142,6 +149,7 @@ export default function AvatarEditorTab() {
                             max={180}
                             valueLabelDisplay="auto"
                             aria-label="Slider"
+                            style={{ color: COLORS.PRIMARY }}
                         />
                     </div>
                     <CommonActionFormButton
@@ -181,6 +189,6 @@ export default function AvatarEditorTab() {
                 onClick={onClickDelete}
                 className="mt-4"
             />
-        </>
+        </div>
     );
 }

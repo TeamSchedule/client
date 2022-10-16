@@ -40,7 +40,7 @@ function CreateTaskForm() {
         setTaskExpirationDatetime(getPrevDayDate(date));
 
         API.teams.all().then((data) => {
-            const createdTeams = data["teams"];
+            const createdTeams = data;
             setTeams(createdTeams);
             if (createdTeams.length > 0) {
                 setSelectedTeam(createdTeams[0].id);

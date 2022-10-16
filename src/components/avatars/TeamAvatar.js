@@ -1,12 +1,12 @@
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import React from "react";
+import Avatar from "@mui/material/Avatar";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
 
-function TeamAvatar({ imgSrc, width = 48, height = 48 }) {
+function TeamAvatar({ className, imgSrc, size = 48 }) {
     return (
         <>
-            <ListItemAvatar>
-                <Avatar src="/" sx={{ width: width, height: height }} />
+            <ListItemAvatar className={className}>
+                <Avatar src={imgSrc} sx={{ width: size, height: size }} className={className} />
             </ListItemAvatar>
         </>
     );
