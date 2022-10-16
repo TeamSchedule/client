@@ -1,7 +1,7 @@
 import Avatar from "@mui/material/Avatar";
 import React from "react";
 
-export default function UserAvatar({ avatarSrc, width = 50, height = 50, alt = "", className }) {
+export default function UserAvatar({ avatarSrc, size, alt = "", className }) {
     /*
      * Компонент аватара ползователя.
      * */
@@ -10,7 +10,7 @@ export default function UserAvatar({ avatarSrc, width = 50, height = 50, alt = "
             <Avatar
                 alt={alt}
                 src={avatarSrc.length > 0 ? avatarSrc : ""}
-                sx={{ width: width, height: height }}
+                sx={{ width: size, height: size }}
                 className={className}
             />
         </>

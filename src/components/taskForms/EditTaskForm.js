@@ -24,7 +24,7 @@ export default function EditTaskForm() {
     const [taskDescription, setTaskDescription] = useState("");
     const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(new Date());
     const [taskClosedStatus, setTaskClosedStatus] = useState(false);
-    const [taskTeamName, setTaskTeamName] = useState("");
+    const [taskTeamName, setTaskTeamName] = useState(null);
 
     // circular loaders
     const [isUpdateActionInProgress, setIsUpdateActionInProgress] = useState(false);
@@ -99,9 +99,7 @@ export default function EditTaskForm() {
 
             <div>
                 <p className="my-1">
-                    {taskTeamName === userInfo.username
-                        ? "персональная задача"
-                        : `Команда: ${taskTeamName}`}
+                    {taskTeamName === null ? "персональная задача" : `Команда: ${taskTeamName}`}
                 </p>
 
                 <FormControlLabel

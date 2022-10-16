@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { selectUserInfo } from "../../features/userInfoSlice";
 import getUserAvatarImageSrc from "../../utils/getUserAvatarImageSrc";
 
-export default function PersonalAvatar({ width = 200, height = 200 }) {
+export default function PersonalAvatar({ size }) {
     /*
      * Компонент персонального аватара ползователя.
      * */
@@ -21,8 +21,7 @@ export default function PersonalAvatar({ width = 200, height = 200 }) {
         <>
             <UserAvatar
                 avatarSrc={avatarURL.length > 0 ? avatarURL : ""}
-                width={width}
-                height={height}
+                size={size}
                 alt={userInfo.username}
             />
         </>

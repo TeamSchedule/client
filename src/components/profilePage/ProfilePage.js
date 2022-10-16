@@ -1,82 +1,78 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUserInfo } from "../../features/userInfoSlice";
-import { Outlet } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Badge from "@mui/material/Badge";
-import PersonalAvatar from "../avatars/PersonalAvatar";
+import TeamsPreviewSection from "./TeamsPreviewSection";
+import UserInfoPreviewSection from "./UserInfoPreviewSection";
+import SchedulePreviewSection from "./SchedulePreviewSection";
+import { API } from "../../api/api";
+import { getNextDayDate } from "../../utils/getPrevDayDate";
+
+const today = new Date();
+today.setHours(0);
+today.setMinutes(0);
+
+const tomorrow = getNextDayDate(today);
 
 export default function ProfilePage() {
     const userInfo = useSelector(selectUserInfo);
-    const navigate = useNavigate();
-    const [value, setValue] = useState(0);
+
+    const [isTeamsLoading, setIsTeamsLoading] = useState(false);
+    const [teamsErr, setTeamsErr] = useState(null);
+    const [teamsNumber, setTeamsNumber] = useState(0);
+    const [lastUpdatedTeams, setLastUpdatedTeams] = useState([]);
+
+    const [todayTasks, setTodayTasks] = useState([]);
+
+    useEffect(() => {
+        setIsTeamsLoading(true);
+        API.teams
+            .all()
+            .then((teams) => {
+                setTeamsNumber(teams.length);
+                const previewTeams = teams.sort().slice(0, 3);
+                setLastUpdatedTeams(previewTeams);
+
+                API.tasks
+                    .getTasks({
+                        from: today.toJSON(),
+                        to: tomorrow.toJSON(),
+                        teams: teams.map((t) => t.id).join(","),
+                    })
+                    .then(setTodayTasks)
+                    .catch(() => {})
+                    .finally(() => {});
+            })
+            .catch(() => {
+                setTeamsErr(true);
+            })
+            .finally(() => {
+                setIsTeamsLoading(false);
+            });
+    }, []);
 
     return (
         <>
             <div className="row w-75 m-auto">
-                <div className="col-auto">
-                    <button
-                        className=""
-                        style={{ background: "none", border: "none" }}
-                        onClick={() => navigate("avatar")}
-                    >
-                        <PersonalAvatar />
-                    </button>
-
-                    <p className="mt-4 fw-bolder fs-3">{userInfo.username}</p>
-                </div>
-
-                <div className="col">
-                    <Box sx={{ width: "100%" }}>
-                        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                            <Tabs value={value} onChange={(event, newValue) => setValue(newValue)}>
-                                <Tab
-                                    label="Основное"
-                                    onClick={() => {
-                                        setValue(0);
-                                        navigate("");
-                                    }}
-                                />
-                                <Tab
-                                    label={<Badge color="success">Настройки</Badge>}
-                                    onClick={() => {
-                                        setValue(1);
-                                        navigate("settings");
-                                    }}
-                                />
-                            </Tabs>
-                        </Box>
-
-                        <TabPanel value={value} index={value}>
-                            <Outlet />
-                        </TabPanel>
-                    </Box>
+                <div className="d-flex">
+                    <div style={{}} className="mb-2 mr-2 w-75">
+                        <div className="mb-3">
+                            <UserInfoPreviewSection
+                                about="Сегодня я UI/UX дизайнер"
+                                login={userInfo.login}
+                                teamsNumber={teamsNumber}
+                            />
+                        </div>
+                        <TeamsPreviewSection
+                            teams={lastUpdatedTeams}
+                            err={teamsErr}
+                            loading={isTeamsLoading}
+                        />
+                    </div>
+                    <div className="w-50">
+                        <SchedulePreviewSection todayTasks={todayTasks} />
+                    </div>
                 </div>
             </div>
         </>
-    );
-}
-
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography component="div">{children}</Typography>
-                </Box>
-            )}
-        </div>
     );
 }

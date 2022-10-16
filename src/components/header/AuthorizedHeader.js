@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserInfo } from "../../features/userInfoSlice";
 import PersonalAvatar from "../avatars/PersonalAvatar";
@@ -13,6 +13,7 @@ import {
     TeamIcon,
     ToDoListIcon,
 } from "../svg";
+import Badge from "@mui/material/Badge";
 
 const iconSize = 36;
 const avatarSize = iconSize;
@@ -21,8 +22,8 @@ function AuthorizedHeader() {
     const userInfo = useSelector(selectUserInfo);
 
     return (
-        <header className="row justify-content-end py-2 main-header mx-0 px-2 position-fixed left-0 top-0 right-0">
-            <div className="d-flex justify-content-between">
+        <header className="row justify-content-end main-header mx-0 position-fixed left-0 top-0 right-0">
+            <div className="d-flex justify-content-between p-0">
                 <HeaderMainNavigationSection login={userInfo.login} />
                 <HeaderUserInfoSection login={userInfo.login} />
             </div>
@@ -36,10 +37,10 @@ function HeaderUserInfoSection({ login }) {
     return (
         <div className="d-flex align-items-center">
             <HeaderLinkIcon linkTo={`/`}>
-                <BellNotificationIcon size={iconSize - 4} color={COLORS.PRIMARY} />
+                <UserNotificationBell notificationNumber={0} />
             </HeaderLinkIcon>
-            <PersonalAvatar width={avatarSize} height={avatarSize} />
-            <p className="my-0 px-3">{login}</p>
+            <PersonalAvatar size={avatarSize} />
+            <p className="my-0 px-3 fs-5">{login}</p>
             <LogoutMainButton />
         </div>
     );
@@ -64,30 +65,72 @@ function LogoutMainButton() {
 }
 
 function HeaderMainNavigationSection({ login }) {
+    const location = useLocation();
+
+    useEffect(() => {}, [location.pathname]);
+
+    function getBgColor(path) {
+        return location.pathname.startsWith(path) ? COLORS.PRIMARY : "white";
+    }
+
+    function getColor(path) {
+        return location.pathname.startsWith(path) ? "white" : COLORS.PRIMARY;
+    }
+
     return (
         <div className="d-flex align-items-center">
-            <HeaderLinkIcon linkTo={`/${login}/profile`}>
-                <HomePageIcon size={iconSize + 2} color={COLORS.PRIMARY} />
+            <HeaderLinkIcon
+                linkTo={`/${login}/profile`}
+                styles={{ background: getBgColor(`/${login}/profile`) }}
+            >
+                <HomePageIcon size={iconSize + 2} color={getColor(`/${login}/profile`)} />
             </HeaderLinkIcon>
-            <HeaderLinkIcon linkTo={`/${login}/teams`}>
-                <TeamIcon size={iconSize} color={COLORS.PRIMARY} />
+
+            <HeaderLinkIcon
+                linkTo={`/${login}/teams`}
+                styles={{ background: getBgColor(`/${login}/teams`) }}
+            >
+                <TeamIcon size={iconSize} color={getColor(`/${login}/teams`)} />
             </HeaderLinkIcon>
-            <HeaderLinkIcon linkTo={`/${login}/tasks`}>
-                <ToDoListIcon size={iconSize} color={COLORS.PRIMARY} />
+
+            <HeaderLinkIcon
+                linkTo={`/${login}/tasks`}
+                styles={{ background: getBgColor(`/${login}/tasks`) }}
+            >
+                <ToDoListIcon size={iconSize} color={getColor(`/${login}/tasks`)} />
             </HeaderLinkIcon>
-            <HeaderLinkIcon linkTo={`/${login}/profile`}>
-                <SettingsIcon size={iconSize} color={COLORS.PRIMARY} />
+
+            <HeaderLinkIcon
+                linkTo={`/${login}/settings`}
+                styles={{ background: getBgColor(`/${login}/settings`) }}
+            >
+                <SettingsIcon size={iconSize} color={getColor(`/${login}/settings`)} />
             </HeaderLinkIcon>
         </div>
     );
 }
 
-function HeaderLinkIcon({ children, linkTo, onClick }) {
+function HeaderLinkIcon({ className, children, linkTo, onClick, styles }) {
     return (
         <>
-            <Link to={linkTo} className="mx-3" onClick={onClick} style={{ textDecoration: "none" }}>
+            <Link
+                to={linkTo}
+                className={className + " " + "d-flex align-items-center px-3 h-100"}
+                onClick={onClick}
+                style={{ textDecoration: "none", ...styles }}
+            >
                 {children}
             </Link>
+        </>
+    );
+}
+
+function UserNotificationBell({ notificationNumber }) {
+    return (
+        <>
+            <Badge badgeContent={notificationNumber} color="primary">
+                <BellNotificationIcon size={iconSize - 4} color={COLORS.PRIMARY} />
+            </Badge>
         </>
     );
 }

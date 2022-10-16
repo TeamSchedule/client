@@ -8,8 +8,8 @@ export default function TeamListTab() {
     useEffect(() => {
         API.teams
             .all()
-            .then((data) => {
-                setTeams(data["teams"] || []);
+            .then((teamList) => {
+                setTeams(teamList || []);
             })
             .catch(() => {
                 setTeams([]);

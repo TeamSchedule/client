@@ -4,7 +4,7 @@ export class teams {
     static apiPrefix = "/schedule/team";
 
     static async all() {
-        return (await $axios.get(`${this.apiPrefix}`)).data;
+        return (await $axios.get(`${this.apiPrefix}`)).data["teams"];
     }
 
     static async get(id) {

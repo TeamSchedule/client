@@ -5,8 +5,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import App from "../components/App";
 import { Main } from "../components/Main";
 import ProfilePage from "../components/profilePage/ProfilePage";
-import OverviewTab from "../components/profilePage/tabs/OverviewTab";
-import SettingsTab from "../components/profilePage/tabs/SettingsTab";
+import SettingsTab from "../components/profilePage/SettingsTab";
 import AvatarEditorTab from "../components/profilePage/AvatarEditorTab";
 import TeamPage from "../components/teamPage/TeamPage";
 import IncomingInvitationsTab from "../components/teamPage/IncomingInvitationsTab";
@@ -26,15 +25,13 @@ export default function AuthorizedRoutes() {
             <Route path="/" element={<App />}>
                 <Route
                     index
-                    element={<Navigate to={`/${userInfo.username}/profile`} replace={true} />}
+                    element={<Navigate to={`/${userInfo.login}/profile`} replace={true} />}
                 />
 
                 <Route path=":username/" element={<Main />}>
-                    <Route path="profile/" element={<ProfilePage />}>
-                        <Route index element={<OverviewTab />} />
-                        <Route path="settings" element={<SettingsTab />} />
-                        <Route path="avatar" element={<AvatarEditorTab />} />
-                    </Route>
+                    <Route index path="profile/" element={<ProfilePage />} />
+                    <Route path="avatar" element={<AvatarEditorTab />} />
+                    <Route path="settings/" element={<SettingsTab />} />
 
                     <Route path="teams/" element={<TeamPage />}>
                         <Route index element={<IncomingInvitationsTab />} />
