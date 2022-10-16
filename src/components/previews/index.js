@@ -1,3 +1,4 @@
+import ShortPreviewTaskItem from "./ShortPreviewTaskItem";
 import ShortPreviewTeamItem from "./ShortPreviewTeamItem";
 
-export { ShortPreviewTeamItem };
+export { ShortPreviewTaskItem, ShortPreviewTeamItem };

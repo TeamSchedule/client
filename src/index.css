@@ -1,7 +1,12 @@
 body, html {
     height: 100%;
     width: 100%;
-    background: #f3f6ff;
+    background: #EAEDFF;
+    /*font-family: "Roboto";*/
+}
+
+a {
+    text-decoration: none;
 }
 
 .main {

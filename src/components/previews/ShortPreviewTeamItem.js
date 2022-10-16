@@ -4,12 +4,12 @@ import { PrimaryPreviewText, SecondaryPreviewText } from "./PreviewComponents";
 
 function ShortPreviewTeamItem({ className, description, imgSrc, style, teamName, linkTo }) {
     return (
-        <Link to={linkTo} className="text-decoration-none" style={{ minWidth: "200px" }}>
+        <Link to={linkTo} style={{ minWidth: "200px" }}>
             <div
                 className={className + " " + "p-4 "}
                 style={{
                     background:
-                        "linear-gradient(45deg, rgba(255,0,0,0.1) 20%, rgba(0,59,255, 0.2) 65%)",
+                        "linear-gradient(45deg, rgba(255,0,0,0.2) 20%, rgba(0,59,255, 0.4) 65%)",
                     borderRadius: "20px",
                     ...style,
                 }}

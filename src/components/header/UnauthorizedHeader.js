@@ -17,7 +17,7 @@ export default UnauthorizedHeader;
 function UnauthorizedHeaderLink({ text, linkTo }) {
     return (
         <>
-            <Link to={linkTo} className="mx-2">
+            <Link to={linkTo} className="mx-2 fs-5">
                 {text}
             </Link>
         </>

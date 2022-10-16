@@ -20,7 +20,7 @@ function TeamsPreviewSection({ err = null, loading = false, teams = [] }) {
         <BasePreviewSection>
             <Link
                 to="teams"
-                className="d-flex justify-content-between align-items-baseline text-decoration-none text-black"
+                className="d-flex justify-content-between align-items-baseline text-black"
                 onMouseLeave={() => setIsHovering(false)}
                 onMouseEnter={() => setIsHovering(true)}
             >
@@ -43,7 +43,7 @@ function PreviewTeamsGroup({ teams = [] }) {
                 <span className="fs-5" style={{ color: "gray" }}>
                     Вы еще не состоите в командах
                 </span>
-                <Link to="teams/new" className="ml-2 text-decoration-none fs-5">
+                <Link to="teams/new" className="ml-2 fs-5">
                     Создать
                 </Link>
             </div>

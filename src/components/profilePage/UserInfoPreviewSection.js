@@ -13,28 +13,26 @@ function UserInfoPreviewSection({
     realizedTasksNumber = 8,
 }) {
     return (
-        <>
-            <div className="p-3" style={{ background: "#eeeeff", borderRadius: "20px" }}>
-                <h1 className="mb-4">Мой профиль</h1>
-                <div className="d-flex flex-column align-items-center ">
-                    <MainUserAvatar />
-                    <PrimaryPreviewText text={login} className="mt-4 mb-0" />
-                    <SecondaryPreviewText text={about} className="mb-4" />
-                    <div className="d-flex">
-                        <UserInfoPreviewItem
-                            statValue={cooperationTime || "3 месяца"}
-                            statName="Времени с сервисом"
-                        />
-                        <UserInfoPreviewItem
-                            statValue={realizedTasksNumber}
-                            statName="Выполнено задач"
-                            className="border-x-1"
-                        />
-                        <UserInfoPreviewItem statValue={teamsNumber} statName="Команд" />
-                    </div>
+        <BasePreviewSection>
+            <h1 className="mb-4">Мой профиль</h1>
+            <div className="d-flex flex-column align-items-center ">
+                <MainUserAvatar />
+                <PrimaryPreviewText text={login} className="mt-4 mb-0" />
+                <SecondaryPreviewText text={about} className="mb-4" />
+                <div className="d-flex">
+                    <UserInfoPreviewItem
+                        statValue={cooperationTime || "3 месяца"}
+                        statName="Времени с сервисом"
+                    />
+                    <UserInfoPreviewItem
+                        statValue={realizedTasksNumber}
+                        statName="Выполнено задач"
+                        className="border-x-1"
+                    />
+                    <UserInfoPreviewItem statValue={teamsNumber} statName="Команд" />
                 </div>
             </div>
-        </>
+        </BasePreviewSection>
     );
 }
 
@@ -55,7 +53,7 @@ function MainUserAvatar({}) {
     const editIconColor = isHovering ? "#9b9b9b" : "#d0d0d0";
 
     return (
-        <BasePreviewSection>
+        <div>
             <div
                 className="position-relative"
                 onMouseLeave={() => setIsHovering(false)}
@@ -71,7 +69,7 @@ function MainUserAvatar({}) {
                     </div>
                 </div>
             </div>
-        </BasePreviewSection>
+        </div>
     );
 }
 

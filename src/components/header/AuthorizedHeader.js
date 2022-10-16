@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserInfo } from "../../features/userInfoSlice";
 import PersonalAvatar from "../avatars/PersonalAvatar";
@@ -13,6 +13,7 @@ import {
     TeamIcon,
     ToDoListIcon,
 } from "../svg";
+import Badge from "@mui/material/Badge";
 
 const iconSize = 36;
 const avatarSize = iconSize;
@@ -36,7 +37,7 @@ function HeaderUserInfoSection({ login }) {
     return (
         <div className="d-flex align-items-center">
             <HeaderLinkIcon linkTo={`/`}>
-                <BellNotificationIcon size={iconSize - 4} color={COLORS.PRIMARY} />
+                <UserNotificationBell notificationNumber={0} />
             </HeaderLinkIcon>
             <PersonalAvatar size={avatarSize} />
             <p className="my-0 px-3 fs-5">{login}</p>
@@ -64,48 +65,46 @@ function LogoutMainButton() {
 }
 
 function HeaderMainNavigationSection({ login }) {
-    const [currentTabNumber, setCurrentTabNumber] = useState(0);
+    const location = useLocation();
 
-    function getBgColor(tabNumber) {
-        return currentTabNumber === tabNumber ? COLORS.PRIMARY : "white";
+    useEffect(() => {}, [location.pathname]);
+
+    function getBgColor(path) {
+        return location.pathname.startsWith(path) ? COLORS.PRIMARY : "white";
     }
 
-    function getColor(tabNumber) {
-        return currentTabNumber === tabNumber ? "white" : COLORS.PRIMARY;
+    function getColor(path) {
+        return location.pathname.startsWith(path) ? "white" : COLORS.PRIMARY;
     }
 
     return (
         <div className="d-flex align-items-center">
             <HeaderLinkIcon
                 linkTo={`/${login}/profile`}
-                onClick={() => setCurrentTabNumber(0)}
-                styles={{ background: getBgColor(0) }}
+                styles={{ background: getBgColor(`/${login}/profile`) }}
             >
-                <HomePageIcon size={iconSize + 2} color={getColor(0)} />
+                <HomePageIcon size={iconSize + 2} color={getColor(`/${login}/profile`)} />
             </HeaderLinkIcon>
 
             <HeaderLinkIcon
                 linkTo={`/${login}/teams`}
-                onClick={() => setCurrentTabNumber(1)}
-                styles={{ background: getBgColor(1) }}
+                styles={{ background: getBgColor(`/${login}/teams`) }}
             >
-                <TeamIcon size={iconSize} color={getColor(1)} />
+                <TeamIcon size={iconSize} color={getColor(`/${login}/teams`)} />
             </HeaderLinkIcon>
 
             <HeaderLinkIcon
                 linkTo={`/${login}/tasks`}
-                onClick={() => setCurrentTabNumber(2)}
-                styles={{ background: getBgColor(2) }}
+                styles={{ background: getBgColor(`/${login}/tasks`) }}
             >
-                <ToDoListIcon size={iconSize} color={getColor(2)} />
+                <ToDoListIcon size={iconSize} color={getColor(`/${login}/tasks`)} />
             </HeaderLinkIcon>
 
             <HeaderLinkIcon
                 linkTo={`/${login}/settings`}
-                onClick={() => setCurrentTabNumber(3)}
-                styles={{ background: getBgColor(3) }}
+                styles={{ background: getBgColor(`/${login}/settings`) }}
             >
-                <SettingsIcon size={iconSize} color={getColor(3)} />
+                <SettingsIcon size={iconSize} color={getColor(`/${login}/settings`)} />
             </HeaderLinkIcon>
         </div>
     );
@@ -122,6 +121,16 @@ function HeaderLinkIcon({ className, children, linkTo, onClick, styles }) {
             >
                 {children}
             </Link>
+        </>
+    );
+}
+
+function UserNotificationBell({ notificationNumber }) {
+    return (
+        <>
+            <Badge badgeContent={notificationNumber} color="primary">
+                <BellNotificationIcon size={iconSize - 4} color={COLORS.PRIMARY} />
+            </Badge>
         </>
     );
 }

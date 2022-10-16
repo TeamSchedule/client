@@ -12,9 +12,14 @@ function ShortPreviewTaskItem({ className, imgSrc, isPrivate, taskName, descript
     return (
         <Link
             to={`tasks/${taskId}`}
-            className="d-flex justify-content-between align-items-center text-decoration-none mb-2"
+            className="d-flex justify-content-between align-items-center mb-2"
             onMouseLeave={() => setIsHovering(false)}
             onMouseEnter={() => setIsHovering(true)}
+            style={{
+                border: "1px solid #E1E7FC",
+                borderRadius: "15px",
+                background: isHovering ? "#eaedff" : "#fff",
+            }}
         >
             <div className={className + " " + "d-flex p-3 align-items-center"}>
                 <div className="mr-3">
