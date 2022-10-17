@@ -1,7 +1,7 @@
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import UserAvatar from "../avatars/UserAvatar";
+import { UserAvatar } from "../avatars";
 import RemovalFormButton from "../buttons/RemovalFormButton";
 
 export function UnprocessedOutgoingInvitationItem({ invitation, onUndoInvitation }) {

@@ -3,7 +3,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import RemovalFormButton from "../buttons/RemovalFormButton";
-import UserAvatar from "../avatars/UserAvatar";
+import { UserAvatar } from "../avatars";
 import { API } from "../../api/api";
 
 export default function IncomingInvitationItem({ invitation, setIncomingInvitations }) {

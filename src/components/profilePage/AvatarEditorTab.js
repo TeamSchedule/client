@@ -10,7 +10,7 @@ import RemovalFormButton from "../buttons/RemovalFormButton";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import CommonActionFormButton from "../buttons/CommonActionFormButton";
 import GoBackActionButton from "../buttons/GoBackActionButton";
-import UserAvatar from "../avatars/UserAvatar";
+import { UserAvatar } from "../avatars";
 import { AlternateAvatarImageIcon } from "../svg";
 import { COLORS } from "../../consts";
 

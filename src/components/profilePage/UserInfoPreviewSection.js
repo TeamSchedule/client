@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PersonalAvatar from "../avatars/PersonalAvatar";
+import { PersonalAvatar } from "../avatars";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../previews/PreviewComponents";
 import EditIcon from "../svg/EditIcon";
 import BasePreviewSection from "./BasePreviewSection";

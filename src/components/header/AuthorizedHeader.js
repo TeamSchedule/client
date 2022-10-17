@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserInfo } from "../../features/userInfoSlice";
-import PersonalAvatar from "../avatars/PersonalAvatar";
+import { PersonalAvatar } from "../avatars";
 import clearInfo from "../../utils/clearInfo";
 import { COLORS } from "../../consts";
 import { HomePageIcon, LogoutIcon, SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";

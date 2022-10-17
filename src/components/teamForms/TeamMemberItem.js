@@ -1,6 +1,6 @@
 import React from "react";
 import { ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
-import UserAvatar from "../avatars/UserAvatar";
+import { UserAvatar } from "../avatars";
 
 export function TeamMemberItem({ participant }) {
     return (
