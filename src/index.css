@@ -41,3 +41,24 @@ a {
 .shortPreviewTeamItem:last-child {
     margin-right: 0 !important;
 }
+
+.editIcon {
+    fill: #d0d0d0;
+    cursor: pointer;
+}
+.editIcon:hover {
+    fill: #6b6b6b;
+}
+.editIconBorder {
+    border: 3px solid #d0d0d0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.editIconBorder:hover {
+    border-color: #6b6b6b;
+}
+
+.editIconBorder:hover .editIcon {
+    border-color: #6b6b6b;
+    fill: #6b6b6b;
+}

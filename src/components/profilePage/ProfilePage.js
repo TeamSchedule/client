@@ -57,7 +57,7 @@ export default function ProfilePage() {
                     <div style={{}} className="mb-2 mr-2 w-75">
                         <div className="mb-3">
                             <UserInfoPreviewSection
-                                about="Сегодня я UI/UX дизайнер"
+                                about={userInfo.about ? userInfo.about : ""}
                                 login={userInfo.login}
                                 startWorkingDt={userInfo.creationDate}
                                 teamsNumber={teamsNumber}
