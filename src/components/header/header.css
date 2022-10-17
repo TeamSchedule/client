@@ -5,3 +5,13 @@
     min-height: 60px;
     z-index: 2;
 }
+
+.headerLinkIcon:hover {
+    background: #e9f3ff !important;
+    outline: none !important;
+}
+
+a:focus {
+    outline: none !important;
+    text-decoration: none !important;
+}

@@ -5,15 +5,7 @@ import { selectUserInfo } from "../../features/userInfoSlice";
 import PersonalAvatar from "../avatars/PersonalAvatar";
 import clearInfo from "../../utils/clearInfo";
 import { COLORS } from "../../consts";
-import {
-    BellNotificationIcon,
-    HomePageIcon,
-    LogoutIcon,
-    SettingsIcon,
-    TeamIcon,
-    ToDoListIcon,
-} from "../svg";
-import Badge from "@mui/material/Badge";
+import { HomePageIcon, LogoutIcon, SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
 
 const iconSize = 36;
 const avatarSize = iconSize;
@@ -36,11 +28,11 @@ export default AuthorizedHeader;
 function HeaderUserInfoSection({ login }) {
     return (
         <div className="d-flex align-items-center">
-            <HeaderLinkIcon linkTo={`/`}>
-                <UserNotificationBell notificationNumber={0} />
-            </HeaderLinkIcon>
             <PersonalAvatar size={avatarSize} />
-            <p className="my-0 px-3 fs-5">{login}</p>
+            <Link to={`${login}/profile`}>
+                <p className="my-0 px-3 fs-5">{login}</p>
+            </Link>
+
             <LogoutMainButton />
         </div>
     );
@@ -115,22 +107,12 @@ function HeaderLinkIcon({ className, children, linkTo, onClick, styles }) {
         <>
             <Link
                 to={linkTo}
-                className={className + " " + "d-flex align-items-center px-3 h-100"}
+                className={className + " " + "d-flex align-items-center px-3 h-100 headerLinkIcon"}
                 onClick={onClick}
                 style={{ textDecoration: "none", ...styles }}
             >
                 {children}
             </Link>
-        </>
-    );
-}
-
-function UserNotificationBell({ notificationNumber }) {
-    return (
-        <>
-            <Badge badgeContent={notificationNumber} color="primary">
-                <BellNotificationIcon size={iconSize - 4} color={COLORS.PRIMARY} />
-            </Badge>
         </>
     );
 }

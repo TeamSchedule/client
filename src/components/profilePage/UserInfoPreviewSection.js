@@ -4,11 +4,12 @@ import PersonalAvatar from "../avatars/PersonalAvatar";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../previews/PreviewComponents";
 import EditIcon from "../svg/EditIcon";
 import BasePreviewSection from "./BasePreviewSection";
+import getWorkingInterval from "../../utils/getWorkingInterval";
 
 function UserInfoPreviewSection({
     about,
-    cooperationTime,
     login,
+    startWorkingDt,
     teamsNumber,
     realizedTasksNumber = 8,
 }) {
@@ -19,9 +20,9 @@ function UserInfoPreviewSection({
                 <MainUserAvatar />
                 <PrimaryPreviewText text={login} className="mt-4 mb-0" />
                 <SecondaryPreviewText text={about} className="mb-4" />
-                <div className="d-flex">
+                <div className="d-flex w-100">
                     <UserInfoPreviewItem
-                        statValue={cooperationTime || "3 месяца"}
+                        statValue={getWorkingInterval(new Date(startWorkingDt) - new Date())}
                         statName="Времени с сервисом"
                     />
                     <UserInfoPreviewItem
