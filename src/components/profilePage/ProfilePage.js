@@ -5,13 +5,6 @@ import TeamsPreviewSection from "./TeamsPreviewSection";
 import UserInfoPreviewSection from "./UserInfoPreviewSection";
 import SchedulePreviewSection from "./SchedulePreviewSection";
 import { API } from "../../api/api";
-import { getNextDayDate } from "../../utils/getPrevDayDate";
-
-const today = new Date();
-today.setHours(0);
-today.setMinutes(0);
-
-const tomorrow = getNextDayDate(today);
 
 export default function ProfilePage() {
     const userInfo = useSelector(selectUserInfo);
@@ -21,6 +14,7 @@ export default function ProfilePage() {
     const [teamsNumber, setTeamsNumber] = useState(0);
     const [lastUpdatedTeams, setLastUpdatedTeams] = useState([]);
 
+    const [tasksNumber, setTasksNumber] = useState(0);
     const [todayTasks, setTodayTasks] = useState([]);
 
     useEffect(() => {
@@ -34,11 +28,12 @@ export default function ProfilePage() {
 
                 API.tasks
                     .getTasks({
-                        from: today.toJSON(),
-                        to: tomorrow.toJSON(),
                         teams: teams.map((t) => t.id).join(","),
                     })
-                    .then(setTodayTasks)
+                    .then((tasksData) => {
+                        setTasksNumber(tasksData.length);
+                        setTodayTasks(tasksData.slice(0, 3));
+                    })
                     .catch(() => {})
                     .finally(() => {});
             })
@@ -61,6 +56,7 @@ export default function ProfilePage() {
                                 login={userInfo.login}
                                 startWorkingDt={userInfo.creationDate}
                                 teamsNumber={teamsNumber}
+                                tasksNumber={tasksNumber}
                             />
                         </div>
                         <TeamsPreviewSection

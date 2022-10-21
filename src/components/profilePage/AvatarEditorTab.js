@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import AvatarEditor from "react-avatar-editor";
 import { Slider } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -15,6 +15,8 @@ import { AlternateAvatarImageIcon } from "../svg";
 import { COLORS } from "../../consts";
 
 export default function AvatarEditorTab() {
+    const navigate = useNavigate();
+
     const [avatarEditor, setAvatarEditor] = useState();
 
     const [scale, setScale] = useState(1);
@@ -57,6 +59,7 @@ export default function AvatarEditorTab() {
                     type: blob.type,
                 });
                 API.avatars.set(myFile).then(() => {
+                    navigate("/");
                     window.location.reload();
                 });
             });

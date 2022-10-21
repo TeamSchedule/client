@@ -6,7 +6,7 @@ function TodayTasksPreviewSection({ todayTasks }) {
     return (
         <div>
             <div className="d-flex align-items-baseline mb-2">
-                <h2>Сегодня</h2>
+                <h3>Сегодня</h3>
                 <h4 className="px-3">
                     {today.getDate()},&nbsp;{today.toLocaleString("ru-Ru", { month: "long" })}
                 </h4>

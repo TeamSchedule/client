@@ -1,6 +1,5 @@
 import $axios from "../axiosRequests";
 
-
 export class users {
     static apiPrefix = "/user";
 
@@ -10,6 +9,10 @@ export class users {
 
     static async update(data) {
         return await $axios.patch(this.apiPrefix, data);
+    }
+
+    static async updateUserInfo(userId, data) {
+        return await $axios.put(`${this.apiPrefix}/${userId}`, data);
     }
 
     // TODO: check if username exists

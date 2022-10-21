@@ -1,27 +1,30 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { PersonalAvatar } from "../avatars";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../previews/PreviewComponents";
 import EditIcon from "../svg/EditIcon";
 import BasePreviewSection from "./BasePreviewSection";
 import getWorkingInterval from "../../utils/getWorkingInterval";
 import { TextField } from "@mui/material";
+import { API } from "../../api/api";
+import { selectUserInfo, set } from "../../features/userInfoSlice";
 
 export default function UserInfoPreviewSection({
     about,
     login,
     startWorkingDt,
     teamsNumber,
-    realizedTasksNumber = 8,
+    tasksNumber,
 }) {
     return (
         <BasePreviewSection>
-            <h1 className="mb-4">Мой профиль</h1>
+            <h1 className="mb-4 fs-2">Мой профиль</h1>
             <div className="d-flex flex-column align-items-center ">
                 <MainUserAvatar />
                 <PrimaryPreviewText text={login} className="mt-4" />
                 <div className="mb-4">
-                    <UserAboutItem about={about} />
+                    <UserAboutItem />
                 </div>
                 <div className="d-flex w-100">
                     <UserInfoPreviewItem
@@ -29,8 +32,8 @@ export default function UserInfoPreviewSection({
                         statName="Времени с сервисом"
                     />
                     <UserInfoPreviewItem
-                        statValue={realizedTasksNumber}
-                        statName="Выполнено задач"
+                        statValue={tasksNumber}
+                        statName="Задач"
                         className="border-x-1"
                     />
                     <UserInfoPreviewItem statValue={teamsNumber} statName="Команд" />
@@ -72,8 +75,13 @@ function MainUserAvatar({}) {
 }
 
 function UserAboutItem({ about }) {
+    const dispatch = useDispatch();
+    const userInfo = useSelector(selectUserInfo);
+
     const [isEditMode, setIsEditMode] = useState(false);
-    const [newAbout, setNewAbout] = useState(about.length > 0 ? about : "Напиши о себе");
+    const [newAbout, setNewAbout] = useState(
+        userInfo.description.length > 0 ? userInfo.description : "Напиши о себе"
+    );
 
     function onEditAbout() {
         setIsEditMode(!isEditMode);
@@ -81,7 +89,17 @@ function UserAboutItem({ about }) {
 
     function onSaveNewAbout(e) {
         if (e.code === "Enter" || e.key === "Enter") {
-            // TODO: UPDATE USER ABOUT
+            API.users
+                .updateUserInfo(userInfo.id, { description: newAbout })
+                .then(() => {
+                    API.users.get().then((res) => {
+                        dispatch(set(res.data.user));
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+                .finally(() => {});
             setIsEditMode(false);
         }
     }
