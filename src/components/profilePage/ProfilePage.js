@@ -5,13 +5,7 @@ import TeamsPreviewSection from "./TeamsPreviewSection";
 import UserInfoPreviewSection from "./UserInfoPreviewSection";
 import SchedulePreviewSection from "./SchedulePreviewSection";
 import { API } from "../../api/api";
-import { getNextDayDate } from "../../utils/getPrevDayDate";
-
-const today = new Date();
-today.setHours(0);
-today.setMinutes(0);
-
-const tomorrow = getNextDayDate(today);
+import { StatisticsDiagram } from "../statistics";
 
 export default function ProfilePage() {
     const userInfo = useSelector(selectUserInfo);
@@ -21,6 +15,7 @@ export default function ProfilePage() {
     const [teamsNumber, setTeamsNumber] = useState(0);
     const [lastUpdatedTeams, setLastUpdatedTeams] = useState([]);
 
+    const [tasksNumber, setTasksNumber] = useState(0);
     const [todayTasks, setTodayTasks] = useState([]);
 
     useEffect(() => {
@@ -34,11 +29,21 @@ export default function ProfilePage() {
 
                 API.tasks
                     .getTasks({
-                        from: today.toJSON(),
-                        to: tomorrow.toJSON(),
                         teams: teams.map((t) => t.id).join(","),
                     })
-                    .then(setTodayTasks)
+                    .then((tasksData) => {
+                        setTasksNumber(tasksData.length);
+                        let todayTasks = [];
+                        for (let task of tasksData) {
+                            if (!task.closed) {
+                                if (todayTasks.length >= 3) {
+                                    break;
+                                }
+                                todayTasks.push(task);
+                            }
+                        }
+                        setTodayTasks(todayTasks);
+                    })
                     .catch(() => {})
                     .finally(() => {});
             })
@@ -54,12 +59,14 @@ export default function ProfilePage() {
         <>
             <div className="row w-75 m-auto">
                 <div className="d-flex">
-                    <div style={{}} className="mb-2 mr-2 w-75">
+                    <div className="mb-2 mr-2 w-75">
                         <div className="mb-3">
                             <UserInfoPreviewSection
-                                about="Сегодня я UI/UX дизайнер"
+                                about={userInfo.about ? userInfo.about : ""}
                                 login={userInfo.login}
+                                startWorkingDt={userInfo.creationDate}
                                 teamsNumber={teamsNumber}
+                                tasksNumber={tasksNumber}
                             />
                         </div>
                         <TeamsPreviewSection
@@ -70,6 +77,7 @@ export default function ProfilePage() {
                     </div>
                     <div className="w-50">
                         <SchedulePreviewSection todayTasks={todayTasks} />
+                        <StatisticsDiagram />
                     </div>
                 </div>
             </div>

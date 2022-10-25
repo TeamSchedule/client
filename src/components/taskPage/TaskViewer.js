@@ -56,6 +56,7 @@ export function TaskViewer() {
                     from: new Date("2020-01-01").toJSON(),
                     to: new Date("2023-01-01").toJSON(),
                     teams: teamIds.join(","),
+                    all: true,
                 })
                 .then((tasks) => {
                     setTasks(tasks);

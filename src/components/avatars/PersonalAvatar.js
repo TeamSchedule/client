@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import UserAvatar from "./UserAvatar";
+import { UserAvatar } from "./";
 import { useSelector } from "react-redux";
 import { selectUserInfo } from "../../features/userInfoSlice";
 import getUserAvatarImageSrc from "../../utils/getUserAvatarImageSrc";

@@ -27,9 +27,8 @@ function TeamsPreviewSection({ err = null, loading = false, teams = [] }) {
                 <h2 className="mb-4">Команды</h2>
                 <RightAngleIcon color={editIconColor} size={40} />
             </Link>
-            <div className="d-flex">
-                <PreviewTeamsGroup teams={teams} />
-            </div>
+
+            <PreviewTeamsGroup teams={teams} />
         </BasePreviewSection>
     );
 }
@@ -51,7 +50,7 @@ function PreviewTeamsGroup({ teams = [] }) {
     }
 
     return (
-        <>
+        <div className="d-flex justify-content-center">
             {teams.map((team) => (
                 <ShortPreviewTeamItem
                     key={team.id}
@@ -61,6 +60,6 @@ function PreviewTeamsGroup({ teams = [] }) {
                     linkTo={"teams/" + team.id}
                 />
             ))}
-        </>
+        </div>
     );
 }

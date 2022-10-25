@@ -8,9 +8,12 @@ export class tasks {
     }
 
     static async getTasks(params) {
+        if (!params.from) params.from = new Date("1970-01-01").toJSON();
+        if (!params.to) params.to = new Date("2070-01-01").toJSON();
+        if (!params.all) params.all = false;
         return (
             await $axios.get(
-                `${this.prefixUrl}?from=${params.from}&to=${params.to}&teams=${params.teams}&private=true`
+                `${this.prefixUrl}?from=${params.from}&to=${params.to}&teams=${params.teams}&private=true&all=${params.all}`
             )
         ).data["tasks"];
     }

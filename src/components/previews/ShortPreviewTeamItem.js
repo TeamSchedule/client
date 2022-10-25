@@ -1,19 +1,11 @@
 import { Link } from "react-router-dom";
-import TeamAvatar from "../avatars/TeamAvatar";
+import { TeamAvatar } from "../avatars";
 import { PrimaryPreviewText, SecondaryPreviewText } from "./PreviewComponents";
 
-function ShortPreviewTeamItem({ className, description, imgSrc, style, teamName, linkTo }) {
+function ShortPreviewTeamItem({ className, description, imgSrc, teamName, linkTo }) {
     return (
-        <Link to={linkTo} style={{ minWidth: "200px" }}>
-            <div
-                className={className + " " + "p-4 "}
-                style={{
-                    background:
-                        "linear-gradient(45deg, rgba(255,0,0,0.2) 20%, rgba(0,59,255, 0.4) 65%)",
-                    borderRadius: "20px",
-                    ...style,
-                }}
-            >
+        <Link to={linkTo} className={`shortPreviewTeamItem ${className}`}>
+            <div className="p-4">
                 <TeamAvatar imgSrc={imgSrc} size={80} className="m-auto" />
                 <PrimaryPreviewText text={teamName} className="mt-4 mb-0 text-center" />
                 <SecondaryPreviewText text={description} className="text-center" />
