@@ -15,8 +15,6 @@ export class users {
         return await $axios.put(`${this.apiPrefix}/${userId}`, data);
     }
 
-    // TODO: check if username exists
-
     static async filterByUsername(params) {
         return (await $axios.get(`/user?criteria=${params.username}`)).data["users"];
     }

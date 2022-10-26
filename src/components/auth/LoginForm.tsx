@@ -13,9 +13,11 @@ import {
     FormFooter,
     FormHeader,
 } from "./auth-form-items";
-import "./auth.css";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import { ServiceUnavailableErrorMsg, WrongCredentialsErrorMsg } from "./ErrMsgs";
+import { TokenPair } from "../../api/schemas/responses/auth";
+import { SignInRequestSchema } from "../../api/schemas/requests/auth";
+import "./auth.css";
 
 export default function LoginForm() {
     const navigate = useNavigate();
@@ -28,20 +30,21 @@ export default function LoginForm() {
     const [isWrongCredentials, setIsWrongCredentials] = useState(false);
     const [isServiceUnavailableErrShown, setIsServiceUnavailableErrShown] = useState(false);
 
-    function signin(e) {
-        e.preventDefault();
+    function signInHandler(event: React.FormEvent) {
+        event.preventDefault();
         setIsActionInProgress(true);
+
+        const signInRequestData: SignInRequestSchema = {
+            login: username,
+            password: password,
+        };
         API.auth
-            .signIn({
-                login: username,
-                password: password,
-            })
-            .then((data) => {
+            .signIn(signInRequestData)
+            .then((tokens: TokenPair) => {
                 setPassword("");
-                const token = data.access;
-                setAccessToken(token);
-                localStorage.setItem("access", token);
-                localStorage.setItem("refresh", data.refresh);
+                setAccessToken(tokens.access);
+                localStorage.setItem("access", tokens.access);
+                localStorage.setItem("refresh", tokens.refresh);
                 dispatch(login());
                 API.users.get().then((res) => {
                     dispatch(set(res.data.user));
@@ -66,7 +69,7 @@ export default function LoginForm() {
 
     return (
         <AuthForm
-            onSubmit={signin}
+            onSubmit={signInHandler}
             innerForm={
                 <>
                     <FormHeader
