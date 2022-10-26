@@ -3,36 +3,38 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { getNextDayDate } from "../../utils/getPrevDayDate";
 import FilterColumn from "./FilterColumn";
 
-import FullCalendar from "@fullcalendar/react";
+import FullCalendar, { CalendarApi, EventClickArg } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 
 import { API } from "../../api/api";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "./monthCalendar.css";
 import LoaderScreen from "../generic/LoaderScreen";
+import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
+import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
+import { EventSourceInput } from "@fullcalendar/core";
+import { EventInput } from "@fullcalendar/common";
 
 export function TaskViewer() {
     const navigate = useNavigate();
 
     const [isLoaded, setIsLoaded] = useState(false); // все задачи
-    const [tasks, setTasks] = useState([]); // все задачи
-    const [filteredTasks, setFilteredTasks] = useState([]); // задачи для выбранных команд
+    const [tasks, setTasks] = useState<Array<GetTaskResponseSchema>>([]); // все задачи
+    const [filteredTasks, setFilteredTasks] = useState<Array<GetTaskResponseSchema>>([]); // задачи для выбранных команд
 
     const [teams, setTeams] = useState([]); // все команды
-    const [showedTeams, setShowedTeams] = useState([]); // команды, выбранные в фильтре
+    const [showedTeams, setShowedTeams] = useState<Array<number>>([]); // команды, выбранные в фильтре
 
-    const [calendarTasks, setCalendarTasks] = useState([]);
+    const [calendarTasks, setCalendarTasks] = useState<EventSourceInput>([]);
     const [teamToColor] = useState({});
 
-    const calendarRef = React.createRef();
+    const calendarRef: React.RefObject<any> = React.createRef();
 
-    let calendarApi = null;
-
-    function changeShowedTeams(teamId) {
+    function changeShowedTeams(teamId: number) {
         if (showedTeams.includes(teamId)) {
             setShowedTeams(() => showedTeams.filter((tId) => tId !== teamId));
         } else {
@@ -44,25 +46,25 @@ export function TaskViewer() {
         API.teams.all().then((allTeams) => {
             setTeams(allTeams);
             // Collect ids of all previews (created and default)
-            let teamIds = [];
+            let teamIds: Array<number> = [];
+            // @ts-ignore
             allTeams.forEach((team) => {
                 teamIds.push(team.id);
+                // @ts-ignore
                 teamToColor[team.id.toString()] = team.color;
             });
             setShowedTeams(teamIds);
 
-            API.tasks
-                .getTasks({
-                    from: new Date("2020-01-01").toJSON(),
-                    to: new Date("2023-01-01").toJSON(),
-                    teams: teamIds.join(","),
-                    all: true,
-                })
-                .then((tasks) => {
-                    setTasks(tasks);
-                    setFilteredTasks(() => tasks);
-                    setIsLoaded(true);
-                });
+            const filterTasksParams: FilterTasksParamsSchema = {
+                teams: teamIds,
+                all: true,
+            };
+
+            API.tasks.getTasks(filterTasksParams).then((tasks: Array<GetTaskResponseSchema>) => {
+                setTasks(tasks);
+                setFilteredTasks(() => tasks);
+                setIsLoaded(true);
+            });
         });
     }, [teamToColor]);
 
@@ -76,19 +78,23 @@ export function TaskViewer() {
         // WARNING: do not merge code in one line: `React.createRef().current.getApi();` !
         // calendarRef is bounded to FullCalendar component after rendering!
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        calendarApi = calendarRef.current.getApi();
+        const calendarApi: CalendarApi = calendarRef.current.getApi();
 
         // set on resize handler
-        let wrapper = document.querySelector("#full-calendar-wrapper");
-        let lastWidth = wrapper.offsetWidth;
-        const onChangeWidthCalendarWrapper = function () {
-            let currentWidth = wrapper.offsetWidth;
-            if (lastWidth !== currentWidth) {
-                lastWidth = currentWidth;
-                calendarApi.updateSize();
-            }
-        };
-        setInterval(onChangeWidthCalendarWrapper, 100);
+        let wrapper: Element | null = document.querySelector("#full-calendar-wrapper");
+        if (wrapper) {
+            // @ts-ignore
+            let lastWidth = wrapper.offsetWidth;
+            const onChangeWidthCalendarWrapper = () => {
+                // @ts-ignore
+                let currentWidth = wrapper.offsetWidth;
+                if (lastWidth !== currentWidth) {
+                    lastWidth = currentWidth;
+                    calendarApi.updateSize();
+                }
+            };
+            setInterval(onChangeWidthCalendarWrapper, 100);
+        }
 
         fetchTaskData();
     }, [filteredTasks]);
@@ -98,42 +104,44 @@ export function TaskViewer() {
             setCalendarTasks([]);
             return;
         }
-        let calTasks = [];
+
+        let calTasks: EventSourceInput = [];
         for (let task of filteredTasks) {
-            const expDtTask = new Date(task.expirationTime);
+            let eventTask: EventInput = {};
+
+            eventTask.title = task.name;
+            eventTask.id = task.id.toString();
+            eventTask.groupId = task.team.id.toString();
+            eventTask.textColor = task.team.name ? "white" : "black";
+
+            eventTask.start = new Date(task.expirationTime);
+            eventTask.end = new Date(task.expirationTime);
+            eventTask.className = "calendarEvent";
+
+            // @ts-ignore
             const TeamPublicColor = teamToColor[task.team.id.toString()];
-            task.color = TeamPublicColor ? TeamPublicColor : "white";
+            eventTask.color = TeamPublicColor ? TeamPublicColor : "white";
 
-            calTasks.push({
-                title: task.name,
-                id: task.id,
-                groupId: task.teamId,
-
-                start: expDtTask,
-                end: expDtTask,
-
-                extendedProps: {
-                    description: task.description,
-                    groupName: task.team.name,
-                    closed: task.closed,
-                },
-                textColor: task.team.name ? "white" : "black",
-                backgroundColor: task.team.name ? task.color : "#eef1ff",
-                borderColor: task.color,
-                className: "calendarEvent",
-            });
+            eventTask.backgroundColor = task.team.name ? eventTask.color : "#eef1ff";
+            eventTask.borderColor = eventTask.color;
+            eventTask.extendedProps = {
+                description: task.description,
+                groupName: task.team.name,
+                closed: task.closed,
+            };
+            calTasks.push(eventTask);
         }
         setCalendarTasks(() => calTasks);
     }
 
-    function onTaskClick(e) {
-        const task = e.event._def;
+    function onTaskClick(event: EventClickArg) {
+        const task = event.event._def;
         const taskId = task.publicId;
         navigate(`${taskId.toString()}`);
     }
 
-    const onDateClick = (conf) => {
-        const chosenDate = getNextDayDate(conf.date);
+    const onDateClick = (event: DateClickArg) => {
+        const chosenDate = getNextDayDate(event.date);
         navigate(`new/${chosenDate.toJSON()}`);
     };
 
@@ -160,7 +168,7 @@ export function TaskViewer() {
                         timeGridWeek: {},
                         timeGridDay: {},
                     }}
-                    display="block"
+                    // display="block"
                     eventDisplay="block"
                     editable={true}
                     events={calendarTasks}

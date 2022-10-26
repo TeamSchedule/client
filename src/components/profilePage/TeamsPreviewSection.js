@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import RightAngleIcon from "../svg/RightAngleIcon";
 import BasePreviewSection from "./BasePreviewSection";
 
-function TeamsPreviewSection({ err = null, loading = false, teams = [] }) {
+function TeamsPreviewSection({ err = false, loading = false, teams = [] }) {
     const [isHovering, setIsHovering] = useState(false);
     const editIconColor = isHovering ? "#9b9b9b" : "#d0d0d0";
 

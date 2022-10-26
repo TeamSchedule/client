@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Dropzone from "react-dropzone";
 import Button from "@mui/material/Button";
 import { API } from "../../api/api";
-import RemovalFormButton from "../buttons/RemovalFormButton";
+import RemovalFormButton from "../buttons/RemovalFormButton.tsx";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import CommonActionFormButton from "../buttons/CommonActionFormButton";
 import GoBackActionButton from "../buttons/GoBackActionButton";

@@ -12,11 +12,17 @@ import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import { getPrevDayDate } from "../../utils/getPrevDayDate";
 import BaseForm from "../generic/BaseForm";
+import { CreateTaskRequestSchema } from "../../api/schemas/requests/tasks";
 
-function TeamItem(props) {
+interface TeamItemProps {
+    groupId: string;
+    groupTitle: string;
+}
+
+function TeamItem({ groupId, groupTitle }: TeamItemProps) {
     return (
-        <option id={props.groupID} value={props.groupID}>
-            {props.groupTitle}
+        <option id={groupId} value={groupId}>
+            {groupTitle}
         </option>
     );
 }
@@ -32,12 +38,12 @@ function CreateTaskForm() {
     const [taskDescription, setTaskDescription] = useState("");
     const [isPrivateFlag, setIsPrivateFlag] = useState(true);
     const [taskName, setTaskName] = useState("");
-    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(null);
+    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(new Date());
     const [selectedTeam, setSelectedTeam] = useState(0);
     const [isActionInProgress, setIsActionInProgress] = useState(false);
 
     useEffect(() => {
-        setTaskExpirationDatetime(getPrevDayDate(date));
+        setTaskExpirationDatetime(getPrevDayDate(date || ""));
 
         API.teams.all().then((data) => {
             const createdTeams = data;
@@ -46,35 +52,32 @@ function CreateTaskForm() {
                 setSelectedTeam(createdTeams[0].id);
             }
             setGroupItems(
+                // @ts-ignore
                 createdTeams.map((team) => (
-                    <TeamItem
-                        id={`group${team.id}`}
-                        key={team.id}
-                        groupTitle={team.name}
-                        groupID={team.id}
-                    />
+                    <TeamItem key={team.id} groupTitle={team.name} groupId={team.id.toString()} />
                 ))
             );
         });
     }, [date]);
 
-    function onSubmit(e) {
-        e.preventDefault();
+    function onCreateTaskHandler(event: React.FormEvent) {
+        event.preventDefault();
         setIsActionInProgress(true);
         // поправляем время, так как toJSON() даст UTC время
         const hoursDiff =
             taskExpirationDatetime.getHours() - taskExpirationDatetime.getTimezoneOffset() / 60;
         taskExpirationDatetime.setHours(hoursDiff);
-        const expDtString = taskExpirationDatetime.toJSON().split(".")[0];
+
+        const createTaskData: CreateTaskRequestSchema = {
+            name: taskName,
+            description: taskDescription,
+            expirationTime: taskExpirationDatetime,
+            teamId: isPrivateFlag ? null : selectedTeam,
+            assigneeId: userInfo.id,
+        };
 
         API.tasks
-            .create({
-                name: taskName,
-                description: taskDescription,
-                expirationTime: expDtString,
-                teamId: isPrivateFlag ? null : selectedTeam,
-                assigneeId: userInfo.id,
-            })
+            .createTask(createTaskData)
             .then(() => {
                 navigate(-1);
             })
@@ -90,7 +93,8 @@ function CreateTaskForm() {
     }
 
     return (
-        <BaseForm>
+        // @ts-ignore
+        <BaseForm onSubmit={onCreateTaskHandler}>
             <div className="d-flex justify-content-between position-relative">
                 <p className="fw-bold">Новая задача</p>
                 <CloseFormIcon />
@@ -130,6 +134,7 @@ function CreateTaskForm() {
                     <select
                         id="taskGroup"
                         name="list1"
+                        // @ts-ignore
                         onChange={(e) => setSelectedTeam(e.target.value)}
                         required
                     >
@@ -138,11 +143,7 @@ function CreateTaskForm() {
                 )}
             </div>
 
-            <SuccessFormButton
-                btnText="СОЗДАТЬ ЗАДАЧУ"
-                onClick={onSubmit}
-                loading={isActionInProgress}
-            />
+            <SuccessFormButton btnText="СОЗДАТЬ ЗАДАЧУ" loading={isActionInProgress} />
         </BaseForm>
     );
 }

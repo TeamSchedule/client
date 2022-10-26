@@ -4,7 +4,7 @@ import { selectUserInfo } from "../features/userInfoSlice";
 import { Navigate, Route, Routes } from "react-router-dom";
 import App from "../components/App";
 import { Main } from "../components/Main";
-import ProfilePage from "../components/profilePage/ProfilePage";
+import ProfilePage from "../components/profilePage/ProfilePage.tsx";
 import SettingsTab from "../components/profilePage/SettingsTab";
 import AvatarEditorTab from "../components/profilePage/AvatarEditorTab";
 import TeamPage from "../components/teamPage/TeamPage";
@@ -12,9 +12,9 @@ import IncomingInvitationsTab from "../components/teamPage/IncomingInvitationsTa
 import TeamCreationForm from "../components/teamForms/TeamCreationForm";
 import TeamEditingForm from "../components/teamForms/TeamEditingForm";
 import { TaskPage } from "../components/taskPage/TaskPage";
-import { TaskViewer } from "../components/taskPage/TaskViewer";
-import CreateTaskForm from "../components/taskForms/CreateTaskForm";
-import EditTaskForm from "../components/taskForms/EditTaskForm";
+import { TaskViewer } from "../components/taskPage/TaskViewer.tsx";
+import CreateTaskForm from "../components/taskForms/CreateTaskForm.tsx";
+import EditTaskForm from "../components/taskForms/EditTaskForm.tsx";
 import NotFound from "../components/generic/NotFound";
 
 export default function AuthorizedRoutes() {
