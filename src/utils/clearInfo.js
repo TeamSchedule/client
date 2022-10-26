@@ -1,12 +1,14 @@
+import $axios from "../api/axiosRequests";
 import { onDeleteUserInfo } from "../features/userInfoSlice";
 import { onLogout } from "../features/isAuthSlice";
-import { deleteAccessToken } from "../api/axiosRequests";
 
-function clearInfo(dispatch) {
+export default function clearInfo(dispatch) {
     dispatch(onDeleteUserInfo());
     dispatch(onLogout());
-    deleteAccessToken();
+    deleteAccessTokenFromAxios();
     window.localStorage.clear();
 }
 
-export default clearInfo;
+function deleteAccessTokenFromAxios() {
+    delete $axios.defaults.headers["Authorization"];
+}

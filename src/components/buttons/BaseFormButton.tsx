@@ -11,24 +11,36 @@ function CircularLoading() {
     );
 }
 
+export interface BaseFormButtonProps {
+    btnText: string;
+    onClick?: (event: React.FormEvent) => void;
+    disabled?: boolean;
+    className?: string;
+    fullWidth?: boolean;
+    loading?: boolean;
+    color?: string;
+    variant?: string;
+}
+
 function BaseFormButton({
     btnText,
-    onClick = null,
+    onClick,
     disabled = false,
     className = "",
     fullWidth = true,
     color = "success",
     variant = "contained",
     loading = false,
-}) {
+}: BaseFormButtonProps) {
     /*
      * Базовый компонент кнопок
      * */
     return (
         <>
+            {/*@ts-ignore*/}
             <Button
-                variant={variant}
                 color={color}
+                variant={variant}
                 className={className}
                 fullWidth={fullWidth}
                 type="submit"

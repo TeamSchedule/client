@@ -6,17 +6,29 @@ import UserInfoPreviewSection from "./UserInfoPreviewSection";
 import SchedulePreviewSection from "./SchedulePreviewSection";
 import { API } from "../../api/api";
 import { StatisticsDiagram } from "../statistics";
+import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
+import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
+
+let today = new Date();
+today.setHours(0);
+today.setMinutes(0);
+today.setSeconds(0);
+
+let tomorrow = new Date();
+tomorrow.setHours(23);
+tomorrow.setMinutes(59);
+tomorrow.setSeconds(59);
 
 export default function ProfilePage() {
     const userInfo = useSelector(selectUserInfo);
 
     const [isTeamsLoading, setIsTeamsLoading] = useState(false);
-    const [teamsErr, setTeamsErr] = useState(null);
+    const [teamsErr, setTeamsErr] = useState(false);
     const [teamsNumber, setTeamsNumber] = useState(0);
     const [lastUpdatedTeams, setLastUpdatedTeams] = useState([]);
 
     const [tasksNumber, setTasksNumber] = useState(0);
-    const [todayTasks, setTodayTasks] = useState([]);
+    const [todayTasks, setTodayTasks] = useState<Array<GetTaskResponseSchema>>([]);
 
     useEffect(() => {
         setIsTeamsLoading(true);
@@ -27,13 +39,17 @@ export default function ProfilePage() {
                 const previewTeams = teams.sort().slice(0, 3);
                 setLastUpdatedTeams(previewTeams);
 
+                const filterTasksParams: FilterTasksParamsSchema = {
+                    // @ts-ignore
+                    teams: teams.map((t) => t.id),
+                    from: today,
+                    to: tomorrow,
+                };
                 API.tasks
-                    .getTasks({
-                        teams: teams.map((t) => t.id).join(","),
-                    })
-                    .then((tasksData) => {
+                    .getTasks(filterTasksParams)
+                    .then((tasksData: Array<GetTaskResponseSchema>) => {
                         setTasksNumber(tasksData.length);
-                        let todayTasks = [];
+                        let todayTasks: Array<GetTaskResponseSchema> = [];
                         for (let task of tasksData) {
                             if (!task.closed) {
                                 if (todayTasks.length >= 3) {

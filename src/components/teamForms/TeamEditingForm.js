@@ -7,7 +7,7 @@ import { API } from "../../api/api";
 import { TeamMemberItem } from "./TeamMemberItem";
 import { UnprocessedOutgoingInvitationItem } from "../invitations/UnprocessedOutgoingInvitationItem";
 import SuccessFormButton from "../buttons/SuccessFormButton";
-import RemovalFormButton from "../buttons/RemovalFormButton";
+import RemovalFormButton from "../buttons/RemovalFormButton.tsx";
 import CommonActionFormButton from "../buttons/CommonActionFormButton";
 import FormHeaderRow from "../generic/FormHeaderRow";
 import InputTextFormItem from "../inputs/InputTextFormItem";

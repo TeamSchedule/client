@@ -11,6 +11,7 @@ import {
 } from "./auth-form-items";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import { NameAlreadyExistErrorMsg, ServiceUnavailableErrorMsg } from "./ErrMsgs";
+import { SignUpRequestSchema } from "../../api/schemas/requests/auth";
 import "./auth.css";
 
 export default function RegisterForm() {
@@ -23,15 +24,18 @@ export default function RegisterForm() {
     const [isRegErrShown, setIsRegErrShown] = useState(false);
     const [isNameOccupiedErrShown, setIsNameOccupiedErrShown] = useState(false);
 
-    function signup(e) {
-        e.preventDefault();
+    function signUpHandler(event: React.FormEvent) {
+        event.preventDefault();
         setIsActionInProgress(true);
+
+        const signUpRequestData: SignUpRequestSchema = {
+            email: email,
+            login: username,
+            password: password,
+        };
+
         API.auth
-            .signUp({
-                email: email,
-                login: username,
-                password: password,
-            })
+            .signUp(signUpRequestData)
             .then(() => {
                 setPassword("");
                 navigate("/login");
@@ -54,7 +58,7 @@ export default function RegisterForm() {
     return (
         <>
             <AuthForm
-                onSubmit={signup}
+                onSubmit={signUpHandler}
                 innerForm={
                     <>
                         <FormHeader

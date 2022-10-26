@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { Checkbox, FormControlLabel } from "@mui/material";
 
 import { API } from "../../api/api";
-import { selectUserInfo } from "../../features/userInfoSlice";
 import CloseFormIcon from "../generic/CloseFormIcon";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import RemovalFormButton from "../buttons/RemovalFormButton";
@@ -12,45 +10,55 @@ import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputMultilineTextFormItem from "../inputs/InputMultilineTextFormItem";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import BaseForm from "../generic/BaseForm";
+import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
+import { UpdateTaskRequestSchema } from "../../api/schemas/requests/tasks";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
 
     const { taskId } = useParams();
-    const userInfo = useSelector(selectUserInfo);
 
     // task data
     const [taskName, setTaskName] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
     const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(new Date());
     const [taskClosedStatus, setTaskClosedStatus] = useState(false);
-    const [taskTeamName, setTaskTeamName] = useState(null);
+    const [taskTeamName, setTaskTeamName] = useState("");
 
     // circular loaders
     const [isUpdateActionInProgress, setIsUpdateActionInProgress] = useState(false);
     const [isDeleteActionInProgress, setIsDeleteActionInProgress] = useState(false);
 
     useEffect(() => {
-        API.tasks.get(taskId).then((data) => {
+        if (taskId === undefined) {
+            return;
+        }
+        API.tasks.getTaskById(+taskId).then((task: GetTaskResponseSchema) => {
             // Available use full info about task in data
-            setTaskName(data.name);
-            setTaskDescription(data.description);
-            setTaskClosedStatus(data.closed);
-            setTaskExpirationDatetime(new Date(data.expirationTime));
-            setTaskTeamName(data.team.name);
+            setTaskName(task.name);
+            setTaskDescription(task.description);
+            setTaskClosedStatus(task.closed);
+            setTaskExpirationDatetime(new Date(task.expirationTime));
+            setTaskTeamName(task.team.name);
         });
     }, [taskId]);
 
-    function onSubmit(e) {
-        e.preventDefault();
+    function onSubmit(event: React.FormEvent) {
+        event.preventDefault();
+        if (taskId === undefined) {
+            return;
+        }
         setIsUpdateActionInProgress(true);
+
+        const updateTaskRequestBody: UpdateTaskRequestSchema = {
+            name: taskName,
+            description: taskDescription,
+            expirationTime: new Date(taskExpirationDatetime).toJSON(),
+            closed: taskClosedStatus,
+        };
+
         API.tasks
-            .update(taskId, {
-                name: taskName,
-                description: taskDescription,
-                expirationTime: new Date(taskExpirationDatetime).toJSON(),
-                closed: taskClosedStatus,
-            })
+            .updateTaskById(+taskId, updateTaskRequestBody)
             .then(() => {
                 navigate(-1);
             })
@@ -59,11 +67,14 @@ export default function EditTaskForm() {
             });
     }
 
-    function onDeleteTaskBtn(e) {
-        e.preventDefault();
+    function onDeleteTaskBtn(event: React.FormEvent) {
+        event.preventDefault();
+        if (taskId === undefined) {
+            return;
+        }
         setIsDeleteActionInProgress(true);
         API.tasks
-            .delete(taskId)
+            .deleteTaskById(+taskId)
             .then(() => {
                 navigate(-1);
             })
@@ -73,7 +84,8 @@ export default function EditTaskForm() {
     }
 
     return (
-        <BaseForm>
+        // @ts-ignore
+        <BaseForm onSubmit={onSubmit}>
             <div className="d-flex justify-content-between">
                 <p className="fw-bold">Изменить задачу</p>
                 <CloseFormIcon />
@@ -99,7 +111,7 @@ export default function EditTaskForm() {
 
             <div>
                 <p className="my-1">
-                    {taskTeamName === null ? "персональная задача" : `Команда: ${taskTeamName}`}
+                    {taskTeamName === "" ? "персональная задача" : `Команда: ${taskTeamName}`}
                 </p>
 
                 <FormControlLabel
@@ -118,7 +130,6 @@ export default function EditTaskForm() {
             <div className="mt-4">
                 <SuccessFormButton
                     btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ"
-                    onClick={onSubmit}
                     loading={isUpdateActionInProgress}
                 />
             </div>

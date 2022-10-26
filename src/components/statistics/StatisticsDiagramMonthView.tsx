@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { API } from "../../api/api";
 import daysInMonth from "../../utils/daysinMonth";
+import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
+import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
 
 export default function StatisticsDiagramMonthView({}) {
     const [currentDate /*setCurrentDate*/] = useState(new Date());
@@ -12,11 +14,13 @@ export default function StatisticsDiagramMonthView({}) {
         API.teams
             .all()
             .then((teams) => {
+                const filterTasksParams: FilterTasksParamsSchema = {
+                    // @ts-ignore
+                    teams: teams.map((t) => t.id),
+                };
                 API.tasks
-                    .getTasks({
-                        teams: teams.map((t) => t.id).join(","),
-                    })
-                    .then((tasks) => {
+                    .getTasks(filterTasksParams)
+                    .then((tasks: Array<GetTaskResponseSchema>) => {
                         for (let task of tasks) {
                             if (task.closed) {
                                 const dayIdx = new Date(task.expirationTime).getDate() - 1;
@@ -31,7 +35,7 @@ export default function StatisticsDiagramMonthView({}) {
             .finally(() => {});
     }, [currentDate]);
 
-    function onMouseWheel(event) {
+    function onMouseWheel(event: React.WheelEvent) {
         if (!event.deltaY) {
             return;
         }
@@ -60,7 +64,13 @@ export default function StatisticsDiagramMonthView({}) {
     );
 }
 
-function DayValueItem({ maxValue, value, dayLabel }) {
+interface DayValueItem {
+    maxValue: number;
+    value: number;
+    dayLabel: string;
+}
+
+function DayValueItem({ maxValue, value, dayLabel }: DayValueItem) {
     let valueHeight = 0;
     if (maxValue !== 0) {
         valueHeight = value >= maxValue ? 100 : Math.floor((value / maxValue) * 100);

@@ -1,19 +1,20 @@
 import React from "react";
-import BaseFormButton from "./BaseFormButton";
+import BaseFormButton, { BaseFormButtonProps } from "./BaseFormButton";
 
 function RemovalFormButton({
     btnText,
-    onClick = null,
+    onClick,
     disabled = false,
     className = "",
     fullWidth = true,
     loading = false,
-}) {
+}: BaseFormButtonProps) {
     /*
      * Кнопка для "негативных" действий: "удалить", "покинуть" ...
      * */
     return (
         <>
+            {/*@ts-ignore*/}
             <BaseFormButton
                 color="error"
                 btnText={btnText}
@@ -22,6 +23,7 @@ function RemovalFormButton({
                 className={className}
                 fullWidth={fullWidth}
                 loading={loading}
+                variant="contained"
             />
         </>
     );

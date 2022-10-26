@@ -2,7 +2,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import SuccessFormButton from "../buttons/SuccessFormButton";
-import RemovalFormButton from "../buttons/RemovalFormButton";
+import RemovalFormButton from "../buttons/RemovalFormButton.tsx";
 import { UserAvatar } from "../avatars";
 import { API } from "../../api/api";
 
