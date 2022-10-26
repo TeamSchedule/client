@@ -1,7 +1,7 @@
 import axios from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import { API } from "./api";
-import { SERVER_ORIGIN } from "../config/config";
+import { SERVER_ORIGIN } from "../config/config.ts";
 
 const AXIOS_CONFIG = {
     baseURL: SERVER_ORIGIN,
