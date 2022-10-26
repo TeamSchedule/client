@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import BaseFormButton from "./BaseFormButton.tsx";
+import BaseFormButton from "./BaseFormButton";
 
 function GoBackActionButton({ btnText = "ВЕРНУТЬСЯ НАЗАД", className = "", fullWidth = true }) {
     /*

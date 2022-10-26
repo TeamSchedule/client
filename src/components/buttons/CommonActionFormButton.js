@@ -1,5 +1,5 @@
 import React from "react";
-import BaseFormButton from "./BaseFormButton.tsx";
+import BaseFormButton from "./BaseFormButton";
 
 function CommonActionFormButton({
     btnText,
