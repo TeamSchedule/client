@@ -9,6 +9,16 @@ import { StatisticsDiagram } from "../statistics";
 import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
 import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
 
+let today = new Date();
+today.setHours(0);
+today.setMinutes(0);
+today.setSeconds(0);
+
+let tomorrow = new Date();
+tomorrow.setHours(23);
+tomorrow.setMinutes(59);
+tomorrow.setSeconds(59);
+
 export default function ProfilePage() {
     const userInfo = useSelector(selectUserInfo);
 
@@ -32,6 +42,8 @@ export default function ProfilePage() {
                 const filterTasksParams: FilterTasksParamsSchema = {
                     // @ts-ignore
                     teams: teams.map((t) => t.id),
+                    from: today,
+                    to: tomorrow,
                 };
                 API.tasks
                     .getTasks(filterTasksParams)
