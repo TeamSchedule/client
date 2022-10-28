@@ -91,7 +91,9 @@ export default function ProfilePage() {
                         />
                     </div>
                     <div className="w-50">
-                        <SchedulePreviewSection todayTasks={todayTasks} />
+                        <div className="mb-3">
+                            <SchedulePreviewSection todayTasks={todayTasks} />
+                        </div>
                         <StatisticsDiagram />
                     </div>
                 </div>

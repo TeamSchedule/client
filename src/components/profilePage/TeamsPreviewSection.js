@@ -58,6 +58,7 @@ function PreviewTeamsGroup({ teams = [] }) {
                     description={team.description}
                     className="mr-3"
                     linkTo={"teams/" + team.id}
+                    teamColor={team.color}
                 />
             ))}
         </div>
