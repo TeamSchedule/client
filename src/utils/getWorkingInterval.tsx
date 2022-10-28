@@ -1,4 +1,4 @@
-function getWorkingInterval(dtInterval) {
+function getWorkingInterval(dtInterval: number): string {
     const days = Math.floor(dtInterval / 1000 / 3600 / 24);
     const months = Math.floor(days / 30);
     const years = Math.floor(days / 365);
@@ -28,7 +28,7 @@ function getWorkingInterval(dtInterval) {
 
 export default getWorkingInterval;
 
-function getDayLabel(days) {
+function getDayLabel(days: number): string {
     if (days >= 5 && days <= 20) return "дней";
     if (days >= 25 && days <= 30) return "дней";
 
@@ -38,13 +38,13 @@ function getDayLabel(days) {
     return "день";
 }
 
-function getMonthLabel(months) {
+function getMonthLabel(months: number): string {
     if (months === 1) return "месяц";
     if (months >= 2 && months <= 4) return "месяца";
     return "месяцев";
 }
 
-function getYearLabel(years) {
+function getYearLabel(years: number): string {
     if (years >= 5 && years <= 20) return "лет";
     if (years >= 25 && years <= 30) return "лет";
 

@@ -1,4 +1,6 @@
-function EditIcon({ className, color, size }) {
+import { IconProps } from "./IconProps";
+
+function EditIcon({ className, color, size }: IconProps) {
     return (
         <>
             <svg

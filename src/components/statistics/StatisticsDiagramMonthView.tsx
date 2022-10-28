@@ -3,6 +3,7 @@ import { API } from "../../api/api";
 import daysInMonth from "../../utils/daysinMonth";
 import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
 import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
+import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 
 export default function StatisticsDiagramMonthView({}) {
     const [currentDate /*setCurrentDate*/] = useState(new Date());
@@ -13,7 +14,7 @@ export default function StatisticsDiagramMonthView({}) {
     useEffect(() => {
         API.teams
             .all()
-            .then((teams) => {
+            .then((teams: Array<TeamsResponseItemSchema>) => {
                 const filterTasksParams: FilterTasksParamsSchema = {
                     // @ts-ignore
                     teams: teams.map((t) => t.id),

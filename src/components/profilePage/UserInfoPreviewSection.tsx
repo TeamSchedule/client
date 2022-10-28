@@ -9,14 +9,25 @@ import getWorkingInterval from "../../utils/getWorkingInterval";
 import { TextField } from "@mui/material";
 import { API } from "../../api/api";
 import { selectUserInfo, set } from "../../features/userInfoSlice";
+import { UpdateUserInfoRequestSchema } from "../../api/schemas/requests/users";
+import { GetMeResponseSchema } from "../../api/schemas/responses/users";
+import { AxiosError } from "axios";
+
+export interface UserInfoPreviewSectionProps {
+    login: string;
+    startWorkingDt: Date;
+    teamsNumber: number;
+    tasksNumber: number;
+}
 
 export default function UserInfoPreviewSection({
-    about,
     login,
     startWorkingDt,
     teamsNumber,
     tasksNumber,
-}) {
+}: UserInfoPreviewSectionProps) {
+    // @ts-ignore
+    const workingTimestamp: number = startWorkingDt - new Date();
     return (
         <BasePreviewSection>
             <h1 className="mb-4 fs-2">Мой профиль</h1>
@@ -28,7 +39,7 @@ export default function UserInfoPreviewSection({
                 </div>
                 <div className="d-flex w-100">
                     <UserInfoPreviewItem
-                        statValue={getWorkingInterval(new Date(startWorkingDt) - new Date())}
+                        statValue={getWorkingInterval(workingTimestamp)}
                         statName="Времени с сервисом"
                     />
                     <UserInfoPreviewItem
@@ -43,7 +54,12 @@ export default function UserInfoPreviewSection({
     );
 }
 
-function UserInfoPreviewItem({ className, statName, statValue }) {
+export interface UserInfoPreviewItemProps {
+    className?: string;
+    statName: string;
+    statValue: string | number;
+}
+function UserInfoPreviewItem({ className, statName, statValue }: UserInfoPreviewItemProps) {
     return (
         <>
             <div className={className + " " + "px-3 flex-grow-1"} style={{ flexBasis: 0 }}>
@@ -74,7 +90,7 @@ function MainUserAvatar({}) {
     );
 }
 
-function UserAboutItem({ about }) {
+function UserAboutItem({}) {
     const dispatch = useDispatch();
     const userInfo = useSelector(selectUserInfo);
 
@@ -87,16 +103,19 @@ function UserAboutItem({ about }) {
         setIsEditMode(!isEditMode);
     }
 
-    function onSaveNewAbout(e) {
-        if (e.code === "Enter" || e.key === "Enter") {
+    function onSaveNewAbout(event: React.KeyboardEvent) {
+        if (event.code === "Enter" || event.key === "Enter") {
+            const updateUserInfoData: UpdateUserInfoRequestSchema = {
+                description: newAbout,
+            };
             API.users
-                .updateUserInfo(userInfo.id, { description: newAbout })
+                .updateUserInfo(userInfo.id, updateUserInfoData)
                 .then(() => {
-                    API.users.get().then((res) => {
-                        dispatch(set(res.data.user));
+                    API.users.getUser().then((userData: GetMeResponseSchema) => {
+                        dispatch(set(userData.user));
                     });
                 })
-                .catch((err) => {
+                .catch((err: Error | AxiosError) => {
                     console.log(err);
                 })
                 .finally(() => {});
@@ -116,7 +135,7 @@ function UserAboutItem({ about }) {
                     onKeyDown={onSaveNewAbout}
                 />
             ) : (
-                <SecondaryPreviewText text={newAbout} className="px-2" />
+                <SecondaryPreviewText text={newAbout} className="px-2" styles={{}} />
             )}
 
             <span onClick={onEditAbout}>

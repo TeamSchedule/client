@@ -13,6 +13,7 @@ import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import { getPrevDayDate } from "../../utils/getPrevDayDate";
 import BaseForm from "../generic/BaseForm";
 import { CreateTaskRequestSchema } from "../../api/schemas/requests/tasks";
+import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 
 interface TeamItemProps {
     groupId: string;
@@ -31,8 +32,7 @@ function CreateTaskForm() {
     const navigate = useNavigate();
     const userInfo = useSelector(selectUserInfo);
 
-    const [groupItems, setGroupItems] = useState([]);
-    const [teams, setTeams] = useState([]);
+    const [teams, setTeams] = useState<Array<TeamsResponseItemSchema>>([]);
 
     const { date } = useParams();
     const [taskDescription, setTaskDescription] = useState("");
@@ -43,21 +43,16 @@ function CreateTaskForm() {
     const [isActionInProgress, setIsActionInProgress] = useState(false);
 
     useEffect(() => {
-        setTaskExpirationDatetime(getPrevDayDate(date || ""));
-
-        API.teams.all().then((data) => {
-            const createdTeams = data;
-            setTeams(createdTeams);
-            if (createdTeams.length > 0) {
-                setSelectedTeam(createdTeams[0].id);
+        API.teams.all().then((teams: Array<TeamsResponseItemSchema>) => {
+            setTeams(teams);
+            if (teams.length > 0) {
+                setSelectedTeam(teams[0].id);
             }
-            setGroupItems(
-                // @ts-ignore
-                createdTeams.map((team) => (
-                    <TeamItem key={team.id} groupTitle={team.name} groupId={team.id.toString()} />
-                ))
-            );
         });
+    }, []);
+
+    useEffect(() => {
+        setTaskExpirationDatetime(getPrevDayDate(date || ""));
     }, [date]);
 
     function onCreateTaskHandler(event: React.FormEvent) {
@@ -134,11 +129,16 @@ function CreateTaskForm() {
                     <select
                         id="taskGroup"
                         name="list1"
-                        // @ts-ignore
-                        onChange={(e) => setSelectedTeam(e.target.value)}
+                        onChange={(e) => setSelectedTeam(+e.target.value)}
                         required
                     >
-                        {groupItems}
+                        {teams.map((team: TeamsResponseItemSchema) => (
+                            <TeamItem
+                                key={team.id}
+                                groupTitle={team.name}
+                                groupId={team.id.toString()}
+                            />
+                        ))}
                     </select>
                 )}
             </div>

@@ -1,7 +1,19 @@
 import React from "react";
 import { TextField } from "@mui/material";
 
-export default function InputTextFormItem({ label, value, handleChange, className }) {
+export interface InputTextFormItemProps {
+    label: string;
+    value: string;
+    handleChange: (textValue: string) => void;
+    className?: string;
+}
+
+export default function InputTextFormItem({
+    label,
+    value,
+    handleChange,
+    className,
+}: InputTextFormItemProps) {
     return (
         <>
             <TextField

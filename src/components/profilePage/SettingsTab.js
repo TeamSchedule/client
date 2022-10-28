@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { AuthEmailInput, AuthPasswordInput } from "../auth/auth-form-items";
 import { useSelector } from "react-redux";
 import { selectUserInfo } from "../../features/userInfoSlice";
-import { API } from "../../api/api";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 
 export default function SettingsTab() {
@@ -14,14 +13,6 @@ export default function SettingsTab() {
 
     function changeUserInfo(e) {
         e.preventDefault();
-
-        API.users
-            .update({
-                password: password,
-                password2: password2,
-                email: email,
-            })
-            .then(() => {});
     }
 
     return (

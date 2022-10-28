@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { API } from "../../api/api";
 
 import { useNavigate } from "react-router-dom";
@@ -6,20 +6,20 @@ import SuccessFormButton from "../buttons/SuccessFormButton";
 import FormHeaderRow from "../generic/FormHeaderRow";
 import InputTextFormItem from "../inputs/InputTextFormItem";
 import BaseForm from "../generic/BaseForm";
+import { CreateTeamRequestSchema } from "../../api/schemas/requests/teams";
 
 export default function TeamCreationForm() {
     const navigate = useNavigate();
 
-    const [teamName, setTeamName] = useState();
+    const [teamName, setTeamName] = useState("");
     const [isActionInProgress, setIsActionInProgress] = useState(false);
 
-    function createTeamSbm(e) {
-        e.preventDefault();
+    function createTeamSbm(event: FormEvent) {
+        event.preventDefault();
         setIsActionInProgress(true);
+        const createTeamData: CreateTeamRequestSchema = { name: teamName };
         API.teams
-            .create({
-                name: teamName,
-            })
+            .createTeam(createTeamData)
             .then(() => {
                 navigate(-1);
             })
