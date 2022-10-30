@@ -42,11 +42,7 @@ export default function UserInfoPreviewSection({
                         statValue={getWorkingInterval(workingTimestamp)}
                         statName="Времени с сервисом"
                     />
-                    <UserInfoPreviewItem
-                        statValue={tasksNumber}
-                        statName="Задач"
-                        className="border-x-1"
-                    />
+                    <UserInfoPreviewItem statValue={tasksNumber} statName="Задач" className="border-x-1" />
                     <UserInfoPreviewItem statValue={teamsNumber} statName="Команд" />
                 </div>
             </div>
@@ -63,24 +59,21 @@ function UserInfoPreviewItem({ className, statName, statValue }: UserInfoPreview
     return (
         <>
             <div className={className + " " + "px-3 flex-grow-1"} style={{ flexBasis: 0 }}>
-                <PrimaryPreviewText text={statValue} className="text-center mb-0" />
-                <SecondaryPreviewText text={statName} className="text-center" styles={{}} />
+                <PrimaryPreviewText text={statValue.toString()} className="text-center mb-0" />
+                <SecondaryPreviewText text={statName.toString()} className="text-center" />
             </div>
         </>
     );
 }
 
-function MainUserAvatar({}) {
+function MainUserAvatar() {
     const navigate = useNavigate();
 
     return (
         <div>
             <div className="position-relative">
                 <PersonalAvatar size={200} />
-                <div
-                    className="position-absolute right-0 bottom-0"
-                    onClick={() => navigate("avatar")}
-                >
+                <div className="position-absolute right-0 bottom-0" onClick={() => navigate("avatar")}>
                     <div className="editIconBorder">
                         <EditIcon size={26} className="editIcon" />
                     </div>
@@ -90,14 +83,12 @@ function MainUserAvatar({}) {
     );
 }
 
-function UserAboutItem({}) {
+function UserAboutItem() {
     const dispatch = useDispatch();
     const userInfo = useSelector(selectUserInfo);
 
     const [isEditMode, setIsEditMode] = useState(false);
-    const [newAbout, setNewAbout] = useState(
-        userInfo.description.length > 0 ? userInfo.description : "Напиши о себе"
-    );
+    const [newAbout, setNewAbout] = useState(userInfo.description.length > 0 ? userInfo.description : "Напиши о себе");
 
     function onEditAbout() {
         setIsEditMode(!isEditMode);
@@ -135,7 +126,7 @@ function UserAboutItem({}) {
                     onKeyDown={onSaveNewAbout}
                 />
             ) : (
-                <SecondaryPreviewText text={newAbout} className="px-2" styles={{}} />
+                <SecondaryPreviewText text={newAbout} className="px-2" />
             )}
 
             <span onClick={onEditAbout}>

@@ -6,7 +6,7 @@ import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
 import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 import { Link } from "react-router-dom";
 
-export default function StatisticsDiagramMonthView({}) {
+export default function StatisticsDiagramMonthView() {
     const [currentDate /*setCurrentDate*/] = useState(new Date());
     const [monthTasksNumbers /*setMonthTasksNumbers*/] = useState(
         new Array(daysInMonth(currentDate.getFullYear(), currentDate.getMonth() + 1)).fill(0)

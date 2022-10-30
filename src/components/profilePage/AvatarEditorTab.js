@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Dropzone from "react-dropzone";
 import Button from "@mui/material/Button";
 import { API } from "../../api/api";
-import RemovalFormButton from "../buttons/RemovalFormButton.tsx";
+import RemovalFormButton from "../buttons/RemovalFormButton";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import CommonActionFormButton from "../buttons/CommonActionFormButton";
 import GoBackActionButton from "../buttons/GoBackActionButton";
@@ -107,12 +107,7 @@ export default function AvatarEditorTab() {
                             <div className="p-3 d-flex justify-content-center align-items-center flex-grow-1">
                                 <Button
                                     className="p-2 px-3"
-                                    startIcon={
-                                        <AlternateAvatarImageIcon
-                                            color={COLORS.PRIMARY}
-                                            size={64}
-                                        />
-                                    }
+                                    startIcon={<AlternateAvatarImageIcon color={COLORS.PRIMARY} size={64} />}
                                 >
                                     Нажмите,&nbsp;чтобы&nbsp;загрузить
                                     <br />
@@ -155,10 +150,7 @@ export default function AvatarEditorTab() {
                             style={{ color: COLORS.PRIMARY }}
                         />
                     </div>
-                    <CommonActionFormButton
-                        btnText="СБРОСИТЬ НАСТРОЙКИ"
-                        onClick={resetEditorParams}
-                    />
+                    <CommonActionFormButton btnText="СБРОСИТЬ НАСТРОЙКИ" onClick={resetEditorParams} />
                 </div>
                 <div className="p-2 d-flex flex-column-reverse col px-0 ml-2">
                     <CommonActionFormButton
@@ -187,11 +179,7 @@ export default function AvatarEditorTab() {
             />
 
             <GoBackActionButton className="mt-5" />
-            <RemovalFormButton
-                btnText="УДАЛИТЬ СУЩЕСТВУЮЩИЙ АВАТАР"
-                onClick={onClickDelete}
-                className="mt-4"
-            />
+            <RemovalFormButton btnText="УДАЛИТЬ СУЩЕСТВУЮЩИЙ АВАТАР" onClick={onClickDelete} className="mt-4" />
         </div>
     );
 }

@@ -8,7 +8,7 @@ import ProfilePage from "../components/profilePage/ProfilePage";
 import SettingsTab from "../components/profilePage/SettingsTab";
 import AvatarEditorTab from "../components/profilePage/AvatarEditorTab";
 import TeamPage from "../components/teamPage/TeamPage";
-import IncomingInvitationsTab from "../components/teamPage/IncomingInvitationsTab";
+import InvitationsTeams from "../components/teamPage/InvitationsTeams.tsx";
 import TeamCreationForm from "../components/teamForms/TeamCreationForm";
 import TeamEditingForm from "../components/teamForms/TeamEditingForm";
 import { TaskPage } from "../components/taskPage/TaskPage";
@@ -23,10 +23,7 @@ export default function AuthorizedRoutes() {
     return (
         <Routes>
             <Route path="/" element={<App />}>
-                <Route
-                    index
-                    element={<Navigate to={`/${userInfo.login}/profile`} replace={true} />}
-                />
+                <Route index element={<Navigate to={`/${userInfo.login}/profile`} replace={true} />} />
 
                 <Route path=":username/" element={<Main />}>
                     <Route index path="profile/" element={<ProfilePage />} />
@@ -34,7 +31,7 @@ export default function AuthorizedRoutes() {
                     <Route path="settings/" element={<SettingsTab />} />
 
                     <Route path="teams/" element={<TeamPage />}>
-                        <Route index element={<IncomingInvitationsTab />} />
+                        <Route index element={<InvitationsTeams />} />
                         <Route path="new" element={<TeamCreationForm />} />
                         <Route path=":teamId" element={<TeamEditingForm />} />
                     </Route>
