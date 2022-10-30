@@ -8,6 +8,7 @@ import { API } from "../../api/api";
 import { StatisticsDiagram } from "../statistics";
 import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
 import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
+import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 
 let today = new Date();
 today.setHours(0);
@@ -25,7 +26,7 @@ export default function ProfilePage() {
     const [isTeamsLoading, setIsTeamsLoading] = useState(false);
     const [teamsErr, setTeamsErr] = useState(false);
     const [teamsNumber, setTeamsNumber] = useState(0);
-    const [lastUpdatedTeams, setLastUpdatedTeams] = useState([]);
+    const [lastUpdatedTeams, setLastUpdatedTeams] = useState<Array<TeamsResponseItemSchema>>([]);
 
     const [tasksNumber, setTasksNumber] = useState(0);
     const [todayTasks, setTodayTasks] = useState<Array<GetTaskResponseSchema>>([]);
@@ -34,13 +35,12 @@ export default function ProfilePage() {
         setIsTeamsLoading(true);
         API.teams
             .all()
-            .then((teams) => {
+            .then((teams: Array<TeamsResponseItemSchema>) => {
                 setTeamsNumber(teams.length);
                 const previewTeams = teams.sort().slice(0, 3);
                 setLastUpdatedTeams(previewTeams);
 
                 const filterTasksParams: FilterTasksParamsSchema = {
-                    // @ts-ignore
                     teams: teams.map((t) => t.id),
                     from: today,
                     to: tomorrow,
@@ -78,9 +78,8 @@ export default function ProfilePage() {
                     <div className="mb-2 mr-2 w-75">
                         <div className="mb-3">
                             <UserInfoPreviewSection
-                                about={userInfo.about ? userInfo.about : ""}
                                 login={userInfo.login}
-                                startWorkingDt={userInfo.creationDate}
+                                startWorkingDt={new Date(userInfo.creationDate)}
                                 teamsNumber={teamsNumber}
                                 tasksNumber={tasksNumber}
                             />
@@ -92,7 +91,9 @@ export default function ProfilePage() {
                         />
                     </div>
                     <div className="w-50">
-                        <SchedulePreviewSection todayTasks={todayTasks} />
+                        <div className="mb-3">
+                            <SchedulePreviewSection todayTasks={todayTasks} />
+                        </div>
                         <StatisticsDiagram />
                     </div>
                 </div>

@@ -18,6 +18,7 @@ import { ServiceUnavailableErrorMsg, WrongCredentialsErrorMsg } from "./ErrMsgs"
 import { TokenPair } from "../../api/schemas/responses/auth";
 import { SignInRequestSchema } from "../../api/schemas/requests/auth";
 import "./auth.css";
+import { GetMeResponseSchema } from "../../api/schemas/responses/users";
 
 export default function LoginForm() {
     const navigate = useNavigate();
@@ -46,9 +47,9 @@ export default function LoginForm() {
                 localStorage.setItem("access", tokens.access);
                 localStorage.setItem("refresh", tokens.refresh);
                 dispatch(login());
-                API.users.get().then((res) => {
-                    dispatch(set(res.data.user));
-                    navigate(`/${res.data.user.login}/profile`);
+                API.users.getUser().then((userData: GetMeResponseSchema) => {
+                    dispatch(set(userData.user));
+                    navigate(`/${userData.user.login}/profile`);
                 });
             })
             .catch((err) => {

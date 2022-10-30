@@ -3,8 +3,10 @@ import { API } from "../../api/api";
 import daysInMonth from "../../utils/daysinMonth";
 import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
 import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
+import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import { Link } from "react-router-dom";
 
-export default function StatisticsDiagramMonthView({}) {
+export default function StatisticsDiagramMonthView() {
     const [currentDate /*setCurrentDate*/] = useState(new Date());
     const [monthTasksNumbers /*setMonthTasksNumbers*/] = useState(
         new Array(daysInMonth(currentDate.getFullYear(), currentDate.getMonth() + 1)).fill(0)
@@ -13,10 +15,9 @@ export default function StatisticsDiagramMonthView({}) {
     useEffect(() => {
         API.teams
             .all()
-            .then((teams) => {
+            .then((teams: Array<TeamsResponseItemSchema>) => {
                 const filterTasksParams: FilterTasksParamsSchema = {
-                    // @ts-ignore
-                    teams: teams.map((t) => t.id),
+                    teams: teams.map((t: TeamsResponseItemSchema) => t.id),
                 };
                 API.tasks
                     .getTasks(filterTasksParams)
@@ -78,11 +79,13 @@ function DayValueItem({ maxValue, value, dayLabel }: DayValueItem) {
 
     return (
         <div className="dayValueItemWrapper" style={{ width: "20px", marginRight: 15 }}>
-            <p className="dayValueText text-center m-0">{value}</p>
-            <div className="dayValueItemColumn">
-                <div className="dayValueItem" style={{ height: `${valueHeight}%` }}></div>
-            </div>
-            <p className="dayLabel text-center">{dayLabel}</p>
+            <p className="dayValueText text-center m-0">{value || "-"}</p>
+            <Link to={`./tasks`}>
+                <div className="dayValueItemColumn">
+                    <div className="dayValueItem" style={{ height: `${valueHeight}%` }}></div>
+                </div>
+                <p className="dayLabel text-center">{dayLabel}</p>
+            </Link>
         </div>
     );
 }

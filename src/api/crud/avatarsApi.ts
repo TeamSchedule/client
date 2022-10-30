@@ -3,7 +3,7 @@ import $axios from "../axiosRequests";
 export class AvatarsApi {
     static apiPrefix: string = "/avatar";
 
-    static async get(id: number | string) {
+    static async get(id: number) {
         return (await $axios.get(`${this.apiPrefix}?user=${id}`)).data["avatarSrc"];
     }
 

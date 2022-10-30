@@ -18,6 +18,7 @@ import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
 import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
 import { EventSourceInput } from "@fullcalendar/core";
 import { EventInput } from "@fullcalendar/common";
+import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 
 export function TaskViewer() {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ export function TaskViewer() {
     const [tasks, setTasks] = useState<Array<GetTaskResponseSchema>>([]); // все задачи
     const [filteredTasks, setFilteredTasks] = useState<Array<GetTaskResponseSchema>>([]); // задачи для выбранных команд
 
-    const [teams, setTeams] = useState([]); // все команды
+    const [teams, setTeams] = useState<Array<TeamsResponseItemSchema>>([]); // все команды
     const [showedTeams, setShowedTeams] = useState<Array<number>>([]); // команды, выбранные в фильтре
 
     const [calendarTasks, setCalendarTasks] = useState<EventSourceInput>([]);
@@ -43,11 +44,10 @@ export function TaskViewer() {
     }
 
     useEffect(() => {
-        API.teams.all().then((allTeams) => {
+        API.teams.all().then((allTeams: Array<TeamsResponseItemSchema>) => {
             setTeams(allTeams);
             // Collect ids of all previews (created and default)
             let teamIds: Array<number> = [];
-            // @ts-ignore
             allTeams.forEach((team) => {
                 teamIds.push(team.id);
                 // @ts-ignore

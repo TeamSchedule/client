@@ -3,7 +3,7 @@ import BasePreviewSection from "../profilePage/BasePreviewSection";
 import StatisticsDiagramMonthView from "./StatisticsDiagramMonthView.tsx";
 import "./statistics.css";
 
-export default function StatisticsDiagram({}) {
+export default function StatisticsDiagram() {
     const DiagramView = StatisticsDiagramMonthView;
 
     return (
