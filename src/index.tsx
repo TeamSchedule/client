@@ -9,6 +9,7 @@ import store from "./store/store";
 import "./reset.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
+import "./assets/styles/globalStyles.scss";
 
 ReactDOM.render(
     <React.StrictMode>

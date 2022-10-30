@@ -1,0 +1,55 @@
+@use "../../assets/styles/_colors";
+
+.mainHeader {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 3px solid #6b6b6b;
+    background: #fff;
+    box-sizing: border-box;
+    min-height: 60px;
+    z-index: 2;
+}
+
+.headerLink {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 15px;
+    background: #ffffff;
+
+    &:hover {
+        background: #e9f3ff !important;
+        outline: none !important;
+    }
+    &__active {
+        background: colors.$brand;
+    }
+    &__passive {
+        background: colors.$contrast;
+    }
+
+    &_icon {
+        &__active {
+            fill: colors.$contrast;
+            stroke: colors.$contrast;
+        }
+        &__passive {
+            fill: colors.$brand;
+            stroke: colors.$brand;
+        }
+    }
+}
+
+.headerUserInfoSection {
+    display: flex;
+    align-items: center;
+}
+
+.headerMainNavigationSection {
+    display: flex;
+    align-items: center;
+}

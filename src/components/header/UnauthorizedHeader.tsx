@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function UnauthorizedHeader() {
     return (
-        <header className="row justify-content-end main-header m-0 py-2 px-2">
+        <header className="row justify-content-end mainHeader m-0 py-2 px-2">
             <div className="d-flex justify-content-end align-items-center">
                 <UnauthorizedHeaderLink linkTo="signup" text="Зарегистрироваться" />
                 <UnauthorizedHeaderLink linkTo="login" text="Войти" />
@@ -17,11 +17,11 @@ interface UnauthorizedHeaderLinkProps {
     linkTo: string;
 }
 
-function UnauthorizedHeaderLink({ text, linkTo }: UnauthorizedHeaderLinkProps) {
+function UnauthorizedHeaderLink(props: UnauthorizedHeaderLinkProps) {
     return (
         <>
-            <Link to={linkTo} className="mx-2 fs-5">
-                {text}
+            <Link to={props.linkTo} className="mx-2 fs-5">
+                {props.text}
             </Link>
         </>
     );
