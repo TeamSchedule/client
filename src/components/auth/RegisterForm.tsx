@@ -6,14 +6,13 @@ import {
     AuthForm,
     AuthPasswordInput,
     AuthUsernameInput,
+    FormBtn,
     FormFooter,
     FormHeader,
-    FormBtn
 } from "./auth-form-items";
-import SuccessFormButton from "../buttons/SuccessFormButton";
 import { NameAlreadyExistErrorMsg, ServiceUnavailableErrorMsg } from "./ErrMsgs";
 import { SignUpRequestSchema } from "../../api/schemas/requests/auth";
-import "./auth.css";
+import "./Auth.module.scss";
 
 export default function RegisterForm() {
     const navigate = useNavigate();
@@ -21,6 +20,8 @@ export default function RegisterForm() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
+
     const [isActionInProgress, setIsActionInProgress] = useState(false);
     const [isRegErrShown, setIsRegErrShown] = useState(false);
     const [isNameOccupiedErrShown, setIsNameOccupiedErrShown] = useState(false);
@@ -57,41 +58,33 @@ export default function RegisterForm() {
     }
 
     return (
-        <>
-            <AuthForm
-                onSubmit={signUpHandler}
-                innerForm={
+        <AuthForm onSubmit={signUpHandler}>
+            <>
+                <FormHeader>
                     <>
-                        <FormHeader
-                            headerText={
-                                <>
-                                    Зарегистрироваться в&nbsp;
-                                    <Link to="/">Командном расписании</Link>&nbsp;!
-                                </>
-                            }
-                        />
-
-                        <AuthEmailInput value={email} setValue={setEmail} />
-                        <AuthUsernameInput value={username} setValue={setUsername} />
-                        <AuthPasswordInput value={password} setValue={setPassword} />
-
-                        <NameAlreadyExistErrorMsg visible={isNameOccupiedErrShown} />
-                        <ServiceUnavailableErrorMsg visible={isRegErrShown} />
-
-                        <FormBtn text={"Зарегистрироваться"} />
-                        
-                        <FormFooter
-                            toggleAuthFormLink={
-                                <>
-                                    Уже зарегистрировались?
-                                    <br></br>
-                                    <Link to="/login">Войти!</Link>
-                                </>
-                            }
-                        />
+                        Зарегистрироваться в&nbsp;
+                        <Link to="/">Командном расписании</Link>&nbsp;!
                     </>
-                }
-            />
-        </>
+                </FormHeader>
+
+                <AuthEmailInput value={email} setValue={setEmail} />
+                <AuthUsernameInput value={username} setValue={setUsername} />
+                <AuthPasswordInput value={password} setValue={setPassword} />
+                <AuthPasswordInput value={password2} setValue={setPassword2} placeholder="Повторите пароль" />
+
+                <NameAlreadyExistErrorMsg visible={isNameOccupiedErrShown} />
+                <ServiceUnavailableErrorMsg visible={isRegErrShown} />
+
+                <FormBtn text="Зарегистрироваться" />
+
+                <FormFooter>
+                    <>
+                        Уже зарегистрировались?
+                        <br></br>
+                        <Link to="/login">Войти!</Link>
+                    </>
+                </FormFooter>
+            </>
+        </AuthForm>
     );
 }
