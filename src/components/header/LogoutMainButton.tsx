@@ -17,9 +17,7 @@ export default function LogoutMainButton() {
 
     return (
         <>
-            <HeaderLink linkTo="/" onClick={logout}>
-                <LogoutIcon size={26} color={COLORS.PRIMARY} />
-            </HeaderLink>
+            <HeaderLink linkTo="/" onClick={logout} Icon={LogoutIcon} />
         </>
     );
 }

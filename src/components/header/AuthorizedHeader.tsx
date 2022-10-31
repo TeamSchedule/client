@@ -25,8 +25,8 @@ function HeaderUserInfoSection() {
     return (
         <div className={styles.headerUserInfoSection}>
             <PersonalAvatar size={iconSize} />
-            <Link to={`${login}/profile`}>
-                <p className="my-0 px-3 fs-5">{login}</p>
+            <Link to={`${login}/profile`} className="px-3 fs-5 d-none d-sm-block">
+                {login}
             </Link>
 
             <LogoutMainButton />

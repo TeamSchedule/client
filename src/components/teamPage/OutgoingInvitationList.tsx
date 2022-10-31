@@ -1,12 +1,15 @@
 import { OutgoingInvitationItem } from "./OutgoingInvitationItem";
 import React, { useEffect, useState } from "react";
 import { API } from "../../api/api";
+import { OutgoingInvitationItemSchema } from "../../api/schemas/responses/invitations";
 
 interface OutgoingInvitesProps {
     teamId: number | null;
 }
 export default function OutgoingInvitationList({ teamId }: OutgoingInvitesProps) {
-    const [unprocessedOutgoingInvitations, setUnprocessedOutgoingInvitations] = useState([]);
+    const [unprocessedOutgoingInvitations, setUnprocessedOutgoingInvitations] = useState<
+        Array<OutgoingInvitationItemSchema>
+    >([]);
 
     function loadOutgoingTeamInvitations() {
         if (!teamId) return;
@@ -25,7 +28,7 @@ export default function OutgoingInvitationList({ teamId }: OutgoingInvitesProps)
     return (
         <>
             <p className="mt-4">Отправленные приглашения:</p>
-            {unprocessedOutgoingInvitations.map((invitation) => (
+            {unprocessedOutgoingInvitations.map((invitation: OutgoingInvitationItemSchema) => (
                 <OutgoingInvitationItem invitation={invitation} onUndoInvitation={onUndoInvitation} />
             ))}
         </>

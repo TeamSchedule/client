@@ -5,12 +5,12 @@ function LogoutIcon({ color, size, className }: IconProps) {
         <>
             <svg
                 version="1.1"
-                id="Capa_1"
+                id="LogoutIcon"
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"
                 y="0px"
-                viewBox="0 0 471.2 471.2"
-                enableBackground="new 0 0 471.2 471.2"
+                viewBox="0 -70 600 600"
+                enableBackground="new 0 0 600 600"
                 width={size}
                 height={size}
                 fill={color}
@@ -30,21 +30,6 @@ function LogoutIcon({ color, size, className }: IconProps) {
                         />
                     </g>
                 </g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
             </svg>
         </>
     );

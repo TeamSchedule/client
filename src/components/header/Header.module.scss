@@ -31,8 +31,14 @@
     &__passive {
         background: colors.$contrast;
     }
+    &__hover {
+        //background: colors.$brand_accent;
+    }
 
     &_icon {
+        fill: colors.$brand;
+        stroke: colors.$brand;
+
         &__active {
             fill: colors.$contrast;
             stroke: colors.$contrast;
@@ -47,6 +53,7 @@
 .headerUserInfoSection {
     display: flex;
     align-items: center;
+    padding: 0 0 0 15px;
 }
 
 .headerMainNavigationSection {

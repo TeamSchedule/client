@@ -1,0 +1,58 @@
+import { Link } from "react-router-dom";
+import { TeamAvatar } from "../avatars";
+import { PrimaryPreviewText, SecondaryPreviewText } from "./PreviewComponents";
+import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import TeamIcon from "../svg/TeamIcon";
+import { COLORS } from "../../consts";
+import { ToDoListIcon } from "../svg";
+
+interface ShortPreviewTeamItemProps {
+    team: TeamsResponseItemSchema;
+    linkTo?: string;
+}
+
+export default function ShortPreviewTeamItem({ linkTo, team }: ShortPreviewTeamItemProps) {
+    return (
+        <Link to={linkTo || "teams/" + team.id} className="">
+            <div className="p-4 shortPreviewTeamItem">
+                <TeamHeader membersNumber={8} openTaskNumber={3} />
+                <TeamAvatar imgSrc={""} size={80} className="m-auto" teamColor={team.color} />
+                <PrimaryPreviewText text={team.name} className="mt-4 mb-0 text-center" />
+                <SecondaryPreviewText text={""} className="text-center" />
+            </div>
+        </Link>
+    );
+}
+
+interface TeamHeaderProps {
+    openTaskNumber: number;
+    membersNumber: number;
+}
+
+function TeamHeader(props: TeamHeaderProps) {
+    return (
+        <>
+            <div className="d-flex justify-content-between">
+                <TeamHeaderItem value={props.membersNumber} Icon={TeamIcon} />
+                <TeamHeaderItem value={props.openTaskNumber} Icon={ToDoListIcon} />
+            </div>
+        </>
+    );
+}
+
+interface TeamHeaderItemProps {
+    value: number;
+    Icon: any;
+}
+
+function TeamHeaderItem(props: TeamHeaderItemProps) {
+    const Icon = props.Icon;
+    return (
+        <div className="d-flex align-items-center">
+            <div className="fs-4 fw-bold" style={{ color: COLORS.PRIMARY }}>
+                {props.value}
+            </div>
+            {props.Icon && <Icon size={"1.75em"} color={COLORS.PRIMARY} />}
+        </div>
+    );
+}
