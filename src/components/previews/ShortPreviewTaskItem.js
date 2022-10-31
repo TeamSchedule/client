@@ -1,9 +1,8 @@
-import TeamAvatar from "../avatars/TeamAvatar";
 import { PrimaryPreviewText, SecondaryPreviewText } from "./PreviewComponents";
 import RightAngleIcon from "../svg/RightAngleIcon";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import PersonalAvatar from "../avatars/PersonalAvatar";
+import { PersonalAvatar, TeamAvatar } from "../avatars";
 
 function ShortPreviewTaskItem({ className, imgSrc, isPrivate, taskName, description, taskId }) {
     const [isHovering, setIsHovering] = useState(false);
@@ -23,11 +22,7 @@ function ShortPreviewTaskItem({ className, imgSrc, isPrivate, taskName, descript
         >
             <div className={className + " " + "d-flex p-3 align-items-center"}>
                 <div className="mr-3">
-                    {isPrivate ? (
-                        <PersonalAvatar size={60} />
-                    ) : (
-                        <TeamAvatar imgSrc={imgSrc} size={60} />
-                    )}
+                    {isPrivate ? <PersonalAvatar size={60} /> : <TeamAvatar imgSrc={imgSrc} size={60} />}
                 </div>
 
                 <div>

@@ -1,11 +1,15 @@
 ARG NODE_VERSION=16.17.1
 
-FROM node:${NODE_VERSION}-alpine
+FROM node:${NODE_VERSION}-alpine as deps
 
 WORKDIR /app
 COPY package.json .
-COPY package-lock.json .
-RUN npm i --legacy-peer-deps
-RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
-
+COPY yarn.lock .
+RUN yarn install
 COPY . .
+RUN yarn build
+
+
+FROM alpine:latest as built_client
+WORKDIR /static
+COPY --from=deps /app/build/* /static/

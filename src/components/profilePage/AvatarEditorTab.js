@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import AvatarEditor from "react-avatar-editor";
 import { Slider } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -10,11 +10,13 @@ import RemovalFormButton from "../buttons/RemovalFormButton";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import CommonActionFormButton from "../buttons/CommonActionFormButton";
 import GoBackActionButton from "../buttons/GoBackActionButton";
-import UserAvatar from "../avatars/UserAvatar";
+import { UserAvatar } from "../avatars";
 import { AlternateAvatarImageIcon } from "../svg";
 import { COLORS } from "../../consts";
 
 export default function AvatarEditorTab() {
+    const navigate = useNavigate();
+
     const [avatarEditor, setAvatarEditor] = useState();
 
     const [scale, setScale] = useState(1);
@@ -57,6 +59,7 @@ export default function AvatarEditorTab() {
                     type: blob.type,
                 });
                 API.avatars.set(myFile).then(() => {
+                    navigate("/");
                     window.location.reload();
                 });
             });
@@ -104,12 +107,7 @@ export default function AvatarEditorTab() {
                             <div className="p-3 d-flex justify-content-center align-items-center flex-grow-1">
                                 <Button
                                     className="p-2 px-3"
-                                    startIcon={
-                                        <AlternateAvatarImageIcon
-                                            color={COLORS.PRIMARY}
-                                            size={64}
-                                        />
-                                    }
+                                    startIcon={<AlternateAvatarImageIcon color={COLORS.PRIMARY} size={64} />}
                                 >
                                     Нажмите,&nbsp;чтобы&nbsp;загрузить
                                     <br />
@@ -152,10 +150,7 @@ export default function AvatarEditorTab() {
                             style={{ color: COLORS.PRIMARY }}
                         />
                     </div>
-                    <CommonActionFormButton
-                        btnText="СБРОСИТЬ НАСТРОЙКИ"
-                        onClick={resetEditorParams}
-                    />
+                    <CommonActionFormButton btnText="СБРОСИТЬ НАСТРОЙКИ" onClick={resetEditorParams} />
                 </div>
                 <div className="p-2 d-flex flex-column-reverse col px-0 ml-2">
                     <CommonActionFormButton
@@ -184,11 +179,7 @@ export default function AvatarEditorTab() {
             />
 
             <GoBackActionButton className="mt-5" />
-            <RemovalFormButton
-                btnText="УДАЛИТЬ СУЩЕСТВУЮЩИЙ АВАТАР"
-                onClick={onClickDelete}
-                className="mt-4"
-            />
+            <RemovalFormButton btnText="УДАЛИТЬ СУЩЕСТВУЮЩИЙ АВАТАР" onClick={onClickDelete} className="mt-4" />
         </div>
     );
 }
