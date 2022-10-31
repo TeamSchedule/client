@@ -6,18 +6,11 @@ import { API } from "../../api/api";
 import { setAccessToken } from "../../api/axiosRequests";
 import { login } from "../../features/isAuthSlice";
 import { set } from "../../features/userInfoSlice";
-import {
-    AuthForm,
-    AuthPasswordInput,
-    AuthUsernameInput,
-    FormFooter,
-    FormHeader,
-} from "./auth-form-items";
-import SuccessFormButton from "../buttons/SuccessFormButton";
+import { AuthForm, AuthPasswordInput, AuthUsernameInput, FormFooter, FormHeader, FormBtn } from "./auth-form-items";
 import { ServiceUnavailableErrorMsg, WrongCredentialsErrorMsg } from "./ErrMsgs";
 import { TokenPair } from "../../api/schemas/responses/auth";
 import { SignInRequestSchema } from "../../api/schemas/requests/auth";
-import "./auth.css";
+import "./Auth.module.scss";
 import { GetMeResponseSchema } from "../../api/schemas/responses/users";
 
 export default function LoginForm() {
@@ -69,32 +62,32 @@ export default function LoginForm() {
     }
 
     return (
-        <AuthForm
-            onSubmit={signInHandler}
-            innerForm={
-                <>
-                    <FormHeader
-                        headerText={
-                            <>
-                                Войти в &nbsp;<Link to="/">Командное расписание</Link>&nbsp;!
-                            </>
-                        }
-                    />
+        <AuthForm onSubmit={signInHandler}>
+            <>
+                <FormHeader>
+                    <span>Вход</span>
+                </FormHeader>
 
-                    <AuthUsernameInput value={username} setValue={setUsername} />
-                    <AuthPasswordInput value={password} setValue={setPassword} />
+                <AuthUsernameInput value={username} setValue={setUsername} />
+                <AuthPasswordInput value={password} setValue={setPassword} />
 
-                    <WrongCredentialsErrorMsg visible={isWrongCredentials} />
-                    <ServiceUnavailableErrorMsg visible={isServiceUnavailableErrShown} />
+                <WrongCredentialsErrorMsg visible={isWrongCredentials} />
+                <ServiceUnavailableErrorMsg visible={isServiceUnavailableErrShown} />
 
-                    <SuccessFormButton btnText="ВОЙТИ" loading={isActionInProgress} />
-                    <FormFooter
-                        toggleAuthFormLink={
-                            <Link to="/signup">Ещё не создали аккаунт? Создать</Link>
-                        }
-                    />
-                </>
-            }
-        />
+                <p className="text-right mr-5 mb-4 w-100">
+                    <Link to="/signup">Забыли пароль?</Link>
+                </p>
+
+                <FormBtn text={"Войти"} />
+
+                <FormFooter>
+                    <>
+                        Ещё не создали аккаунт?
+                        <br></br>
+                        <Link to="/signup">Зарегистрироваться!</Link>
+                    </>
+                </FormFooter>
+            </>
+        </AuthForm>
     );
 }
