@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 
 import { API } from "../../api/api";
 import { setAccessToken } from "../../api/axiosRequests";
@@ -12,6 +12,8 @@ import {
     AuthUsernameInput,
     FormFooter,
     FormHeader,
+    FormText,
+    FormBtn
 } from "./auth-form-items";
 import "./auth.css";
 import SuccessFormButton from "../buttons/SuccessFormButton";
@@ -72,7 +74,7 @@ export default function LoginForm() {
                     <FormHeader
                         headerText={
                             <>
-                                Войти в &nbsp;<Link to="/">Командное расписание</Link>&nbsp;!
+                                Вход
                             </>
                         }
                     />
@@ -83,10 +85,23 @@ export default function LoginForm() {
                     <WrongCredentialsErrorMsg visible={isWrongCredentials} />
                     <ServiceUnavailableErrorMsg visible={isServiceUnavailableErrShown} />
 
-                    <SuccessFormButton btnText="ВОЙТИ" loading={isActionInProgress} />
+                    <FormText
+                        text={
+                            <>
+                                <Link to="/signup">Забыли пароль?</Link>
+                            </>   
+                        }
+                    />
+
+                    <FormBtn text={"Войти"} />
+
                     <FormFooter
                         toggleAuthFormLink={
-                            <Link to="/signup">Ещё не создали аккаунт? Создать</Link>
+                            <>
+                                Ещё не создали аккаунт?
+                                <br></br>
+                                <Link to="/signup">Зарегистрироваться!</Link>
+                            </>
                         }
                     />
                 </>

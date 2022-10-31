@@ -1,8 +1,35 @@
 .authForm {
     display: flex;
     flex-direction: column;
-    border: 4px solid #030017;
-    border-radius: 2px;
-    color: white;
-    background: #080618;
+    height: 450px;
+    border-radius: 20px;
+    box-shadow: 4px 4px 4px 1px rgba(0, 0, 0, 0.25);
+    color: rgb(0, 0, 0);
+    background: #ffffff;
+}
+
+.divinp {
+    display: flex;
+    align-self: center;
+    width: 90%;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.inp {
+    border: 0;
+    margin-left: 2px;
+    padding-left: 10px;
+}
+
+.btn {
+    border: 1px solid black;
+}
+
+.btnn {
+    fill: #ffffff;
+    border-radius: 15px;
+    width: 50%;
+    height: 45px;
+    background-color: #ffffff;
 }

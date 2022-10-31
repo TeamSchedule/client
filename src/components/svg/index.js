@@ -8,6 +8,9 @@ import RightAngleIcon from "./RightAngleIcon";
 import SettingsIcon from "./SettingsIcon";
 import TeamIcon from "./TeamIcon";
 import ToDoListIcon from "./ToDoListIcon";
+import UserIcon from "./UserIcon";
+import PasswordIcon from "./PasswordIcon"
+import EmailIcon from "./EmailIcon";
 
 export {
     AlternateAvatarImageIcon,
@@ -20,4 +23,7 @@ export {
     SettingsIcon,
     TeamIcon,
     ToDoListIcon,
+    UserIcon,
+    PasswordIcon,
+    EmailIcon
 };

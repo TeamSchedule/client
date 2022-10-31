@@ -8,6 +8,7 @@ import {
     AuthUsernameInput,
     FormFooter,
     FormHeader,
+    FormBtn
 } from "./auth-form-items";
 import SuccessFormButton from "../buttons/SuccessFormButton";
 import { NameAlreadyExistErrorMsg, ServiceUnavailableErrorMsg } from "./ErrMsgs";
@@ -73,13 +74,15 @@ export default function RegisterForm() {
                         <NameAlreadyExistErrorMsg visible={isNameOccupiedErrShown} />
                         <ServiceUnavailableErrorMsg visible={isRegErrShown} />
 
-                        <SuccessFormButton
-                            btnText="ЗАРЕГИСТРИРОВАТЬСЯ"
-                            loading={isActionInProgress}
-                        />
+                        <FormBtn text={"Зарегистрироваться"} />
+                        
                         <FormFooter
                             toggleAuthFormLink={
-                                <Link to="/login">Уже зарегистрировались? Войти</Link>
+                                <>
+                                    Уже зарегистрировались?
+                                    <br></br>
+                                    <Link to="/login">Войти!</Link>
+                                </>
                             }
                         />
                     </>
