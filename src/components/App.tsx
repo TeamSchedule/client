@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-import Header from "./header/Header";
+import Header from "./header";
 import { HEADER_HEIGHT } from "../consts";
 
 export default function App() {

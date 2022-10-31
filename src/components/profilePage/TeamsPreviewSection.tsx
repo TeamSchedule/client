@@ -3,8 +3,15 @@ import ShortPreviewTeamItem from "../previews/ShortPreviewTeamItem";
 import { Link } from "react-router-dom";
 import RightAngleIcon from "../svg/RightAngleIcon";
 import BasePreviewSection from "./BasePreviewSection";
+import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 
-function TeamsPreviewSection({ err = false, loading = false, teams = [] }) {
+interface TeamsPreviewSectionProps {
+    teams: Array<TeamsResponseItemSchema>;
+    err: boolean;
+    loading: boolean;
+}
+
+function TeamsPreviewSection({ err = false, loading = false, teams = [] }: TeamsPreviewSectionProps) {
     const [isHovering, setIsHovering] = useState(false);
     const editIconColor = isHovering ? "#9b9b9b" : "#d0d0d0";
 
@@ -35,7 +42,11 @@ function TeamsPreviewSection({ err = false, loading = false, teams = [] }) {
 
 export default TeamsPreviewSection;
 
-function PreviewTeamsGroup({ teams = [] }) {
+interface PreviewTeamsGroupProps {
+    teams: Array<TeamsResponseItemSchema>;
+}
+
+function PreviewTeamsGroup({ teams = [] }: PreviewTeamsGroupProps) {
     if (teams.length === 0) {
         return (
             <div>
@@ -52,14 +63,7 @@ function PreviewTeamsGroup({ teams = [] }) {
     return (
         <div className="d-flex justify-content-center">
             {teams.map((team) => (
-                <ShortPreviewTeamItem
-                    key={team.id}
-                    teamName={team.name}
-                    description={team.description}
-                    className="mr-3"
-                    linkTo={"teams/" + team.id}
-                    teamColor={team.color}
-                />
+                <ShortPreviewTeamItem key={team.id} team={team} />
             ))}
         </div>
     );

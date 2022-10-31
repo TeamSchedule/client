@@ -1,6 +1,6 @@
 .dayValueItemColumn {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     min-height: 100px;
     height: 100px;
     background: #ecf1ff;

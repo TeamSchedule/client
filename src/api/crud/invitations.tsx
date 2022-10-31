@@ -1,6 +1,9 @@
 import $axios from "../axiosRequests";
 import { CreateInvitationsRequestSchema } from "../schemas/requests/invitations";
-import { GetIncomingInvitationsResponseSchema } from "../schemas/responses/invitations";
+import {
+    GetIncomingInvitationsResponseSchema,
+    GetOutgoingInvitationsResponseSchema,
+} from "../schemas/responses/invitations";
 
 type InvitationStatus = "OPEN" | "CLOSE";
 
@@ -10,8 +13,9 @@ export class invitations {
     static async getOutgoingTeamInvitations(status: InvitationStatus, teamId: number) {
         return $axios
             .get(`${this.prefixUrl}/invite?criteria=inviting&status=${status}&teamId=${teamId}`)
-            .then((res) => {
-                return res.data["teamInvites"];
+            .then((res) => res.data)
+            .then((data: GetOutgoingInvitationsResponseSchema) => {
+                return data.teamInvites;
             })
             .catch(() => {
                 return [];

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import TeamItem from "./TeamItem";
 import { API } from "../../api/api";
 import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import ShortPreviewTeamItem from "../previews/ShortPreviewTeamItem";
 
 export default function TeamList() {
     const [teams, setTeams] = useState<Array<TeamsResponseItemSchema>>([]);
@@ -16,9 +16,9 @@ export default function TeamList() {
     }, []);
     return (
         <>
-            <div>
+            <div className="d-flex">
                 {teams.map((team: TeamsResponseItemSchema) => (
-                    <TeamItem team={team} key={team.id} />
+                    <ShortPreviewTeamItem key={team.id} team={team} linkTo={team.id.toString()} />
                 ))}
             </div>
         </>
