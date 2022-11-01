@@ -2,8 +2,9 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { UserAvatar } from "../avatars";
-import RemovalFormButton from "../buttons/RemovalFormButton";
 import { OutgoingInvitationItemSchema } from "../../api/schemas/responses/invitations";
+import { BaseButton } from "../buttons";
+import React from "react";
 
 interface UnprocessedOutgoingInvitationItemProps {
     invitation: OutgoingInvitationItemSchema;
@@ -17,10 +18,10 @@ export function OutgoingInvitationItem(props: UnprocessedOutgoingInvitationItemP
             <ListItem alignItems="center" disableGutters>
                 <UserAvatar avatarSrc="/" className="mr-2" />
                 <ListItemText primary={<span>{props.invitation.invitedId}</span>} />
-                <RemovalFormButton
-                    btnText="ОТОЗВАТЬ ПРИГЛАШЕНИЕ"
+                <BaseButton
+                    text="Отозвать приглашение"
+                    color="danger"
                     onClick={() => props.onUndoInvitation(props.invitation.id)}
-                    fullWidth={false}
                 />
             </ListItem>
             <Divider variant="inset" component="div" />

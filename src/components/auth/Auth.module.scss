@@ -2,36 +2,25 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 20px;
+    border-radius: 24px;
     box-shadow: 4px 4px 4px 1px rgba(0, 0, 0, 0.25);
     color: rgb(0, 0, 0);
     background: #ffffff;
 }
 
-.divinp {
-    display: flex;
-    align-self: center;
-    margin-bottom: 20px;
-    width: 90%;
-    border: 1px solid black;
-    border-radius: 10px;
+.formHeader {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.75em;
+    margin-bottom: 30px;
 }
 
-.inp {
-    border: 0;
-    margin-left: 2px;
-    padding: 10px 0 10px 10px;
-    background: none;
+.formFooter {
+    margin: 20px 0 10px;
+    text-align: center;
+}
+
+.formInputWrapper {
     width: 100%;
-}
-
-.commonBtn {
-    fill: #ffffff;
-    border-radius: 15px;
-    min-width: 200px;
-    background-color: #ffffff;
-    padding: 6px 10px;
-    &:active {
-        outline: none;
-    }
+    margin: 10px 0 6px;
 }

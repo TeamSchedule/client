@@ -15,4 +15,11 @@ export class users {
     static async filterByUsername(username: string) {
         return (await $axios.get(`/user?criteria=${username}`)).data["users"];
     }
+
+    static isUsernameExist(username: string) {
+        return $axios
+            .get(`/user?criteria=${username}`)
+            .then((res) => res.data)
+            .then((users) => users.length > 0);
+    }
 }

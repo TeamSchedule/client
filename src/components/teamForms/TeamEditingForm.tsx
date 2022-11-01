@@ -5,9 +5,6 @@ import List from "@mui/material/List";
 import { useNavigate, useParams } from "react-router-dom";
 import { API } from "../../api/api";
 import { TeamMemberItem } from "./TeamMemberItem";
-import SuccessFormButton from "../buttons/SuccessFormButton";
-import RemovalFormButton from "../buttons/RemovalFormButton";
-import CommonActionFormButton from "../buttons/CommonActionFormButton";
 import FormHeaderRow from "../generic/FormHeaderRow";
 import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputColorFormItem from "../inputs/InputColorFormItem";
@@ -16,6 +13,7 @@ import { CreateInvitationsRequestSchema } from "../../api/schemas/requests/invit
 import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 import { UpdateTeamRequestSchema } from "../../api/schemas/requests/teams";
 import OutgoingInvitationList from "../teamPage/OutgoingInvitationList";
+import { BaseButton } from "../buttons";
 
 export default function TeamEditingForm() {
     const { teamId } = useParams();
@@ -105,7 +103,7 @@ export default function TeamEditingForm() {
                 <InputColorFormItem setColor={setColor} color={color} />
             </div>
 
-            <SuccessFormButton btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ" loading={isUpdateActionInProgress} />
+            <BaseButton text="Сохранить изменения" loading={isUpdateActionInProgress} color="success" />
 
             <ParticipantList participants={[]} />
 
@@ -118,7 +116,12 @@ export default function TeamEditingForm() {
                 isInviteActionInProgress={isInviteActionInProgress}
             />
             <OutgoingInvitationList teamId={teamId ? +teamId : null} />
-            <RemovalFormButton btnText="ПОКИНУТЬ КОМАНДУ" onClick={onLeaveTeam} loading={isLeaveActionInProgress} />
+            <BaseButton
+                text="Покинуть команду"
+                onClick={onLeaveTeam}
+                loading={isLeaveActionInProgress}
+                color="danger"
+            />
         </BaseForm>
     );
 }
@@ -164,12 +167,13 @@ function AutocompleteUsers(props: AutocompleteUsersProps) {
                 )}
             />
 
-            <CommonActionFormButton
-                btnText="ПРИГЛАСИТЬ"
+            <BaseButton
+                text="Пригласить"
                 className="mt-3"
                 onClick={props.onSendInvites}
                 disabled={!props.usersToInvite || +props.usersToInvite.length === 0}
                 loading={props.isInviteActionInProgress}
+                color="common"
             />
         </div>
     );

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Header.module.scss";
-import { COLORS } from "../../consts";
 
 export const iconSize = 36;
 
@@ -31,11 +30,10 @@ export default function HeaderLink(props: HeaderLinkProps) {
 
     return (
         <>
-            <Link to={props.linkTo} className={[styles.headerLink, className].join(" ")}>
+            <Link to={props.linkTo} className={[styles.headerLink, className].join(" ")} onClick={props.onClick}>
                 {Icon && (
                     <Icon
                         size={iconSize}
-                        // color={props.path && location.pathname.startsWith(props.path) ? "#ffffff" : COLORS.PRIMARY}
                         className={
                             props.path && location.pathname.startsWith(props.path)
                                 ? styles.headerLink_icon__active

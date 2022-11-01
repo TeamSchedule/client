@@ -6,12 +6,15 @@ import { API } from "../../api/api";
 import { setAccessToken } from "../../api/axiosRequests";
 import { login } from "../../features/isAuthSlice";
 import { set } from "../../features/userInfoSlice";
-import { AuthForm, AuthPasswordInput, AuthUsernameInput, FormFooter, FormHeader, FormBtn } from "./auth-form-items";
-import { ServiceUnavailableErrorMsg, WrongCredentialsErrorMsg } from "./ErrMsgs";
+import AuthFormLayout from "./AuthFormLayout";
+import ErrorMsg from "../ErrorMsg";
 import { TokenPair } from "../../api/schemas/responses/auth";
 import { SignInRequestSchema } from "../../api/schemas/requests/auth";
-import "./Auth.module.scss";
 import { GetMeResponseSchema } from "../../api/schemas/responses/users";
+import { PasswordInput, UsernameInput } from "../inputs";
+import BaseButton from "../buttons/BaseButton";
+import styles from "./Auth.module.scss";
+import ERRORS from "../../consts/errors";
 
 export default function LoginForm() {
     const navigate = useNavigate();
@@ -24,16 +27,17 @@ export default function LoginForm() {
     const [isWrongCredentials, setIsWrongCredentials] = useState(false);
     const [isServiceUnavailableErrShown, setIsServiceUnavailableErrShown] = useState(false);
 
-    function signInHandler(event: React.FormEvent) {
+    function signInHandler(event: any) {
         event.preventDefault();
         setIsActionInProgress(true);
-
         const signInRequestData: SignInRequestSchema = {
             login: username,
             password: password,
         };
+
         API.auth
             .signIn(signInRequestData)
+
             .then((tokens: TokenPair) => {
                 setPassword("");
                 setAccessToken(tokens.access);
@@ -47,7 +51,7 @@ export default function LoginForm() {
             })
             .catch((err) => {
                 setPassword("");
-                const statusCode = err.response.status;
+                const statusCode = err.response ? err.response.status : 500;
                 if (statusCode >= 500) {
                     setIsWrongCredentials(false);
                     setIsServiceUnavailableErrShown(true);
@@ -62,32 +66,22 @@ export default function LoginForm() {
     }
 
     return (
-        <AuthForm onSubmit={signInHandler}>
+        <AuthFormLayout onSubmit={signInHandler}>
             <>
-                <FormHeader>
-                    <span>Вход</span>
-                </FormHeader>
+                <p className={styles.formHeader}>Вход</p>
+                <UsernameInput value={username} setValue={setUsername} className={styles.formInputWrapper} />
+                <PasswordInput value={password} setValue={setPassword} className={styles.formInputWrapper} />
 
-                <AuthUsernameInput value={username} setValue={setUsername} />
-                <AuthPasswordInput value={password} setValue={setPassword} />
+                <ErrorMsg errText={ERRORS.SignIn.WrongCredentials} visible={isWrongCredentials} />
+                <ErrorMsg errText={ERRORS.Service.ServiceUnavailable} visible={isServiceUnavailableErrShown} />
 
-                <WrongCredentialsErrorMsg visible={isWrongCredentials} />
-                <ServiceUnavailableErrorMsg visible={isServiceUnavailableErrShown} />
-
-                <p className="text-right mr-5 mb-4 w-100">
-                    <Link to="/signup">Забыли пароль?</Link>
+                <BaseButton text="Войти" className="mt-3" loading={isActionInProgress} />
+                <p className={styles.formFooter}>
+                    Ещё не создали аккаунт?
+                    <br></br>
+                    <Link to="/signup">Зарегистрироваться!</Link>
                 </p>
-
-                <FormBtn text={"Войти"} />
-
-                <FormFooter>
-                    <>
-                        Ещё не создали аккаунт?
-                        <br></br>
-                        <Link to="/signup">Зарегистрироваться!</Link>
-                    </>
-                </FormFooter>
             </>
-        </AuthForm>
+        </AuthFormLayout>
     );
 }

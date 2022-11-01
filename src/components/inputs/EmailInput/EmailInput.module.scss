@@ -1,0 +1,24 @@
+@use "../../../assets/styles/colors";
+
+.EmailInputWrapper {
+    display: flex;
+    align-self: center;
+    border: 1px solid black;
+    border-radius: 10px;
+
+    &__error {
+        border-color: colors.$error;
+    }
+
+    &__success {
+        border-color: colors.$success;
+    }
+}
+
+.EmailInput {
+    border: 0;
+    margin-left: 2px;
+    padding: 10px 0 10px 10px;
+    background: none;
+    width: 100%;
+}
