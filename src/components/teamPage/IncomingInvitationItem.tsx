@@ -1,11 +1,11 @@
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import SuccessFormButton from "../buttons/SuccessFormButton";
-import RemovalFormButton from "../buttons/RemovalFormButton";
 import { UserAvatar } from "../avatars";
 import { API } from "../../api/api";
 import { IncomingInvitationItemSchema } from "../../api/schemas/responses/invitations";
+import React from "react";
+import { BaseButton } from "../buttons";
 
 interface IncomingInvitationItemProps {
     invitation: IncomingInvitationItemSchema;
@@ -34,9 +34,9 @@ export default function IncomingInvitationItem({ invitation, loadIncomingInvitat
                     }
                 />
 
-                <SuccessFormButton btnText="ВСТУПИТЬ" fullWidth={false} onClick={onAcceptClick} />
+                <BaseButton text="Вступить" color="success" onClick={onAcceptClick} />
                 <div style={{ width: "15px" }}></div>
-                <RemovalFormButton btnText="ОТКЛОНИТЬ" fullWidth={false} onClick={onRejectClick} />
+                <BaseButton text="Отклонить" color="danger" onClick={onRejectClick} />
             </ListItem>
             <Divider variant="inset" component="li" />
         </>

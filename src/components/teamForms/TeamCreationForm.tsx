@@ -2,11 +2,11 @@ import React, { FormEvent, useState } from "react";
 import { API } from "../../api/api";
 
 import { useNavigate } from "react-router-dom";
-import SuccessFormButton from "../buttons/SuccessFormButton";
 import FormHeaderRow from "../generic/FormHeaderRow";
 import InputTextFormItem from "../inputs/InputTextFormItem";
 import BaseForm from "../generic/BaseForm";
 import { CreateTeamRequestSchema } from "../../api/schemas/requests/teams";
+import { BaseButton } from "../buttons";
 
 export default function TeamCreationForm() {
     const navigate = useNavigate();
@@ -31,16 +31,8 @@ export default function TeamCreationForm() {
     return (
         <BaseForm onSubmit={createTeamSbm} autoComplete={false}>
             <FormHeaderRow headerText="Создать новую команду" />
-            <InputTextFormItem
-                label="Название команды"
-                value={teamName}
-                handleChange={setTeamName}
-            />
-            <SuccessFormButton
-                btnText="СОЗДАТЬ КОМАНДУ"
-                loading={isActionInProgress}
-                className="mt-4"
-            />
+            <InputTextFormItem label="Название команды" value={teamName} handleChange={setTeamName} />
+            <BaseButton text="Создать команду" loading={isActionInProgress} color="common" className="mt-4" />
         </BaseForm>
     );
 }

@@ -6,13 +6,11 @@ import Typography from "@mui/material/Typography";
 import Dropzone from "react-dropzone";
 import Button from "@mui/material/Button";
 import { API } from "../../api/api";
-import RemovalFormButton from "../buttons/RemovalFormButton";
-import SuccessFormButton from "../buttons/SuccessFormButton";
-import CommonActionFormButton from "../buttons/CommonActionFormButton";
-import GoBackActionButton from "../buttons/GoBackActionButton";
+import GoBackActionButton from "../buttons/GoBackActionButton.tsx";
 import { UserAvatar } from "../avatars";
 import { AlternateAvatarImageIcon } from "../svg";
 import { COLORS } from "../../consts";
+import { BaseButton } from "../buttons";
 
 export default function AvatarEditorTab() {
     const navigate = useNavigate();
@@ -68,6 +66,7 @@ export default function AvatarEditorTab() {
 
     const onClickDelete = () => {
         API.avatars.delete().then(() => {
+            navigate("/");
             window.location.reload();
         });
     };
@@ -150,11 +149,18 @@ export default function AvatarEditorTab() {
                             style={{ color: COLORS.PRIMARY }}
                         />
                     </div>
-                    <CommonActionFormButton btnText="СБРОСИТЬ НАСТРОЙКИ" onClick={resetEditorParams} />
+                    <BaseButton
+                        text="Сбросить настройки"
+                        color="common"
+                        onClick={resetEditorParams}
+                        className="w-100"
+                    />
                 </div>
                 <div className="p-2 d-flex flex-column-reverse col px-0 ml-2">
-                    <CommonActionFormButton
-                        btnText="ПОКАЗАТЬ ПРЕВЬЮ"
+                    <BaseButton
+                        text="Показать превью"
+                        color="common"
+                        className="w-100"
                         onClick={onClickPreview}
                         disabled={!enabledToSave}
                     />
@@ -170,16 +176,16 @@ export default function AvatarEditorTab() {
                     )}
                 </div>
             </div>
-
-            <SuccessFormButton
-                btnText="СОХРАНИТЬ НОВЫЙ АВАТАР"
+            <BaseButton
+                text="Сохранить новый аватар"
+                color="success"
                 onClick={onClickSave}
+                className="mt-4 w-100"
                 disabled={!enabledToSave}
-                className="mt-4"
             />
 
             <GoBackActionButton className="mt-5" />
-            <RemovalFormButton btnText="УДАЛИТЬ СУЩЕСТВУЮЩИЙ АВАТАР" onClick={onClickDelete} className="mt-4" />
+            <BaseButton text="Удалить аватар" color="danger" className="mt-4 w-100" onClick={onClickDelete} />
         </div>
     );
 }

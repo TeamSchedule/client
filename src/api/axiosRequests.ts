@@ -9,12 +9,11 @@ const AXIOS_CONFIG = {
 };
 
 const $axios: AxiosInstance = axios.create(AXIOS_CONFIG);
+export const $nonInterceptAxios: AxiosInstance = axios.create(AXIOS_CONFIG);
 
 // https://github.com/Flyrell/axios-auth-refresh
 // Function that will be called to refresh authorization
-const refreshAuthLogic = (failedRequest: {
-    response: { config: { headers: { [x: string]: string } } };
-}) => {
+const refreshAuthLogic = (failedRequest: { response: { config: { headers: { [x: string]: string } } } }) => {
     return API.auth
         .refreshAccessToken({
             token: localStorage.getItem("refresh") || "",

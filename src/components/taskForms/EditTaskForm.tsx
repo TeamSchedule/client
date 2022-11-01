@@ -4,14 +4,13 @@ import { Checkbox, FormControlLabel } from "@mui/material";
 
 import { API } from "../../api/api";
 import CloseFormIcon from "../generic/CloseFormIcon";
-import SuccessFormButton from "../buttons/SuccessFormButton";
-import RemovalFormButton from "../buttons/RemovalFormButton";
 import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputMultilineTextFormItem from "../inputs/InputMultilineTextFormItem";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import BaseForm from "../generic/BaseForm";
 import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
 import { UpdateTaskRequestSchema } from "../../api/schemas/requests/tasks";
+import { BaseButton } from "../buttons";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
@@ -91,12 +90,7 @@ export default function EditTaskForm() {
                 <CloseFormIcon />
             </div>
 
-            <InputTextFormItem
-                label="Название задачи"
-                value={taskName}
-                handleChange={setTaskName}
-                className="mb-3"
-            />
+            <InputTextFormItem label="Название задачи" value={taskName} handleChange={setTaskName} className="mb-3" />
             <InputMultilineTextFormItem
                 label="Подробное описание"
                 value={taskDescription}
@@ -110,9 +104,7 @@ export default function EditTaskForm() {
             />
 
             <div>
-                <p className="my-1">
-                    {taskTeamName === "" ? "персональная задача" : `Команда: ${taskTeamName}`}
-                </p>
+                <p className="my-1">{taskTeamName === "" ? "персональная задача" : `Команда: ${taskTeamName}`}</p>
 
                 <FormControlLabel
                     control={
@@ -127,20 +119,20 @@ export default function EditTaskForm() {
                 />
             </div>
 
-            <div className="mt-4">
-                <SuccessFormButton
-                    btnText="СОХРАНИТЬ ИЗМЕНЕНИЯ"
-                    loading={isUpdateActionInProgress}
-                />
-            </div>
+            <BaseButton
+                text="Сохранить изменения"
+                loading={isUpdateActionInProgress}
+                color="success"
+                className="mt-4"
+            />
 
-            <div className="mt-4">
-                <RemovalFormButton
-                    btnText="УДАЛИТЬ ЗАДАЧУ"
-                    onClick={onDeleteTaskBtn}
-                    loading={isDeleteActionInProgress}
-                />
-            </div>
+            <BaseButton
+                text="Удалить задачу"
+                loading={isDeleteActionInProgress}
+                color="danger"
+                className="mt-4"
+                onClick={onDeleteTaskBtn}
+            />
         </BaseForm>
     );
 }

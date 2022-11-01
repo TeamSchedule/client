@@ -6,7 +6,6 @@ import { API } from "../../api/api";
 import { selectUserInfo } from "../../features/userInfoSlice";
 import CloseFormIcon from "../generic/CloseFormIcon";
 import { Checkbox, FormControlLabel } from "@mui/material";
-import SuccessFormButton from "../buttons/SuccessFormButton";
 import InputMultilineTextFormItem from "../inputs/InputMultilineTextFormItem";
 import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
@@ -14,6 +13,7 @@ import { getPrevDayDate } from "../../utils/getPrevDayDate";
 import BaseForm from "../generic/BaseForm";
 import { CreateTaskRequestSchema } from "../../api/schemas/requests/tasks";
 import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import { BaseButton } from "../buttons";
 
 interface TeamItemProps {
     groupId: string;
@@ -59,8 +59,7 @@ function CreateTaskForm() {
         event.preventDefault();
         setIsActionInProgress(true);
         // поправляем время, так как toJSON() даст UTC время
-        const hoursDiff =
-            taskExpirationDatetime.getHours() - taskExpirationDatetime.getTimezoneOffset() / 60;
+        const hoursDiff = taskExpirationDatetime.getHours() - taskExpirationDatetime.getTimezoneOffset() / 60;
         taskExpirationDatetime.setHours(hoursDiff);
 
         const createTaskData: CreateTaskRequestSchema = {
@@ -95,12 +94,7 @@ function CreateTaskForm() {
                 <CloseFormIcon />
             </div>
 
-            <InputTextFormItem
-                label="Название задачи"
-                value={taskName}
-                handleChange={setTaskName}
-                className="mb-3"
-            />
+            <InputTextFormItem label="Название задачи" value={taskName} handleChange={setTaskName} className="mb-3" />
             <InputMultilineTextFormItem
                 label="Подробное описание"
                 value={taskDescription}
@@ -126,24 +120,14 @@ function CreateTaskForm() {
                     label="Создать задачу только для себя"
                 />
                 {!isPrivateFlag && (
-                    <select
-                        id="taskGroup"
-                        name="list1"
-                        onChange={(e) => setSelectedTeam(+e.target.value)}
-                        required
-                    >
+                    <select id="taskGroup" name="list1" onChange={(e) => setSelectedTeam(+e.target.value)} required>
                         {teams.map((team: TeamsResponseItemSchema) => (
-                            <TeamItem
-                                key={team.id}
-                                groupTitle={team.name}
-                                groupId={team.id.toString()}
-                            />
+                            <TeamItem key={team.id} groupTitle={team.name} groupId={team.id.toString()} />
                         ))}
                     </select>
                 )}
             </div>
-
-            <SuccessFormButton btnText="СОЗДАТЬ ЗАДАЧУ" loading={isActionInProgress} />
+            <BaseButton text="Создать задачу" loading={isActionInProgress} color="common" className="mt-4" />
         </BaseForm>
     );
 }
