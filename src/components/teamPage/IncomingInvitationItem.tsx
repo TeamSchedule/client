@@ -1,11 +1,12 @@
+import React from "react";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { UserAvatar } from "../avatars";
 import { API } from "../../api/api";
 import { IncomingInvitationItemSchema } from "../../api/schemas/responses/invitations";
-import React from "react";
 import { BaseButton } from "../buttons";
+import { buttonStyles } from "./../buttons";
 
 interface IncomingInvitationItemProps {
     invitation: IncomingInvitationItemSchema;
@@ -34,9 +35,18 @@ export default function IncomingInvitationItem({ invitation, loadIncomingInvitat
                     }
                 />
 
-                <BaseButton text="Вступить" color="success" onClick={onAcceptClick} />
-                <div style={{ width: "15px" }}></div>
-                <BaseButton text="Отклонить" color="danger" onClick={onRejectClick} />
+                <BaseButton
+                    text="Вступить"
+                    color="success"
+                    onClick={onAcceptClick}
+                    className={buttonStyles.rightFlatButton}
+                />
+                <BaseButton
+                    text="Отклонить"
+                    color="danger"
+                    onClick={onRejectClick}
+                    className={buttonStyles.leftFlatButton}
+                />
             </ListItem>
             <Divider variant="inset" component="li" />
         </>

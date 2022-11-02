@@ -1,4 +1,5 @@
 import BaseButton from "./BaseButton";
 import GoBackActionButton from "./GoBackActionButton";
+import buttonStyles from "./BaseButton/BaseButton.module.scss";
 
-export { BaseButton, GoBackActionButton };
+export { BaseButton, GoBackActionButton, buttonStyles };

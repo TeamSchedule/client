@@ -47,3 +47,15 @@
     color: colors.$default;
     size: 30px;
 }
+
+.rightFlatButton {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: none;
+}
+
+.leftFlatButton {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border: none;
+}

@@ -57,7 +57,7 @@ export default function RegisterForm() {
             .signUp(signUpRequestData)
             .then(() => {
                 setPassword("");
-                navigate("/login");
+                navigate("/ready");
             })
             .catch((err) => {
                 const statusCode = err.response.status;

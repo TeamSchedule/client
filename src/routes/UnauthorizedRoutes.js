@@ -6,6 +6,7 @@ import Welcome from "../components/index/Welcome";
 import LoginForm from "../components/auth/LoginForm";
 import RegisterForm from "../components/auth/RegisterForm";
 import NotFound from "../components/generic/NotFound";
+import SuccessRegisteredMsg from "../components/auth/SuccessRegisteredMsg";
 
 export default function UnauthorizedRoutes() {
     return (
@@ -14,6 +15,7 @@ export default function UnauthorizedRoutes() {
                 <Route index element={<Welcome />} />
                 <Route path="login" element={<LoginForm />} />
                 <Route path="signup" element={<RegisterForm />} />
+                <Route path="ready" element={<SuccessRegisteredMsg />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />
