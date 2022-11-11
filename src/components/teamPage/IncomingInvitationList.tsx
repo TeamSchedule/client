@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import List from "@mui/material/List";
-import IncomingInvitationItem from "./IncomingInvitationItem";
+import IncomingInvitationItem from "../IncomingInvitationItem";
 import { API } from "../../api/api";
 import { IncomingInvitationItemSchema } from "../../api/schemas/responses/invitations";
 
@@ -15,15 +14,20 @@ export default function IncomingInvitationList() {
         loadIncomingInvitations();
     }, []);
 
+    if (incomingInvitations.length === 0) return null;
+
     return (
-        <List>
-            {incomingInvitations.map((invitation) => (
-                <IncomingInvitationItem
-                    key={invitation.id}
-                    invitation={invitation}
-                    loadIncomingInvitations={loadIncomingInvitations}
-                />
-            ))}
-        </List>
+        <>
+            <h3 className="text-center my-3">Вступай в команду</h3>
+            <div>
+                {incomingInvitations.map((invitation) => (
+                    <IncomingInvitationItem
+                        key={invitation.id}
+                        invitation={invitation}
+                        loadIncomingInvitations={loadIncomingInvitations}
+                    />
+                ))}
+            </div>
+        </>
     );
 }

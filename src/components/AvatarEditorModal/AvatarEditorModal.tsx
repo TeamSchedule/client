@@ -1,18 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+// @ts-ignore
 import AvatarEditor from "react-avatar-editor";
 import { Slider } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Dropzone from "react-dropzone";
 import Button from "@mui/material/Button";
 import { API } from "../../api/api";
-import GoBackActionButton from "../buttons/GoBackActionButton.tsx";
+import GoBackActionButton from "../buttons/GoBackActionButton";
 import { UserAvatar } from "../avatars";
 import { AlternateAvatarImageIcon } from "../svg";
 import { COLORS } from "../../consts";
 import { BaseButton } from "../buttons";
+import BaseModal from "../modals/BaseModal";
 
-export default function AvatarEditorTab() {
+interface AvatarEditorTab {
+    saveHandler?: () => {};
+    deleteHandler?: () => {};
+}
+
+export default function AvatarEditorModal(props: AvatarEditorTab) {
     const navigate = useNavigate();
 
     const [avatarEditor, setAvatarEditor] = useState();
@@ -33,6 +40,7 @@ export default function AvatarEditorTab() {
     function fetchBlobFromEditor() {
         // https://www.npmjs.com/package/react-native-fs#usage-android
         if (avatarEditor) {
+            // @ts-ignore
             const canvas = avatarEditor.getImageScaledToCanvas().toDataURL();
             return fetch(canvas).then((res) => res.blob());
         }
@@ -72,9 +80,10 @@ export default function AvatarEditorTab() {
     };
 
     return (
-        <div className="px-7">
+        <div>
             <div className="d-flex px-0">
                 <AvatarEditor
+                    // @ts-ignore
                     ref={(editor) => setAvatarEditor(editor)}
                     image={loadedImg}
                     width={250}
@@ -93,8 +102,10 @@ export default function AvatarEditorTab() {
                     }}
                 />
                 <Dropzone
+                    // @ts-ignore
                     onDrop={(dropped) => setLoadedImg(dropped[0])}
                     noKeyboard
+                    // @ts-ignore
                     style={{ width: "250px", height: "250px" }}
                 >
                     {({ getRootProps, getInputProps }) => (
@@ -120,13 +131,13 @@ export default function AvatarEditorTab() {
                     )}
                 </Dropzone>
             </div>
-
             <div className="d-flex px-0">
                 <div className="col px-0 mr-2">
                     <div className="py-2">
                         <Typography>Масштаб</Typography>
                         <Slider
                             value={scale}
+                            // @ts-ignore
                             onChange={(e) => setScale(e.target.value)}
                             step={0.01}
                             min={1}
@@ -140,6 +151,7 @@ export default function AvatarEditorTab() {
                         <Typography>Вращение</Typography>
                         <Slider
                             value={rotate}
+                            // @ts-ignore
                             onChange={(e) => setRotate(e.target.value)}
                             step={0.1}
                             min={-180}
@@ -164,16 +176,7 @@ export default function AvatarEditorTab() {
                         onClick={onClickPreview}
                         disabled={!enabledToSave}
                     />
-
-                    {croppedImg && (
-                        <UserAvatar
-                            alt="Предварительный&nbsp;просмотр"
-                            avatarSrc={croppedImg}
-                            width={125}
-                            height={125}
-                            className="m-auto"
-                        />
-                    )}
+                    {croppedImg && <UserAvatar avatarSrc={croppedImg} size={125} className="m-auto" />}
                 </div>
             </div>
             <BaseButton
@@ -183,8 +186,6 @@ export default function AvatarEditorTab() {
                 className="mt-4 w-100"
                 disabled={!enabledToSave}
             />
-
-            <GoBackActionButton className="mt-5" />
             <BaseButton text="Удалить аватар" color="danger" className="mt-4 w-100" onClick={onClickDelete} />
         </div>
     );

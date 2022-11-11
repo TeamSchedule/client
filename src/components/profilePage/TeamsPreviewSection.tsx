@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ShortPreviewTeamItem from "../previews/ShortPreviewTeamItem";
+import ShortPreviewTeamItem from "../previews/TeamPreview/ShortPreviewTeamItem";
 import { Link } from "react-router-dom";
 import RightAngleIcon from "../svg/RightAngleIcon";
 import BasePreviewSection from "./BasePreviewSection";

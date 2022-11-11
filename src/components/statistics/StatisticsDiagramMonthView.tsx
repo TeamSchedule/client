@@ -5,6 +5,7 @@ import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
 import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
 import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 import { Link } from "react-router-dom";
+import styles from "./StatisticsDiagramMonthView.module.scss";
 
 export default function StatisticsDiagramMonthView() {
     const [currentDate /*setCurrentDate*/] = useState(new Date());
@@ -52,7 +53,7 @@ export default function StatisticsDiagramMonthView() {
         <>
             <h3 className="fs-3">Задачи, выполненные за {currentDate.toLocaleString("ru-Ru", { month: "long" })}</h3>
             <div className="d-flex position-relative">
-                <div className="daysWrapper d-flex overflow-x-scroll" onWheel={onMouseWheel}>
+                <div className={styles.daysWrapper} onWheel={onMouseWheel}>
                     {monthTasksNumbers.map((dayVal, idx) => (
                         <DayValueItem
                             key={idx}
@@ -80,13 +81,13 @@ function DayValueItem({ maxValue, value, dayLabel }: DayValueItem) {
     }
 
     return (
-        <div className="dayValueItemWrapper" style={{ width: "20px", marginRight: 15 }}>
-            <p className="dayValueText text-center m-0">{value || "-"}</p>
+        <div className={styles.dayValueItemWrapper}>
+            <p className={styles.dayValueText}>{value || "-"}</p>
             <Link to={`./tasks`}>
-                <div className="dayValueItemColumn">
-                    <div className="dayValueItem" style={{ height: `${valueHeight}%` }}></div>
+                <div className={styles.dayValueItemColumn}>
+                    <div className={styles.dayValueItem} style={{ height: `${valueHeight}%` }}></div>
                 </div>
-                <p className="dayLabel text-center">{dayLabel}</p>
+                <p className={styles.dayLabel}>{dayLabel}</p>
             </Link>
         </div>
     );

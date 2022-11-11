@@ -1,5 +1,5 @@
 import React from "react";
-import ShortPreviewTaskItem from "../previews/ShortPreviewTaskItem";
+import ShortPreviewTaskItem from "../previews/TaskPreview/ShortPreviewTaskItem.tsx";
 
 function TodayTasksPreviewSection({ todayTasks }) {
     const today = new Date();

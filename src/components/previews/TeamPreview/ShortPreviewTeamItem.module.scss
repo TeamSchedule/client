@@ -1,0 +1,24 @@
+@use "../../../assets/styles/colors";
+
+
+.shortPreviewTeamItem {
+    min-width: 200px;
+    background: linear-gradient(45deg, rgba(255, 0, 0, 0.05) 20%, rgba(0, 59, 255, 0.1) 65%);
+    border-radius: 20px;
+    padding: 10px 15px 20px;
+
+    &:hover {
+        background: linear-gradient(45deg, rgba(255, 0, 0, 0.1) 20%, rgba(0, 59, 255, 0.2) 65%);
+    }
+
+    &:last-child {
+        margin-right: 0 !important;
+    }
+}
+
+.teamHeader {
+    display: flex;
+    justify-content: space-between;
+    color: colors.$dark;
+}
+

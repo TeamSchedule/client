@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { TeamAvatar } from "../avatars";
-import { PrimaryPreviewText, SecondaryPreviewText } from "./PreviewComponents";
-import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
-import TeamIcon from "../svg/TeamIcon";
-import { COLORS } from "../../consts";
-import { ToDoListIcon } from "../svg";
+import { TeamAvatar } from "../../avatars";
+import { PrimaryPreviewText, SecondaryPreviewText } from "../PreviewComponents";
+import { TeamsResponseItemSchema } from "../../../api/schemas/responses/teams";
+import TeamIcon from "../../svg/TeamIcon";
+import { COLORS } from "../../../consts";
+import { ToDoListIcon } from "../../svg";
+import styles from "./ShortPreviewTeamItem.module.scss";
 
 interface ShortPreviewTeamItemProps {
     team: TeamsResponseItemSchema;
@@ -13,8 +14,8 @@ interface ShortPreviewTeamItemProps {
 
 export default function ShortPreviewTeamItem({ linkTo, team }: ShortPreviewTeamItemProps) {
     return (
-        <Link to={linkTo || "teams/" + team.id} className="">
-            <div className="p-4 shortPreviewTeamItem">
+        <Link to={linkTo || "teams/" + team.id}>
+            <div className={styles.shortPreviewTeamItem}>
                 <TeamHeader membersNumber={8} openTaskNumber={3} />
                 <TeamAvatar imgSrc={""} size={80} className="m-auto" teamColor={team.color} />
                 <PrimaryPreviewText text={team.name} className="mt-4 mb-0 text-center" />
@@ -32,7 +33,7 @@ interface TeamHeaderProps {
 function TeamHeader(props: TeamHeaderProps) {
     return (
         <>
-            <div className="d-flex justify-content-between">
+            <div className={styles.teamHeader}>
                 <TeamHeaderItem value={props.membersNumber} Icon={TeamIcon} />
                 <TeamHeaderItem value={props.openTaskNumber} Icon={ToDoListIcon} />
             </div>
@@ -49,9 +50,7 @@ function TeamHeaderItem(props: TeamHeaderItemProps) {
     const Icon = props.Icon;
     return (
         <div className="d-flex align-items-center">
-            <div className="fs-4 fw-bold" style={{ color: COLORS.PRIMARY }}>
-                {props.value}
-            </div>
+            <div className="fs-4 fw-bold">{props.value}</div>
             {props.Icon && <Icon size={"1.75em"} color={COLORS.PRIMARY} />}
         </div>
     );
