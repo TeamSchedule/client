@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 import List from "@mui/material/List";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { API } from "../../api/api";
 import { TeamMemberItem } from "./TeamMemberItem";
 import FormHeaderRow from "../generic/FormHeaderRow";
@@ -14,6 +14,7 @@ import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 import { UpdateTeamRequestSchema } from "../../api/schemas/requests/teams";
 import OutgoingInvitationList from "../teamPage/OutgoingInvitationList";
 import { BaseButton } from "../buttons";
+import TeamAvatar from "../avatars/TeamAvatar";
 
 export default function TeamEditingForm() {
     const { teamId } = useParams();
@@ -93,36 +94,40 @@ export default function TeamEditingForm() {
     }
 
     return (
-        <BaseForm onSubmit={onEditTeam} autoComplete={false}>
-            <FormHeaderRow headerText="Редактировать команду" />
+        <>
+            <BaseForm onSubmit={onEditTeam} autoComplete={false}>
+                <FormHeaderRow headerText="Редактировать команду" />
 
-            <InputTextFormItem label="Название команды" value={teamName} handleChange={setTeamName} />
+                <TeamAvatar imgSrc={""} size={80} teamColor={color} availableForEditing />
+                <InputTextFormItem label="Название команды" value={teamName} handleChange={setTeamName} />
 
-            <div className="mt-4 d-flex">
-                <p className="mr-3">Цвет для задач этой команды</p>
-                <InputColorFormItem setColor={setColor} color={color} />
-            </div>
+                <div className="mt-4 d-flex">
+                    <p className="mr-3">Цвет для задач этой команды</p>
+                    <InputColorFormItem setColor={setColor} color={color} />
+                </div>
 
-            <BaseButton text="Сохранить изменения" loading={isUpdateActionInProgress} color="success" />
+                <BaseButton text="Сохранить изменения" loading={isUpdateActionInProgress} color="success" />
 
-            <ParticipantList participants={[]} />
+                <ParticipantList participants={[]} />
 
-            <p className="mt-4">Пригласить новых пользователей:</p>
-            <AutocompleteUsers
-                onSendInvites={onSendInvites}
-                usersToInvite={usersToInvite}
-                // @ts-ignore
-                setUsersToInvite={setUsersToInvite}
-                isInviteActionInProgress={isInviteActionInProgress}
-            />
-            <OutgoingInvitationList teamId={teamId ? +teamId : null} />
-            <BaseButton
-                text="Покинуть команду"
-                onClick={onLeaveTeam}
-                loading={isLeaveActionInProgress}
-                color="danger"
-            />
-        </BaseForm>
+                <p className="mt-4">Пригласить новых пользователей:</p>
+                <AutocompleteUsers
+                    onSendInvites={onSendInvites}
+                    usersToInvite={usersToInvite}
+                    // @ts-ignore
+                    setUsersToInvite={setUsersToInvite}
+                    isInviteActionInProgress={isInviteActionInProgress}
+                />
+                <OutgoingInvitationList teamId={teamId ? +teamId : null} />
+                <BaseButton
+                    text="Покинуть команду"
+                    onClick={onLeaveTeam}
+                    loading={isLeaveActionInProgress}
+                    color="danger"
+                />
+            </BaseForm>
+            <Outlet />
+        </>
     );
 }
 

@@ -24,7 +24,7 @@ export default function IncomingInvitationItem({ invitation, loadIncomingInvitat
         <>
             <div className={styles.incomingInvitationItem}>
                 <div className={styles.incomingInvitationItem_teamSection}>
-                    <UserAvatar avatarSrc="/" className="mr-2" />
+                    <UserAvatar imgSrc="/" size={24} />
                     <div className="mx-2">
                         <p className="my-0 fw-bold">{invitation.team.name}</p>
                         <InviterItem user={{ login: invitation.team.name }} />
@@ -58,7 +58,7 @@ function InviterItem(props: InviterItemProps) {
         <Link to=".">
             <div className="d-flex align-items-center">
                 <span className="pr-2">От: </span>
-                <UserAvatar avatarSrc={"props.user.avatar"} size={24} />
+                <UserAvatar imgSrc={"props.user.avatar"} size={24} />
                 <span className="px-2">{props.user.login}</span>
             </div>
         </Link>

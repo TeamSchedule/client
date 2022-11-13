@@ -12,7 +12,7 @@ export function TeamMemberItem({ participant }: TeamMemberItemProps) {
             <ListItem key={participant.id} disablePadding>
                 <ListItemButton>
                     <ListItemAvatar>
-                        <UserAvatar avatarSrc={`/static/images/avatar/.jpg`} />
+                        <UserAvatar imgSrc={`/static/images/avatar/.jpg`} size={24} />
                     </ListItemAvatar>
                     <ListItemText primary={`${participant.username}`} />
                 </ListItemButton>

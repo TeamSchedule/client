@@ -14,10 +14,12 @@ interface ShortPreviewTeamItemProps {
 
 export default function ShortPreviewTeamItem({ linkTo, team }: ShortPreviewTeamItemProps) {
     return (
-        <Link to={linkTo || "teams/" + team.id}>
+        <Link to={linkTo || "../teams/" + team.id}>
             <div className={styles.shortPreviewTeamItem}>
                 <TeamHeader membersNumber={8} openTaskNumber={3} />
-                <TeamAvatar imgSrc={""} size={80} className="m-auto" teamColor={team.color} />
+                <div className="m-auto d-flex justify-content-center">
+                    <TeamAvatar imgSrc={""} size={80} teamColor={team.color} />
+                </div>
                 <PrimaryPreviewText text={team.name} className="mt-4 mb-0 text-center" />
                 <SecondaryPreviewText text={""} className="text-center" />
             </div>

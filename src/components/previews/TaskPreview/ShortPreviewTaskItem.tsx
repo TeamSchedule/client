@@ -13,7 +13,7 @@ interface ShortPreviewTaskItemProps {
 }
 function ShortPreviewTaskItem(props: ShortPreviewTaskItemProps) {
     return (
-        <Link to={`tasks/${props.taskId}`} className={styles.shortPreviewTaskItem}>
+        <Link to={`../tasks/${props.taskId}`} className={styles.shortPreviewTaskItem}>
             <div className="d-flex p-3 align-items-center">
                 <div className="mr-3">
                     {props.isPrivate ? (

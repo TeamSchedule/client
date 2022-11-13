@@ -70,12 +70,7 @@ function MainUserAvatar(props: MainUserAvatarProps) {
     return (
         <>
             <div className="position-relative">
-                <PersonalAvatar size={200} />
-                <div className="position-absolute right-0 bottom-0">
-                    <div className="editIconBorder" onClick={props.changeAvatarEditorVisibility}>
-                        <EditIcon size={26} className="editIcon" />
-                    </div>
-                </div>
+                <PersonalAvatar size={200} availableForEditing={true} />
             </div>
         </>
     );
@@ -86,7 +81,7 @@ function UserAboutItem() {
     const userInfo = useSelector(selectUserInfo);
 
     const [isEditMode, setIsEditMode] = useState(false);
-    const [newAbout, setNewAbout] = useState(userInfo.description.length > 0 ? userInfo.description : "Напиши о себе");
+    const [newAbout, setNewAbout] = useState(userInfo ? userInfo.description || "" : "Напиши о себе");
 
     function onEditAbout() {
         setIsEditMode(!isEditMode);

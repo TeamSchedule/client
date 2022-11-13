@@ -83,7 +83,7 @@ function DayValueItem({ maxValue, value, dayLabel }: DayValueItem) {
     return (
         <div className={styles.dayValueItemWrapper}>
             <p className={styles.dayValueText}>{value || "-"}</p>
-            <Link to={`./tasks`}>
+            <Link to={`../tasks`}>
                 <div className={styles.dayValueItemColumn}>
                     <div className={styles.dayValueItem} style={{ height: `${valueHeight}%` }}></div>
                 </div>

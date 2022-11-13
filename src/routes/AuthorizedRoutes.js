@@ -26,14 +26,19 @@ export default function AuthorizedRoutes() {
                 <Route index element={<Navigate to={`/${userInfo.login}/profile`} replace={true} />} />
 
                 <Route path=":username/" element={<Main />}>
-                    <Route index path="profile/" element={<ProfilePage />} />
-                    <Route path="avatar" element={<AvatarEditorModal />} />
+                    <Route index element={<Navigate to={`profile`} replace={true} />} />
+                    <Route path="profile/" element={<ProfilePage />}>
+                        <Route path="avatar" element={<AvatarEditorModal avatarType="personal" />} />
+                    </Route>
+
                     <Route path="settings/" element={<SettingsTab />} />
 
                     <Route path="teams/" element={<TeamPage />}>
                         <Route index element={<InvitationsTeams />} />
                         <Route path="new" element={<TeamCreationForm />} />
-                        <Route path=":teamId" element={<TeamEditingForm />} />
+                        <Route path=":teamId/" element={<TeamEditingForm />}>
+                            <Route path="avatar" element={<AvatarEditorModal avatarType="team" />} />
+                        </Route>
                     </Route>
 
                     <Route path="tasks/" element={<TaskPage />}>

@@ -37,7 +37,6 @@ export default function LoginForm() {
 
         API.auth
             .signIn(signInRequestData)
-
             .then((tokens: TokenPair) => {
                 setPassword("");
                 setAccessToken(tokens.access);

@@ -9,7 +9,7 @@ function SchedulePreviewSection({ todayTasks }) {
             <BasePreviewSection>
                 <div className="d-flex align-items-center justify-content-between mb-3">
                     <h2>Расписание</h2>
-                    <Link to={"tasks"} className="fw-bold fs-5">
+                    <Link to={"../tasks"} className="fw-bold fs-5">
                         Посмотреть детали
                     </Link>
                 </div>

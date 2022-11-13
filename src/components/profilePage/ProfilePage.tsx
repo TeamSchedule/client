@@ -12,6 +12,7 @@ import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 import CenterLayoutWrapper from "../generic/CenterLayoutWrapper";
 import AvatarEditorModal from "../AvatarEditorModal";
 import BaseModal from "../modals/BaseModal";
+import { Outlet } from "react-router-dom";
 
 let today = new Date();
 today.setHours(0);
@@ -99,15 +100,7 @@ export default function ProfilePage() {
                     </div>
                 </div>
             </CenterLayoutWrapper>
-
-            {isAvatarEditorVisible && (
-                <BaseModal
-                    title="Сменить аватар"
-                    onCloseClickHandler={() => setIsAvatarEditorVisible(!isAvatarEditorVisible)}
-                >
-                    <AvatarEditorModal />
-                </BaseModal>
-            )}
+            <Outlet />
         </>
     );
 }
