@@ -9,9 +9,9 @@ import Button from "@mui/material/Button";
 import { API } from "../../api/api";
 import { UserAvatar } from "../avatars";
 import { AlternateAvatarImageIcon } from "../svg";
-import { COLORS } from "../../consts";
 import { BaseButton } from "../buttons";
 import BaseModal from "../modals/BaseModal";
+import styles from "./AvatarEditorModal.module.scss";
 
 interface AvatarEditorTab {
     avatarType?: string;
@@ -162,15 +162,13 @@ function AvatarEditorSection(props: AvatarEditorSectionProps) {
                         style={{ width: "250px", height: "250px" }}
                     >
                         {({ getRootProps, getInputProps }) => (
-                            <div
-                                {...getRootProps()}
-                                style={{ borderColor: COLORS.PRIMARY }}
-                                className="d-flex w-100 align-items-stretch border-3 px-0"
-                            >
+                            <div {...getRootProps()} className={styles.avatarEditorWrapAria}>
                                 <div className="p-3 d-flex justify-content-center align-items-center flex-grow-1">
                                     <Button
                                         className="p-2 px-3"
-                                        startIcon={<AlternateAvatarImageIcon color={COLORS.PRIMARY} size={64} />}
+                                        startIcon={
+                                            <AlternateAvatarImageIcon className={styles.avatarEditorElem} size={64} />
+                                        }
                                     >
                                         Нажмите,&nbsp;чтобы&nbsp;загрузить
                                         <br />
@@ -197,7 +195,7 @@ function AvatarEditorSection(props: AvatarEditorSectionProps) {
                                 max={3}
                                 valueLabelDisplay="auto"
                                 aria-label="Slider"
-                                style={{ color: COLORS.PRIMARY }}
+                                className={styles.avatarEditorElem}
                             />
                         </div>
                         <div className="py-2">
@@ -211,7 +209,7 @@ function AvatarEditorSection(props: AvatarEditorSectionProps) {
                                 max={180}
                                 valueLabelDisplay="auto"
                                 aria-label="Slider"
-                                style={{ color: COLORS.PRIMARY }}
+                                className={styles.avatarEditorElem}
                             />
                         </div>
                         <BaseButton

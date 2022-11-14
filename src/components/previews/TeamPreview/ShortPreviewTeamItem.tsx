@@ -3,7 +3,6 @@ import { TeamAvatar } from "../../avatars";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../PreviewComponents";
 import { TeamsResponseItemSchema } from "../../../api/schemas/responses/teams";
 import TeamIcon from "../../svg/TeamIcon";
-import { COLORS } from "../../../consts";
 import { ToDoListIcon } from "../../svg";
 import styles from "./ShortPreviewTeamItem.module.scss";
 
@@ -53,7 +52,7 @@ function TeamHeaderItem(props: TeamHeaderItemProps) {
     return (
         <div className="d-flex align-items-center">
             <div className="fs-4 fw-bold">{props.value}</div>
-            {props.Icon && <Icon size={"1.75em"} color={COLORS.PRIMARY} />}
+            {props.Icon && <Icon size={"1.75em"} className={styles.icon} />}
         </div>
     );
 }
