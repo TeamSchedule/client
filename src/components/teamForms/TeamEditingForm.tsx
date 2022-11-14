@@ -98,7 +98,7 @@ export default function TeamEditingForm() {
             <BaseForm onSubmit={onEditTeam} autoComplete={false}>
                 <FormHeaderRow headerText="Редактировать команду" />
 
-                <TeamAvatar imgSrc={""} size={80} teamColor={color} availableForEditing />
+                <TeamAvatar imgSrc={""} size={80} teamColor={color} availableForEditing teamId={teamId} />
                 <InputTextFormItem label="Название команды" value={teamName} handleChange={setTeamName} />
 
                 <div className="mt-4 d-flex">

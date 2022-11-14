@@ -9,6 +9,9 @@ const ERRORS = {
     Service: {
         ServiceUnavailable: "Сервис недоступен, попробуйте позже",
     },
+    Team: {
+        TooShortName: "Имя команды слишком короткое. Минимальная длина имени 4 символа",
+    },
 };
 
 export default ERRORS;

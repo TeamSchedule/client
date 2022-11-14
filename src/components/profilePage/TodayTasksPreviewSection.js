@@ -33,6 +33,7 @@ function TodayTaskGroup({ todayTasks = [] }) {
         <>
             {todayTasks.map((task) => (
                 <ShortPreviewTaskItem
+                    task={task}
                     key={task.id}
                     taskId={task.id}
                     taskName={task.name}

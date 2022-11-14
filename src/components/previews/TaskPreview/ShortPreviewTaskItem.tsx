@@ -3,8 +3,10 @@ import RightAngleIcon from "../../svg/RightAngleIcon";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../PreviewComponents";
 import { PersonalAvatar, TeamAvatar } from "../../avatars";
 import styles from "./ShortPreviewTaskItem.module.scss";
+import { GetTaskResponseSchema } from "../../../api/schemas/responses/tasks";
 
 interface ShortPreviewTaskItemProps {
+    task: GetTaskResponseSchema;
     imgSrc?: string;
     isPrivate?: boolean;
     taskName: string;
@@ -19,7 +21,12 @@ function ShortPreviewTaskItem(props: ShortPreviewTaskItemProps) {
                     {props.isPrivate ? (
                         <PersonalAvatar size={60} />
                     ) : (
-                        <TeamAvatar imgSrc={props.imgSrc || ""} size={60} />
+                        <TeamAvatar
+                            imgSrc={props.imgSrc || ""}
+                            size={60}
+                            teamId={props.task.team.id.toString()}
+                            teamColor={"white"}
+                        />
                     )}
                 </div>
 

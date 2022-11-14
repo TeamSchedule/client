@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // @ts-ignore
 import AvatarEditor from "react-avatar-editor";
 import { Slider } from "@mui/material";
@@ -19,6 +19,7 @@ interface AvatarEditorTab {
 
 export default function AvatarEditorModal(props: AvatarEditorTab) {
     const navigate = useNavigate();
+    const { teamId } = useParams();
 
     const onClickSave = (blobPromise: Promise<Blob> | null) => {
         if (blobPromise) {
@@ -42,12 +43,17 @@ export default function AvatarEditorModal(props: AvatarEditorTab) {
     };
 
     const onClickSaveTeam = (blobPromise: Promise<Blob> | null) => {
+        if (teamId === undefined) {
+            alert("Ошибка распознования команды");
+            return;
+        }
+
         if (blobPromise) {
             blobPromise.then((blob: Blob) => {
                 const myFile = new File([blob], "image1.jpeg", {
                     type: blob.type,
                 });
-                API.teams.setAvatar(1, myFile).then(() => {
+                API.teams.setAvatar(teamId, myFile).then(() => {
                     navigate("/");
                     window.location.reload();
                 });
@@ -56,7 +62,11 @@ export default function AvatarEditorModal(props: AvatarEditorTab) {
     };
 
     const onClickDeleteTeam = () => {
-        API.teams.deleteAvatar(1).then(() => {
+        if (teamId === undefined) {
+            alert("Ошибка распознования команды");
+            return;
+        }
+        API.teams.deleteAvatar(teamId).then(() => {
             navigate("/");
             window.location.reload();
         });

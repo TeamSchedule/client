@@ -18,7 +18,7 @@ export default function ShortPreviewTeamItem({ linkTo, team }: ShortPreviewTeamI
             <div className={styles.shortPreviewTeamItem}>
                 <TeamHeader membersNumber={8} openTaskNumber={3} />
                 <div className="m-auto d-flex justify-content-center">
-                    <TeamAvatar imgSrc={""} size={80} teamColor={team.color} />
+                    <TeamAvatar imgSrc={""} size={80} teamColor={team.color} teamId={team.id.toString()} />
                 </div>
                 <PrimaryPreviewText text={team.name} className="mt-4 mb-0 text-center" />
                 <SecondaryPreviewText text={""} className="text-center" />
