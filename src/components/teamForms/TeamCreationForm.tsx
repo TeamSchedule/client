@@ -43,7 +43,7 @@ export default function TeamCreationForm() {
         API.teams
             .createTeam(createTeamData)
             .then(() => {
-                navigate(-1);
+                navigate("../");
             })
             .finally(() => {
                 setIsActionInProgress(false);

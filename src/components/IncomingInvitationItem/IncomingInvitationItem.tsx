@@ -1,23 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { UserAvatar } from "../avatars";
 import { API } from "../../api/api";
 import { IncomingInvitationItemSchema } from "../../api/schemas/responses/invitations";
 import { BaseButton } from "../buttons";
 import { buttonStyles } from "../buttons";
 import styles from "./IncomingInvitationItem.module.scss";
-import { Link } from "react-router-dom";
 
 interface IncomingInvitationItemProps {
     invitation: IncomingInvitationItemSchema;
-    loadIncomingInvitations: () => void;
+    onAcceptInvite: () => void;
+    onRejectInvite: () => void;
 }
-export default function IncomingInvitationItem({ invitation, loadIncomingInvitations }: IncomingInvitationItemProps) {
+export default function IncomingInvitationItem(props: IncomingInvitationItemProps) {
     function onAcceptClick() {
-        API.invitations.accept(invitation.id).then(loadIncomingInvitations);
+        API.invitations.accept(props.invitation.id).then(props.onAcceptInvite);
     }
 
     function onRejectClick() {
-        API.invitations.reject(invitation.id).then(loadIncomingInvitations);
+        API.invitations.reject(props.invitation.id).then(props.onRejectInvite);
     }
 
     return (
@@ -26,9 +27,13 @@ export default function IncomingInvitationItem({ invitation, loadIncomingInvitat
                 <div className={styles.incomingInvitationItem_teamSection}>
                     <UserAvatar imgSrc="/" size={24} />
                     <div className="mx-2">
-                        <p className="my-0 fw-bold">{invitation.team.name}</p>
-                        <InviterItem user={{ login: invitation.team.name }} />
+                        <p className="my-0 fw-bold">{props.invitation.team.name}</p>
+                        <InviterItem user={{ login: props.invitation.team.name }} />
                     </div>
+
+                    <span className={styles.dateLabel}>
+                        {new Date(props.invitation.date).toLocaleDateString("ru-Ru")}
+                    </span>
                 </div>
 
                 <div className={buttonStyles.btnWrapper}>
