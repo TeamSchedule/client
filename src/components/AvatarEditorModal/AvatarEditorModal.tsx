@@ -27,10 +27,15 @@ export default function AvatarEditorModal(props: AvatarEditorTab) {
                 const myFile = new File([blob], "image1.jpeg", {
                     type: blob.type,
                 });
-                API.avatars.set(myFile).then(() => {
-                    navigate("/");
-                    window.location.reload();
-                });
+                API.avatars
+                    .set(myFile)
+                    .then(() => {
+                        navigate("/");
+                        window.location.reload();
+                    })
+                    .catch(() => {
+                        alert("Could not save image! Try later");
+                    });
             });
         }
     };

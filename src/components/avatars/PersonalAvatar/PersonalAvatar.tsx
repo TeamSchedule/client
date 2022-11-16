@@ -4,6 +4,9 @@ import { UserAvatar } from "../index";
 import { useSelector } from "react-redux";
 import { selectUserInfo } from "../../../features/userInfoSlice";
 import getUserAvatarImageSrc from "../../../utils/getUserAvatarImageSrc";
+// @ts-ignore
+import identicon from "identicon";
+import { API } from "../../../api/api";
 
 interface PersonalAvatarProps {
     size: number;
@@ -22,7 +25,19 @@ export default function PersonalAvatar(props: PersonalAvatarProps) {
     useEffect(() => {
         getUserAvatarImageSrc(+userInfo.id)
             .then(setAvatarURL)
-            .catch(() => {});
+            .catch(() => {
+                identicon.generate({ id: userInfo.login, size: 150 }, (err: any, buffer: string) => {
+                    const blobAvatar: Blob = new Blob([new Buffer(buffer.slice(22), "base64")], {
+                        type: "image/png",
+                    });
+                    API.avatars
+                        .set(blobAvatar)
+                        .then(() => {
+                            window.location.reload();
+                        })
+                        .catch(() => {});
+                });
+            });
     }, [userInfo.id]);
 
     return (
