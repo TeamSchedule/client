@@ -20,7 +20,7 @@ export default function TeamCreationForm() {
     const [isActionInProgress, setIsActionInProgress] = useState(false);
 
     useEffect(() => {
-        if (teamName === null || teamName.length <= MIN_TEAM_NAME_LEN) {
+        if (teamName === null || teamName.length < MIN_TEAM_NAME_LEN) {
             setIsTeamNameValid(false);
         } else {
             setIsTeamNameValid(true);
@@ -33,7 +33,7 @@ export default function TeamCreationForm() {
 
     function createTeamSbm(event: FormEvent) {
         event.preventDefault();
-        if (teamName === null || teamName.length <= MIN_TEAM_NAME_LEN) {
+        if (teamName === null || teamName.length < MIN_TEAM_NAME_LEN) {
             alert("Имя команды слишком короткое");
             return;
         }

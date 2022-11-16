@@ -1,8 +1,8 @@
 // минимальная длина логина
-const MIN_USERNAME_LENGTH: number = 3;
+const MIN_USERNAME_LENGTH: number = 4;
 
 // минимальная длина названия команды
-const MIN_TEAM_NAME_LEN: number = 3;
+const MIN_TEAM_NAME_LEN: number = 4;
 
 // высота хеадера в пикселях
 const HEADER_HEIGHT: number = 60;

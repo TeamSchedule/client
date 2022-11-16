@@ -32,9 +32,7 @@ export default function StatisticsDiagramMonthView() {
                         }
                         setMonthTasksNumbers(() => closedTasks);
                     })
-                    .catch(() => {
-                        alert("error");
-                    })
+                    .catch(() => {})
                     .finally(() => {});
             })
             .catch(() => {})
