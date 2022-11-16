@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Autocomplete, TextField } from "@mui/material";
-import List from "@mui/material/List";
 
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { API } from "../../api/api";
-import { TeamMemberItem } from "./TeamMemberItem";
+import MemberItem from "./MemberItem";
 import FormHeaderRow from "../generic/FormHeaderRow";
 import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputColorFormItem from "../inputs/InputColorFormItem";
 import BaseForm from "../generic/BaseForm";
 import { CreateInvitationsRequestSchema } from "../../api/schemas/requests/invitations";
-import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import { TeamMembersItemSchema, TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 import { UpdateTeamRequestSchema } from "../../api/schemas/requests/teams";
 import OutgoingInvitationList from "../teamPage/OutgoingInvitationList";
 import { BaseButton } from "../buttons";
@@ -20,6 +19,7 @@ export default function TeamEditingForm() {
     const { teamId } = useParams();
     const navigate = useNavigate();
 
+    const [teamData, setTeamData] = useState<TeamsResponseItemSchema>();
     const [color, setColor] = useState("#000000");
     const [teamName, setTeamName] = useState("");
 
@@ -35,10 +35,15 @@ export default function TeamEditingForm() {
             return;
         }
 
-        API.teams.get(+teamId).then((team: TeamsResponseItemSchema) => {
-            setTeamName(team.name);
-            setColor(team.color);
-        });
+        API.bff
+            .getTeamData(+teamId)
+            .then((team: TeamsResponseItemSchema) => {
+                console.log(team);
+                setTeamData(team);
+                setTeamName(team.name);
+                setColor(team.color);
+            })
+            .catch(() => {});
     }, [teamId]);
 
     function onEditTeam(event: React.FormEvent) {
@@ -108,13 +113,12 @@ export default function TeamEditingForm() {
 
                 <BaseButton text="Сохранить изменения" loading={isUpdateActionInProgress} color="success" />
 
-                <ParticipantList participants={[]} />
+                <ParticipantList participants={teamData?.members} adminId={teamData?.adminId} />
 
                 <p className="mt-4">Пригласить новых пользователей:</p>
                 <AutocompleteUsers
                     onSendInvites={onSendInvites}
                     usersToInvite={usersToInvite}
-                    // @ts-ignore
                     setUsersToInvite={setUsersToInvite}
                     isInviteActionInProgress={isInviteActionInProgress}
                 />
@@ -134,7 +138,7 @@ export default function TeamEditingForm() {
 interface AutocompleteUsersProps {
     onSendInvites: (event: React.FormEvent) => void;
     usersToInvite: Array<number>;
-    setUsersToInvite: (event: React.FormEvent) => void;
+    setUsersToInvite: (event: React.SetStateAction<number[]>) => void;
     isInviteActionInProgress: boolean;
 }
 
@@ -185,22 +189,23 @@ function AutocompleteUsers(props: AutocompleteUsersProps) {
 }
 
 interface ParticipantListProps {
-    participants: Array<any>;
+    participants?: Array<TeamMembersItemSchema>;
+    adminId?: number;
 }
 
-function ParticipantList({ participants }: ParticipantListProps) {
-    if (!participants || +participants.length === 0) {
+function ParticipantList(props: ParticipantListProps) {
+    if (!props.participants || props.participants.length === 0) {
         return null;
     }
 
     return (
         <>
-            <p className="mt-4">Participants:</p>
-            <List>
-                {participants.map((participant) => (
-                    <TeamMemberItem key={participant.id} participant={participant} />
+            <p className="mt-4">Состав команды</p>
+            <div>
+                {props.participants.map((participant) => (
+                    <MemberItem key={participant.id} member={participant} isAdmin={participant.id === props.adminId} />
                 ))}
-            </List>
+            </div>
         </>
     );
 }
