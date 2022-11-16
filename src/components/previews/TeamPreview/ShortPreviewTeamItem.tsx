@@ -5,6 +5,7 @@ import { TeamsResponseItemSchema } from "../../../api/schemas/responses/teams";
 import TeamIcon from "../../svg/TeamIcon";
 import { ToDoListIcon } from "../../svg";
 import styles from "./ShortPreviewTeamItem.module.scss";
+import hexAToRGBA from "../../../utils/hexToRGBA";
 
 interface ShortPreviewTeamItemProps {
     team: TeamsResponseItemSchema;
@@ -14,7 +15,12 @@ interface ShortPreviewTeamItemProps {
 export default function ShortPreviewTeamItem({ linkTo, team }: ShortPreviewTeamItemProps) {
     return (
         <Link to={linkTo || "../teams/" + team.id}>
-            <div className={styles.shortPreviewTeamItem}>
+            <div
+                className={styles.shortPreviewTeamItem}
+                style={{
+                    background: `linear-gradient(45deg, rgba(255, 0, 0, 0.05) 20%, ${hexAToRGBA(team.color, 0.3)} 65%)`,
+                }}
+            >
                 <TeamHeader membersNumber={8} openTaskNumber={3} />
                 <div className="m-auto d-flex justify-content-center">
                     <TeamAvatar imgSrc={""} size={80} teamColor={team.color} teamId={team.id.toString()} />
