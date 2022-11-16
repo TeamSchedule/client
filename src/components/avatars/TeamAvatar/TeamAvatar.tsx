@@ -23,9 +23,7 @@ export default function TeamAvatar(props: TeamAvatarProps) {
             .then((data) => {
                 setASrc(`${AVATARS_STATIC_SERVER}/${data["avatarSrc"]}`);
             })
-            .catch((err) => {
-                console.log("Avatar err");
-            });
+            .catch(() => {});
     }, []);
 
     return (

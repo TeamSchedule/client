@@ -22,8 +22,7 @@ export interface UserInfoPreviewSectionProps {
 }
 
 export default function UserInfoPreviewSection(props: UserInfoPreviewSectionProps) {
-    // @ts-ignore
-    const workingTimestamp: number = props.startWorkingDt - new Date();
+    const workingTimestamp: number = props.startWorkingDt.getTime() - new Date().getTime();
     return (
         <BasePreviewSection>
             <h1 className="mb-4 fs-2">Мой профиль</h1>

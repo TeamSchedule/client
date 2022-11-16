@@ -95,7 +95,7 @@ export default function TeamEditingForm() {
 
     return (
         <>
-            <BaseForm onSubmit={onEditTeam} autoComplete={false}>
+            <BaseForm onSubmit={onEditTeam} autoComplete="false">
                 <FormHeaderRow headerText="Редактировать команду" />
 
                 <TeamAvatar imgSrc={""} size={80} teamColor={color} availableForEditing teamId={teamId} />

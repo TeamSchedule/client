@@ -3,7 +3,6 @@ function getWorkingInterval(dtInterval: number): string {
     const days = Math.floor(absDtInterval / 1000 / 3600 / 24);
     const months = Math.floor(days / 30);
     const years = Math.floor(days / 365);
-    console.log(days);
 
     if (years <= 0) {
         if (months <= 0) {
