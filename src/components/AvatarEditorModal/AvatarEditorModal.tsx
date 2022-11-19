@@ -59,7 +59,7 @@ export default function AvatarEditorModal(props: AvatarEditorTab) {
                     type: blob.type,
                 });
                 API.teams.setAvatar(teamId, myFile).then(() => {
-                    navigate("/");
+                    navigate("..");
                     window.location.reload();
                 });
             });
@@ -72,7 +72,7 @@ export default function AvatarEditorModal(props: AvatarEditorTab) {
             return;
         }
         API.teams.deleteAvatar(teamId).then(() => {
-            navigate("/");
+            navigate("..");
             window.location.reload();
         });
     };

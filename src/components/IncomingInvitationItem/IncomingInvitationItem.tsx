@@ -28,7 +28,7 @@ export default function IncomingInvitationItem(props: IncomingInvitationItemProp
                     <UserAvatar imgSrc="/" size={24} />
                     <div className="mx-2">
                         <p className="my-0 fw-bold">{props.invitation.team.name}</p>
-                        <InviterItem user={{ login: props.invitation.team.name }} />
+                        <InviterItem user={{ login: "user login" }} />
                     </div>
 
                     <span className={styles.dateLabel}>
