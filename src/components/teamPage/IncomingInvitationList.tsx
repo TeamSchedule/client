@@ -1,29 +1,32 @@
-import React, { useEffect, useState } from "react";
-import List from "@mui/material/List";
-import IncomingInvitationItem from "./IncomingInvitationItem";
-import { API } from "../../api/api";
+import React from "react";
+import IncomingInvitationItem from "../IncomingInvitationItem";
 import { IncomingInvitationItemSchema } from "../../api/schemas/responses/invitations";
 
-export default function IncomingInvitationList() {
-    const [incomingInvitations, setIncomingInvitations] = useState<Array<IncomingInvitationItemSchema>>([]);
+interface IncomingInvitationListProps {
+    incomingInvitations: Array<IncomingInvitationItemSchema>;
+    loadIncomingInvitations: () => void;
+    loadTeams: () => void;
+}
 
-    function loadIncomingInvitations() {
-        API.invitations.getIncomingTeamInvitations().then(setIncomingInvitations);
-    }
-
-    useEffect(() => {
-        loadIncomingInvitations();
-    }, []);
+export default function IncomingInvitationList(props: IncomingInvitationListProps) {
+    if (props.incomingInvitations.length === 0) return null;
 
     return (
-        <List>
-            {incomingInvitations.map((invitation) => (
-                <IncomingInvitationItem
-                    key={invitation.id}
-                    invitation={invitation}
-                    loadIncomingInvitations={loadIncomingInvitations}
-                />
-            ))}
-        </List>
+        <>
+            <h3 className="text-center my-3">Вступай в команду</h3>
+            <div>
+                {props.incomingInvitations.map((invitation) => (
+                    <IncomingInvitationItem
+                        key={invitation.id}
+                        invitation={invitation}
+                        onAcceptInvite={() => {
+                            props.loadTeams();
+                            props.loadIncomingInvitations();
+                        }}
+                        onRejectInvite={props.loadIncomingInvitations}
+                    />
+                ))}
+            </div>
+        </>
     );
 }

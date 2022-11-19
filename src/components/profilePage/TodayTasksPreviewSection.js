@@ -1,5 +1,5 @@
 import React from "react";
-import ShortPreviewTaskItem from "../previews/ShortPreviewTaskItem";
+import ShortPreviewTaskItem from "../previews/TaskPreview/ShortPreviewTaskItem.tsx";
 
 function TodayTasksPreviewSection({ todayTasks }) {
     const today = new Date();
@@ -33,6 +33,7 @@ function TodayTaskGroup({ todayTasks = [] }) {
         <>
             {todayTasks.map((task) => (
                 <ShortPreviewTaskItem
+                    task={task}
                     key={task.id}
                     taskId={task.id}
                     taskName={task.name}

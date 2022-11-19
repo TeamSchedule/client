@@ -1,4 +1,5 @@
 import { auth } from "./crud/auth";
+import { BffApi } from "./crud/bffApi";
 import { users } from "./crud/users";
 import { teams } from "./crud/teams";
 import { tasks } from "./crud/tasks";
@@ -12,4 +13,5 @@ export class API {
     static teams = teams;
     static users = users;
     static invitations = invitations;
+    static bff = BffApi;
 }

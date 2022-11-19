@@ -7,6 +7,9 @@ interface ErrorMsgProps {
 }
 
 export default function ErrorMsg(props: ErrorMsgProps) {
+    /*
+     * Сообщение об ошибке в вводимых пользователем параметрах.
+     * */
     const isErrorShown = props.visible === undefined ? false : props.visible;
     if (!isErrorShown) return null;
 

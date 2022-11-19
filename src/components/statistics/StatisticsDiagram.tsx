@@ -1,7 +1,6 @@
 import React from "react";
 import BasePreviewSection from "../profilePage/BasePreviewSection";
-import StatisticsDiagramMonthView from "./StatisticsDiagramMonthView.tsx";
-import "./statistics.css";
+import StatisticsDiagramMonthView from "./StatisticsDiagramMonthView";
 
 export default function StatisticsDiagram() {
     const DiagramView = StatisticsDiagramMonthView;

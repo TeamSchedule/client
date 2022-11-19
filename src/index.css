@@ -17,20 +17,6 @@
     z-index: 999;
 }
 
-.shortPreviewTeamItem {
-    min-width: 200px;
-    background: linear-gradient(45deg, rgba(255, 0, 0, 0.15) 20%, rgba(0, 59, 255, 0.3) 65%);
-    border-radius: 20px;
-}
-
-.shortPreviewTeamItem:hover {
-    background: linear-gradient(45deg, rgba(255, 0, 0, 0.2) 20%, rgba(0, 59, 255, 0.4) 65%);
-}
-
-.shortPreviewTeamItem:last-child {
-    margin-right: 0 !important;
-}
-
 .editIcon {
     fill: #d0d0d0;
     cursor: pointer;

@@ -1,6 +1,7 @@
 import AlternateAvatarImageIcon from "./AlternateAvatarImageIcon";
 import EditIcon from "./EditIcon";
 import EmailIcon from "./EmailIcon";
+import ImageIcon from "./ImageIcon";
 import HomePageIcon from "./HomePageIcon";
 import LogoutIcon from "./LogoutIcon";
 import NewTeamIcon from "./NewTeamIcon";
@@ -14,6 +15,7 @@ import UserIcon from "./UserIcon";
 export {
     AlternateAvatarImageIcon,
     EditIcon,
+    ImageIcon,
     HomePageIcon,
     LogoutIcon,
     NewTeamIcon,

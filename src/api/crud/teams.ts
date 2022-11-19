@@ -24,4 +24,26 @@ export class teams {
     static update(teamId: number, data: UpdateTeamRequestSchema) {
         return $axios.patch(`${this.apiPrefix}/${teamId}`, data);
     }
+
+    static async setAvatar(teamId: string, avatarImage: string | Blob) {
+        const config = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        };
+
+        let formData = new FormData();
+        formData.append("avatar", avatarImage);
+
+        return await $axios.post(`/avatars/teams/${teamId}`, formData, config).catch(() => {
+            alert("Could not save image! Try later");
+        });
+    }
+
+    static async deleteAvatar(teamId: string) {
+        return await $axios.delete(`/avatars/teams/${teamId}`);
+    }
+    static getAvatar(teamId: string) {
+        return $axios.get(`/avatars/teams/${teamId}`).then((res) => res.data);
+    }
 }

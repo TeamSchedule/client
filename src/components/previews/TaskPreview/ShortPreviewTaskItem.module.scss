@@ -1,0 +1,20 @@
+.shortPreviewTaskItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: 1px solid #E1E7FC;
+
+    &:hover {
+        background: #eaedff;
+    }
+
+    &:hover .icon {
+        fill: #9b9b9b;
+    }
+}
+
+.icon {
+    fill: #c7c7c7;
+}

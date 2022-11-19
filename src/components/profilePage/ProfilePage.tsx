@@ -5,10 +5,14 @@ import TeamsPreviewSection from "./TeamsPreviewSection";
 import UserInfoPreviewSection from "./UserInfoPreviewSection";
 import SchedulePreviewSection from "./SchedulePreviewSection";
 import { API } from "../../api/api";
-import { StatisticsDiagram } from "../statistics";
+import StatisticsDiagram from "../statistics";
 import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
 import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
 import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import CenterLayoutWrapper from "../generic/CenterLayoutWrapper";
+import AvatarEditorModal from "../AvatarEditorModal";
+import BaseModal from "../modals/BaseModal";
+import { Outlet } from "react-router-dom";
 
 let today = new Date();
 today.setHours(0);
@@ -27,6 +31,7 @@ export default function ProfilePage() {
     const [teamsErr, setTeamsErr] = useState(false);
     const [teamsNumber, setTeamsNumber] = useState(0);
     const [lastUpdatedTeams, setLastUpdatedTeams] = useState<Array<TeamsResponseItemSchema>>([]);
+    const [isAvatarEditorVisible, setIsAvatarEditorVisible] = useState(false);
 
     const [tasksNumber, setTasksNumber] = useState(0);
     const [todayTasks, setTodayTasks] = useState<Array<GetTaskResponseSchema>>([]);
@@ -73,7 +78,7 @@ export default function ProfilePage() {
 
     return (
         <>
-            <div className="row w-75 m-auto">
+            <CenterLayoutWrapper>
                 <div className="d-flex">
                     <div className="mb-2 mr-2 w-75">
                         <div className="mb-3">
@@ -82,13 +87,10 @@ export default function ProfilePage() {
                                 startWorkingDt={new Date(userInfo.creationDate)}
                                 teamsNumber={teamsNumber}
                                 tasksNumber={tasksNumber}
+                                changeAvatarEditorVisibility={() => setIsAvatarEditorVisible(!isAvatarEditorVisible)}
                             />
                         </div>
-                        <TeamsPreviewSection
-                            teams={lastUpdatedTeams}
-                            err={teamsErr}
-                            loading={isTeamsLoading}
-                        />
+                        <TeamsPreviewSection teams={lastUpdatedTeams} err={teamsErr} loading={isTeamsLoading} />
                     </div>
                     <div className="w-50">
                         <div className="mb-3">
@@ -97,7 +99,8 @@ export default function ProfilePage() {
                         <StatisticsDiagram />
                     </div>
                 </div>
-            </div>
+            </CenterLayoutWrapper>
+            <Outlet />
         </>
     );
 }

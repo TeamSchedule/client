@@ -1,12 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TeamList from "./TeamList";
 import IncomingInvitationList from "./IncomingInvitationList";
+import CenterLayoutWrapper from "../generic/CenterLayoutWrapper";
+import { API } from "../../api/api";
+import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import { IncomingInvitationItemSchema } from "../../api/schemas/responses/invitations";
 
 export default function InvitationsTeams() {
+    const [teams, setTeams] = useState<Array<TeamsResponseItemSchema>>([]);
+    const [incomingInvitations, setIncomingInvitations] = useState<Array<IncomingInvitationItemSchema>>([]);
+
+    function loadIncomingInvitations() {
+        API.invitations.getIncomingTeamInvitations().then((invites: Array<IncomingInvitationItemSchema>) => {
+            setIncomingInvitations(invites);
+            console.log(invites);
+        });
+    }
+
+    function loadTeams() {
+        API.teams
+            .all()
+            .then((teamList: Array<TeamsResponseItemSchema>) => {
+                setTeams(teamList);
+            })
+            .catch(() => {});
+    }
+
+    useEffect(() => {
+        loadTeams();
+        loadIncomingInvitations();
+    }, []);
+
     return (
-        <>
-            <IncomingInvitationList />
-            <TeamList />
-        </>
+        <CenterLayoutWrapper>
+            <>
+                <div className="my-4">
+                    <IncomingInvitationList
+                        incomingInvitations={incomingInvitations}
+                        loadTeams={loadTeams}
+                        loadIncomingInvitations={loadIncomingInvitations}
+                    />
+                </div>
+                <div className="my-4">
+                    <TeamList teams={teams} />
+                </div>
+            </>
+        </CenterLayoutWrapper>
     );
 }

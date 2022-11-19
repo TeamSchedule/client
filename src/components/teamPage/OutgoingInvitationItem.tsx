@@ -16,7 +16,7 @@ export function OutgoingInvitationItem(props: UnprocessedOutgoingInvitationItemP
         <>
             <Divider variant="inset" component="div" />
             <ListItem alignItems="center" disableGutters>
-                <UserAvatar avatarSrc="/" className="mr-2" />
+                <UserAvatar imgSrc="/" size={24} />
                 <ListItemText primary={<span>{props.invitation.invitedId}</span>} />
                 <BaseButton
                     text="Отозвать приглашение"

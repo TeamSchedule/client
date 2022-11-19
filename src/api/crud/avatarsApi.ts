@@ -17,9 +17,7 @@ export class AvatarsApi {
         let formData = new FormData();
         formData.append("avatar", avatarImage);
 
-        return await $axios.post(`${this.apiPrefix}`, formData, config).catch(() => {
-            alert("Could not save image! Try later");
-        });
+        return await $axios.post(`${this.apiPrefix}`, formData, config);
     }
 
     static async delete() {

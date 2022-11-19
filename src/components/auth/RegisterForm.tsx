@@ -8,7 +8,7 @@ import { EmailInput, PasswordInput, UsernameInput } from "../inputs";
 import BaseButton from "../buttons/BaseButton";
 import validateEmail from "../../utils/validateEmail";
 import styles from "./Auth.module.scss";
-import ERRORS from "../../consts/errors";
+import { ERRORS } from "../../consts";
 
 export default function RegisterForm() {
     const navigate = useNavigate();
@@ -57,7 +57,7 @@ export default function RegisterForm() {
             .signUp(signUpRequestData)
             .then(() => {
                 setPassword("");
-                navigate("/login");
+                navigate("/ready");
             })
             .catch((err) => {
                 const statusCode = err.response.status;

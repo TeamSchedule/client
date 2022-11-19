@@ -18,22 +18,17 @@ export interface UserInfoPreviewSectionProps {
     startWorkingDt: Date;
     teamsNumber: number;
     tasksNumber: number;
+    changeAvatarEditorVisibility: () => void;
 }
 
-export default function UserInfoPreviewSection({
-    login,
-    startWorkingDt,
-    teamsNumber,
-    tasksNumber,
-}: UserInfoPreviewSectionProps) {
-    // @ts-ignore
-    const workingTimestamp: number = startWorkingDt - new Date();
+export default function UserInfoPreviewSection(props: UserInfoPreviewSectionProps) {
+    const workingTimestamp: number = props.startWorkingDt.getTime() - new Date().getTime();
     return (
         <BasePreviewSection>
             <h1 className="mb-4 fs-2">Мой профиль</h1>
             <div className="d-flex flex-column align-items-center ">
-                <MainUserAvatar />
-                <PrimaryPreviewText text={login} className="mt-4" />
+                <MainUserAvatar changeAvatarEditorVisibility={props.changeAvatarEditorVisibility} />
+                <PrimaryPreviewText text={props.login} className="mt-4" />
                 <div className="mb-4">
                     <UserAboutItem />
                 </div>
@@ -42,8 +37,8 @@ export default function UserInfoPreviewSection({
                         statValue={getWorkingInterval(workingTimestamp)}
                         statName="Времени с сервисом"
                     />
-                    <UserInfoPreviewItem statValue={tasksNumber} statName="Задач" className="border-x-1" />
-                    <UserInfoPreviewItem statValue={teamsNumber} statName="Команд" />
+                    <UserInfoPreviewItem statValue={props.tasksNumber} statName="Задач" className="border-x-1" />
+                    <UserInfoPreviewItem statValue={props.teamsNumber} statName="Команд" />
                 </div>
             </div>
         </BasePreviewSection>
@@ -66,20 +61,17 @@ function UserInfoPreviewItem({ className, statName, statValue }: UserInfoPreview
     );
 }
 
-function MainUserAvatar() {
-    const navigate = useNavigate();
+interface MainUserAvatarProps {
+    changeAvatarEditorVisibility: () => void;
+}
 
+function MainUserAvatar(props: MainUserAvatarProps) {
     return (
-        <div>
+        <>
             <div className="position-relative">
-                <PersonalAvatar size={200} />
-                <div className="position-absolute right-0 bottom-0" onClick={() => navigate("avatar")}>
-                    <div className="editIconBorder">
-                        <EditIcon size={26} className="editIcon" />
-                    </div>
-                </div>
+                <PersonalAvatar size={200} availableForEditing={true} />
             </div>
-        </div>
+        </>
     );
 }
 
@@ -88,7 +80,7 @@ function UserAboutItem() {
     const userInfo = useSelector(selectUserInfo);
 
     const [isEditMode, setIsEditMode] = useState(false);
-    const [newAbout, setNewAbout] = useState(userInfo.description.length > 0 ? userInfo.description : "Напиши о себе");
+    const [newAbout, setNewAbout] = useState(userInfo ? userInfo.description || "" : "Напиши о себе");
 
     function onEditAbout() {
         setIsEditMode(!isEditMode);

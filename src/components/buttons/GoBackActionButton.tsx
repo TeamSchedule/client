@@ -9,7 +9,7 @@ export default function GoBackActionButton() {
     const navigate = useNavigate();
 
     function onClick() {
-        navigate(-1);
+        navigate("../");
     }
 
     return <BaseButton text="Вернуться" color="backdown" className="mt-4 w-100" onClick={onClick} />;

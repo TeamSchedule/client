@@ -13,8 +13,8 @@ import { SignInRequestSchema } from "../../api/schemas/requests/auth";
 import { GetMeResponseSchema } from "../../api/schemas/responses/users";
 import { PasswordInput, UsernameInput } from "../inputs";
 import BaseButton from "../buttons/BaseButton";
+import { ERRORS } from "../../consts";
 import styles from "./Auth.module.scss";
-import ERRORS from "../../consts/errors";
 
 export default function LoginForm() {
     const navigate = useNavigate();
@@ -37,7 +37,6 @@ export default function LoginForm() {
 
         API.auth
             .signIn(signInRequestData)
-
             .then((tokens: TokenPair) => {
                 setPassword("");
                 setAccessToken(tokens.access);

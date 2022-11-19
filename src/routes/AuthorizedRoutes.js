@@ -6,9 +6,9 @@ import App from "../components/App";
 import { Main } from "../components/Main";
 import ProfilePage from "../components/profilePage/ProfilePage";
 import SettingsTab from "../components/profilePage/SettingsTab";
-import AvatarEditorTab from "../components/profilePage/AvatarEditorTab";
+import AvatarEditorModal from "../components/AvatarEditorModal/AvatarEditorModal";
 import TeamPage from "../components/teamPage/TeamPage";
-import InvitationsTeams from "../components/teamPage/InvitationsTeams.tsx";
+import InvitationsTeams from "../components/teamPage/InvitationsTeams";
 import TeamCreationForm from "../components/teamForms/TeamCreationForm";
 import TeamEditingForm from "../components/teamForms/TeamEditingForm";
 import { TaskPage } from "../components/taskPage/TaskPage";
@@ -26,14 +26,19 @@ export default function AuthorizedRoutes() {
                 <Route index element={<Navigate to={`/${userInfo.login}/profile`} replace={true} />} />
 
                 <Route path=":username/" element={<Main />}>
-                    <Route index path="profile/" element={<ProfilePage />} />
-                    <Route path="avatar" element={<AvatarEditorTab />} />
+                    <Route index element={<Navigate to={`profile`} replace={true} />} />
+                    <Route path="profile/" element={<ProfilePage />}>
+                        <Route path="avatar" element={<AvatarEditorModal avatarType="personal" />} />
+                    </Route>
+
                     <Route path="settings/" element={<SettingsTab />} />
 
                     <Route path="teams/" element={<TeamPage />}>
                         <Route index element={<InvitationsTeams />} />
                         <Route path="new" element={<TeamCreationForm />} />
-                        <Route path=":teamId" element={<TeamEditingForm />} />
+                        <Route path=":teamId/" element={<TeamEditingForm />}>
+                            <Route path="avatar" element={<AvatarEditorModal avatarType="team" />} />
+                        </Route>
                     </Route>
 
                     <Route path="tasks/" element={<TaskPage />}>
