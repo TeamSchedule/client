@@ -35,15 +35,15 @@ export class teams {
         let formData = new FormData();
         formData.append("avatar", avatarImage);
 
-        return await $axios.post(`/avatars/teams/${teamId}`, formData, config).catch(() => {
+        return await $axios.post(`/avatar/teams/${teamId}`, formData, config).catch(() => {
             alert("Could not save image! Try later");
         });
     }
 
     static async deleteAvatar(teamId: string) {
-        return await $axios.delete(`/avatars/teams/${teamId}`);
+        return await $axios.delete(`/avatar/teams/${teamId}`);
     }
     static getAvatar(teamId: string) {
-        return $axios.get(`/avatars/teams/${teamId}`).then((res) => res.data);
+        return $axios.get(`/avatar/teams/${teamId}`).then((res) => res.data);
     }
 }

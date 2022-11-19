@@ -9,6 +9,7 @@ export interface TeamsResponseItemSchema {
     adminId: number;
     color: string;
     members: Array<TeamMembersItemSchema>;
+    avatar?: string;
 }
 
 export interface TeamMembersItemSchema {
