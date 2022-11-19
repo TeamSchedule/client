@@ -5,6 +5,10 @@ FROM node:${NODE_VERSION}-alpine as deps
 WORKDIR /app
 COPY package.json .
 COPY yarn.lock .
+
+RUN corepack enable
+RUN corepack prepare yarn@stable --activate
+
 RUN yarn install
 COPY . .
 RUN yarn build
