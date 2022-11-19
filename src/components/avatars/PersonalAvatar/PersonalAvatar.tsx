@@ -26,6 +26,7 @@ export default function PersonalAvatar(props: PersonalAvatarProps) {
         getUserAvatarImageSrc(+userInfo.id)
             .then(setAvatarURL)
             .catch(() => {
+                if (!userInfo.id) return;
                 identicon.generate({ id: userInfo.id.toString(), size: 150 }, (err: any, buffer: string) => {
                     const blobAvatar: Blob = new Blob([new Buffer(buffer.slice(22), "base64")], {
                         type: "image/png",
