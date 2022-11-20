@@ -2,8 +2,8 @@ ARG NODE_VERSION=16.17.1
 
 FROM node:${NODE_VERSION}-alpine as deps
 
-RUN apt-get update -y
-RUN apt-get install -y python
+RUN apk update -y
+RUN apk add -y python
 
 WORKDIR /app
 COPY package.json .
