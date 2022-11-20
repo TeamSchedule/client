@@ -9,6 +9,7 @@ COPY yarn.lock .
 RUN corepack enable
 RUN corepack prepare yarn@stable --activate
 
+RUN yarn cache clean
 RUN yarn install
 COPY . .
 RUN yarn build
