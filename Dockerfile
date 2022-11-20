@@ -1,9 +1,6 @@
 ARG NODE_VERSION=16.17.1
 
-FROM node:${NODE_VERSION}-alpine as deps
-
-RUN apk update -y
-RUN apk add -y python
+FROM node:${NODE_VERSION} as deps
 
 WORKDIR /app
 COPY package.json .
