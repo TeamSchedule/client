@@ -7,21 +7,12 @@ import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
 
 interface TeamsPreviewSectionProps {
     teams: Array<TeamsResponseItemSchema>;
-    err: boolean;
     loading: boolean;
 }
 
-function TeamsPreviewSection({ err = false, loading = false, teams = [] }: TeamsPreviewSectionProps) {
+function TeamsPreviewSection({ loading = false, teams = [] }: TeamsPreviewSectionProps) {
     const [isHovering, setIsHovering] = useState(false);
     const editIconColor = isHovering ? "#9b9b9b" : "#d0d0d0";
-
-    if (err) {
-        return (
-            <>
-                <div>Что-то пошло не так)</div>
-            </>
-        );
-    }
 
     return (
         <BasePreviewSection>

@@ -28,8 +28,8 @@ export default function BaseAvatar(props: BaseAvatarProps) {
     }
 
     return (
-        <div className={styles.baseAvatarWrapper} onClick={props.onClick}>
-            <ImageIcon size={30} className={styles.imageIcon} color="#c5c5c5" />
+        <div className={styles.editableAvatarWrapper} onClick={props.onClick}>
+            <ImageIcon size={32} className={styles.imageIcon} color={"#6e6e6e"} />
             <div className={styles.layer} style={{ width: props.size, height: props.size }}></div>
             <BaseImage />
         </div>

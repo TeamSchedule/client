@@ -28,7 +28,6 @@ export default function ProfilePage() {
     const userInfo = useSelector(selectUserInfo);
 
     const [isTeamsLoading, setIsTeamsLoading] = useState(false);
-    const [teamsErr, setTeamsErr] = useState(false);
     const [teamsNumber, setTeamsNumber] = useState(0);
     const [lastUpdatedTeams, setLastUpdatedTeams] = useState<Array<TeamsResponseItemSchema>>([]);
     const [isAvatarEditorVisible, setIsAvatarEditorVisible] = useState(false);
@@ -68,9 +67,7 @@ export default function ProfilePage() {
                     .catch(() => {})
                     .finally(() => {});
             })
-            .catch(() => {
-                setTeamsErr(true);
-            })
+            .catch(() => {})
             .finally(() => {
                 setIsTeamsLoading(false);
             });
@@ -90,7 +87,7 @@ export default function ProfilePage() {
                                 changeAvatarEditorVisibility={() => setIsAvatarEditorVisible(!isAvatarEditorVisible)}
                             />
                         </div>
-                        <TeamsPreviewSection teams={lastUpdatedTeams} err={teamsErr} loading={isTeamsLoading} />
+                        <TeamsPreviewSection teams={lastUpdatedTeams} loading={isTeamsLoading} />
                     </div>
                     <div className="w-50">
                         <div className="mb-3">

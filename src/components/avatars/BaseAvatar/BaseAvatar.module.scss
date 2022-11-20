@@ -1,4 +1,4 @@
-.baseAvatarWrapper {
+.editableAvatarWrapper {
     display: inline-block;
     position: relative;
     text-align: center;
@@ -12,7 +12,9 @@
     }
 
     &:hover .layer {
-        background-color: rgba(218, 218, 218, 0.5);
+        transition-property: background-color;
+        transition-duration: 0.3s;
+        background-color: rgba(248, 248, 248, 0.8);
     }
 }
 
@@ -21,7 +23,10 @@
 }
 
 .layer {
+    transition-property: background;
+    transition-duration: 0.3s;
     background: none;
+
     position: absolute;
     top: 0;
     left: 0;
@@ -38,10 +43,6 @@
     top: 0;
     bottom: 0;
     z-index: 10;
-    margin: auto
-;
+    margin: auto;
     display: none;
-
-    stroke: #a4a4a4;
-    stroke-width: 30px;
 }

@@ -24,7 +24,7 @@ export class invitations {
 
     static async getIncomingTeamInvitations() {
         return $axios
-            .get(`${this.prefixUrl}/invite?criteria=invited&status=OPEN`)
+            .get(`/bff/team/invite?criteria=invited&status=OPEN`)
             .then((res) => res.data)
             .then((data: GetIncomingInvitationsResponseSchema) => data.teamInvites)
             .catch(() => {
