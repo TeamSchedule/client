@@ -3,7 +3,7 @@ import { UserIcon } from "../../svg";
 import styles from "./UsernameInput.module.scss";
 
 interface UsernameInputProps {
-    value: string;
+    value?: string;
     setValue: (value: string) => void;
     placeholder?: string;
     isOk?: boolean;

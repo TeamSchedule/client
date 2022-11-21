@@ -8,6 +8,7 @@ const ERRORS = {
         NameAlreadyExist: "Это имя уже занято",
         TooShortName: `Имя должно быть минимум ${MIN_USERNAME_LENGTH} символа`,
         PasswordsDontMatch: "Пароли не совпадают",
+        PasswordsTooShort: "Пароль слишком короткий",
     },
     Service: {
         ServiceUnavailable: "Сервис недоступен, попробуйте позже",

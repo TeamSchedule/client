@@ -8,33 +8,77 @@ import { EmailInput, PasswordInput, UsernameInput } from "../inputs";
 import BaseButton from "../buttons/BaseButton";
 import validateEmail from "../../utils/validateEmail";
 import styles from "./Auth.module.scss";
-import { ERRORS } from "../../consts";
+import { ERRORS, MIN_PASSWORD_LENGTH, MIN_USERNAME_LENGTH } from "../../consts";
 
 export default function RegisterForm() {
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState<string | undefined>();
+    const [isNameTooShort, setIsNameTooShort] = useState<boolean | undefined>();
+    const [isNameOccupied, setIsNameOccupied] = useState(false);
+    const [isUsernameValid, setIsUsernameValid] = useState<boolean | undefined>();
 
     const [email, setEmail] = useState("");
     const [isEmailValid, setIsEmailValid] = useState<boolean | undefined>();
 
-    const [password, setPassword] = useState("");
-    const [password2, setPassword2] = useState("");
+    const [password, setPassword] = useState<string | undefined>();
+    const [password2, setPassword2] = useState<string | undefined>();
     const [isPasswordsMatch, setIsPasswordsMatch] = useState<boolean | undefined>();
+    const [isPasswordHasGoodLen, setIsPasswordHasGoodLen] = useState<boolean | undefined>();
+    const [isPasswordsOK, setIsPasswordsOK] = useState<boolean | undefined>();
 
     const [isFormDisabled, setIsFormDisabled] = useState(true);
 
     const [isActionInProgress, setIsActionInProgress] = useState(false);
     const [isRegErrShown, setIsRegErrShown] = useState(false);
-    const [isNameOccupiedErrShown, setIsNameOccupiedErrShown] = useState(false);
 
     useEffect(() => {
-        setIsPasswordsMatch(password !== password2);
-    }, [password2]);
+        if (username === undefined) return;
+        if (username.length < MIN_USERNAME_LENGTH) {
+            setIsNameTooShort(true);
+            return;
+        }
+        setIsNameTooShort(false);
+        setIsNameOccupied(false);
+    }, [username]);
 
     useEffect(() => {
-        setIsFormDisabled(isPasswordsMatch || username.length === 0 || !isEmailValid);
-    }, [isPasswordsMatch, isEmailValid, username]);
+        if (isNameTooShort === undefined || isNameOccupied === undefined) return;
+        setIsUsernameValid(!isNameTooShort && !isNameOccupied);
+    }, [isNameTooShort, isNameOccupied]);
+
+    useEffect(() => {
+        // Если пароли еще не изменялись
+        if (password === undefined && password2 === undefined) return;
+
+        // Если пароль короткий
+        if (password && password.length < MIN_PASSWORD_LENGTH) {
+            setIsPasswordHasGoodLen(false);
+            return;
+        }
+        setIsPasswordHasGoodLen(true);
+
+        // пользователь еще не начал вводить второй пароль
+        if (password2 === undefined) return;
+
+        // Если пароли не совпадают
+        if (password !== password2) {
+            setIsPasswordsMatch(false);
+            return;
+        }
+        setIsPasswordsMatch(true);
+    }, [password, password2]);
+
+    useEffect(() => {
+        if (isPasswordHasGoodLen === undefined || isPasswordsMatch === undefined) {
+            setIsPasswordsOK(undefined);
+        }
+        setIsPasswordsOK(isPasswordHasGoodLen && isPasswordsMatch);
+    }, [isPasswordsMatch, isPasswordHasGoodLen]);
+
+    useEffect(() => {
+        setIsFormDisabled(!isPasswordsOK || !isUsernameValid || !isEmailValid);
+    }, [isEmailValid, isUsernameValid, isPasswordsOK]);
 
     function onChangeEmail(email: string) {
         setEmail(email);
@@ -43,9 +87,10 @@ export default function RegisterForm() {
 
     function signUpHandler(event: React.FormEvent) {
         event.preventDefault();
-        setIsActionInProgress(true);
+        if (isFormDisabled) return;
+        if (!username || !password) return;
 
-        if (password !== password2) return;
+        setIsActionInProgress(true);
 
         const signUpRequestData: SignUpRequestSchema = {
             email: email,
@@ -62,10 +107,10 @@ export default function RegisterForm() {
             .catch((err) => {
                 const statusCode = err.response.status;
                 if (statusCode >= 500) {
-                    setIsNameOccupiedErrShown(false);
+                    setIsNameOccupied(false);
                     setIsRegErrShown(true);
                 } else if (statusCode >= 400) {
-                    setIsNameOccupiedErrShown(true);
+                    setIsNameOccupied(true);
                     setIsRegErrShown(false);
                 }
             })
@@ -82,34 +127,49 @@ export default function RegisterForm() {
                     <Link to="/">Командном расписании</Link>&nbsp;!
                 </p>
 
+                <UsernameInput
+                    value={username}
+                    setValue={setUsername}
+                    className={styles.formInputWrapper}
+                    isOk={isUsernameValid}
+                />
+                <ErrorMsg errText={ERRORS.SignUp.TooShortName} visible={isNameTooShort} />
+                <ErrorMsg errText={ERRORS.SignUp.NameAlreadyExist} visible={isNameOccupied} />
+
                 <EmailInput
                     value={email}
                     setValue={onChangeEmail}
                     isOk={isEmailValid}
                     className={styles.formInputWrapper}
                 />
-                <UsernameInput value={username} setValue={setUsername} className={styles.formInputWrapper} />
-                <ErrorMsg errText={ERRORS.SignUp.NameAlreadyExist} visible={isNameOccupiedErrShown} />
 
                 <PasswordInput
                     value={password}
                     setValue={setPassword}
-                    isOk={!isPasswordsMatch}
+                    isOk={isPasswordHasGoodLen || isPasswordsOK}
                     className={styles.formInputWrapper}
                 />
                 <PasswordInput
                     value={password2}
                     setValue={setPassword2}
                     placeholder="Повторите пароль"
-                    isOk={!isPasswordsMatch}
+                    isOk={isPasswordsOK}
                     className={styles.formInputWrapper}
                 />
-                <ErrorMsg errText={ERRORS.SignUp.PasswordsDontMatch} visible={isPasswordsMatch} />
+                <ErrorMsg
+                    errText={ERRORS.SignUp.PasswordsDontMatch}
+                    visible={isPasswordsMatch !== undefined && !isPasswordsMatch}
+                />
+                <ErrorMsg
+                    errText={ERRORS.SignUp.PasswordsTooShort}
+                    visible={isPasswordHasGoodLen !== undefined && !isPasswordHasGoodLen}
+                />
                 <ErrorMsg errText={ERRORS.Service.ServiceUnavailable} visible={isRegErrShown} />
 
                 <BaseButton
                     text="Зарегистрироваться"
                     onClick={signUpHandler}
+                    color="success"
                     disabled={isFormDisabled}
                     loading={isActionInProgress}
                     className="mt-3"

@@ -26,7 +26,7 @@ export class invitations {
         return $axios
             .get(`/bff/team/invite?criteria=invited&status=OPEN`)
             .then((res) => res.data)
-            .then((data: GetIncomingInvitationsResponseSchema) => data.teamInvites)
+            .then((data: GetIncomingInvitationsResponseSchema) => data.invites)
             .catch(() => {
                 return [];
             });

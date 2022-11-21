@@ -6,6 +6,7 @@ import { IncomingInvitationItemSchema } from "../../api/schemas/responses/invita
 import { BaseButton } from "../buttons";
 import { buttonStyles } from "../buttons";
 import styles from "./IncomingInvitationItem.module.scss";
+import { TeamMembersItemSchema } from "../../api/schemas/responses/teams";
 
 interface IncomingInvitationItemProps {
     invitation: IncomingInvitationItemSchema;
@@ -28,7 +29,7 @@ export default function IncomingInvitationItem(props: IncomingInvitationItemProp
                     <UserAvatar imgSrc="/" size={24} />
                     <div className="mx-2">
                         <p className="my-0 fw-bold">{props.invitation.team.name}</p>
-                        <InviterItem user={{ login: "user login" }} />
+                        <InviterItem user={props.invitation.inviting} />
                     </div>
 
                     <span className={styles.dateLabel}>
@@ -56,14 +57,14 @@ export default function IncomingInvitationItem(props: IncomingInvitationItemProp
 }
 
 interface InviterItemProps {
-    user: any;
+    user: TeamMembersItemSchema;
 }
 function InviterItem(props: InviterItemProps) {
     return (
         <Link to=".">
             <div className="d-flex align-items-center">
                 <span className="pr-2">От: </span>
-                <UserAvatar imgSrc={"props.user.avatar"} size={24} />
+                <UserAvatar imgSrc={props.user.avatar || ""} size={24} />
                 <span className="px-2">{props.user.login}</span>
             </div>
         </Link>

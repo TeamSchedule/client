@@ -43,7 +43,4 @@ export class teams {
     static async deleteAvatar(teamId: string) {
         return await $axios.delete(`/avatar/teams/${teamId}`);
     }
-    static getAvatar(teamId: string) {
-        return $axios.get(`/avatar/teams/${teamId}`).then((res) => res.data);
-    }
 }

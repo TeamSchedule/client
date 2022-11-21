@@ -21,9 +21,14 @@ export default function ShortPreviewTeamItem({ linkTo, team }: ShortPreviewTeamI
                     background: `linear-gradient(45deg, rgba(255, 0, 0, 0.05) 20%, ${hexAToRGBA(team.color, 0.3)} 65%)`,
                 }}
             >
-                <TeamHeader membersNumber={8} openTaskNumber={3} />
+                <TeamHeader membersNumber={1} openTaskNumber={2} />
                 <div className="m-auto d-flex justify-content-center">
-                    <TeamAvatar imgSrc={""} size={80} teamColor={team.color} teamId={team.id.toString()} />
+                    <TeamAvatar
+                        imgSrc={team.avatar || ""}
+                        size={80}
+                        teamColor={team.color}
+                        teamId={team.id.toString()}
+                    />
                 </div>
                 <PrimaryPreviewText text={team.name} className="mt-4 mb-0 text-center" />
                 <SecondaryPreviewText text={""} className="text-center" />

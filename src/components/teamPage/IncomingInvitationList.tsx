@@ -9,7 +9,7 @@ interface IncomingInvitationListProps {
 }
 
 export default function IncomingInvitationList(props: IncomingInvitationListProps) {
-    if (props.incomingInvitations.length === 0) return null;
+    if (!props.incomingInvitations || props.incomingInvitations.length === 0) return null;
 
     return (
         <>
