@@ -1,4 +1,4 @@
-.incomingInvitationItem {
+.invitation {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -6,15 +6,16 @@
     border-radius: 24px;
     padding: 5px 10px;
     min-width: 400px;
+}
 
-    &_teamSection {
-       display: flex;
-        align-items: center;
-    }
+
+.infoSection {
+    display: flex;
+    align-items: center;
 }
 
 .dateLabel {
     color: #6b6b6b;
     align-self: end;
-    padding: 0 15px;
+    padding: 0 10px;
 }
