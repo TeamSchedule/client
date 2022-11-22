@@ -9,25 +9,27 @@ interface OutgoingInvitationItemProps {
 }
 
 export default function OutgoingInvitationItem(props: OutgoingInvitationItemProps) {
+    function onUndoInvitation(event: { preventDefault: () => void }) {
+        event.preventDefault();
+        props.onUndoInvitation(props.invitation.id);
+    }
+
     return (
         <>
             <div>
                 <Invitation
-                    // @ts-ignore TODO: fix
-                    fromUser={props.invitation.invitingId}
+                    fromUser={props.invitation.inviting}
                     date={props.invitation.date}
-                    mainName={props.invitation.team.name}
-                    mainAvatar={props.invitation.team.name}
-                />
-
-                <div className={buttonStyles.btnWrapper}>
+                    mainName={props.invitation.invited.login}
+                    mainAvatar={props.invitation.invited.avatar || ""}
+                >
                     <BaseButton
                         text="Отозвать приглашение"
                         color="danger"
-                        onClick={() => {}}
+                        onClick={onUndoInvitation}
                         className={buttonStyles.leftFlatButton}
                     />
-                </div>
+                </Invitation>
             </div>
         </>
     );

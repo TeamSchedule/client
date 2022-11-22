@@ -84,7 +84,7 @@ export default function TeamMembersModal() {
                         ))}
                 </div>
 
-                <OutgoingInvitationList teamId={teamId ? +teamId : null} />
+                <OutgoingInvitationList />
             </div>
         </>
     );

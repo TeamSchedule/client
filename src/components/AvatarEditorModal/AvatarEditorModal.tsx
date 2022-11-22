@@ -137,7 +137,7 @@ function AvatarEditorSection(props: AvatarEditorSectionProps) {
     };
 
     return (
-        <BaseModal title="Смена аватара" onCloseClickHandler={() => navigate(-1)}>
+        <BaseModal title="Смена аватара" onCloseClickHandler={() => navigate("..")}>
             <div>
                 <div className="d-flex px-0">
                     <AvatarEditor
@@ -238,7 +238,10 @@ function AvatarEditorSection(props: AvatarEditorSectionProps) {
                 <BaseButton
                     text="Сохранить новый аватар"
                     color="success"
-                    onClick={() => props.saveHandler(fetchBlobFromEditor())}
+                    onClick={(event) => {
+                        event.preventDefault();
+                        props.saveHandler(fetchBlobFromEditor());
+                    }}
                     className="mt-4 w-100"
                     disabled={!enabledToSave}
                 />

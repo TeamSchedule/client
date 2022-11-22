@@ -12,10 +12,10 @@ export class invitations {
 
     static async getOutgoingTeamInvitations(status: InvitationStatus, teamId: number) {
         return $axios
-            .get(`${this.prefixUrl}/invite?criteria=inviting&status=${status}&teamId=${teamId}`)
+            .get(`/bff/team/invite?criteria=inviting&status=${status}&teamId=${teamId}`)
             .then((res) => res.data)
             .then((data: GetOutgoingInvitationsResponseSchema) => {
-                return data.teamInvites;
+                return data.invites;
             })
             .catch(() => {
                 return [];
