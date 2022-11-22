@@ -17,6 +17,7 @@ import CreateTaskForm from "../components/taskForms/CreateTaskForm";
 import EditTaskForm from "../components/taskForms/EditTaskForm";
 import NotFound from "../components/generic/NotFound";
 import TeamMembersModal from "../components/teamForms/TeamMembersModal";
+import TeamEditModal from "../components/teamForms/TeamEditModal";
 
 export default function AuthorizedRoutes() {
     const userInfo = useSelector(selectUserInfo);
@@ -38,8 +39,9 @@ export default function AuthorizedRoutes() {
                         <Route index element={<InvitationsTeams />} />
                         <Route path="new" element={<TeamCreationForm />} />
                         <Route path=":teamId/" element={<FullTeam />}>
-                            <Route path="avatar" element={<AvatarEditorModal avatarType="team" />} />
                             <Route path="members" element={<TeamMembersModal />} />
+                            <Route path="edit" element={<TeamEditModal />} />
+                            <Route path="edit/avatar" element={<AvatarEditorModal avatarType="team" />} />
                         </Route>
                     </Route>
 

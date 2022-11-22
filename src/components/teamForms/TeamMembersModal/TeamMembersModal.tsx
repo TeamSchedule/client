@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TeamMembersItemSchema } from "../../../api/schemas/responses/teams";
+import { TeamsResponseItemSchema } from "../../../api/schemas/responses/teams";
 import MemberItem from "../MemberItem";
 import styles from "./TeamMembersModal.module.scss";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
@@ -9,20 +9,20 @@ import SearchUsersField from "../../SearchUsersField";
 import { CreateInvitationsRequestSchema } from "../../../api/schemas/requests/invitations";
 import { API } from "../../../api/api";
 
-interface TeamMembersModalProps {
-    members?: Array<TeamMembersItemSchema>;
+export interface TeamModalProps {
+    team?: TeamsResponseItemSchema;
     adminId?: number;
 }
 
-export function useMembers() {
-    return useOutletContext<TeamMembersModalProps>();
+export function useTeamData() {
+    return useOutletContext<TeamModalProps>();
 }
 
 export default function TeamMembersModal() {
     const navigate = useNavigate();
 
     const { teamId } = useParams();
-    const { adminId, members } = useMembers();
+    const { adminId, team } = useTeamData();
 
     const [isInviteInputOpen, setIsInviteInputOpen] = useState(false);
 
@@ -51,7 +51,7 @@ export default function TeamMembersModal() {
 
     return (
         <>
-            <div className={styles.teamMembersModal}>
+            <div className={styles.teamModal}>
                 <div className={styles.closeIconWrapper}>
                     <CloseFormIcon />
                 </div>
@@ -78,8 +78,8 @@ export default function TeamMembersModal() {
                 )}
 
                 <div>
-                    {members &&
-                        members.map((member) => (
+                    {team &&
+                        team.members.map((member) => (
                             <MemberItem key={member.id} member={member} isAdmin={member.id === adminId} />
                         ))}
                 </div>

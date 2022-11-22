@@ -137,7 +137,7 @@ function AvatarEditorSection(props: AvatarEditorSectionProps) {
     };
 
     return (
-        <BaseModal title="Смена аватара" onCloseClickHandler={() => navigate("../")}>
+        <BaseModal title="Смена аватара" onCloseClickHandler={() => navigate(-1)}>
             <div>
                 <div className="d-flex px-0">
                     <AvatarEditor
