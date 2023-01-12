@@ -3,14 +3,14 @@ import React, { useEffect, useState } from "react";
 import { Link, Outlet, useParams } from "react-router-dom";
 import { API } from "../../../api/api";
 import BaseForm from "../../generic/BaseForm";
-import { TeamsResponseItemSchema } from "../../../api/schemas/responses/teams";
+import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
 import TeamAvatar from "../../avatars/TeamAvatar";
 import styles from "./FullTeam.module.scss";
 
 export default function FullTeam() {
     const { teamId } = useParams();
 
-    const [teamData, setTeamData] = useState<TeamsResponseItemSchema>();
+    const [teamData, setTeamData] = useState<UnitsResponseItemSchema>();
 
     useEffect(() => {
         if (!teamId) {
@@ -19,7 +19,7 @@ export default function FullTeam() {
 
         API.bff
             .getTeamData(+teamId)
-            .then((team: TeamsResponseItemSchema) => {
+            .then((team: UnitsResponseItemSchema) => {
                 setTeamData(team);
             })
             .catch(() => {});
@@ -37,7 +37,7 @@ export default function FullTeam() {
 }
 
 interface TeamFOrmHeaderProps {
-    team?: TeamsResponseItemSchema;
+    team?: UnitsResponseItemSchema;
 }
 
 function TeamFormHeader(props: TeamFOrmHeaderProps) {

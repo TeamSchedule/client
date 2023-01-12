@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { TeamsResponseItemSchema } from "../../../api/schemas/responses/teams";
+import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
 import MemberItem from "../MemberItem";
 import styles from "./TeamMembersModal.module.scss";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import CloseFormIcon from "../../generic/CloseFormIcon";
 import OutgoingInvitationList from "../../teamPage/OutgoingInvitationList";
 import SearchUsersField from "../../SearchUsersField";
-import { CreateInvitationsRequestSchema } from "../../../api/schemas/requests/invitations";
+import { CreateInvitationsRequestSchema } from "../../../schemas/requests/invitations";
 import { API } from "../../../api/api";
 
 export interface TeamModalProps {
-    team?: TeamsResponseItemSchema;
+    team?: UnitsResponseItemSchema;
     adminId?: number;
 }
 

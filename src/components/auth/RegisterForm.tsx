@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../api/api";
 import AuthFormLayout from "./AuthFormLayout";
 import ErrorMsg from "../ErrorMsg";
-import { SignUpRequestSchema } from "../../api/schemas/requests/auth";
+import { SignUpRequestSchema } from "../../schemas/requests/auth";
 import { EmailInput, PasswordInput, UsernameInput } from "../inputs";
 import BaseButton from "../buttons/BaseButton";
 import validateEmail from "../../utils/validateEmail";
@@ -122,10 +122,7 @@ export default function RegisterForm() {
     return (
         <AuthFormLayout onSubmit={signUpHandler}>
             <>
-                <p className={styles.formHeader}>
-                    Зарегистрироваться в&nbsp;
-                    <Link to="/">Командном расписании</Link>&nbsp;!
-                </p>
+                <p className={styles.formHeader}>Регистрация</p>
 
                 <UsernameInput
                     value={username}

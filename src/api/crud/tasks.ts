@@ -3,7 +3,7 @@ import {
     CreateTaskRequestSchema,
     FilterTasksParamsSchema,
     UpdateTaskRequestSchema,
-} from "../schemas/requests/tasks";
+} from "../../schemas/requests/tasks";
 
 export class tasks {
     static prefixUrl = "/schedule/task";
@@ -19,9 +19,7 @@ export class tasks {
 
         return (
             await $axios.get(
-                `${
-                    this.prefixUrl
-                }?from=${params.from.toJSON()}&to=${params.to.toJSON()}&teams=${params.teams.join(
+                `${this.prefixUrl}?from=${params.from.toJSON()}&to=${params.to.toJSON()}&teams=${params.teams.join(
                     ","
                 )}&private=true&all=${params.all}`
             )

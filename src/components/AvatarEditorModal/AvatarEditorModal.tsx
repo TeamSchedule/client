@@ -58,7 +58,7 @@ export default function AvatarEditorModal(props: AvatarEditorTab) {
                 const myFile = new File([blob], "image1.jpeg", {
                     type: blob.type,
                 });
-                API.teams.setAvatar(teamId, myFile).then(() => {
+                API.units.setAvatar(teamId, myFile).then(() => {
                     navigate("..");
                     window.location.reload();
                 });
@@ -71,7 +71,7 @@ export default function AvatarEditorModal(props: AvatarEditorTab) {
             alert("Ошибка распознования команды");
             return;
         }
-        API.teams.deleteAvatar(teamId).then(() => {
+        API.units.deleteAvatar(teamId).then(() => {
             navigate("..");
             window.location.reload();
         });

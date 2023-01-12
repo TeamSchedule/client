@@ -1,5 +1,5 @@
 import React from "react";
-import { TeamMembersItemSchema } from "../../../api/schemas/responses/teams";
+import { TeamMembersItemSchema } from "../../../schemas/responses/units";
 import { UserAvatar } from "../../avatars";
 import styles from "./MemberItem.module.scss";
 

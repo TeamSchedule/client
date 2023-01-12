@@ -1,9 +1,9 @@
 import React from "react";
-import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import { UnitsResponseItemSchema } from "../../schemas/responses/units";
 import ShortPreviewTeamItem from "../previews/TeamPreview/ShortPreviewTeamItem";
 
 interface TeamListProps {
-    teams: Array<TeamsResponseItemSchema>;
+    teams: Array<UnitsResponseItemSchema>;
 }
 
 export default function TeamList(props: TeamListProps) {
@@ -11,7 +11,7 @@ export default function TeamList(props: TeamListProps) {
         <>
             <h3>Мои команды</h3>
             <div className="d-flex">
-                {props.teams.map((team: TeamsResponseItemSchema) => (
+                {props.teams.map((team: UnitsResponseItemSchema) => (
                     <ShortPreviewTeamItem key={team.id} team={team} linkTo={team.id.toString()} />
                 ))}
             </div>

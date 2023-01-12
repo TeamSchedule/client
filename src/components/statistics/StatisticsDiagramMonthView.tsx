@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { API } from "../../api/api";
 import daysInMonth from "../../utils/daysinMonth";
-import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
-import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
-import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import { FilterTasksParamsSchema } from "../../schemas/requests/tasks";
+import { GetTaskResponseSchema } from "../../schemas/responses/tasks";
+import { UnitsResponseItemSchema } from "../../schemas/responses/units";
 import { Link } from "react-router-dom";
 import styles from "./StatisticsDiagramMonthView.module.scss";
 
@@ -13,11 +13,11 @@ export default function StatisticsDiagramMonthView() {
     const [monthTasksNumbers, setMonthTasksNumbers] = useState(new Array(monthDaysNumber).fill(0));
 
     useEffect(() => {
-        API.teams
+        API.units
             .all()
-            .then((teams: Array<TeamsResponseItemSchema>) => {
+            .then((teams: Array<UnitsResponseItemSchema>) => {
                 const filterTasksParams: FilterTasksParamsSchema = {
-                    teams: teams.map((t: TeamsResponseItemSchema) => t.id),
+                    teams: teams.map((t: UnitsResponseItemSchema) => t.id),
                 };
                 API.tasks
                     .getTasks(filterTasksParams)

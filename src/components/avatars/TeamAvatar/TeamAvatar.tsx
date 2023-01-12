@@ -18,7 +18,7 @@ export default function TeamAvatar(props: TeamAvatarProps) {
     return (
         <>
             <BaseAvatar
-                imgSrc={props.imgSrc.length > 0 ? makeFullAvatarPath(props.imgSrc) : ""}
+                imgSrc={props.imgSrc ? makeFullAvatarPath(props.imgSrc) : ""}
                 size={props.size}
                 teamColor={props.teamColor}
                 className={styles.teamAvatar}

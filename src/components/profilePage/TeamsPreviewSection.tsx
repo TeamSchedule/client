@@ -3,10 +3,10 @@ import ShortPreviewTeamItem from "../previews/TeamPreview/ShortPreviewTeamItem";
 import { Link } from "react-router-dom";
 import RightAngleIcon from "../svg/RightAngleIcon";
 import BasePreviewSection from "./BasePreviewSection";
-import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import { UnitsResponseItemSchema } from "../../schemas/responses/units";
 
 interface TeamsPreviewSectionProps {
-    teams: Array<TeamsResponseItemSchema>;
+    teams: Array<UnitsResponseItemSchema>;
     loading: boolean;
 }
 
@@ -34,7 +34,7 @@ function TeamsPreviewSection({ loading = false, teams = [] }: TeamsPreviewSectio
 export default TeamsPreviewSection;
 
 interface PreviewTeamsGroupProps {
-    teams: Array<TeamsResponseItemSchema>;
+    teams: Array<UnitsResponseItemSchema>;
 }
 
 function PreviewTeamsGroup({ teams = [] }: PreviewTeamsGroupProps) {

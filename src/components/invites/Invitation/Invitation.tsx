@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { TeamMembersItemSchema } from "../../../api/schemas/responses/teams";
+import { TeamMembersItemSchema } from "../../../schemas/responses/units";
 import { UserAvatar } from "../../avatars";
 import styles from "./Invitation.module.scss";
 

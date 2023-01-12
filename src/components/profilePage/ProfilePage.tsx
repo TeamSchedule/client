@@ -6,9 +6,9 @@ import UserInfoPreviewSection from "./UserInfoPreviewSection";
 import SchedulePreviewSection from "./SchedulePreviewSection";
 import { API } from "../../api/api";
 import StatisticsDiagram from "../statistics";
-import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
-import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
-import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import { FilterTasksParamsSchema } from "../../schemas/requests/tasks";
+import { GetTaskResponseSchema } from "../../schemas/responses/tasks";
+import { UnitsResponseItemSchema } from "../../schemas/responses/units";
 import CenterLayoutWrapper from "../generic/CenterLayoutWrapper";
 import AvatarEditorModal from "../AvatarEditorModal";
 import BaseModal from "../modals/BaseModal";
@@ -29,7 +29,7 @@ export default function ProfilePage() {
 
     const [isTeamsLoading, setIsTeamsLoading] = useState(false);
     const [teamsNumber, setTeamsNumber] = useState(0);
-    const [lastUpdatedTeams, setLastUpdatedTeams] = useState<Array<TeamsResponseItemSchema>>([]);
+    const [lastUpdatedTeams, setLastUpdatedTeams] = useState<Array<UnitsResponseItemSchema>>([]);
     const [isAvatarEditorVisible, setIsAvatarEditorVisible] = useState(false);
 
     const [tasksNumber, setTasksNumber] = useState(0);
@@ -37,9 +37,9 @@ export default function ProfilePage() {
 
     useEffect(() => {
         setIsTeamsLoading(true);
-        API.teams
+        API.units
             .all()
-            .then((teams: Array<TeamsResponseItemSchema>) => {
+            .then((teams: Array<UnitsResponseItemSchema>) => {
                 setTeamsNumber(teams.length);
                 const previewTeams = teams.sort().slice(0, 3);
                 setLastUpdatedTeams(previewTeams);

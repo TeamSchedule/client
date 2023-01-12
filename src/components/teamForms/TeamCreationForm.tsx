@@ -3,12 +3,12 @@ import { API } from "../../api/api";
 
 import { useNavigate } from "react-router-dom";
 import FormHeaderRow from "../generic/FormHeaderRow";
-import InputTextFormItem from "../inputs/InputTextFormItem";
 import BaseForm from "../generic/BaseForm";
-import { CreateTeamRequestSchema } from "../../api/schemas/requests/teams";
+import { CreateUnitRequestSchema } from "../../schemas/requests/units";
 import { BaseButton } from "../buttons";
 import ErrorMsg from "../ErrorMsg";
 import { ERRORS, MIN_TEAM_NAME_LEN } from "../../consts";
+import SimpleTextInput from "../inputs/SimpleTextInput";
 
 export default function TeamCreationForm() {
     const navigate = useNavigate();
@@ -39,9 +39,9 @@ export default function TeamCreationForm() {
         }
 
         setIsActionInProgress(true);
-        const createTeamData: CreateTeamRequestSchema = { name: teamName };
-        API.teams
-            .createTeam(createTeamData)
+        const createTeamData: CreateUnitRequestSchema = { name: teamName };
+        API.units
+            .createUnit(createTeamData)
             .then(() => {
                 navigate("../");
             })
@@ -53,7 +53,7 @@ export default function TeamCreationForm() {
     return (
         <BaseForm onSubmit={createTeamSbm} autoComplete={false}>
             <FormHeaderRow headerText="Создать новую команду" />
-            <InputTextFormItem label="*Название команды" value={teamName || ""} handleChange={setTeamName} />
+            <SimpleTextInput label="*Название команды" value={teamName || ""} handleChange={setTeamName} />
             <div>
                 <ErrorMsg visible={teamName !== null && !isTeamNameValid} errText={ERRORS.Team.TooShortName} />
             </div>

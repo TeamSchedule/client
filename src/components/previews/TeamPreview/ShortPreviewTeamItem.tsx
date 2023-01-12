@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import { TeamAvatar } from "../../avatars";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../PreviewComponents";
-import { TeamsResponseItemSchema } from "../../../api/schemas/responses/teams";
+import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
 import TeamIcon from "../../svg/TeamIcon";
 import { ToDoListIcon } from "../../svg";
 import styles from "./ShortPreviewTeamItem.module.scss";
 import hexAToRGBA from "../../../utils/hexToRGBA";
 
 interface ShortPreviewTeamItemProps {
-    team: TeamsResponseItemSchema;
+    team: UnitsResponseItemSchema;
     linkTo?: string;
 }
 

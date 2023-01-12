@@ -14,11 +14,11 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "./monthCalendar.css";
 import LoaderScreen from "../generic/LoaderScreen";
-import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
-import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
+import { FilterTasksParamsSchema } from "../../schemas/requests/tasks";
+import { GetTaskResponseSchema } from "../../schemas/responses/tasks";
 import { EventSourceInput } from "@fullcalendar/core";
 import { EventInput } from "@fullcalendar/common";
-import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import { UnitsResponseItemSchema } from "../../schemas/responses/units";
 
 export function TaskViewer() {
     const navigate = useNavigate();
@@ -27,7 +27,7 @@ export function TaskViewer() {
     const [tasks, setTasks] = useState<Array<GetTaskResponseSchema>>([]); // все задачи
     const [filteredTasks, setFilteredTasks] = useState<Array<GetTaskResponseSchema>>([]); // задачи для выбранных команд
 
-    const [teams, setTeams] = useState<Array<TeamsResponseItemSchema>>([]); // все команды
+    const [teams, setTeams] = useState<Array<UnitsResponseItemSchema>>([]); // все команды
     const [showedTeams, setShowedTeams] = useState<Array<number>>([]); // команды, выбранные в фильтре
 
     const [calendarTasks, setCalendarTasks] = useState<EventSourceInput>([]);
@@ -44,7 +44,7 @@ export function TaskViewer() {
     }
 
     useEffect(() => {
-        API.teams.all().then((allTeams: Array<TeamsResponseItemSchema>) => {
+        API.units.all().then((allTeams: Array<UnitsResponseItemSchema>) => {
             setTeams(allTeams);
             // Collect ids of all previews (created and default)
             let teamIds: Array<number> = [];
@@ -69,9 +69,7 @@ export function TaskViewer() {
     }, [teamToColor]);
 
     useEffect(() => {
-        setFilteredTasks(
-            tasks.filter((task) => showedTeams.includes(task.team.id) || task.team.name === null)
-        );
+        setFilteredTasks(tasks.filter((task) => showedTeams.includes(task.team.id) || task.team.name === null));
     }, [showedTeams, tasks]);
 
     useEffect(() => {

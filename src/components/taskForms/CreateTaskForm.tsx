@@ -6,14 +6,14 @@ import { API } from "../../api/api";
 import { selectUserInfo } from "../../features/userInfoSlice";
 import CloseFormIcon from "../generic/CloseFormIcon";
 import { Checkbox, FormControlLabel } from "@mui/material";
-import InputMultilineTextFormItem from "../inputs/InputMultilineTextFormItem";
-import InputTextFormItem from "../inputs/InputTextFormItem";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import { getPrevDayDate } from "../../utils/getPrevDayDate";
 import BaseForm from "../generic/BaseForm";
-import { CreateTaskRequestSchema } from "../../api/schemas/requests/tasks";
-import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
+import { CreateTaskRequestSchema } from "../../schemas/requests/tasks";
+import { UnitsResponseItemSchema } from "../../schemas/responses/units";
 import { BaseButton } from "../buttons";
+import MultilineTextInput from "../inputs/MultilineTextInput/MultilineTextInput";
+import SimpleTextInput from "../inputs/SimpleTextInput";
 
 interface TeamItemProps {
     groupId: string;
@@ -32,7 +32,7 @@ function CreateTaskForm() {
     const navigate = useNavigate();
     const userInfo = useSelector(selectUserInfo);
 
-    const [teams, setTeams] = useState<Array<TeamsResponseItemSchema>>([]);
+    const [teams, setTeams] = useState<Array<UnitsResponseItemSchema>>([]);
 
     const { date } = useParams();
     const [taskDescription, setTaskDescription] = useState("");
@@ -43,7 +43,7 @@ function CreateTaskForm() {
     const [isActionInProgress, setIsActionInProgress] = useState(false);
 
     useEffect(() => {
-        API.teams.all().then((teams: Array<TeamsResponseItemSchema>) => {
+        API.units.all().then((teams: Array<UnitsResponseItemSchema>) => {
             setTeams(teams);
             if (teams.length > 0) {
                 setSelectedTeam(teams[0].id);
@@ -94,8 +94,8 @@ function CreateTaskForm() {
                 <CloseFormIcon />
             </div>
 
-            <InputTextFormItem label="Название задачи" value={taskName} handleChange={setTaskName} className="mb-3" />
-            <InputMultilineTextFormItem
+            <SimpleTextInput label="Название задачи" value={taskName} handleChange={setTaskName} className="mb-3" />
+            <MultilineTextInput
                 label="Подробное описание"
                 value={taskDescription}
                 handleChange={setTaskDescription}
@@ -121,7 +121,7 @@ function CreateTaskForm() {
                 />
                 {!isPrivateFlag && (
                     <select id="taskGroup" name="list1" onChange={(e) => setSelectedTeam(+e.target.value)} required>
-                        {teams.map((team: TeamsResponseItemSchema) => (
+                        {teams.map((team: UnitsResponseItemSchema) => (
                             <TeamItem key={team.id} groupTitle={team.name} groupId={team.id.toString()} />
                         ))}
                     </select>

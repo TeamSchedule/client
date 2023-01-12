@@ -5,11 +5,11 @@ import { useTeamData } from "../TeamMembersModal/TeamMembersModal";
 import modalStyles from "../TeamMembersModal/TeamMembersModal.module.scss";
 import styles from "./TeamEditModal.module.scss";
 import InputColorFormItem from "../../inputs/InputColorFormItem";
-import { UpdateTeamRequestSchema } from "../../../api/schemas/requests/teams";
+import { UpdateTeamRequestSchema } from "../../../schemas/requests/units";
 import { API } from "../../../api/api";
 import { useNavigate } from "react-router-dom";
 import { BaseButton } from "../../buttons";
-import TextInputInPlace from "../../inputs/TextInput";
+import TextInputInPlace from "../../inputs/TextInputInPlace";
 
 export default function TeamEditModal() {
     const navigate = useNavigate();
@@ -36,7 +36,7 @@ export default function TeamEditModal() {
             newName: teamName,
             color: color,
         };
-        API.teams
+        API.units
             .update(+team?.id, updateTeamData)
             .then(() => {
                 navigate("..");
@@ -50,7 +50,7 @@ export default function TeamEditModal() {
     function onLeaveTeam() {
         setIsLeaveActionInProgress(true);
         if (!team?.id) return;
-        API.teams
+        API.units
             .leave(+team?.id)
             .then(() => {
                 navigate("..");

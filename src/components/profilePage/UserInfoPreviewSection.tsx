@@ -9,8 +9,8 @@ import getWorkingInterval from "../../utils/getWorkingInterval";
 import { TextField } from "@mui/material";
 import { API } from "../../api/api";
 import { selectUserInfo, set } from "../../features/userInfoSlice";
-import { UpdateUserInfoRequestSchema } from "../../api/schemas/requests/users";
-import { GetMeResponseSchema } from "../../api/schemas/responses/users";
+import { UpdateUserInfoRequestSchema } from "../../schemas/requests/users";
+import { GetMeResponseSchema } from "../../schemas/responses/users";
 import { AxiosError } from "axios";
 
 export interface UserInfoPreviewSectionProps {
@@ -50,6 +50,7 @@ export interface UserInfoPreviewItemProps {
     statName: string;
     statValue: string | number;
 }
+
 function UserInfoPreviewItem({ className, statName, statValue }: UserInfoPreviewItemProps) {
     return (
         <>

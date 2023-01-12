@@ -3,11 +3,11 @@ import TeamList from "./TeamList";
 import IncomingInvitationList from "./IncomingInvitationList";
 import CenterLayoutWrapper from "../generic/CenterLayoutWrapper";
 import { API } from "../../api/api";
-import { TeamsResponseItemSchema } from "../../api/schemas/responses/teams";
-import { IncomingInvitationItemSchema } from "../../api/schemas/responses/invitations";
+import { UnitsResponseItemSchema } from "../../schemas/responses/units";
+import { IncomingInvitationItemSchema } from "../../schemas/responses/invitations";
 
 export default function InvitationsTeams() {
-    const [teams, setTeams] = useState<Array<TeamsResponseItemSchema>>([]);
+    const [teams, setTeams] = useState<Array<UnitsResponseItemSchema>>([]);
     const [incomingInvitations, setIncomingInvitations] = useState<Array<IncomingInvitationItemSchema>>([]);
 
     function loadIncomingInvitations() {
@@ -18,9 +18,9 @@ export default function InvitationsTeams() {
     }
 
     function loadTeams() {
-        API.teams
+        API.units
             .all()
-            .then((teamList: Array<TeamsResponseItemSchema>) => {
+            .then((teamList: Array<UnitsResponseItemSchema>) => {
                 setTeams(teamList);
             })
             .catch(() => {});

@@ -3,7 +3,7 @@ import RightAngleIcon from "../../svg/RightAngleIcon";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../PreviewComponents";
 import { PersonalAvatar, TeamAvatar } from "../../avatars";
 import styles from "./ShortPreviewTaskItem.module.scss";
-import { GetTaskResponseSchema } from "../../../api/schemas/responses/tasks";
+import { GetTaskResponseSchema } from "../../../schemas/responses/tasks";
 
 interface ShortPreviewTaskItemProps {
     task: GetTaskResponseSchema;
@@ -13,6 +13,7 @@ interface ShortPreviewTaskItemProps {
     description: string;
     taskId: number;
 }
+
 function ShortPreviewTaskItem(props: ShortPreviewTaskItemProps) {
     return (
         <Link to={`../tasks/${props.taskId}`} className={styles.shortPreviewTaskItem}>

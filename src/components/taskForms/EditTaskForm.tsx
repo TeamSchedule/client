@@ -4,13 +4,13 @@ import { Checkbox, FormControlLabel } from "@mui/material";
 
 import { API } from "../../api/api";
 import CloseFormIcon from "../generic/CloseFormIcon";
-import InputTextFormItem from "../inputs/InputTextFormItem";
-import InputMultilineTextFormItem from "../inputs/InputMultilineTextFormItem";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import BaseForm from "../generic/BaseForm";
-import { GetTaskResponseSchema } from "../../api/schemas/responses/tasks";
-import { UpdateTaskRequestSchema } from "../../api/schemas/requests/tasks";
+import { GetTaskResponseSchema } from "../../schemas/responses/tasks";
+import { UpdateTaskRequestSchema } from "../../schemas/requests/tasks";
 import { BaseButton } from "../buttons";
+import MultilineTextInput from "../inputs/MultilineTextInput/MultilineTextInput";
+import SimpleTextInput from "../inputs/SimpleTextInput";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
@@ -90,8 +90,8 @@ export default function EditTaskForm() {
                 <CloseFormIcon />
             </div>
 
-            <InputTextFormItem label="Название задачи" value={taskName} handleChange={setTaskName} className="mb-3" />
-            <InputMultilineTextFormItem
+            <SimpleTextInput label="Название задачи" value={taskName} handleChange={setTaskName} className="mb-3" />
+            <MultilineTextInput
                 label="Подробное описание"
                 value={taskDescription}
                 handleChange={setTaskDescription}

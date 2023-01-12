@@ -1,5 +1,5 @@
 import $axios, { $nonInterceptAxios } from "../axiosRequests";
-import { RefreshTokensRequestSchema, SignInRequestSchema, SignUpRequestSchema } from "../schemas/requests/auth";
+import { RefreshTokensRequestSchema, SignInRequestSchema, SignUpRequestSchema } from "../../schemas/requests/auth";
 
 export class auth {
     static signIn(data: SignInRequestSchema) {

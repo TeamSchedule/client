@@ -1,6 +1,6 @@
 import React from "react";
 import { API } from "../../../api/api";
-import { IncomingInvitationItemSchema } from "../../../api/schemas/responses/invitations";
+import { IncomingInvitationItemSchema } from "../../../schemas/responses/invitations";
 import { BaseButton, buttonStyles } from "../../buttons";
 import Invitation from "../Invitation";
 
