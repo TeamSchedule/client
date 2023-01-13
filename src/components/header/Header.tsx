@@ -1,12 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { selectIsAuth } from "../../features/isAuthSlice";
-
-import UnauthorizedHeader from "./UnauthorizedHeader";
 import AuthorizedHeader from "./AuthorizedHeader";
+import { User } from "../../schemas/instances/users";
 
-export default function Header() {
-    const isAuth = useSelector(selectIsAuth);
+interface HeaderProps {
+    user: User;
+}
 
-    return isAuth ? <AuthorizedHeader /> : <UnauthorizedHeader />;
+export default function Header(props: HeaderProps) {
+    return <AuthorizedHeader user={props.user} />;
 }

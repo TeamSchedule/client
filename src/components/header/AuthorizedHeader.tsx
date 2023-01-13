@@ -7,17 +7,26 @@ import { HomePageIcon, SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
 import LogoutMainButton from "./LogoutMainButton";
 import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
+import { User } from "../../schemas/instances/users";
 
-export default function AuthorizedHeader() {
+interface AuthorizedHeaderProps {
+    user: User;
+}
+
+export default function AuthorizedHeader(props: AuthorizedHeaderProps) {
     return (
         <header className={styles.mainHeader}>
             <HeaderMainNavigationSection />
-            <HeaderUserInfoSection />
+            <HeaderUserInfoSection user={props.user} />
         </header>
     );
 }
 
-function HeaderUserInfoSection() {
+interface HeaderUserInfoSectionProps {
+    user: User;
+}
+
+function HeaderUserInfoSection(props: HeaderUserInfoSectionProps) {
     const userInfo = useSelector(selectUserInfo);
 
     const login = userInfo.login;

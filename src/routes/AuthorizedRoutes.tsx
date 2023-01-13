@@ -18,13 +18,14 @@ import EditUnitForm from "../components/units/EditUnitForm/EditUnitForm";
 import EventList from "../components/events/EventList/EventList";
 import CreateEventForm from "../components/events/CreateEventForm/CreateEventForm";
 import { notFound } from "./paths";
+import { API } from "../api/api";
 
 export default function AuthorizedRoutes() {
     const userInfo = useSelector(selectUserInfo);
 
     return (
         <Routes>
-            <Route path="/" element={<App />}>
+            <Route path="/" loader={API.users.getUser} element={<App />}>
                 <Route index element={<Navigate to={`/${userInfo.login}/profile`} replace={true} />} />
 
                 <Route path=":username/" element={<Main />}>
