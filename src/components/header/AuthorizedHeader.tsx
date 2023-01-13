@@ -41,10 +41,10 @@ function HeaderMainNavigationSection() {
 
     return (
         <div className={styles.headerMainNavigationSection}>
-            <HeaderLink linkTo={`/${login}/profile`} path={`/${login}/profile`} Icon={HomePageIcon} />
-            <HeaderLink linkTo={`/${login}/teams`} path={`/${login}/teams`} Icon={TeamIcon} />
-            <HeaderLink linkTo={`/${login}/tasks`} path={`/${login}/tasks`} Icon={ToDoListIcon} />
-            <HeaderLink linkTo={`/${login}/settings`} path={`/${login}/settings`} Icon={SettingsIcon} />
+            <HeaderLink linkTo={`/${login}/profile`} Icon={HomePageIcon} />
+            <HeaderLink linkTo={`/${login}/teams`} Icon={TeamIcon} />
+            <HeaderLink linkTo={`/${login}/tasks`} Icon={ToDoListIcon} />
+            <HeaderLink linkTo={`/${login}/settings`} Icon={SettingsIcon} />
         </div>
     );
 }
