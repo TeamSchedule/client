@@ -26,7 +26,7 @@ export default function FullEventView(props: FullEventViewProps) {
         setInProgress(true);
         API.events
             .getById(+id)
-            .then((event: Event) => {
+            .then((event: any) => {
                 setInProgress(false);
                 setEvent(event);
             })

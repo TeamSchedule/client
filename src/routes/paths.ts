@@ -1,3 +1,13 @@
+export const notFound = "*";
+export const startPagePath = "/";
+export const loginPath: string = "/login";
+export const registrationPath: string = "/signup";
+export const forgotPasswordPath: string = "/forgot";
+export const resetPasswordCodePath: string = "/reset";
+export const successRegistrationPath: string = "/ready";
+
+/* ---------------------------------------------------- */
+
 export const baseUnitPath: string = "/units";
 export const allUnitsPath: string = baseUnitPath;
 export const createNewUnitPath: string = [baseUnitPath, "new"].join("/");

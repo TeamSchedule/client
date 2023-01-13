@@ -6,7 +6,7 @@ import AuthorizedRoutes from "./AuthorizedRoutes";
 
 export default function AppRoutes() {
     // const isAuth = useSelector(selectIsAuth);
-    const isAuth = true;
+    const isAuth = false;
 
     return isAuth ? <AuthorizedRoutes /> : <UnauthorizedRoutes />;
 }

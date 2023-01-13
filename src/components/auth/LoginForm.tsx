@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -15,6 +15,7 @@ import { PasswordInput, UsernameInput } from "../inputs";
 import BaseButton from "../buttons/BaseButton";
 import { ERRORS } from "../../consts";
 import styles from "./Auth.module.scss";
+import { forgotPasswordPath } from "../../routes/paths";
 
 export default function LoginForm() {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function LoginForm() {
     const [isWrongCredentials, setIsWrongCredentials] = useState(false);
     const [isServiceUnavailableErrShown, setIsServiceUnavailableErrShown] = useState(false);
 
-    function signInHandler(event: any) {
+    function signInHandler(event: FormEvent) {
         event.preventDefault();
         setIsActionInProgress(true);
         const signInRequestData: SignInRequestSchema = {
@@ -70,6 +71,9 @@ export default function LoginForm() {
                 <p className={styles.formHeader}>Вход</p>
                 <UsernameInput value={username} setValue={setUsername} className={styles.formInputWrapper} />
                 <PasswordInput value={password} setValue={setPassword} className={styles.formInputWrapper} />
+                <div className={["w-100", styles.forgotPasswordText].join(" ")}>
+                    <Link to={forgotPasswordPath}>Забыли пароль?</Link>
+                </div>
 
                 <ErrorMsg errText={ERRORS.SignIn.WrongCredentials} visible={isWrongCredentials} />
                 <ErrorMsg errText={ERRORS.Service.ServiceUnavailable} visible={isServiceUnavailableErrShown} />

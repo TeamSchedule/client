@@ -12,3 +12,15 @@ export interface SignUpRequestSchema {
 export interface RefreshTokensRequestSchema {
     token: string;
 }
+
+export interface ResetPasswordEmailRequestSchema {
+    email: string;
+}
+
+export interface ResetPasswordCodeRequestSchema {
+    code: string;
+}
+
+export interface CreateNewPasswordRequestSchema {
+    password: string;
+}
