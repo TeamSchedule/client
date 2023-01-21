@@ -3,15 +3,10 @@
 .mainHeader {
     display: flex;
     justify-content: space-between;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     border-bottom: 3px solid #6b6b6b;
     background: #fff;
     box-sizing: border-box;
     min-height: 60px;
-    z-index: 2;
 }
 
 .headerLink {
@@ -25,12 +20,15 @@
         background: #e9f3ff !important;
         outline: none !important;
     }
+
     &__active {
         background: colors.$brand;
     }
+
     &__passive {
         background: colors.$contrast;
     }
+
     &__hover {
         //background: colors.$brand_accent;
     }
@@ -43,6 +41,7 @@
             fill: colors.$contrast;
             stroke: colors.$contrast;
         }
+
         &__passive {
             fill: colors.$brand;
             stroke: colors.$brand;
