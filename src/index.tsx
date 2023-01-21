@@ -1,10 +1,8 @@
 import ReactDOM from "react-dom";
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
-
-import AppRoutes from "./routes/AppRoutes";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import AppRouters from "./routes/AppRouters";
 
 import "./reset.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,9 +12,7 @@ import "./assets/styles/globalStyles.scss";
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <BrowserRouter>
-                <AppRoutes />
-            </BrowserRouter>
+            <AppRouters />
         </Provider>
     </React.StrictMode>,
     document.getElementById("root")

@@ -1,9 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { selectUserInfo } from "../features/userInfoSlice";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Navigate, Outlet, Route } from "react-router-dom";
 import App from "../components/App";
-import { Main } from "../components/Main";
 import ProfilePage from "../components/profilePage/ProfilePage";
 import AvatarEditorModal from "../components/AvatarEditorModal/AvatarEditorModal";
 import { TaskPage } from "../components/taskPage/TaskPage";
@@ -18,52 +15,45 @@ import EditUnitForm from "../components/units/EditUnitForm/EditUnitForm";
 import EventList from "../components/events/EventList/EventList";
 import CreateEventForm from "../components/events/CreateEventForm/CreateEventForm";
 import { notFound } from "./paths";
-import { API } from "../api/api";
 
-export default function AuthorizedRoutes() {
-    const userInfo = useSelector(selectUserInfo);
+export const authorizedRouter = createBrowserRouter(
+    createRoutesFromElements(
+        <>
+            <Route path="/" /*loader={API.users.getUser}*/ element={<App />}>
+                <Route index element={<Navigate to={`profile`} replace={true} />} />
+                <Route path="profile/" element={<ProfilePage />}>
+                    <Route path="avatar" element={<AvatarEditorModal avatarType="personal" />} />
+                </Route>
 
-    return (
-        <Routes>
-            <Route path="/" loader={API.users.getUser} element={<App />}>
-                <Route index element={<Navigate to={`/${userInfo.login}/profile`} replace={true} />} />
+                <Route path="events/" element={<Outlet />}>
+                    <Route index element={<EventList />} />
+                    <Route path="new" element={<CreateEventForm />} />
 
-                <Route path=":username/" element={<Main />}>
-                    <Route index element={<Navigate to={`profile`} replace={true} />} />
-                    <Route path="profile/" element={<ProfilePage />}>
-                        <Route path="avatar" element={<AvatarEditorModal avatarType="personal" />} />
+                    <Route path=":id/" element={<Outlet />}>
+                        {/*<Route index element={< />} />*/}
+                        {/*<Route path="edit" element={< />} />*/}
                     </Route>
+                </Route>
 
-                    <Route path="events/" element={<Outlet />}>
-                        <Route index element={<EventList />} />
-                        <Route path="new" element={<CreateEventForm />} />
+                <Route path="units/" element={<Outlet />}>
+                    <Route index element={<UnitList />} />
+                    <Route path="new" element={<CreateUnitForm />} />
 
-                        <Route path=":id/" element={<Outlet />}>
-                            {/*<Route index element={< />} />*/}
-                            {/*<Route path="edit" element={< />} />*/}
-                        </Route>
+                    <Route path=":id/" element={<Outlet />}>
+                        <Route index element={<FullUnitView />} />
+                        <Route path="edit" element={<EditUnitForm />} />
                     </Route>
+                </Route>
 
-                    <Route path="units/" element={<Outlet />}>
-                        <Route index element={<UnitList />} />
-                        <Route path="new" element={<CreateUnitForm />} />
-
-                        <Route path=":id/" element={<Outlet />}>
-                            <Route index element={<FullUnitView />} />
-                            <Route path="edit" element={<EditUnitForm />} />
-                        </Route>
-                    </Route>
-
-                    <Route path="tasks/" element={<TaskPage />}>
-                        <Route index element={<TaskViewer />} />
-                        <Route path="new/:date" element={<CreateTaskForm />} />
-                        <Route path="new" element={<CreateTaskForm />} />
-                        <Route path=":taskId" element={<EditTaskForm />} />
-                    </Route>
+                <Route path="tasks/" element={<TaskPage />}>
+                    <Route index element={<TaskViewer />} />
+                    <Route path="new/:date" element={<CreateTaskForm />} />
+                    <Route path="new" element={<CreateTaskForm />} />
+                    <Route path=":taskId" element={<EditTaskForm />} />
                 </Route>
             </Route>
 
             <Route path={notFound} element={<NotFound />} />
-        </Routes>
-    );
-}
+        </>
+    )
+);

@@ -10,7 +10,7 @@ interface UnitPreviewProps {
 export default function UnitPreview(props: UnitPreviewProps) {
     const navigate = useNavigate();
 
-    const members = props.unit.members.map((user) => <UserPreview user={user} />);
+    const members = props.unit.members.map((user) => <UserPreview key={user.id} user={user} />);
 
     return (
         <>

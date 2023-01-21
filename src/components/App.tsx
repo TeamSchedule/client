@@ -10,7 +10,11 @@ export default function App() {
         <div className="h-100 container-fluid m-0 p-0">
             <Header user={user} />
             <div className="position-relative" style={{ top: `${HEADER_HEIGHT + 10}px` }}>
-                <Outlet />
+                <div className="row m-0 d-flex px-2">
+                    <div className="col-sm-12 p-0 position-relative">
+                        <Outlet />
+                    </div>
+                </div>
             </div>
         </div>
     );
