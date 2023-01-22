@@ -1,7 +1,6 @@
 import React from "react";
 import { createBrowserRouter, createRoutesFromElements, Navigate, Outlet, Route } from "react-router-dom";
 import App from "../components/App";
-import ProfilePage from "../components/profilePage/ProfilePage";
 import AvatarEditorModal from "../components/AvatarEditorModal/AvatarEditorModal";
 import { TaskPage } from "../components/taskPage/TaskPage";
 import { TaskViewer } from "../components/taskPage/TaskViewer";
@@ -20,10 +19,9 @@ export const authorizedRouter = createBrowserRouter(
     createRoutesFromElements(
         <>
             <Route path="/" /*loader={API.users.getUser}*/ element={<App />}>
-                <Route index element={<Navigate to={`profile`} replace={true} />} />
-                <Route path="profile/" element={<ProfilePage />}>
-                    <Route path="avatar" element={<AvatarEditorModal avatarType="personal" />} />
-                </Route>
+                <Route index element={<Navigate to={"calendar/"} replace={true} />} />
+
+                <Route path="profile/avatar" element={<AvatarEditorModal avatarType="personal" />} />
 
                 <Route path="events/" element={<Outlet />}>
                     <Route index element={<EventList />} />

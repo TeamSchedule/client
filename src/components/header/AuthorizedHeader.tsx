@@ -8,6 +8,7 @@ import LogoutMainButton from "./LogoutMainButton";
 import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
 import { User } from "../../schemas/instances/users";
+import { baseTaskPath, baseUnitPath } from "../../routes/paths";
 
 interface AuthorizedHeaderProps {
     user: User;
@@ -44,16 +45,11 @@ function HeaderUserInfoSection(props: HeaderUserInfoSectionProps) {
 }
 
 function HeaderMainNavigationSection() {
-    const userInfo = useSelector(selectUserInfo);
-
-    const login = userInfo.login;
-
     return (
         <div className={styles.headerMainNavigationSection}>
-            <HeaderLink linkTo={`/${login}/profile`} Icon={HomePageIcon} />
-            <HeaderLink linkTo={`/${login}/teams`} Icon={TeamIcon} />
-            <HeaderLink linkTo={`/${login}/tasks`} Icon={ToDoListIcon} />
-            <HeaderLink linkTo={`/${login}/settings`} Icon={SettingsIcon} />
+            <HeaderLink linkTo={baseUnitPath} Icon={TeamIcon} />
+            <HeaderLink linkTo={baseTaskPath} Icon={ToDoListIcon} />
+            <HeaderLink linkTo="/settings" Icon={SettingsIcon} />
         </div>
     );
 }
