@@ -1,19 +1,15 @@
-class LocalStorageApi {
-    static GET = (name: string): any => {
+export class LocalStorageApi {
+    static GET(name: string): any {
         const value = localStorage.getItem(name);
         if (value) return JSON.parse(value);
         return null;
-    };
+    }
 
-    static SET = (name: string, item: any) => {
+    static SET(name: string, item: any) {
         localStorage.setItem(name, JSON.stringify(item));
-    };
+    }
 
-    static DELETE = (name: string) => {
+    static DELETE(name: string) {
         localStorage.removeItem(name);
-    };
-}
-
-export default class Storage {
-    static const: LocalStorageApi = LocalStorageApi;
+    }
 }

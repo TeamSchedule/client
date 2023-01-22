@@ -1,4 +1,4 @@
 import { API } from "./api";
-import Storage from "./storage";
+import { LocalStorageApi } from "./storage";
 
-export default { API, Storage };
+export default { API, LocalStorageApi };
