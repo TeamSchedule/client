@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { API } from "../../api/api";
 import { OutgoingInvitationItemSchema } from "../../schemas/responses/invitations";
-import OutgoingInvitationItem from "../invites/OutgoingInvitationItem";
+import OutgoingInvitationItem from "../_invites/OutgoingInvitationItem";
 import { useParams } from "react-router-dom";
 
 export default function OutgoingInvitationList() {

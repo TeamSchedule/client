@@ -1,5 +1,5 @@
 import React from "react";
-import IncomingInvitationItem from "../invites/IncomingInvitationItem";
+import IncomingInvitationItem from "../_invites/IncomingInvitationItem";
 import { IncomingInvitationItemSchema } from "../../schemas/responses/invitations";
 
 interface IncomingInvitationListProps {

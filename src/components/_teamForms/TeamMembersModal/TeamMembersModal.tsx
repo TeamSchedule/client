@@ -4,7 +4,7 @@ import MemberItem from "../MemberItem";
 import styles from "./TeamMembersModal.module.scss";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import CloseFormIcon from "../../generic/CloseFormIcon";
-import OutgoingInvitationList from "../../teamPage/OutgoingInvitationList";
+import OutgoingInvitationList from "../../_teamPage/OutgoingInvitationList";
 import SearchUsersField from "../../SearchUsersField";
 import { CreateInvitationsRequestSchema } from "../../../schemas/requests/invitations";
 import { API } from "../../../api/api";
