@@ -8,6 +8,10 @@ export const successRegistrationPath: string = "/ready";
 
 /* ---------------------------------------------------- */
 
+export const baseNotificationPath: string = "notifications/";
+
+/* ---------------------------------------------------- */
+
 export const baseUnitPath: string = "/units";
 export const allUnitsPath: string = baseUnitPath;
 export const createNewUnitPath: string = [baseUnitPath, "new"].join("/");

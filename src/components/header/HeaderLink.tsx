@@ -1,13 +1,23 @@
 import React from "react";
 import { NavLink, useMatch } from "react-router-dom";
 import styles from "./Header.module.scss";
+import { Badge, BadgeProps } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 export const iconSize = 36;
+
+const StyledBadge = styled(Badge)<BadgeProps>(() => ({
+    "& .MuiBadge-badge": {
+        right: 5,
+        top: 5,
+    },
+}));
 
 interface HeaderLinkProps {
     linkTo: string;
     onClick?: () => void;
     Icon?: any;
+    badgeContent?: number;
 }
 
 export default function HeaderLink(props: HeaderLinkProps) {
@@ -28,10 +38,14 @@ export default function HeaderLink(props: HeaderLinkProps) {
                 onClick={props.onClick}
             >
                 {Icon && (
-                    <Icon
-                        size={iconSize}
-                        className={Boolean(match) ? styles.headerLink_icon__active : styles.headerLink_icon__passive}
-                    />
+                    <StyledBadge badgeContent={props.badgeContent} color="primary">
+                        <Icon
+                            size={iconSize}
+                            className={
+                                Boolean(match) ? styles.headerLink_icon__active : styles.headerLink_icon__passive
+                            }
+                        />
+                    </StyledBadge>
                 )}
             </NavLink>
         </>

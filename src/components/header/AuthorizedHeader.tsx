@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserInfo } from "../../features/userInfoSlice";
 import { PersonalAvatar } from "../avatars";
-import { HomePageIcon, SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
+import { SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
 import LogoutMainButton from "./LogoutMainButton";
 import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
 import { User } from "../../schemas/instances/users";
-import { baseTaskPath, baseUnitPath } from "../../routes/paths";
+import { baseNotificationPath, baseTaskPath, baseUnitPath } from "../../routes/paths";
+import BellNotificationIcon from "../svg/BellNotificationIcon";
+import { NotificationsContext } from "../App";
 
 interface AuthorizedHeaderProps {
     user: User;
@@ -29,11 +31,18 @@ interface HeaderUserInfoSectionProps {
 
 function HeaderUserInfoSection(props: HeaderUserInfoSectionProps) {
     const userInfo = useSelector(selectUserInfo);
+    const newNotifications = useContext<Array<object>>(NotificationsContext);
 
     const login = userInfo.login;
 
     return (
         <div className={styles.headerUserInfoSection}>
+            <HeaderLink
+                linkTo={baseNotificationPath}
+                Icon={BellNotificationIcon}
+                badgeContent={newNotifications.length}
+            />
+
             <PersonalAvatar size={iconSize} />
             <Link to={`${login}/profile`} className="px-3 fs-5 d-none d-sm-block">
                 {login}

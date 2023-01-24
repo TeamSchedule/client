@@ -13,7 +13,8 @@ import FullUnitView from "../components/units/FullUnitView/FullUnitView";
 import EditUnitForm from "../components/units/EditUnitForm/EditUnitForm";
 import EventList from "../components/events/EventList/EventList";
 import CreateEventForm from "../components/events/CreateEventForm/CreateEventForm";
-import { notFound } from "./paths";
+import { baseNotificationPath, notFound } from "./paths";
+import NotificationList from "../components/notifications/NotificationList/NotificationList";
 
 export const authorizedRouter = createBrowserRouter(
     createRoutesFromElements(
@@ -31,6 +32,10 @@ export const authorizedRouter = createBrowserRouter(
                         {/*<Route index element={< />} />*/}
                         {/*<Route path="edit" element={< />} />*/}
                     </Route>
+                </Route>
+
+                <Route path={baseNotificationPath} element={<Outlet />}>
+                    <Route index element={<NotificationList />} />
                 </Route>
 
                 <Route path="units/" element={<Outlet />}>
