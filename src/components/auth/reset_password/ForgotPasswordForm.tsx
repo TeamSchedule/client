@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import AuthFormLayout from "../AuthFormLayout";
-import React, { FormEvent, FormEventHandler, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { EmailInput } from "../../inputs";
 import styles from "../Auth.module.scss";
 import BaseButton from "../../buttons/BaseButton";
@@ -34,7 +34,7 @@ export default function ForgotPasswordForm() {
             .then(() => {})
             .catch(() => {})
             .finally(() => {
-                navigate(resetPasswordCodePath);
+                navigate(resetPasswordCodePath, { state: { email: email } });
                 setIsActionInProgress(false);
             });
     }
@@ -48,6 +48,7 @@ export default function ForgotPasswordForm() {
         <>
             <AuthFormLayout onSubmit={onInputResetEmail}>
                 <>
+                    <p>Введите Ваш email для восстановления досутпа</p>
                     <EmailInput
                         value={email}
                         setValue={onChangeEmail}

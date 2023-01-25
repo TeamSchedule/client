@@ -7,7 +7,7 @@ import { RouterProvider } from "react-router-dom";
 
 export default function AppRouters() {
     // const isAuth = useSelector(selectIsAuth);
-    const isAuth = true;
+    const isAuth = false;
     const router = isAuth ? authorizedRouter : unauthorizedRouter;
     return (
         <>

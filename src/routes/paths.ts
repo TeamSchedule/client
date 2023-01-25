@@ -4,6 +4,7 @@ export const loginPath: string = "/login";
 export const registrationPath: string = "/signup";
 export const forgotPasswordPath: string = "/forgot";
 export const resetPasswordCodePath: string = "/reset";
+export const newPasswordPath: string = "/reset-psw";
 export const successRegistrationPath: string = "/ready";
 
 /* ---------------------------------------------------- */
