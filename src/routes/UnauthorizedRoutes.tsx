@@ -8,6 +8,7 @@ import ForgotPasswordForm from "../components/auth/reset_password/ForgotPassword
 import {
     forgotPasswordPath,
     loginPath,
+    newPasswordPath,
     notFound,
     registrationPath,
     resetPasswordCodePath,
@@ -15,6 +16,7 @@ import {
     successRegistrationPath,
 } from "./paths";
 import ResetPasswordCodeForm from "../components/auth/reset_password/ResetPasswordCodeForm";
+import NewPasswordForm from "../components/auth/reset_password/NewPasswordForm";
 
 export const unauthorizedRouter = createBrowserRouter(
     createRoutesFromElements(
@@ -22,6 +24,7 @@ export const unauthorizedRouter = createBrowserRouter(
             <Route path={loginPath} element={<LoginForm />} />
             <Route path={forgotPasswordPath} element={<ForgotPasswordForm />} />
             <Route path={resetPasswordCodePath} element={<ResetPasswordCodeForm />} />
+            <Route path={newPasswordPath} element={<NewPasswordForm />} />
 
             <Route path={registrationPath} element={<RegisterForm />} />
             <Route path={successRegistrationPath} element={<SuccessRegisteredMsg />} />
