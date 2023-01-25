@@ -25,18 +25,22 @@ function makeRefresh() {
 }
 
 const refresh = async (callback: () => void, handleError: () => void) => {
-    for (let i = 0; i < REFRESH_RETRIES; i++) {
+    for (let retryNumber = 0; retryNumber < REFRESH_RETRIES; retryNumber++) {
         try {
             currentRequest = currentRequest || makeRefresh();
             const res = await currentRequest;
             LocalStorageApi.SET(ACCESS_TOKEN_STORAGE_NAME, res.access);
             LocalStorageApi.SET(REFRESH_TOKEN_STORAGE_NAME, res.refresh);
-
             callback();
-            currentRequest = null;
             break;
         } catch (error) {
             handleError();
+            if (retryNumber == REFRESH_RETRIES - 1) {
+                //    TODO: logout
+                LocalStorageApi.CLEAR();
+                window.history.pushState("object or string", "Title", "/");
+            }
+        } finally {
             currentRequest = null;
         }
     }

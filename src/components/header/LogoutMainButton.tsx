@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import clearInfo from "../../utils/clearInfo";
 import { LogoutIcon } from "../svg";
 import HeaderLink from "./HeaderLink";
+import { loginPath } from "../../routes/paths";
 
 export default function LogoutMainButton() {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ export default function LogoutMainButton() {
 
     function logout() {
         clearInfo(dispatch);
-        navigate("/");
+        navigate(loginPath);
     }
 
     return (

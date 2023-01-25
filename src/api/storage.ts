@@ -1,15 +1,19 @@
 export class LocalStorageApi {
     static GET(name: string): any {
-        const value = localStorage.getItem(name);
+        const value = window.localStorage.getItem(name);
         if (value) return JSON.parse(value);
         return null;
     }
 
     static SET(name: string, item: any) {
-        localStorage.setItem(name, JSON.stringify(item));
+        window.localStorage.setItem(name, JSON.stringify(item));
     }
 
     static DELETE(name: string) {
-        localStorage.removeItem(name);
+        window.localStorage.removeItem(name);
+    }
+
+    static CLEAR() {
+        window.localStorage.clear();
     }
 }
