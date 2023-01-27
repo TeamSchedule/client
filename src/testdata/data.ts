@@ -3,6 +3,7 @@ import { UnitsResponseItemSchema } from "../api/schemas/responses/units";
 import { TaskResponseSchema } from "../api/schemas/responses/tasks";
 
 const user1: UserSchema = {
+    avatar: "",
     id: 1,
     email: "",
     confirmed: true,
@@ -12,6 +13,7 @@ const user1: UserSchema = {
     post: "Специалист",
 };
 const user2: UserSchema = {
+    avatar: "",
     id: 1,
     email: "",
     confirmed: true,
@@ -21,6 +23,7 @@ const user2: UserSchema = {
     post: "Специалист",
 };
 const user3: UserSchema = {
+    avatar: "",
     id: 1,
     email: "",
     confirmed: true,

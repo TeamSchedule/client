@@ -1,26 +1,21 @@
 import React, { FormEvent, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 import { API } from "../../api/api";
 import { setAccessToken } from "../../api/axiosRequests";
-import { set } from "../../features/userInfoSlice";
 import AuthFormLayout from "./AuthFormLayout";
 import ErrorMsg from "../ErrorMsg";
 import { TokenPair } from "../../api/schemas/responses/auth";
 import { SignInRequestSchema } from "../../api/schemas/requests/auth";
-import { GetMeResponseSchema, UserSchema } from "../../api/schemas/responses/users";
+import { UserSchema } from "../../api/schemas/responses/users";
 import { PasswordInput, UsernameInput } from "../inputs";
 import BaseButton from "../buttons/BaseButton";
 import { ERRORS } from "../../consts";
 import styles from "./Auth.module.scss";
 import { forgotPasswordPath } from "../../routes/paths";
-import { LocalStorageApi } from "../../api/storage";
-import { AuthUserKey } from "../../consts/common";
 
 export default function LoginForm() {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -45,7 +40,6 @@ export default function LoginForm() {
                 localStorage.setItem("access", tokens.access);
                 localStorage.setItem("refresh", tokens.refresh);
                 API.users.getUser().then((user: UserSchema) => {
-                    dispatch(set(user));
                     navigate(`/${user.login}/profile`);
                 });
             })

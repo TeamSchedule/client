@@ -1,9 +1,7 @@
 import $axios from "../api/axiosRequests";
-import { onDeleteUserInfo } from "../features/userInfoSlice";
 import { LocalStorageApi } from "../api/storage";
 
 export default function clearInfo(dispatch) {
-    dispatch(onDeleteUserInfo());
     deleteAccessTokenFromAxios();
     LocalStorageApi.CLEAR();
 }

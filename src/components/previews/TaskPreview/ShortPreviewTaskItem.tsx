@@ -25,7 +25,7 @@ function ShortPreviewTaskItem(props: ShortPreviewTaskItemProps) {
                         <TeamAvatar
                             imgSrc={props.imgSrc || ""}
                             size={60}
-                            teamId={props.task.team.id.toString()}
+                            teamId={props.task.unit.id.toString()}
                             teamColor={"white"}
                         />
                     )}

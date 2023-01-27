@@ -4,6 +4,7 @@ export interface GetMeResponseSchema {
 
 export interface UserSchema {
     id: number;
+    avatar: string;
     login: string;
     email: string;
     fullName: string;

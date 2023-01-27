@@ -1,4 +1,4 @@
-import { TeamMembersItemSchema } from "./units";
+import { UserSchema } from "./users";
 
 export interface GetIncomingInvitationsResponseSchema {
     invites: Array<IncomingInvitationItemSchema>;
@@ -6,8 +6,8 @@ export interface GetIncomingInvitationsResponseSchema {
 
 export interface IncomingInvitationItemSchema {
     id: number;
-    inviting: TeamMembersItemSchema;
-    invited: TeamMembersItemSchema;
+    inviting: UserSchema;
+    invited: UserSchema;
     date: string;
     status?: string;
     team: TeamOfInviteItem;
@@ -24,8 +24,8 @@ export interface GetOutgoingInvitationsResponseSchema {
 
 export interface OutgoingInvitationItemSchema {
     id: number;
-    inviting: TeamMembersItemSchema;
-    invited: TeamMembersItemSchema;
+    inviting: UserSchema;
+    invited: UserSchema;
     date: string;
     status: string;
     team: TeamOfInviteItem;

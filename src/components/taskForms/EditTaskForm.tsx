@@ -38,7 +38,7 @@ export default function EditTaskForm() {
             setTaskDescription(task.description);
             setTaskClosedStatus(task.closed);
             setTaskExpirationDatetime(new Date(task.expirationTime));
-            setTaskTeamName(task.team.name);
+            setTaskTeamName(task.unit.name);
         });
     }, [taskId]);
 

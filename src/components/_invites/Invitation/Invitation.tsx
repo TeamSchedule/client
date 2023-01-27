@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { TeamMembersItemSchema } from "../../../api/schemas/responses/units";
 import { UserAvatar } from "../../avatars";
 import styles from "./Invitation.module.scss";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 interface InvitationProps {
     children: React.ReactElement;
     mainAvatar: string;
     mainName: string;
     date: string;
-    fromUser: TeamMembersItemSchema;
+    fromUser: UserSchema;
 }
 
 export default function Invitation(props: InvitationProps) {
@@ -30,7 +30,7 @@ export default function Invitation(props: InvitationProps) {
 }
 
 interface InviterItemProps {
-    user: TeamMembersItemSchema;
+    user: UserSchema;
 }
 
 function InviterItem(props: InviterItemProps) {

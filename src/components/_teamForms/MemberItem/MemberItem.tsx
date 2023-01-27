@@ -1,10 +1,10 @@
 import React from "react";
-import { TeamMembersItemSchema } from "../../../api/schemas/responses/units";
 import { UserAvatar } from "../../avatars";
 import styles from "./MemberItem.module.scss";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 interface TeamMemberItemProps {
-    member: TeamMembersItemSchema;
+    member: UserSchema;
     isAdmin: boolean;
 }
 
