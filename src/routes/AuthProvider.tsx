@@ -2,21 +2,21 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import React, { useMemo } from "react";
 import { AuthContext } from "../hooks/useAuth";
+import { baseCalendarPath, loginPath } from "./paths";
+import { AuthUserKey } from "../consts/common";
 
 const AuthProvider = ({ children }: any) => {
-    const [user, setUser] = useLocalStorage("user", null);
+    const [user, setUser] = useLocalStorage(AuthUserKey);
     const navigate = useNavigate();
 
-    // call this function when you want to authenticate the user
-    const login = async (data: object) => {
+    const login = (data: object) => {
         setUser(data);
-        navigate("/profile");
+        window.location.replace(baseCalendarPath);
     };
 
-    // call this function to sign out logged in user
     const logout = () => {
         setUser(null);
-        navigate("/", { replace: true });
+        navigate(loginPath);
     };
 
     const value = useMemo(

@@ -1,22 +1,19 @@
-import { useNavigate } from "react-router-dom";
 import AuthFormLayout from "../AuthFormLayout";
 import BaseButton from "../../buttons/BaseButton";
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import { CreateNewPasswordRequestSchema } from "../../../api/schemas/requests/auth";
 import { API } from "../../../api/api";
 import { ERRORS, MIN_PASSWORD_LENGTH } from "../../../consts";
 import { PasswordInput } from "../../inputs";
 import styles from "../Auth.module.scss";
 import ErrorMsg from "../../ErrorMsg";
-import { LocalStorageApi } from "../../../api/storage";
-import { AuthUserKey } from "../../../consts/common";
-import { baseUnitPath } from "../../../routes/paths";
+import { AuthContext, AuthContextProps } from "../../../hooks/useAuth";
 
 export default function NewPasswordForm() {
     /*
      * Форма для создания пароля после сброса.
      * */
-    const navigate = useNavigate();
+    const { login } = useContext<AuthContextProps>(AuthContext);
 
     const [password, setPassword] = useState<string | undefined>();
     const [password2, setPassword2] = useState<string | undefined>();
@@ -68,15 +65,19 @@ export default function NewPasswordForm() {
             .createNewPassword(newPasswordData)
             .then(() => {
                 setIsNewPasswordErrShown(false);
-                navigate("");
+                setPassword("");
+                setPassword2("");
+                API.users
+                    .getUser()
+                    .then(login)
+                    .catch(() => {});
             })
             .catch(() => {
                 setIsNewPasswordErrShown(true);
             })
             .finally(() => {
-                LocalStorageApi.SET(AuthUserKey, {});
                 setIsActionInProgress(false);
-                window.location.replace(baseUnitPath);
+                login({});
             });
     }
 

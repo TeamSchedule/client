@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { API } from "../../api/api";
@@ -13,9 +13,11 @@ import BaseButton from "../buttons/BaseButton";
 import { ERRORS } from "../../consts";
 import styles from "./Auth.module.scss";
 import { forgotPasswordPath } from "../../routes/paths";
+import { AuthContext, AuthContextProps } from "../../hooks/useAuth";
 
 export default function LoginForm() {
     const navigate = useNavigate();
+    const { login } = useContext<AuthContextProps>(AuthContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -35,16 +37,16 @@ export default function LoginForm() {
         API.auth
             .signIn(signInRequestData)
             .then((tokens: TokenPair) => {
-                setPassword("");
                 setAccessToken(tokens.access);
                 localStorage.setItem("access", tokens.access);
                 localStorage.setItem("refresh", tokens.refresh);
+
                 API.users.getUser().then((user: UserSchema) => {
                     navigate(`/${user.login}/profile`);
+                    login(user);
                 });
             })
             .catch((err) => {
-                setPassword("");
                 const statusCode = err.response ? err.response.status : 500;
                 if (statusCode >= 500) {
                     setIsWrongCredentials(false);
@@ -55,6 +57,7 @@ export default function LoginForm() {
                 }
             })
             .finally(() => {
+                setPassword("");
                 setIsActionInProgress(false);
             });
     }

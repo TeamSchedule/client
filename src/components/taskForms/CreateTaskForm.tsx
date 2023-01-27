@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { API } from "../../api/api";
@@ -12,8 +12,7 @@ import { UnitsResponseItemSchema } from "../../api/schemas/responses/units";
 import { BaseButton } from "../buttons";
 import MultilineTextInput from "../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../inputs/SimpleTextInput";
-import useLocalStorage from "../../hooks/useLocalStorage";
-import { AuthUserKey } from "../../consts/common";
+import { AuthContext, AuthContextProps } from "../../hooks/useAuth";
 
 interface TeamItemProps {
     groupId: string;
@@ -30,7 +29,7 @@ function TeamItem({ groupId, groupTitle }: TeamItemProps) {
 
 function CreateTaskForm() {
     const navigate = useNavigate();
-    const [user, _] = useLocalStorage(AuthUserKey);
+    const { user } = useContext<AuthContextProps>(AuthContext);
 
     const [teams, setTeams] = useState<Array<UnitsResponseItemSchema>>([]);
 
@@ -57,6 +56,11 @@ function CreateTaskForm() {
 
     function onCreateTaskHandler(event: React.FormEvent) {
         event.preventDefault();
+        if (!user) {
+            navigate("/");
+            return;
+        }
+
         setIsActionInProgress(true);
         // поправляем время, так как toJSON() даст UTC время
         const hoursDiff = taskExpirationDatetime.getHours() - taskExpirationDatetime.getTimezoneOffset() / 60;

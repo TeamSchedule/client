@@ -1,15 +1,13 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { PersonalAvatar } from "../avatars";
-import { SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
-import LogoutMainButton from "./LogoutMainButton";
+import { LogoutIcon, SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
 import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
 import { baseCalendarPath, baseNotificationPath, baseSettingsPath, baseUnitPath } from "../../routes/paths";
 import BellNotificationIcon from "../svg/BellNotificationIcon";
 import { NotificationsContext } from "../App";
-import useLocalStorage from "../../hooks/useLocalStorage";
-import { AuthUserKey } from "../../consts/common";
+import { AuthContext, AuthContextProps } from "../../hooks/useAuth";
 
 export default function AuthorizedHeader() {
     return (
@@ -21,11 +19,11 @@ export default function AuthorizedHeader() {
 }
 
 function HeaderUserInfoSection() {
-    const [user, _] = useLocalStorage(AuthUserKey);
+    const { user, logout } = useContext<AuthContextProps>(AuthContext);
 
     const newNotifications = useContext<Array<object>>(NotificationsContext);
 
-    const login = user.login;
+    const login = user?.login || "guest?";
 
     return (
         <div className={styles.headerUserInfoSection}>
@@ -40,7 +38,7 @@ function HeaderUserInfoSection() {
                 {login}
             </Link>
 
-            <LogoutMainButton />
+            <HeaderLink linkTo="/" onClick={logout} Icon={LogoutIcon} />
         </div>
     );
 }

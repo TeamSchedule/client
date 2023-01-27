@@ -14,7 +14,7 @@ const user1: UserSchema = {
 };
 const user2: UserSchema = {
     avatar: "",
-    id: 1,
+    id: 2,
     email: "",
     confirmed: true,
     creationDate: new Date(),
@@ -24,7 +24,7 @@ const user2: UserSchema = {
 };
 const user3: UserSchema = {
     avatar: "",
-    id: 1,
+    id: 3,
     email: "",
     confirmed: true,
     creationDate: new Date(),
