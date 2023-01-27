@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { API } from "../../api/api";
 import { setAccessToken } from "../../api/axiosRequests";
-import { login } from "../../features/isAuthSlice";
 import { set } from "../../features/userInfoSlice";
 import AuthFormLayout from "./AuthFormLayout";
 import ErrorMsg from "../ErrorMsg";
@@ -43,7 +42,6 @@ export default function LoginForm() {
                 setAccessToken(tokens.access);
                 localStorage.setItem("access", tokens.access);
                 localStorage.setItem("refresh", tokens.refresh);
-                dispatch(login());
                 API.users.getUser().then((userData: GetMeResponseSchema) => {
                     dispatch(set(userData.user));
                     navigate(`/${userData.user.login}/profile`);
