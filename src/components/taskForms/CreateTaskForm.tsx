@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { API } from "../../api/api";
-import { selectUserInfo } from "../../features/userInfoSlice";
 import CloseFormIcon from "../generic/CloseFormIcon";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
@@ -14,6 +12,8 @@ import { UnitsResponseItemSchema } from "../../schemas/responses/units";
 import { BaseButton } from "../buttons";
 import MultilineTextInput from "../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../inputs/SimpleTextInput";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import { AuthUserKey } from "../../consts/common";
 
 interface TeamItemProps {
     groupId: string;
@@ -30,7 +30,7 @@ function TeamItem({ groupId, groupTitle }: TeamItemProps) {
 
 function CreateTaskForm() {
     const navigate = useNavigate();
-    const userInfo = useSelector(selectUserInfo);
+    const [user, _] = useLocalStorage(AuthUserKey);
 
     const [teams, setTeams] = useState<Array<UnitsResponseItemSchema>>([]);
 
@@ -67,7 +67,7 @@ function CreateTaskForm() {
             description: taskDescription,
             expirationTime: taskExpirationDatetime,
             teamId: isPrivateFlag ? null : selectedTeam,
-            assigneeId: userInfo.id,
+            assigneeId: user.id,
         };
 
         API.tasks

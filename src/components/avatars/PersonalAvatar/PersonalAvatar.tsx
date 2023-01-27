@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserAvatar } from "../index";
-import { useSelector } from "react-redux";
-import { selectUserInfo } from "../../../features/userInfoSlice";
 import getUserAvatarImageSrc from "../../../utils/getUserAvatarImageSrc";
 // @ts-ignore
 import identicon from "identicon";
 import { API } from "../../../api/api";
+import useLocalStorage from "../../../hooks/useLocalStorage";
+import { AuthUserKey } from "../../../consts/common";
 
 interface PersonalAvatarProps {
     size: number;
@@ -19,15 +19,15 @@ export default function PersonalAvatar(props: PersonalAvatarProps) {
      * */
     const navigate = useNavigate();
 
-    const userInfo = useSelector(selectUserInfo);
+    const [user, _] = useLocalStorage(AuthUserKey);
     const [avatarURL, setAvatarURL] = useState("");
 
     useEffect(() => {
-        getUserAvatarImageSrc(+userInfo.id)
+        getUserAvatarImageSrc(+user.id)
             .then(setAvatarURL)
             .catch(() => {
-                if (!userInfo.id) return;
-                identicon.generate({ id: userInfo.id.toString(), size: 150 }, (err: any, buffer: string) => {
+                if (!user.id) return;
+                identicon.generate({ id: user.id.toString(), size: 150 }, (err: any, buffer: string) => {
                     const blobAvatar: Blob = new Blob([new Buffer(buffer.slice(22), "base64")], {
                         type: "image/png",
                     });
@@ -39,7 +39,7 @@ export default function PersonalAvatar(props: PersonalAvatarProps) {
                         .catch(() => {});
                 });
             });
-    }, [userInfo.id]);
+    }, [user.id]);
 
     return (
         <>
