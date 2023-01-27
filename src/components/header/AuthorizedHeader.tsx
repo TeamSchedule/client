@@ -1,39 +1,31 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUserInfo } from "../../features/userInfoSlice";
 import { PersonalAvatar } from "../avatars";
 import { SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
 import LogoutMainButton from "./LogoutMainButton";
 import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
-import { User } from "../../schemas/instances/users";
 import { baseNotificationPath, baseTaskPath, baseUnitPath } from "../../routes/paths";
 import BellNotificationIcon from "../svg/BellNotificationIcon";
 import { NotificationsContext } from "../App";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import { AuthUserKey } from "../../consts/common";
 
-interface AuthorizedHeaderProps {
-    user: User;
-}
-
-export default function AuthorizedHeader(props: AuthorizedHeaderProps) {
+export default function AuthorizedHeader() {
     return (
         <header className={styles.mainHeader}>
             <HeaderMainNavigationSection />
-            <HeaderUserInfoSection user={props.user} />
+            <HeaderUserInfoSection />
         </header>
     );
 }
 
-interface HeaderUserInfoSectionProps {
-    user: User;
-}
+function HeaderUserInfoSection() {
+    const [user, _] = useLocalStorage(AuthUserKey);
 
-function HeaderUserInfoSection(props: HeaderUserInfoSectionProps) {
-    const userInfo = useSelector(selectUserInfo);
     const newNotifications = useContext<Array<object>>(NotificationsContext);
 
-    const login = userInfo.login;
+    const login = user.login;
 
     return (
         <div className={styles.headerUserInfoSection}>

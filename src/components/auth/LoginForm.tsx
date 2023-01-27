@@ -15,6 +15,8 @@ import BaseButton from "../buttons/BaseButton";
 import { ERRORS } from "../../consts";
 import styles from "./Auth.module.scss";
 import { forgotPasswordPath } from "../../routes/paths";
+import { LocalStorageApi } from "../../api/storage";
+import { AuthUserKey } from "../../consts/common";
 
 export default function LoginForm() {
     const navigate = useNavigate();

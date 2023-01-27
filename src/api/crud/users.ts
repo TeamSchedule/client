@@ -1,11 +1,16 @@
 import $axios from "../axiosRequests";
 import { UpdateUserInfoRequestSchema } from "../../schemas/requests/users";
+import { AuthUserKey } from "../../consts/common";
+import { LocalStorageApi } from "../storage";
 
 export class users {
     static apiPrefix = "/user";
 
     static async getUser() {
-        return (await $axios.get(`${this.apiPrefix}/me`)).data;
+        return $axios.get(`${this.apiPrefix}/me`).then((r) => {
+            LocalStorageApi.SET(AuthUserKey, r.data.user);
+            return r.data;
+        });
     }
 
     static async updateUserInfo(userId: number, data: UpdateUserInfoRequestSchema) {
