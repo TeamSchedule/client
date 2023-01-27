@@ -1,12 +1,13 @@
 export interface GetMeResponseSchema {
-    user: UserResponseSchema;
+    user: UserSchema;
 }
 
-export interface UserResponseSchema {
+export interface UserSchema {
     id: number;
     login: string;
     email: string;
-    description: string;
+    fullName: string;
     confirmed: boolean;
     creationDate: Date;
+    post: string;
 }

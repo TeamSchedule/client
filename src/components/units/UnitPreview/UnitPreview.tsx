@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./UnitPreview.module.scss";
 import UserPreview from "../../users/UsersPreview/UserPreview";
-import { Unit } from "../../../schemas/instances/units";
+import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
 
 interface UnitPreviewProps {
-    unit: Unit;
+    unit: UnitsResponseItemSchema;
 }
 
 export default function UnitPreview(props: UnitPreviewProps) {
@@ -29,18 +29,19 @@ export default function UnitPreview(props: UnitPreviewProps) {
 }
 
 interface OpenTasksLabelProps {
-    tasks: number;
+    tasks: Array<object>;
 }
 
 function OpenTasksLabel(props: OpenTasksLabelProps) {
-    if (props.tasks === 0) {
+    const openTaskNumber: number = props.tasks.length;
+    if (openTaskNumber === 0) {
         return null;
     }
 
     return (
         <>
             <div>
-                <p className={styles.openTasksLabel}>Открытых задач: {props.tasks}</p>
+                <p className={styles.openTasksLabel}>Открытых задач: {openTaskNumber}</p>
             </div>
         </>
     );

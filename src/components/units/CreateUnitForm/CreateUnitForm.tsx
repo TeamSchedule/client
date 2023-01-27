@@ -2,18 +2,13 @@ import React, { useState } from "react";
 import SimpleTextInput from "../../inputs/SimpleTextInput";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import UserSelector from "../../selectors/UserSelector/UserSelector";
-import { User } from "../../../schemas/instances/users";
 import { CreateUnitRequestSchema } from "../../../schemas/requests/units";
 import { BaseButton } from "../../buttons";
 import { API } from "../../../api/api";
 import { useNavigate } from "react-router-dom";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
-
-const testUsers: User[] = [
-    { id: 1, email: "", fullName: "a b c", post: "Специалист" },
-    { id: 2, email: "", fullName: "a b c", post: "Специалист" },
-    { id: 3, email: "", fullName: "a b c", post: "Специалист" },
-];
+import { users } from "../../../testdata/data";
+import { UserSchema } from "../../../schemas/responses/users";
 
 export default function CreateUnitForm() {
     const navigate = useNavigate();
@@ -21,8 +16,8 @@ export default function CreateUnitForm() {
     // данные нового отдела
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [unitHead, setUnitHead] = useState<User | null>(null);
-    const [unitMembers, setUnitMembers] = useState<Array<User>>([]);
+    const [unitHead, setUnitHead] = useState<UserSchema | null>(null);
+    const [unitMembers, setUnitMembers] = useState<Array<UserSchema>>([]);
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);
@@ -69,7 +64,7 @@ export default function CreateUnitForm() {
                 <UserSelector
                     label="Выберите руководителя отдела"
                     placeholder="Руководитель"
-                    users={testUsers}
+                    users={users}
                     className="mt-2"
                     handleChange={setUnitHead}
                 />
@@ -77,7 +72,7 @@ export default function CreateUnitForm() {
                 <UserSelector
                     label="Выберите сотрудников отдела"
                     placeholder="Сотрудники"
-                    users={testUsers}
+                    users={users}
                     className="mt-2"
                     handleChange={setUnitMembers}
                     multiple={true}

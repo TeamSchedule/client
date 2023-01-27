@@ -1,8 +1,8 @@
 import UnitLink from "../../links/UnitLink/UnitLink";
-import { Unit } from "../../../schemas/instances/units";
+import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
 
 interface TaskUnitProps {
-    unit: Unit;
+    unit: UnitsResponseItemSchema;
 }
 
 export default function TaskUnit(props: TaskUnitProps) {

@@ -1,16 +1,14 @@
-import {User} from "../../../schemas/instances/users";
+import { UserSchema } from "../../../schemas/responses/users";
 
 interface NotificationPreviewProps {
     createdAt: Date;
-    user: User;
+    user: UserSchema;
 }
 
 export default function NotificationPreview(props: NotificationPreviewProps) {
     return (
         <>
-            <div>
-
-            </div>
+            <div></div>
         </>
     );
 }

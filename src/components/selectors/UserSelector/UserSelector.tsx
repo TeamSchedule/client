@@ -1,14 +1,14 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { User } from "../../../schemas/instances/users";
 import UserPreview from "../../users/UsersPreview/UserPreview";
 import styles from "./UserSelector.module.scss";
 import { Dispatch, SetStateAction } from "react";
+import { UserSchema } from "../../../schemas/responses/users";
 
 interface UserSelectorProps {
-    users: Array<User>;
+    users: Array<UserSchema>;
     className?: string;
     multiple?: boolean;
-    handleChange: Dispatch<SetStateAction<User | null>> | Dispatch<SetStateAction<User[]>>;
+    handleChange: Dispatch<SetStateAction<UserSchema | null>> | Dispatch<SetStateAction<UserSchema[]>>;
     label?: string;
     placeholder?: string;
 }

@@ -1,8 +1,8 @@
-import Event from "../../../schemas/instances/events";
 import EventLink from "../../links/EventLink/EventLink";
+import { EventResponseItemSchema } from "../../../schemas/responses/events";
 
 interface TaskEventProps {
-    event: Event;
+    event: EventResponseItemSchema;
 }
 
 export default function TaskEvent(props: TaskEventProps) {

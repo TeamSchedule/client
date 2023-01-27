@@ -6,7 +6,7 @@ import { API } from "../../api/api";
 import CloseFormIcon from "../generic/CloseFormIcon";
 import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import BaseForm from "../generic/BaseForm";
-import { GetTaskResponseSchema } from "../../schemas/responses/tasks";
+import { TaskResponseSchema } from "../../schemas/responses/tasks";
 import { UpdateTaskRequestSchema } from "../../schemas/requests/tasks";
 import { BaseButton } from "../buttons";
 import MultilineTextInput from "../inputs/MultilineTextInput/MultilineTextInput";
@@ -32,7 +32,7 @@ export default function EditTaskForm() {
         if (taskId === undefined) {
             return;
         }
-        API.tasks.getTaskById(+taskId).then((task: GetTaskResponseSchema) => {
+        API.tasks.getTaskById(+taskId).then((task: TaskResponseSchema) => {
             // Available use full info about task in data
             setTaskName(task.name);
             setTaskDescription(task.description);

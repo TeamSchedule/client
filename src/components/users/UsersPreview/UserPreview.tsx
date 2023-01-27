@@ -1,10 +1,10 @@
 import styles from "./UserPreview.module.scss";
 import UserAvatar from "../../avatars/UserAvatar";
-import { User } from "../../../schemas/instances/users";
 import { useNavigate } from "react-router-dom";
+import { UserSchema } from "../../../schemas/responses/users";
 
 interface UserPreviewProps {
-    user: User;
+    user: UserSchema;
     clickable?: boolean;
 }
 

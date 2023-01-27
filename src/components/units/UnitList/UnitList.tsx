@@ -3,20 +3,9 @@ import UnitPreview from "../UnitPreview/UnitPreview";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { NewTeamIcon } from "../../svg";
-import { User } from "../../../schemas/instances/users";
-import { Unit } from "../../../schemas/instances/units";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { API } from "../../../api/api";
-
-const user1: User = { id: 1, email: "", fullName: "Сяглова Анна Михайловна", post: "Специалист" };
-const user2: User = { id: 2, email: "", fullName: "Сяглова Анна Михайловна", post: "Специалист" };
-const user3: User = { id: 3, email: "", fullName: "Сяглова Анна Михайловна", post: "Специалист" };
-
-const units: Unit[] = [
-    { id: 1, name: "Отдел социальных медиа", members: [user1, user2, user3], openTasks: 4 },
-    { id: 2, name: "Отдел социальных медиа", members: [user1, user2], openTasks: 0 },
-    { id: 3, name: "Отдел социальных медиа", members: [user1, user2], openTasks: 2 },
-];
+import { units } from "../../../testdata/data";
 
 export default function UnitList() {
     useEffect(() => {

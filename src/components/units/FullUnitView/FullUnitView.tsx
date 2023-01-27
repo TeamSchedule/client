@@ -1,22 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
-import { Unit } from "../../../schemas/instances/units";
 import { BaseButton } from "../../buttons";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionHeader";
 import UserPreview from "../../users/UsersPreview/UserPreview";
-import { User } from "../../../schemas/instances/users";
-import { Task } from "../../../schemas/instances/tasks";
 import TaskPreview from "../../tasks/TaskPreview/TaskPreview";
-
-const users: User[] = [
-    { id: 1, email: "", fullName: "Сяглова Анна Михайловна", post: "Специалист" },
-    { id: 2, email: "", fullName: "Сяглова Анна Михайловна", post: "Специалист" },
-    { id: 3, email: "", fullName: "Сяглова Анна Михайловна", post: "Специалист" },
-];
-
-const task: Task = { name: "Задача 3", description: "расширенное описание", deadline: new Date(), executors: [] };
+import { task, users } from "../../../testdata/data";
+import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
 
 export default function FullUnitView() {
     const navigate = useNavigate();
@@ -24,7 +15,7 @@ export default function FullUnitView() {
     const { id } = useParams();
 
     // данные отдела
-    const [unit, setUnit] = useState<Unit>();
+    const [unit, setUnit] = useState<UnitsResponseItemSchema>();
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);
@@ -39,7 +30,7 @@ export default function FullUnitView() {
         setInProgress(true);
         API.units
             .getById(+id)
-            .then((unit: Unit) => {
+            .then((unit: UnitsResponseItemSchema) => {
                 setInProgress(false);
                 setUnit(unit);
             })

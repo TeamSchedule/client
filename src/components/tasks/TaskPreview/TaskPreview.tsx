@@ -1,19 +1,18 @@
 import TaskName from "../common/TaskName";
-import { Task } from "../../../schemas/instances/tasks";
 import TaskDeadline from "../common/TaskDeadline";
 import TaskEvent from "../common/TaskEvent";
-import Event from "../../../schemas/instances/events";
 import styles from "./TaskPreview.module.scss";
 import TaskUnit from "../common/TaskUnit";
-import { Unit } from "../../../schemas/instances/units";
-import { User } from "../../../schemas/instances/users";
+import { units } from "../../../testdata/data";
+import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
+import { EventResponseItemSchema } from "../../../schemas/responses/events";
+import { TaskResponseSchema } from "../../../schemas/responses/tasks";
 
-const event: Event = { id: 1, name: "EventName" };
-const user: User = { id: 1, email: "", fullName: "Сяглова Анна Михайловна", post: "Специалист" };
-const unit: Unit = { id: 1, name: "Отдел социальных медиа", members: [user, user, user], openTasks: 4 };
+const event: EventResponseItemSchema = { id: 1, name: "EventName" };
+const unit: UnitsResponseItemSchema = units[0];
 
 interface TaskPreviewProps {
-    task: Task;
+    task: TaskResponseSchema;
 }
 
 export default function TaskPreview(props: TaskPreviewProps) {
@@ -21,7 +20,7 @@ export default function TaskPreview(props: TaskPreviewProps) {
         <>
             <div className={styles.taskPreview}>
                 <TaskName name={props.task.name} />
-                <TaskDeadline deadline={props.task.deadline} />
+                <TaskDeadline deadline={new Date(props.task.expirationTime)} />
                 <TaskEvent event={event} />
                 <TaskUnit unit={unit} />
             </div>

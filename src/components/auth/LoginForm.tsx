@@ -9,7 +9,7 @@ import AuthFormLayout from "./AuthFormLayout";
 import ErrorMsg from "../ErrorMsg";
 import { TokenPair } from "../../schemas/responses/auth";
 import { SignInRequestSchema } from "../../schemas/requests/auth";
-import { GetMeResponseSchema } from "../../schemas/responses/users";
+import { GetMeResponseSchema, UserSchema } from "../../schemas/responses/users";
 import { PasswordInput, UsernameInput } from "../inputs";
 import BaseButton from "../buttons/BaseButton";
 import { ERRORS } from "../../consts";
@@ -44,9 +44,9 @@ export default function LoginForm() {
                 setAccessToken(tokens.access);
                 localStorage.setItem("access", tokens.access);
                 localStorage.setItem("refresh", tokens.refresh);
-                API.users.getUser().then((userData: GetMeResponseSchema) => {
-                    dispatch(set(userData.user));
-                    navigate(`/${userData.user.login}/profile`);
+                API.users.getUser().then((user: UserSchema) => {
+                    dispatch(set(user));
+                    navigate(`/${user.login}/profile`);
                 });
             })
             .catch((err) => {

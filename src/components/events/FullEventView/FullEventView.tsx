@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Event from "../../../schemas/instances/events";
 import { API } from "../../../api/api";
+import { EventResponseItemSchema } from "../../../schemas/responses/events";
 
 interface FullEventViewProps {}
 
@@ -11,7 +11,7 @@ export default function FullEventView(props: FullEventViewProps) {
     const { id } = useParams();
 
     // данные события
-    const [event, setEvent] = useState<Event>();
+    const [event, setEvent] = useState<EventResponseItemSchema>();
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);

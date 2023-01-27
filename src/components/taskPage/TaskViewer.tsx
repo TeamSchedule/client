@@ -15,7 +15,7 @@ import "primeflex/primeflex.css";
 import "./monthCalendar.css";
 import LoaderScreen from "../generic/LoaderScreen";
 import { FilterTasksParamsSchema } from "../../schemas/requests/tasks";
-import { GetTaskResponseSchema } from "../../schemas/responses/tasks";
+import { TaskResponseSchema } from "../../schemas/responses/tasks";
 import { EventSourceInput } from "@fullcalendar/core";
 import { EventInput } from "@fullcalendar/common";
 import { UnitsResponseItemSchema } from "../../schemas/responses/units";
@@ -24,8 +24,8 @@ export function TaskViewer() {
     const navigate = useNavigate();
 
     const [isLoaded, setIsLoaded] = useState(false); // все задачи
-    const [tasks, setTasks] = useState<Array<GetTaskResponseSchema>>([]); // все задачи
-    const [filteredTasks, setFilteredTasks] = useState<Array<GetTaskResponseSchema>>([]); // задачи для выбранных команд
+    const [tasks, setTasks] = useState<Array<TaskResponseSchema>>([]); // все задачи
+    const [filteredTasks, setFilteredTasks] = useState<Array<TaskResponseSchema>>([]); // задачи для выбранных команд
 
     const [teams, setTeams] = useState<Array<UnitsResponseItemSchema>>([]); // все команды
     const [showedTeams, setShowedTeams] = useState<Array<number>>([]); // команды, выбранные в фильтре
@@ -60,7 +60,7 @@ export function TaskViewer() {
                 all: true,
             };
 
-            API.tasks.getTasks(filterTasksParams).then((tasks: Array<GetTaskResponseSchema>) => {
+            API.tasks.getTasks(filterTasksParams).then((tasks: Array<TaskResponseSchema>) => {
                 setTasks(tasks);
                 setFilteredTasks(() => tasks);
                 setIsLoaded(true);
