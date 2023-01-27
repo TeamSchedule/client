@@ -54,6 +54,7 @@ export default function ResetPasswordCodeForm() {
             })
             .catch(() => {})
             .finally(() => {
+                navigate(newPasswordPath);
                 setIsActionInProgress(false);
             });
     }

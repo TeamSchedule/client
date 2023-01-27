@@ -14,39 +14,41 @@ export const baseNotificationPath: string = "notifications/";
 /* ---------------------------------------------------- */
 
 export const baseUnitPath: string = "/units";
-export const allUnitsPath: string = baseUnitPath;
-export const createNewUnitPath: string = [baseUnitPath, "new"].join("/");
+export const createNewUnitPath: string = "/units/new";
 
 export function makeUnitLinkById(id: number): string {
-    return [baseUnitPath, id.toString()].join("/");
+    return baseUnitPath + "/" + id.toString();
 }
 
 /* ---------------------------------------------------- */
-export const baseTaskPath: string = "/tasks/";
+export const baseTaskPath: string = "/tasks";
 
 export function makeTaskLinkById(id: number): string {
-    return baseTaskPath + id.toString();
+    return baseTaskPath + "/" + id.toString();
 }
 
 /* ---------------------------------------------------- */
 
-export const baseEventPath: string = "/events/";
-export const allEventsPath: string = baseEventPath;
-export const createNewEventPath: string = [baseEventPath, "new"].join("/");
+export const baseEventPath: string = "/events";
+export const createNewEventPath: string = "/events/new";
 
 export function makeEventLinkById(id: number): string {
-    return baseEventPath + id.toString();
+    return baseEventPath + "/" + id.toString();
 }
 
 /* ---------------------------------------------------- */
 
-export const baseCalendarPath: string = "/calendar/";
+export const baseCalendarPath: string = "/calendar";
 
 export function makeDateLink(date: Date): string {
     const dateStr = date.toLocaleDateString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" });
     const urlDateStr = dateStr.split(".").join("-");
 
-    return baseCalendarPath + urlDateStr;
+    return baseCalendarPath + "/" + urlDateStr;
 }
+
+/* ---------------------------------------------------- */
+
+export const baseSettingsPath: string = "/settings";
 
 /* ---------------------------------------------------- */

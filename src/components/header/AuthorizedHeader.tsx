@@ -5,7 +5,7 @@ import { SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
 import LogoutMainButton from "./LogoutMainButton";
 import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
-import { baseNotificationPath, baseTaskPath, baseUnitPath } from "../../routes/paths";
+import { baseCalendarPath, baseNotificationPath, baseSettingsPath, baseUnitPath } from "../../routes/paths";
 import BellNotificationIcon from "../svg/BellNotificationIcon";
 import { NotificationsContext } from "../App";
 import useLocalStorage from "../../hooks/useLocalStorage";
@@ -49,8 +49,8 @@ function HeaderMainNavigationSection() {
     return (
         <div className={styles.headerMainNavigationSection}>
             <HeaderLink linkTo={baseUnitPath} Icon={TeamIcon} />
-            <HeaderLink linkTo={baseTaskPath} Icon={ToDoListIcon} />
-            <HeaderLink linkTo="/settings" Icon={SettingsIcon} />
+            <HeaderLink linkTo={baseCalendarPath} Icon={ToDoListIcon} />
+            <HeaderLink linkTo={baseSettingsPath} Icon={SettingsIcon} />
         </div>
     );
 }

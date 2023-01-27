@@ -8,6 +8,9 @@ import { ERRORS, MIN_PASSWORD_LENGTH } from "../../../consts";
 import { PasswordInput } from "../../inputs";
 import styles from "../Auth.module.scss";
 import ErrorMsg from "../../ErrorMsg";
+import { LocalStorageApi } from "../../../api/storage";
+import { AuthUserKey } from "../../../consts/common";
+import { baseUnitPath } from "../../../routes/paths";
 
 export default function NewPasswordForm() {
     /*
@@ -55,6 +58,7 @@ export default function NewPasswordForm() {
 
     function onInputNewPassword(event: FormEvent) {
         event.preventDefault();
+
         setIsActionInProgress(true);
         const newPasswordData: CreateNewPasswordRequestSchema = {
             password: "",
@@ -70,7 +74,9 @@ export default function NewPasswordForm() {
                 setIsNewPasswordErrShown(true);
             })
             .finally(() => {
+                LocalStorageApi.SET(AuthUserKey, {});
                 setIsActionInProgress(false);
+                window.location.replace(baseUnitPath);
             });
     }
 

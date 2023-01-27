@@ -1,5 +1,5 @@
 import React from "react";
-import { createBrowserRouter, createRoutesFromElements, Navigate, Outlet, Route, useOutlet } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Navigate, Outlet, Route } from "react-router-dom";
 import App from "../components/App";
 import AvatarEditorModal from "../components/AvatarEditorModal/AvatarEditorModal";
 import { TaskPage } from "../components/taskPage/TaskPage";
@@ -14,6 +14,8 @@ import EditUnitForm from "../components/units/EditUnitForm/EditUnitForm";
 import EventList from "../components/events/EventList/EventList";
 import CreateEventForm from "../components/events/CreateEventForm/CreateEventForm";
 import {
+    baseCalendarPath,
+    baseEventPath,
     baseNotificationPath,
     baseUnitPath,
     forgotPasswordPath,
@@ -22,7 +24,6 @@ import {
     notFound,
     registrationPath,
     resetPasswordCodePath,
-    startPagePath,
     successRegistrationPath,
 } from "./paths";
 import NotificationList from "../components/notifications/NotificationList/NotificationList";
@@ -58,9 +59,11 @@ const PublicLayout = () => {
 };
 
 const AuthLayout = () => {
-    const outlet = useOutlet();
-
-    return <AuthProvider>{outlet}</AuthProvider>;
+    return (
+        <AuthProvider>
+            <Outlet />
+        </AuthProvider>
+    );
 };
 
 export const router = createBrowserRouter(
@@ -68,7 +71,7 @@ export const router = createBrowserRouter(
         <>
             <Route element={<AuthLayout />}>
                 <Route element={<PublicLayout />}>
-                    <Route path={startPagePath} element={<Navigate to={loginPath} replace={true} />} />
+                    <Route index element={<Navigate to={loginPath} replace={true} />} />
 
                     <Route path={loginPath} element={<LoginForm />} />
                     <Route path={forgotPasswordPath} element={<ForgotPasswordForm />} />
@@ -78,16 +81,16 @@ export const router = createBrowserRouter(
                     <Route path={registrationPath} element={<RegisterForm />} />
                     <Route path={successRegistrationPath} element={<SuccessRegisteredMsg />} />
 
-                    <Route path={notFound} element={<NotFound />} />
+                    <Route path={notFound} element={<Navigate to={loginPath} replace={true} />} />
                 </Route>
 
                 <Route element={<ProtectedLayout />}>
-                    <Route path="/" /*loader={API.users.getUser}*/ element={<App />}>
+                    <Route element={<App />} /*loader={API.users.getUser}*/>
                         <Route index element={<Navigate to={"calendar/"} replace={true} />} />
 
                         <Route path="profile/avatar" element={<AvatarEditorModal avatarType="personal" />} />
 
-                        <Route path="events/" element={<Outlet />}>
+                        <Route path={baseEventPath} element={<Outlet />}>
                             <Route index element={<EventList />} />
                             <Route path="new" element={<CreateEventForm />} />
 
@@ -101,7 +104,7 @@ export const router = createBrowserRouter(
                             <Route index element={<NotificationList />} />
                         </Route>
 
-                        <Route path="units/" element={<Outlet />}>
+                        <Route path={baseUnitPath} element={<Outlet />}>
                             <Route index element={<UnitList />} />
                             <Route path="new" element={<CreateUnitForm />} />
 
@@ -111,7 +114,7 @@ export const router = createBrowserRouter(
                             </Route>
                         </Route>
 
-                        <Route path="tasks/" element={<TaskPage />}>
+                        <Route path={baseCalendarPath} element={<TaskPage />}>
                             <Route index element={<TaskViewer />} />
                             <Route path="new/:date" element={<CreateTaskForm />} />
                             <Route path="new" element={<CreateTaskForm />} />
