@@ -6,7 +6,7 @@ import styles from "../Auth.module.scss";
 import BaseButton from "../../buttons/BaseButton";
 import validateEmail from "../../../utils/validateEmail";
 import { API } from "../../../api/api";
-import { ResetPasswordEmailRequestSchema } from "../../../schemas/requests/auth";
+import { ResetPasswordEmailRequestSchema } from "../../../api/schemas/requests/auth";
 import { resetPasswordCodePath } from "../../../routes/paths";
 
 export default function ForgotPasswordForm() {

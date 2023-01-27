@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import SimpleTextInput from "../../inputs/SimpleTextInput";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import UserSelector from "../../selectors/UserSelector/UserSelector";
-import { CreateUnitRequestSchema } from "../../../schemas/requests/units";
+import { CreateUnitRequestSchema } from "../../../api/schemas/requests/units";
 import { BaseButton } from "../../buttons";
 import { API } from "../../../api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { users } from "../../../testdata/data";
-import { UserSchema } from "../../../schemas/responses/users";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 export default function EditUnitForm() {
     const navigate = useNavigate();

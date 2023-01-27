@@ -1,12 +1,11 @@
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
-import React, {useState} from "react";
-import {BaseButton} from "../../buttons";
-import {API} from "../../../api/api";
-import {useNavigate} from "react-router-dom";
-import {CreateEventRequestSchema} from "../../../schemas/requests/events";
+import React, { useState } from "react";
+import { BaseButton } from "../../buttons";
+import { API } from "../../../api/api";
+import { useNavigate } from "react-router-dom";
+import { CreateEventRequestSchema } from "../../../api/schemas/requests/events";
 
-interface CreateEventFormProps {
-}
+interface CreateEventFormProps {}
 
 export default function CreateEventForm(props: CreateEventFormProps) {
     const navigate = useNavigate();
@@ -46,7 +45,7 @@ export default function CreateEventForm(props: CreateEventFormProps) {
     return (
         <>
             <div>
-                <ScreenHeader text="Создание события"/>
+                <ScreenHeader text="Создание события" />
 
                 <BaseButton
                     text="Создать"

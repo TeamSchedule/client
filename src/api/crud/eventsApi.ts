@@ -1,6 +1,6 @@
 import $axios from "../axiosRequests";
-import { EventResponseItemSchema, EventsResponseSchema } from "../../schemas/responses/events";
-import { CreateEventRequestSchema } from "../../schemas/requests/events";
+import { EventResponseItemSchema, EventsResponseSchema } from "../schemas/responses/events";
+import { CreateEventRequestSchema } from "../schemas/requests/events";
 
 export class EventsApi {
     static apiPrefix: string = "/events";

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, Outlet, useParams } from "react-router-dom";
 import { API } from "../../../api/api";
 import BaseForm from "../../generic/BaseForm";
-import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
+import { UnitsResponseItemSchema } from "../../../api/schemas/responses/units";
 import TeamAvatar from "../../avatars/TeamAvatar";
 import styles from "./FullTeam.module.scss";
 

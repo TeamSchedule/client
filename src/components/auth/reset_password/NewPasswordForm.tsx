@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import AuthFormLayout from "../AuthFormLayout";
 import BaseButton from "../../buttons/BaseButton";
 import React, { FormEvent, useEffect, useState } from "react";
-import { CreateNewPasswordRequestSchema } from "../../../schemas/requests/auth";
+import { CreateNewPasswordRequestSchema } from "../../../api/schemas/requests/auth";
 import { API } from "../../../api/api";
 import { ERRORS, MIN_PASSWORD_LENGTH } from "../../../consts";
 import { PasswordInput } from "../../inputs";

@@ -2,7 +2,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import UserPreview from "../../users/UsersPreview/UserPreview";
 import styles from "./UserSelector.module.scss";
 import { Dispatch, SetStateAction } from "react";
-import { UserSchema } from "../../../schemas/responses/users";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 interface UserSelectorProps {
     users: Array<UserSchema>;

@@ -1,9 +1,5 @@
 import $axios from "../axiosRequests";
-import {
-    CreateTaskRequestSchema,
-    FilterTasksParamsSchema,
-    UpdateTaskRequestSchema,
-} from "../../schemas/requests/tasks";
+import { CreateTaskRequestSchema, FilterTasksParamsSchema, UpdateTaskRequestSchema } from "../schemas/requests/tasks";
 
 export class tasks {
     static prefixUrl = "/schedule/task";

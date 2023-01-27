@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AuthFormLayout from "../AuthFormLayout";
 import BaseButton from "../../buttons/BaseButton";
 import React, { FormEvent, useEffect, useState } from "react";
-import { ResetPasswordCodeRequestSchema } from "../../../schemas/requests/auth";
+import { ResetPasswordCodeRequestSchema } from "../../../api/schemas/requests/auth";
 import { API } from "../../../api/api";
 import { TextField } from "@mui/material";
 import { newPasswordPath } from "../../../routes/paths";

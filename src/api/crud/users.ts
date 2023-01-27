@@ -1,8 +1,8 @@
 import $axios from "../axiosRequests";
-import { UpdateUserInfoRequestSchema } from "../../schemas/requests/users";
+import { UpdateUserInfoRequestSchema } from "../schemas/requests/users";
 import { AuthUserKey } from "../../consts/common";
 import { LocalStorageApi } from "../storage";
-import { GetMeResponseSchema, UserSchema } from "../../schemas/responses/users";
+import { GetMeResponseSchema, UserSchema } from "../schemas/responses/users";
 
 export class users {
     static apiPrefix = "/user";

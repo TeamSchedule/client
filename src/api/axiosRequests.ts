@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import { API } from "./api";
 import { REFRESH_TOKEN_STORAGE_NAME, SERVER_ORIGIN } from "./config";
-import { TokenPair } from "../schemas/responses/auth";
+import { TokenPair } from "./schemas/responses/auth";
 
 const AXIOS_CONFIG = {
     baseURL: SERVER_ORIGIN,

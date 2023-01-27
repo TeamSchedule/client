@@ -7,7 +7,7 @@ import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionH
 import UserPreview from "../../users/UsersPreview/UserPreview";
 import TaskPreview from "../../tasks/TaskPreview/TaskPreview";
 import { task, users } from "../../../testdata/data";
-import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
+import { UnitsResponseItemSchema } from "../../../api/schemas/responses/units";
 
 export default function FullUnitView() {
     const navigate = useNavigate();

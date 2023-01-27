@@ -3,7 +3,7 @@ import RightAngleIcon from "../../svg/RightAngleIcon";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../PreviewComponents";
 import { PersonalAvatar, TeamAvatar } from "../../avatars";
 import styles from "./ShortPreviewTaskItem.module.scss";
-import { TaskResponseSchema } from "../../../schemas/responses/tasks";
+import { TaskResponseSchema } from "../../../api/schemas/responses/tasks";
 
 interface ShortPreviewTaskItemProps {
     task: TaskResponseSchema;

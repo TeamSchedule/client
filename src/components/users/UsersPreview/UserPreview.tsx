@@ -1,7 +1,7 @@
 import styles from "./UserPreview.module.scss";
 import UserAvatar from "../../avatars/UserAvatar";
 import { useNavigate } from "react-router-dom";
-import { UserSchema } from "../../../schemas/responses/users";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 interface UserPreviewProps {
     user: UserSchema;

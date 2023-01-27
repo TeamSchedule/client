@@ -5,7 +5,7 @@ import { useTeamData } from "../TeamMembersModal/TeamMembersModal";
 import modalStyles from "../TeamMembersModal/TeamMembersModal.module.scss";
 import styles from "./TeamEditModal.module.scss";
 import InputColorFormItem from "../../inputs/InputColorFormItem";
-import { UpdateTeamRequestSchema } from "../../../schemas/requests/units";
+import { UpdateTeamRequestSchema } from "../../../api/schemas/requests/units";
 import { API } from "../../../api/api";
 import { useNavigate } from "react-router-dom";
 import { BaseButton } from "../../buttons";

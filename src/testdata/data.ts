@@ -1,6 +1,6 @@
-import { UserSchema } from "../schemas/responses/users";
-import { UnitsResponseItemSchema } from "../schemas/responses/units";
-import { TaskResponseSchema } from "../schemas/responses/tasks";
+import { UserSchema } from "../api/schemas/responses/users";
+import { UnitsResponseItemSchema } from "../api/schemas/responses/units";
+import { TaskResponseSchema } from "../api/schemas/responses/tasks";
 
 const user1: UserSchema = {
     id: 1,

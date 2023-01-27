@@ -1,9 +1,9 @@
 import $axios from "../axiosRequests";
-import { CreateInvitationsRequestSchema } from "../../schemas/requests/invitations";
+import { CreateInvitationsRequestSchema } from "../schemas/requests/invitations";
 import {
     GetIncomingInvitationsResponseSchema,
     GetOutgoingInvitationsResponseSchema,
-} from "../../schemas/responses/invitations";
+} from "../schemas/responses/invitations";
 
 type InvitationStatus = "OPEN" | "CLOSE";
 

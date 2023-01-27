@@ -1,6 +1,6 @@
 import $axios from "../axiosRequests";
-import { CreateUnitRequestSchema, UpdateTeamRequestSchema } from "../../schemas/requests/units";
-import { UnitsResponseItemSchema } from "../../schemas/responses/units";
+import { CreateUnitRequestSchema, UpdateTeamRequestSchema } from "../schemas/requests/units";
+import { UnitsResponseItemSchema } from "../schemas/responses/units";
 
 export class UnitsApi {
     static apiPrefix = "/schedule/team";

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { API } from "../../../api/api";
-import { EventResponseItemSchema } from "../../../schemas/responses/events";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 
 interface FullEventViewProps {}
 

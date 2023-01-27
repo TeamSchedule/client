@@ -1,5 +1,5 @@
 import React from "react";
-import { UnitsResponseItemSchema } from "../../schemas/responses/units";
+import { UnitsResponseItemSchema } from "../../api/schemas/responses/units";
 import ShortPreviewTeamItem from "../previews/TeamPreview/ShortPreviewTeamItem";
 
 interface TeamListProps {

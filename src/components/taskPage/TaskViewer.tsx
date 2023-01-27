@@ -14,11 +14,11 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "./monthCalendar.css";
 import LoaderScreen from "../generic/LoaderScreen";
-import { FilterTasksParamsSchema } from "../../schemas/requests/tasks";
-import { TaskResponseSchema } from "../../schemas/responses/tasks";
+import { FilterTasksParamsSchema } from "../../api/schemas/requests/tasks";
+import { TaskResponseSchema } from "../../api/schemas/responses/tasks";
 import { EventSourceInput } from "@fullcalendar/core";
 import { EventInput } from "@fullcalendar/common";
-import { UnitsResponseItemSchema } from "../../schemas/responses/units";
+import { UnitsResponseItemSchema } from "../../api/schemas/responses/units";
 
 export function TaskViewer() {
     const navigate = useNavigate();

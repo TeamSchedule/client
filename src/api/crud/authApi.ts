@@ -6,7 +6,7 @@ import {
     ResetPasswordEmailRequestSchema,
     SignInRequestSchema,
     SignUpRequestSchema,
-} from "../../schemas/requests/auth";
+} from "../schemas/requests/auth";
 
 export class AuthApi {
     static signIn(data: SignInRequestSchema) {

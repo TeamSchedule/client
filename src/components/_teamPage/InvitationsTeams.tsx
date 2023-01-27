@@ -3,8 +3,8 @@ import TeamList from "./TeamList";
 import IncomingInvitationList from "./IncomingInvitationList";
 import CenterLayoutWrapper from "../generic/CenterLayoutWrapper";
 import { API } from "../../api/api";
-import { UnitsResponseItemSchema } from "../../schemas/responses/units";
-import { IncomingInvitationItemSchema } from "../../schemas/responses/invitations";
+import { UnitsResponseItemSchema } from "../../api/schemas/responses/units";
+import { IncomingInvitationItemSchema } from "../../api/schemas/responses/invitations";
 
 export default function InvitationsTeams() {
     const [teams, setTeams] = useState<Array<UnitsResponseItemSchema>>([]);

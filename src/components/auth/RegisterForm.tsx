@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { API } from "../../api/api";
 import AuthFormLayout from "./AuthFormLayout";
 import ErrorMsg from "../ErrorMsg";
-import { SignUpRequestSchema } from "../../schemas/requests/auth";
+import { SignUpRequestSchema } from "../../api/schemas/requests/auth";
 import { EmailInput, PasswordInput, UsernameInput } from "../inputs";
 import BaseButton from "../buttons/BaseButton";
 import validateEmail from "../../utils/validateEmail";

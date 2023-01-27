@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { TeamAvatar } from "../../avatars";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../PreviewComponents";
-import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
+import { UnitsResponseItemSchema } from "../../../api/schemas/responses/units";
 import TeamIcon from "../../svg/TeamIcon";
 import { ToDoListIcon } from "../../svg";
 import styles from "./ShortPreviewTeamItem.module.scss";

@@ -4,9 +4,9 @@ import TaskEvent from "../common/TaskEvent";
 import styles from "./TaskPreview.module.scss";
 import TaskUnit from "../common/TaskUnit";
 import { units } from "../../../testdata/data";
-import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
-import { EventResponseItemSchema } from "../../../schemas/responses/events";
-import { TaskResponseSchema } from "../../../schemas/responses/tasks";
+import { UnitsResponseItemSchema } from "../../../api/schemas/responses/units";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import { TaskResponseSchema } from "../../../api/schemas/responses/tasks";
 
 const event: EventResponseItemSchema = { id: 1, name: "EventName" };
 const unit: UnitsResponseItemSchema = units[0];

@@ -1,5 +1,5 @@
 import UnitLink from "../../links/UnitLink/UnitLink";
-import { UnitsResponseItemSchema } from "../../../schemas/responses/units";
+import { UnitsResponseItemSchema } from "../../../api/schemas/responses/units";
 
 interface TaskUnitProps {
     unit: UnitsResponseItemSchema;

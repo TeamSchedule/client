@@ -4,7 +4,7 @@ import { API } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import FormHeaderRow from "../generic/FormHeaderRow";
 import BaseForm from "../generic/BaseForm";
-import { CreateUnitRequestSchema } from "../../schemas/requests/units";
+import { CreateUnitRequestSchema } from "../../api/schemas/requests/units";
 import { BaseButton } from "../buttons";
 import ErrorMsg from "../ErrorMsg";
 import { ERRORS, MIN_TEAM_NAME_LEN } from "../../consts";

@@ -1,4 +1,4 @@
-import { UserSchema } from "../../../schemas/responses/users";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 interface NotificationPreviewProps {
     createdAt: Date;

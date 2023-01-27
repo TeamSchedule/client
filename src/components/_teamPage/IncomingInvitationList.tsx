@@ -1,6 +1,6 @@
 import React from "react";
 import IncomingInvitationItem from "../_invites/IncomingInvitationItem";
-import { IncomingInvitationItemSchema } from "../../schemas/responses/invitations";
+import { IncomingInvitationItemSchema } from "../../api/schemas/responses/invitations";
 
 interface IncomingInvitationListProps {
     incomingInvitations: Array<IncomingInvitationItemSchema>;

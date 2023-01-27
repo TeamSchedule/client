@@ -1,5 +1,5 @@
 import EventLink from "../../links/EventLink/EventLink";
-import { EventResponseItemSchema } from "../../../schemas/responses/events";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 
 interface TaskEventProps {
     event: EventResponseItemSchema;
