@@ -1,6 +1,5 @@
 import { AuthApi } from "./crud/authApi";
 import { EventsApi } from "./crud/eventsApi";
-import { BffApi } from "./crud/bffApi";
 import { NotificationsApi } from "./crud/notificationsApi";
 import { users } from "./crud/users";
 import { UnitsApi } from "./crud/unitsApi";
@@ -17,5 +16,4 @@ export class API {
     static units = UnitsApi;
     static users = users;
     static invitations = invitations;
-    static bff = BffApi;
 }
