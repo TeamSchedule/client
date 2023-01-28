@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { PersonalAvatar } from "../avatars";
+import MainAvatar from "../MainAvatar";
 import { LogoutIcon, SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
 import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
@@ -33,7 +33,7 @@ function HeaderUserInfoSection() {
                 badgeContent={newNotifications.length}
             />
 
-            <PersonalAvatar size={iconSize} />
+            <MainAvatar size={iconSize} src={user?.avatar} />
             <Link to={`${login}/profile`} className="px-3 fs-5 d-none d-sm-block">
                 {login}
             </Link>

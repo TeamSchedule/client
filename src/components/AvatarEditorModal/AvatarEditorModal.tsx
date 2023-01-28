@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Dropzone from "react-dropzone";
 import Button from "@mui/material/Button";
 import { API } from "../../api/api";
-import { UserAvatar } from "../avatars";
+import { MainAvatar } from "../MainAvatar";
 import { AlternateAvatarImageIcon } from "../svg";
 import { BaseButton } from "../buttons";
 import BaseModal from "../modals/BaseModal";
@@ -232,7 +232,7 @@ function AvatarEditorSection(props: AvatarEditorSectionProps) {
                             onClick={onClickPreview}
                             disabled={!enabledToSave}
                         />
-                        {croppedImg && <UserAvatar imgSrc={croppedImg} size={125} />}
+                        {croppedImg && <MainAvatar src={croppedImg} size={125} />}
                     </div>
                 </div>
                 <BaseButton

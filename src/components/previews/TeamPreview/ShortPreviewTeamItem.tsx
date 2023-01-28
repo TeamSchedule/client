@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { TeamAvatar } from "../../avatars";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../PreviewComponents";
 import { UnitsResponseItemSchema } from "../../../api/schemas/responses/units";
 import TeamIcon from "../../svg/TeamIcon";
@@ -22,14 +21,6 @@ export default function ShortPreviewTeamItem({ linkTo, team }: ShortPreviewTeamI
                 }}
             >
                 <TeamHeader membersNumber={1} openTaskNumber={2} />
-                <div className="m-auto d-flex justify-content-center">
-                    <TeamAvatar
-                        imgSrc={team.avatar || ""}
-                        size={80}
-                        teamColor={team.color}
-                        teamId={team.id.toString()}
-                    />
-                </div>
                 <PrimaryPreviewText text={team.name} className="mt-4 mb-0 text-center" />
                 <SecondaryPreviewText text={""} className="text-center" />
             </div>

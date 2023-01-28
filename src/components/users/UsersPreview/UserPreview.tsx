@@ -1,5 +1,4 @@
 import styles from "./UserPreview.module.scss";
-import UserAvatar from "../../avatars/UserAvatar";
 import { useNavigate } from "react-router-dom";
 import { UserSchema } from "../../../api/schemas/responses/users";
 
@@ -22,7 +21,6 @@ export default function UserPreview(props: UserPreviewProps) {
                 className={[styles.userPreview, props.clickable ? styles.userPreview_clickable : ""].join(" ")}
                 onClick={onClickHandler}
             >
-                <UserAvatar fullImgSrc={"https://avatars.githubusercontent.com/u/65413499?v=4"} size={35} />
                 <div className="ml-2">
                     <p className={styles.userPreview__name}>{props.user.fullName}</p>
                     <p className={styles.userPreview__post}>{props.user.post}</p>
