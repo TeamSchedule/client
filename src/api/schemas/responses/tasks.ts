@@ -1,4 +1,4 @@
-import { UnitsResponseItemSchema } from "./units";
+import { UnitResponseItemSchema } from "./units";
 
 export interface TaskResponseSchema {
     id: number;
@@ -9,5 +9,5 @@ export interface TaskResponseSchema {
     expirationTime: string;
     assigneeId: number;
     authorId: number;
-    unit: UnitsResponseItemSchema;
+    unit: UnitResponseItemSchema;
 }

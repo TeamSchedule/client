@@ -7,6 +7,9 @@ import { tasks } from "./crud/tasks";
 import { invitations } from "./crud/invitations";
 import { AvatarsApi } from "./crud/avatarsApi";
 
+/**
+ * Класс-провайдер методов `api`.
+ * */
 export class API {
     static auth = AuthApi;
     static avatars = AvatarsApi;

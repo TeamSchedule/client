@@ -36,8 +36,13 @@ import RegisterForm from "../components/auth/RegisterForm";
 import SuccessRegisteredMsg from "../components/auth/SuccessRegisteredMsg";
 import AuthProvider from "./AuthProvider";
 
+/**
+ * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
+ *
+ * Проверяет наличие объекта user в `localStorage`, если объект есть, то пользователь считается авторизованным.
+ * Если объекта нет, то происходит редирект на страницу логина.
+ * */
 const ProtectedLayout = () => {
-    // @ts-ignore
     const { user } = useAuth();
 
     if (!user) {
@@ -47,8 +52,13 @@ const ProtectedLayout = () => {
     return <Outlet />;
 };
 
+/**
+ * Обертка для публичных роутов, доступ к которым должен быть только у неавторизованных пользователей.
+ *
+ * Проверяет наличие объекта user в `localStorage`, если объект есть, то пользователь считается авторизованным.
+ * Авторизованные пользователи редиректятся к данным (приватным роутам).
+ * */
 const PublicLayout = () => {
-    // @ts-ignore
     const { user } = useAuth();
 
     if (user) {
@@ -58,6 +68,9 @@ const PublicLayout = () => {
     return <Outlet />;
 };
 
+/**
+ * Обертка предоставляющая доступ к текущему авторизованному пользователю `user` и методам `login`/`logout`.
+ * */
 const AuthLayout = () => {
     return (
         <AuthProvider>
@@ -66,6 +79,7 @@ const AuthLayout = () => {
     );
 };
 
+// Для использования нового api react-router-dom нужно определние с помощью `createRoutesFromElements`
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <>

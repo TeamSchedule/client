@@ -1,40 +1,45 @@
 import $axios from "../axiosRequests";
 
+/**
+ * Класс с методами доступа к api оповещений.
+ * */
 export class NotificationsApi {
     static apiPrefix = "/notifications";
 
+    /**
+     * Получить все оповещения.
+     * */
     static async all(): Promise<any> {
-        /*
-         * Получение всех оповещений.
-         * */
         return (await $axios.get(`${this.apiPrefix}`)).data;
     }
 
+    /**
+     * Получить непрочитанные оповещения.
+     * */
     static async unread(): Promise<any> {
-        /*
-         * Получение непрочитанных оповещений.
-         * */
         return (await $axios.get(`${this.apiPrefix}`)).data;
     }
 
+    /**
+     * Получить прочитанные оповещения.
+     * */
     static async read(): Promise<any> {
-        /*
-         * Получение прочитанных оповещений.
-         * */
         return (await $axios.get(`${this.apiPrefix}`)).data;
     }
 
+    /**
+     * Отметить оповещение c указанным `id` прочитанным.
+     *
+     * @param id - Идентификатор оповещения
+     * */
     static async makeNotificationRead(id: number): Promise<any> {
-        /*
-         * Отметить оповещение c id прочитанным.
-         * */
         return (await $axios.get(`${this.apiPrefix}`)).data;
     }
 
+    /**
+     * Отметить все оповещения прочитанными.
+     * */
     static async makeAllNotificationRead(): Promise<any> {
-        /*
-         * Отметить все оповещения прочитанными.
-         * */
         return (await $axios.get(`${this.apiPrefix}`)).data;
     }
 }

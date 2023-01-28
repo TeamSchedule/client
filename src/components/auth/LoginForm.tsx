@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { API } from "../../api/api";
@@ -13,11 +13,11 @@ import BaseButton from "../buttons/BaseButton";
 import { ERRORS } from "../../consts";
 import styles from "./Auth.module.scss";
 import { forgotPasswordPath } from "../../routes/paths";
-import { AuthContext, AuthContextProps } from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 export default function LoginForm() {
     const navigate = useNavigate();
-    const { login } = useContext<AuthContextProps>(AuthContext);
+    const { login } = useAuth();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

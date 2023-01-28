@@ -7,7 +7,7 @@ import styles from "./Header.module.scss";
 import { baseCalendarPath, baseNotificationPath, baseSettingsPath, baseUnitPath } from "../../routes/paths";
 import BellNotificationIcon from "../svg/BellNotificationIcon";
 import { NotificationsContext } from "../App";
-import { AuthContext, AuthContextProps } from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 export default function AuthorizedHeader() {
     return (
@@ -19,7 +19,7 @@ export default function AuthorizedHeader() {
 }
 
 function HeaderUserInfoSection() {
-    const { user, logout } = useContext<AuthContextProps>(AuthContext);
+    const { user, logout } = useAuth();
 
     const newNotifications = useContext<Array<object>>(NotificationsContext);
 

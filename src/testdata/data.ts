@@ -1,5 +1,5 @@
 import { UserSchema } from "../api/schemas/responses/users";
-import { UnitsResponseItemSchema } from "../api/schemas/responses/units";
+import { UnitResponseItemSchema } from "../api/schemas/responses/units";
 import { TaskResponseSchema } from "../api/schemas/responses/tasks";
 
 const user1: UserSchema = {
@@ -35,7 +35,7 @@ const user3: UserSchema = {
 
 export const users: UserSchema[] = [user1, user2, user3];
 
-export const units: UnitsResponseItemSchema[] = [
+export const units: UnitResponseItemSchema[] = [
     {
         id: 1,
         name: "Отдел социальных медиа",

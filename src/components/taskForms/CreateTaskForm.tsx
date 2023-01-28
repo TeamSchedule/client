@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { API } from "../../api/api";
@@ -8,11 +8,11 @@ import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
 import { getPrevDayDate } from "../../utils/getPrevDayDate";
 import BaseForm from "../generic/BaseForm";
 import { CreateTaskRequestSchema } from "../../api/schemas/requests/tasks";
-import { UnitsResponseItemSchema } from "../../api/schemas/responses/units";
+import { UnitResponseItemSchema } from "../../api/schemas/responses/units";
 import { BaseButton } from "../buttons";
 import MultilineTextInput from "../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../inputs/SimpleTextInput";
-import { AuthContext, AuthContextProps } from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 interface TeamItemProps {
     groupId: string;
@@ -29,9 +29,9 @@ function TeamItem({ groupId, groupTitle }: TeamItemProps) {
 
 function CreateTaskForm() {
     const navigate = useNavigate();
-    const { user } = useContext<AuthContextProps>(AuthContext);
+    const { user } = useAuth();
 
-    const [teams, setTeams] = useState<Array<UnitsResponseItemSchema>>([]);
+    const [teams, setTeams] = useState<Array<UnitResponseItemSchema>>([]);
 
     const { date } = useParams();
     const [taskDescription, setTaskDescription] = useState("");
@@ -42,7 +42,7 @@ function CreateTaskForm() {
     const [isActionInProgress, setIsActionInProgress] = useState(false);
 
     useEffect(() => {
-        API.units.all().then((teams: Array<UnitsResponseItemSchema>) => {
+        API.units.all().then((teams: Array<UnitResponseItemSchema>) => {
             setTeams(teams);
             if (teams.length > 0) {
                 setSelectedTeam(teams[0].id);
@@ -125,7 +125,7 @@ function CreateTaskForm() {
                 />
                 {!isPrivateFlag && (
                     <select id="taskGroup" name="list1" onChange={(e) => setSelectedTeam(+e.target.value)} required>
-                        {teams.map((team: UnitsResponseItemSchema) => (
+                        {teams.map((team: UnitResponseItemSchema) => (
                             <TeamItem key={team.id} groupTitle={team.name} groupId={team.id.toString()} />
                         ))}
                     </select>

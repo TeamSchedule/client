@@ -7,7 +7,7 @@ import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionH
 import UserPreview from "../../users/UsersPreview/UserPreview";
 import TaskPreview from "../../tasks/TaskPreview/TaskPreview";
 import { task, users } from "../../../testdata/data";
-import { UnitsResponseItemSchema } from "../../../api/schemas/responses/units";
+import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 
 export default function FullUnitView() {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ export default function FullUnitView() {
     const { id } = useParams();
 
     // данные отдела
-    const [unit, setUnit] = useState<UnitsResponseItemSchema>();
+    const [unit, setUnit] = useState<UnitResponseItemSchema>();
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);
@@ -30,7 +30,7 @@ export default function FullUnitView() {
         setInProgress(true);
         API.units
             .getById(+id)
-            .then((unit: UnitsResponseItemSchema) => {
+            .then((unit: UnitResponseItemSchema) => {
                 setInProgress(false);
                 setUnit(unit);
             })

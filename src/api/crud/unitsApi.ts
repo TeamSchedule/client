@@ -1,28 +1,53 @@
 import $axios from "../axiosRequests";
 import { CreateUnitRequestSchema, UpdateTeamRequestSchema } from "../schemas/requests/units";
-import { UnitsResponseItemSchema } from "../schemas/responses/units";
+import { GetAllUnitsResponseSchema, UnitResponseItemSchema } from "../schemas/responses/units";
 
+/**
+ * Класс с методами доступа к api отделов.
+ * */
 export class UnitsApi {
     static apiPrefix = "/schedule/team";
 
-    static async all(): Promise<Array<UnitsResponseItemSchema>> {
-        return (await $axios.get(`${this.apiPrefix}`)).data["teams"];
+    /**
+     * Получить все отделы.
+     * */
+    static async all(): Promise<UnitResponseItemSchema[]> {
+        return $axios
+            .get(`${this.apiPrefix}`)
+            .then((r) => {
+                return r.data;
+            })
+            .then((data: GetAllUnitsResponseSchema) => {
+                return data.units;
+            });
     }
 
-    static async getById(id: number) {
-        return (await $axios.get(`${this.apiPrefix}/${id}`)).data["team"];
+    /**
+     * Получить отдел с указанным `id`.
+     *
+     * @param id - Идентификатор отдела
+     * */
+    static async getById(id: number): Promise<UnitResponseItemSchema> {
+        return $axios.get(`${this.apiPrefix}/${id}`).then((r) => r.data);
     }
 
-    static async leave(teamId: number) {
-        return (await $axios.delete(`${this.apiPrefix}/${teamId}/user`)).data;
-    }
-
+    /**
+     * Создать новый отдел.
+     *
+     * @param data - Объект с данными отдела
+     * */
     static async createUnit(data: CreateUnitRequestSchema) {
         return (await $axios.post(`${this.apiPrefix}`, data)).data;
     }
 
-    static update(unitId: number, data: UpdateTeamRequestSchema) {
-        return $axios.patch(`${this.apiPrefix}/${unitId}`, data);
+    /**
+     * Обновить информацию об отделе.
+     *
+     * @param id - Идентификатор отдела
+     * @param data - Объект с новыми данными отдела
+     * */
+    static update(id: number, data: UpdateTeamRequestSchema) {
+        return $axios.patch(`${this.apiPrefix}/${id}`, data);
     }
 
     static async setAvatar(teamId: string, avatarImage: string | Blob) {

@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./UnitPreview.module.scss";
 import UserPreview from "../../users/UsersPreview/UserPreview";
-import { UnitsResponseItemSchema } from "../../../api/schemas/responses/units";
+import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 
 interface UnitPreviewProps {
-    unit: UnitsResponseItemSchema;
+    unit: UnitResponseItemSchema;
 }
 
 export default function UnitPreview(props: UnitPreviewProps) {

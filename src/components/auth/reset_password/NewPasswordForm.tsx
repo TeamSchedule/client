@@ -1,19 +1,19 @@
 import AuthFormLayout from "../AuthFormLayout";
 import BaseButton from "../../buttons/BaseButton";
-import React, { FormEvent, useContext, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { CreateNewPasswordRequestSchema } from "../../../api/schemas/requests/auth";
 import { API } from "../../../api/api";
 import { ERRORS, MIN_PASSWORD_LENGTH } from "../../../consts";
 import { PasswordInput } from "../../inputs";
 import styles from "../Auth.module.scss";
 import ErrorMsg from "../../ErrorMsg";
-import { AuthContext, AuthContextProps } from "../../../hooks/useAuth";
+import useAuth from "../../../hooks/useAuth";
 
 export default function NewPasswordForm() {
     /*
      * Форма для создания пароля после сброса.
      * */
-    const { login } = useContext<AuthContextProps>(AuthContext);
+    const { login } = useAuth();
 
     const [password, setPassword] = useState<string | undefined>();
     const [password2, setPassword2] = useState<string | undefined>();

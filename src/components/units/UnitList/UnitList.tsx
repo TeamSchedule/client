@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import UnitPreview from "../UnitPreview/UnitPreview";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -6,16 +6,28 @@ import { NewTeamIcon } from "../../svg";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { API } from "../../../api/api";
 import { units } from "../../../testdata/data";
+import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 
 export default function UnitList() {
+    const [unitss, setUnits] = useState<UnitResponseItemSchema[]>([]);
+
+    // статус загрузки
+    const [inProgress, setInProgress] = useState<boolean>(false);
+
     useEffect(() => {
+        setInProgress(true);
+
         API.units
             .all()
-            .then(() => {})
+            .then((units: UnitResponseItemSchema[]) => {
+                setUnits(units);
+            })
             .catch(() => {
                 // TODO: ЧТо-то пошло не так
             })
-            .finally(() => {});
+            .finally(() => {
+                setInProgress(false);
+            });
     }, []);
 
     return (
