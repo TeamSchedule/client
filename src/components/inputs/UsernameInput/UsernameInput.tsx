@@ -20,10 +20,10 @@ export default function UsernameInput(props: UsernameInputProps) {
     }, [props.isOk]);
 
     return (
-        <div className={[styles.usernameInputWrapper, isOkClassname, props.className ? props.className : ""].join(" ")}>
+        <div className={[styles.textInputWrapper, isOkClassname, props.className ? props.className : ""].join(" ")}>
             <UserIcon className="ml-1 mt-2" size={28} color={"black"} />
             <input
-                className={styles.usernameInput}
+                className={styles.textInput}
                 type="text"
                 placeholder="Имя пользователя"
                 value={props.value}
