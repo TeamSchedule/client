@@ -9,6 +9,8 @@ import {
 } from "../schemas/requests/auth";
 
 export class AuthApi {
+    static baseUrl: string = "jwt";
+    
     static signIn(data: SignInRequestSchema) {
         return $nonInterceptAxios.post(`/jwt/obtain`, data).then((res) => res.data);
     }

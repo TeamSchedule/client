@@ -24,6 +24,12 @@ function makeRefresh() {
     });
 }
 
+/**
+ * Обновление токенов.
+ *
+ * Когда нужно обновить токен, проверяем, не обновляется ли он уже.
+ * Если за несколько попыток обновить токен не удалось, то производим logout.
+ */
 const refresh = async (callback: () => void, handleError: () => void) => {
     for (let retryNumber = 0; retryNumber < REFRESH_RETRIES; retryNumber++) {
         try {

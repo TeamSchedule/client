@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Dropzone from "react-dropzone";
 import Button from "@mui/material/Button";
 import { API } from "../../api/api";
-import { MainAvatar } from "../MainAvatar";
+import MainAvatar from "../MainAvatar";
 import { AlternateAvatarImageIcon } from "../svg";
 import { BaseButton } from "../buttons";
 import BaseModal from "../modals/BaseModal";
