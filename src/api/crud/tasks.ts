@@ -1,11 +1,11 @@
-import $axios from "../axiosRequests";
 import { CreateTaskRequestSchema, FilterTasksParamsSchema, UpdateTaskRequestSchema } from "../schemas/requests/tasks";
+import requestApi from "../fetchApi";
 
 export class tasks {
     static prefixUrl = "/schedule/task";
 
     static createTask(data: CreateTaskRequestSchema) {
-        return $axios.post(`${this.prefixUrl}`, data);
+        return requestApi.POST(`${this.prefixUrl}`, data);
     }
 
     static async getTasks(params: FilterTasksParamsSchema) {
@@ -14,7 +14,7 @@ export class tasks {
         if (!params.all) params.all = false;
 
         return (
-            await $axios.get(
+            await requestApi.GET(
                 `${this.prefixUrl}?from=${params.from.toJSON()}&to=${params.to.toJSON()}&teams=${params.teams.join(
                     ","
                 )}&private=true&all=${params.all}`
@@ -23,14 +23,14 @@ export class tasks {
     }
 
     static async getTaskById(id: number) {
-        return (await $axios.get(`${this.prefixUrl}/${id}`)).data;
+        return (await requestApi.GET(`${this.prefixUrl}/${id}`)).data;
     }
 
     static async updateTaskById(id: number, data: UpdateTaskRequestSchema) {
-        return await $axios.patch(`${this.prefixUrl}/${id}`, data);
+        return await requestApi.PATCH(`${this.prefixUrl}/${id}`, data);
     }
 
     static async deleteTaskById(taskId: number) {
-        return await $axios.delete(`${this.prefixUrl}/${taskId}`);
+        return await requestApi.DELETE(`${this.prefixUrl}/${taskId}`);
     }
 }

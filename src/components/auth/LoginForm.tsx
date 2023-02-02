@@ -2,7 +2,6 @@ import React, { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { API } from "../../api/api";
-import { setAccessToken } from "../../api/axiosRequests";
 import AuthFormLayout from "./AuthFormLayout";
 import ErrorMsg from "../ErrorMsg";
 import { TokenPair } from "../../api/schemas/responses/auth";
@@ -37,7 +36,6 @@ export default function LoginForm() {
         API.auth
             .signIn(signInRequestData)
             .then((tokens: TokenPair) => {
-                setAccessToken(tokens.access);
                 localStorage.setItem("access", tokens.access);
                 localStorage.setItem("refresh", tokens.refresh);
 

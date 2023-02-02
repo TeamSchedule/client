@@ -1,6 +1,6 @@
-import $axios from "../axiosRequests";
 import { CreateUnitRequestSchema, UpdateTeamRequestSchema } from "../schemas/requests/units";
 import { GetAllUnitsResponseSchema, UnitResponseItemSchema } from "../schemas/responses/units";
+import requestApi from "../fetchApi";
 
 /**
  * Класс с методами доступа к api отделов.
@@ -12,8 +12,8 @@ export class UnitsApi {
      * Получить все отделы.
      * */
     static async all(): Promise<UnitResponseItemSchema[]> {
-        return $axios
-            .get(`${this.apiPrefix}`)
+        return requestApi
+            .GET(`${this.apiPrefix}`)
             .then((r) => {
                 return r.data;
             })
@@ -28,7 +28,7 @@ export class UnitsApi {
      * @param id - Идентификатор отдела
      * */
     static async getById(id: number): Promise<UnitResponseItemSchema> {
-        return $axios.get(`${this.apiPrefix}/${id}`).then((r) => r.data);
+        return requestApi.GET(`${this.apiPrefix}/${id}`).then((r) => r.data);
     }
 
     /**
@@ -37,7 +37,7 @@ export class UnitsApi {
      * @param data - Объект с данными отдела
      * */
     static async createUnit(data: CreateUnitRequestSchema) {
-        return (await $axios.post(`${this.apiPrefix}`, data)).data;
+        return (await requestApi.POST(`${this.apiPrefix}`, data)).data;
     }
 
     /**
@@ -47,25 +47,23 @@ export class UnitsApi {
      * @param data - Объект с новыми данными отдела
      * */
     static update(id: number, data: UpdateTeamRequestSchema) {
-        return $axios.patch(`${this.apiPrefix}/${id}`, data);
+        return requestApi.PATCH(`${this.apiPrefix}/${id}`, data);
     }
 
     static async setAvatar(teamId: string, avatarImage: string | Blob) {
-        const config = {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        };
-
         let formData = new FormData();
         formData.append("avatar", avatarImage);
 
-        return await $axios.post(`/avatar/teams/${teamId}`, formData, config).catch(() => {
-            alert("Could not save image! Try later");
-        });
+        return await requestApi
+            .POST(`/avatar/teams/${teamId}`, {
+                body: formData,
+            })
+            .catch(() => {
+                alert("Could not save image! Try later");
+            });
     }
 
     static async deleteAvatar(teamId: string) {
-        return await $axios.delete(`/avatar/teams/${teamId}`);
+        return await requestApi.DELETE(`/avatar/teams/${teamId}`);
     }
 }

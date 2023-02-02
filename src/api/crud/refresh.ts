@@ -1,4 +1,3 @@
-import { LocalStorageApi } from "../storage";
 import requestApi from "../fetchApi";
 import { ACCESS_TOKEN_STORAGE_NAME, REFRESH_TOKEN_STORAGE_NAME } from "../config";
 
@@ -16,10 +15,10 @@ let REFRESH_RETRIES = 3;
  * Создает новый Promise на обновление пары токенов
  */
 function makeRefresh() {
-    const refreshToken = LocalStorageApi.GET(REFRESH_TOKEN_STORAGE_NAME);
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN_STORAGE_NAME);
     return requestApi.POST(`/jwt/refresh`, {
         body: {
-            refresh: refreshToken,
+            token: refreshToken,
         },
     });
 }
@@ -35,15 +34,15 @@ const refresh = async (callback: () => void, handleError: () => void) => {
         try {
             currentRequest = currentRequest || makeRefresh();
             const res = await currentRequest;
-            LocalStorageApi.SET(ACCESS_TOKEN_STORAGE_NAME, res.access);
-            LocalStorageApi.SET(REFRESH_TOKEN_STORAGE_NAME, res.refresh);
+            localStorage.setItem(ACCESS_TOKEN_STORAGE_NAME, res.access);
+            localStorage.setItem(REFRESH_TOKEN_STORAGE_NAME, res.refresh);
             callback();
             break;
         } catch (error) {
             handleError();
             if (retryNumber == REFRESH_RETRIES - 1) {
                 //    TODO: logout
-                LocalStorageApi.CLEAR();
+                localStorage.clear();
                 window.history.pushState("object or string", "Title", "/");
             }
         } finally {

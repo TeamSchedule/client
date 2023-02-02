@@ -1,4 +1,4 @@
-import $axios, { $nonInterceptAxios } from "../axiosRequests";
+import { $nonInterceptAxios } from "../axiosRequests";
 import {
     CreateNewPasswordRequestSchema,
     RefreshTokensRequestSchema,
@@ -7,10 +7,11 @@ import {
     SignInRequestSchema,
     SignUpRequestSchema,
 } from "../schemas/requests/auth";
+import requestApi from "../fetchApi";
 
 export class AuthApi {
     static baseUrl: string = "jwt";
-    
+
     static signIn(data: SignInRequestSchema) {
         return $nonInterceptAxios.post(`/jwt/obtain`, data).then((res) => res.data);
     }
@@ -20,18 +21,18 @@ export class AuthApi {
     }
 
     static refreshAccessToken(token: RefreshTokensRequestSchema) {
-        return $axios.post(`/jwt/refresh`, token);
+        return requestApi.POST(`/jwt/refresh`, token);
     }
 
     static sendResetPswEmail(data: ResetPasswordEmailRequestSchema) {
-        return $axios.post(`/resetpassword`, data);
+        return requestApi.POST(`/resetpassword`, data);
     }
 
     static sendResetPswCode(data: ResetPasswordCodeRequestSchema) {
-        return $axios.post(`/resetcode`, data);
+        return requestApi.POST(`/resetcode`, data);
     }
 
     static createNewPassword(data: CreateNewPasswordRequestSchema) {
-        return $axios.post(`/newpass`, data);
+        return requestApi.POST(`/newpass`, data);
     }
 }
