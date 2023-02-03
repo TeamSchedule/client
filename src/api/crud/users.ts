@@ -7,15 +7,10 @@ export class users {
     static apiPrefix = "/user";
 
     static async getUser(): Promise<UserSchema> {
-        return requestApi
-            .GET(`${this.apiPrefix}/me`)
-            .then((r) => {
-                return r.data;
-            })
-            .then((data: GetMeResponseSchema) => {
-                localStorage.setItem(AuthUserKey, JSON.stringify(data.user));
-                return data.user;
-            });
+        return requestApi.GET(`${this.apiPrefix}/me`).then((data: GetMeResponseSchema) => {
+            localStorage.setItem(AuthUserKey, JSON.stringify(data.user));
+            return data.user;
+        });
     }
 
     static async updateUserInfo(userId: number, data: UpdateUserInfoRequestSchema) {

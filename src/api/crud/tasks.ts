@@ -5,7 +5,7 @@ export class tasks {
     static prefixUrl = "/schedule/task";
 
     static createTask(data: CreateTaskRequestSchema) {
-        return requestApi.POST(`${this.prefixUrl}`, data);
+        return requestApi.POST(`${this.prefixUrl}`, { body: data });
     }
 
     static async getTasks(params: FilterTasksParamsSchema) {
@@ -19,18 +19,18 @@ export class tasks {
                     ","
                 )}&private=true&all=${params.all}`
             )
-        ).data["tasks"];
+        )["tasks"];
     }
 
     static async getTaskById(id: number) {
-        return (await requestApi.GET(`${this.prefixUrl}/${id}`)).data;
+        return requestApi.GET(`${this.prefixUrl}/${id}`);
     }
 
     static async updateTaskById(id: number, data: UpdateTaskRequestSchema) {
-        return await requestApi.PATCH(`${this.prefixUrl}/${id}`, data);
+        return requestApi.PATCH(`${this.prefixUrl}/${id}`, { body: data });
     }
 
     static async deleteTaskById(taskId: number) {
-        return await requestApi.DELETE(`${this.prefixUrl}/${taskId}`);
+        return requestApi.DELETE(`${this.prefixUrl}/${taskId}`);
     }
 }

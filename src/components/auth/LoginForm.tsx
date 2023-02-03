@@ -40,7 +40,6 @@ export default function LoginForm() {
                 localStorage.setItem("refresh", tokens.refresh);
 
                 API.users.getUser().then((user: UserSchema) => {
-                    navigate(`/${user.login}/profile`);
                     login(user);
                 });
             })

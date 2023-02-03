@@ -13,14 +13,9 @@ export class EventsApi {
      * Получить все события.
      * */
     static async all(): Promise<EventResponseItemSchema[]> {
-        return requestApi
-            .GET(`${this.apiPrefix}`)
-            .then((r) => {
-                return r.data;
-            })
-            .then((data: GetAllEventsResponseSchema) => {
-                return data.events;
-            });
+        return requestApi.GET(`${this.apiPrefix}`).then((data: GetAllEventsResponseSchema) => {
+            return data.events;
+        });
     }
 
     /**
@@ -29,14 +24,9 @@ export class EventsApi {
      * @param id - Идентификатор события
      * */
     static async getById(id: number): Promise<EventResponseItemSchema> {
-        return requestApi
-            .GET(`${this.apiPrefix}/${id}`)
-            .then((r) => {
-                return r.data;
-            })
-            .then((data: GetEventByIdResponseSchema) => {
-                return data.event;
-            });
+        return requestApi.GET(`${this.apiPrefix}/${id}`).then((data: GetEventByIdResponseSchema) => {
+            return data.event;
+        });
     }
 
     /**
@@ -45,6 +35,6 @@ export class EventsApi {
      * @param data - Объект с данными события
      * */
     static async createEvent(data: CreateEventRequestSchema) {
-        return (await requestApi.POST(`${this.apiPrefix}`, data)).data;
+        return requestApi.POST(`${this.apiPrefix}`, { body: data });
     }
 }

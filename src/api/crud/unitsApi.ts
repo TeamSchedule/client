@@ -12,14 +12,9 @@ export class UnitsApi {
      * Получить все отделы.
      * */
     static async all(): Promise<UnitResponseItemSchema[]> {
-        return requestApi
-            .GET(`${this.apiPrefix}`)
-            .then((r) => {
-                return r.data;
-            })
-            .then((data: GetAllUnitsResponseSchema) => {
-                return data.units;
-            });
+        return requestApi.GET(`${this.apiPrefix}`).then((data: GetAllUnitsResponseSchema) => {
+            return data.units;
+        });
     }
 
     /**
@@ -28,7 +23,7 @@ export class UnitsApi {
      * @param id - Идентификатор отдела
      * */
     static async getById(id: number): Promise<UnitResponseItemSchema> {
-        return requestApi.GET(`${this.apiPrefix}/${id}`).then((r) => r.data);
+        return requestApi.GET(`${this.apiPrefix}/${id}`);
     }
 
     /**
@@ -37,7 +32,7 @@ export class UnitsApi {
      * @param data - Объект с данными отдела
      * */
     static async createUnit(data: CreateUnitRequestSchema) {
-        return (await requestApi.POST(`${this.apiPrefix}`, data)).data;
+        return requestApi.POST(`${this.apiPrefix}`, { body: data });
     }
 
     /**
@@ -47,7 +42,7 @@ export class UnitsApi {
      * @param data - Объект с новыми данными отдела
      * */
     static update(id: number, data: UpdateTeamRequestSchema) {
-        return requestApi.PATCH(`${this.apiPrefix}/${id}`, data);
+        return requestApi.PATCH(`${this.apiPrefix}/${id}`, { body: data });
     }
 
     static async setAvatar(teamId: string, avatarImage: string | Blob) {
@@ -64,6 +59,6 @@ export class UnitsApi {
     }
 
     static async deleteAvatar(teamId: string) {
-        return await requestApi.DELETE(`/avatar/teams/${teamId}`);
+        return requestApi.DELETE(`/avatar/teams/${teamId}`);
     }
 }
