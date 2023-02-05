@@ -13,6 +13,7 @@ import { ERRORS } from "../../consts";
 import styles from "./Auth.module.scss";
 import { forgotPasswordPath } from "../../routes/paths";
 import useAuth from "../../hooks/useAuth";
+import { ACCESS_TOKEN_STORAGE_NAME, REFRESH_TOKEN_STORAGE_NAME } from "../../api/config";
 
 export default function LoginForm() {
     const navigate = useNavigate();
@@ -36,8 +37,8 @@ export default function LoginForm() {
         API.auth
             .signIn(signInRequestData)
             .then((tokens: TokenPair) => {
-                localStorage.setItem("access", tokens.access);
-                localStorage.setItem("refresh", tokens.refresh);
+                localStorage.setItem(ACCESS_TOKEN_STORAGE_NAME, tokens.access);
+                localStorage.setItem(REFRESH_TOKEN_STORAGE_NAME, tokens.refresh);
 
                 API.users.getUser().then((user: UserSchema) => {
                     login(user);

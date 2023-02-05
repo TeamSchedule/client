@@ -1,5 +1,6 @@
 import AlternateAvatarImageIcon from "./AlternateAvatarImageIcon";
 import BellNotificationIcon from "./BellNotificationIcon";
+import CalendarIcon from "./CalendarIcon";
 import EditIcon from "./EditIcon";
 import EmailIcon from "./EmailIcon";
 import ImageIcon from "./ImageIcon";
@@ -16,6 +17,7 @@ import UserIcon from "./UserIcon";
 export {
     AlternateAvatarImageIcon,
     BellNotificationIcon,
+    CalendarIcon,
     EditIcon,
     ImageIcon,
     HomePageIcon,

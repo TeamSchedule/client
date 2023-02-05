@@ -18,6 +18,7 @@ interface HeaderLinkProps {
     onClick?: () => void;
     Icon?: any;
     badgeContent?: number;
+    className?: string;
 }
 
 export default function HeaderLink(props: HeaderLinkProps) {
@@ -34,6 +35,8 @@ export default function HeaderLink(props: HeaderLinkProps) {
                 className={[
                     styles.headerLink,
                     Boolean(match) ? styles.headerLink__active : styles.headerLink__passive,
+                    "px-md-3",
+                    props.className || "",
                 ].join(" ")}
                 onClick={props.onClick}
             >

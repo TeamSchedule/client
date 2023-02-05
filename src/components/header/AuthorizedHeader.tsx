@@ -1,10 +1,16 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import MainAvatar from "../MainAvatar";
-import { LogoutIcon, SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
+import { CalendarIcon, LogoutIcon, SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
 import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
-import { baseCalendarPath, baseNotificationPath, baseSettingsPath, baseUnitPath } from "../../routes/paths";
+import {
+    baseCalendarPath,
+    baseEventPath,
+    baseNotificationPath,
+    baseSettingsPath,
+    baseUnitPath,
+} from "../../routes/paths";
 import BellNotificationIcon from "../svg/BellNotificationIcon";
 import { NotificationsContext } from "../App";
 import useAuth from "../../hooks/useAuth";
@@ -38,7 +44,7 @@ function HeaderUserInfoSection() {
                 {login}
             </Link>
 
-            <HeaderLink linkTo="/" onClick={logout} Icon={LogoutIcon} />
+            <HeaderLink linkTo="/" onClick={logout} Icon={LogoutIcon} className="d-none d-md-inline-flex" />
         </div>
     );
 }
@@ -46,8 +52,9 @@ function HeaderUserInfoSection() {
 function HeaderMainNavigationSection() {
     return (
         <div className={styles.headerMainNavigationSection}>
+            <HeaderLink linkTo={baseCalendarPath} Icon={CalendarIcon} />
             <HeaderLink linkTo={baseUnitPath} Icon={TeamIcon} />
-            <HeaderLink linkTo={baseCalendarPath} Icon={ToDoListIcon} />
+            <HeaderLink linkTo={baseEventPath} Icon={ToDoListIcon} />
             <HeaderLink linkTo={baseSettingsPath} Icon={SettingsIcon} />
         </div>
     );
