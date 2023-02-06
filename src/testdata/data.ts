@@ -1,6 +1,7 @@
 import { UserSchema } from "../api/schemas/responses/users";
 import { UnitResponseItemSchema } from "../api/schemas/responses/units";
 import { TaskResponseSchema } from "../api/schemas/responses/tasks";
+import { EventResponseItemSchema } from "../api/schemas/responses/events";
 
 const user1: UserSchema = {
     avatar: "",
@@ -79,3 +80,30 @@ export const task: TaskResponseSchema = {
     authorId: 2,
     unit: units[0],
 };
+
+export const eventsData: EventResponseItemSchema[] = [
+    {
+        id: 1,
+        name: "Событие 1",
+        color: "#ff0864",
+        description: "desc",
+        endDate: new Date().toLocaleDateString(),
+        tasks: [],
+    },
+    {
+        id: 2,
+        name: "Событие 2",
+        color: "#ff0864",
+        description: "desc",
+        endDate: new Date().toLocaleDateString(),
+        tasks: [],
+    },
+    {
+        id: 3,
+        name: "Событие 3",
+        color: "#ff0864",
+        description: "desc",
+        endDate: new Date().toLocaleDateString(),
+        tasks: [],
+    },
+];

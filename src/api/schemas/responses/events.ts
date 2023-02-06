@@ -1,7 +1,9 @@
+import { TaskResponseSchema } from "./tasks";
+
 /**
- * Схема ответа на запрос получения всех событий.
+ * Схема ответа на запрос получения списка событий.
  * */
-export interface GetAllEventsResponseSchema {
+export interface GetEventsResponseSchema {
     events: EventResponseItemSchema[];
 }
 
@@ -18,4 +20,8 @@ export interface GetEventByIdResponseSchema {
 export interface EventResponseItemSchema {
     id: number;
     name: string;
+    description: string;
+    color: string;
+    endDate: string;
+    tasks: TaskResponseSchema[];
 }

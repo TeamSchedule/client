@@ -1,6 +1,6 @@
 import {
     EventResponseItemSchema,
-    GetAllEventsResponseSchema,
+    GetEventsResponseSchema,
     GetEventByIdResponseSchema,
 } from "../schemas/responses/events";
 import { CreateEventRequestSchema } from "../schemas/requests/events";
@@ -13,7 +13,7 @@ export class EventsApi {
      * Получить все события.
      * */
     static async all(): Promise<EventResponseItemSchema[]> {
-        return requestApi.GET(`${this.apiPrefix}`).then((data: GetAllEventsResponseSchema) => {
+        return requestApi.GET(`${this.apiPrefix}`).then((data: GetEventsResponseSchema) => {
             return data.events;
         });
     }

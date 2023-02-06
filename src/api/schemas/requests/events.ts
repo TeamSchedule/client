@@ -4,5 +4,5 @@
 export interface CreateEventRequestSchema {
     name: string;
     description?: string;
-    deadline: Date;
+    deadline: Date | null;
 }

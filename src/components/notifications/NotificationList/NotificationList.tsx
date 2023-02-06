@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionHeader";
 import { MenuItem, Select } from "@mui/material";
+import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 
 enum NotificationFilter {
     All = 1, // показать все
@@ -23,7 +23,7 @@ export default function NotificationList(props: NotificationListProps) {
 
     return (
         <>
-            <ScreenSectionHeader text="Оповещения" />
+            <ScreenHeader text="Оповещения" />
             <Select
                 id="notifications-filter"
                 value={filterValue}
