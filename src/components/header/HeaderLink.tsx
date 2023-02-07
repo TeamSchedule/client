@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useMatch } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styles from "./Header.module.scss";
 import { Badge, BadgeProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -24,9 +24,8 @@ interface HeaderLinkProps {
 export default function HeaderLink(props: HeaderLinkProps) {
     const Icon = props.Icon;
 
-    const match = useMatch({
-        path: props.linkTo,
-    });
+    const location = useLocation();
+    const match = location.pathname.startsWith(props.linkTo);
 
     return (
         <>
@@ -34,7 +33,7 @@ export default function HeaderLink(props: HeaderLinkProps) {
                 to={props.linkTo}
                 className={[
                     styles.headerLink,
-                    Boolean(match) ? styles.headerLink__active : styles.headerLink__passive,
+                    match ? styles.headerLink__active : styles.headerLink__passive,
                     "px-md-3",
                     props.className || "",
                 ].join(" ")}
@@ -44,9 +43,7 @@ export default function HeaderLink(props: HeaderLinkProps) {
                     <StyledBadge badgeContent={props.badgeContent} color="primary">
                         <Icon
                             size={iconSize}
-                            className={
-                                Boolean(match) ? styles.headerLink_icon__active : styles.headerLink_icon__passive
-                            }
+                            className={match ? styles.headerLink_icon__active : styles.headerLink_icon__passive}
                         />
                     </StyledBadge>
                 )}
