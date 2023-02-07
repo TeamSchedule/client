@@ -14,7 +14,13 @@ export default function DateLink(props: DateLinkProps) {
 
     return (
         <>
-            <span className={styles.link} onClick={() => navigate(makeDateLink(props.date))}>
+            <span
+                className={styles.link}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(makeDateLink(props.date));
+                }}
+            >
                 {dateStr}
             </span>
         </>

@@ -3,21 +3,34 @@ import TaskDeadline from "../common/TaskDeadline";
 import TaskEvent from "../common/TaskEvent";
 import styles from "./TaskPreview.module.scss";
 import TaskUnit from "../common/TaskUnit";
-import { eventsData, units } from "../../../testdata/data";
+import { task } from "../../../testdata/data";
 import { TaskResponseSchema } from "../../../api/schemas/responses/tasks";
+import { useNavigate } from "react-router-dom";
+import { makeTaskLinkById } from "../../../routes/paths";
+import StatusBadge, { StatusBadgeEnum } from "../../StatusBadge/StatusBadge";
 
 interface TaskPreviewProps {
     task: TaskResponseSchema;
 }
 
 export default function TaskPreview(props: TaskPreviewProps) {
+    const navigate = useNavigate();
+
     return (
         <>
-            <div className={styles.taskPreview}>
+            <div
+                className={styles.taskPreview}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(makeTaskLinkById(task.id));
+                }}
+            >
+                <StatusBadge status={StatusBadgeEnum.Ok} text="Выполнено" />
                 <TaskName name={props.task.name} />
                 <TaskDeadline deadline={new Date(props.task.expirationTime)} />
-                <TaskEvent event={eventsData[0]} />
-                <TaskUnit unit={units[0]} />
+                <TaskEvent event={props.task.event} />
+                <TaskUnit unit={props.task.unit} />
+                <span>Исполнители</span>
             </div>
         </>
     );

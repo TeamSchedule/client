@@ -13,11 +13,13 @@ export const baseNotificationPath: string = "notifications/";
 
 /* ---------------------------------------------------- */
 
-export const baseUnitPath: string = "/units";
-export const createNewUnitPath: string = "/units/new";
+export const UnitListPath: string = "/units";
+export const CreateNewUnitPath: string = "/units/new";
+export const FullViewUnitPath: string = "/units/:id";
+export const EditUnitPath: string = "/units/:id/edit";
 
 export function makeUnitLinkById(id: number): string {
-    return baseUnitPath + "/" + id.toString();
+    return UnitListPath + "/" + id.toString();
 }
 
 /* ---------------------------------------------------- */
@@ -29,11 +31,13 @@ export function makeTaskLinkById(id: number): string {
 
 /* ---------------------------------------------------- */
 
-export const baseEventPath: string = "/events";
-export const createNewEventPath: string = "/events/new";
+export const EventListPath: string = "/events";
+export const CreateNewEventPath: string = "/events/new";
+export const FullViewEventPath: string = "/events/:id";
+export const EditEventPath: string = "/events/:id/edit";
 
 export function makeEventLinkById(id: number): string {
-    return baseEventPath + "/" + id.toString();
+    return EventListPath + "/" + id.toString();
 }
 
 /* ---------------------------------------------------- */

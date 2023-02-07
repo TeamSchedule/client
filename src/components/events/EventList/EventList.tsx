@@ -63,7 +63,7 @@ export default function EventList(props: EventListProps) {
                 </Select>
 
                 {events.map((event) => (
-                    <EventPreview event={event} />
+                    <EventPreview key={event.id} event={event} />
                 ))}
 
                 <BaseButton

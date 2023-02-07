@@ -2,7 +2,7 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
 import React, { useMemo } from "react";
 import { AuthContext } from "../hooks/useAuth";
-import { baseUnitPath, loginPath } from "./paths";
+import { loginPath, UnitListPath } from "./paths";
 import { AuthUserKey } from "../consts/common";
 
 const AuthProvider = ({ children }: any) => {
@@ -11,7 +11,7 @@ const AuthProvider = ({ children }: any) => {
 
     const login = (data: object) => {
         setUser(data);
-        navigate(baseUnitPath);
+        navigate(UnitListPath);
     };
 
     const logout = () => {

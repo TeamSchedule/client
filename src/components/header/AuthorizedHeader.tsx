@@ -6,10 +6,10 @@ import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
 import {
     baseCalendarPath,
-    baseEventPath,
     baseNotificationPath,
     baseSettingsPath,
-    baseUnitPath,
+    EventListPath,
+    UnitListPath,
 } from "../../routes/paths";
 import BellNotificationIcon from "../svg/BellNotificationIcon";
 import { NotificationsContext } from "../App";
@@ -53,8 +53,8 @@ function HeaderMainNavigationSection() {
     return (
         <div className={styles.headerMainNavigationSection}>
             <HeaderLink linkTo={baseCalendarPath} Icon={CalendarIcon} />
-            <HeaderLink linkTo={baseUnitPath} Icon={TeamIcon} />
-            <HeaderLink linkTo={baseEventPath} Icon={ToDoListIcon} />
+            <HeaderLink linkTo={UnitListPath} Icon={TeamIcon} />
+            <HeaderLink linkTo={EventListPath} Icon={ToDoListIcon} />
             <HeaderLink linkTo={baseSettingsPath} Icon={SettingsIcon} />
         </div>
     );

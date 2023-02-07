@@ -12,7 +12,13 @@ export default function UnitLink(props: UnitLinkProps) {
 
     return (
         <>
-            <span className={styles.link} onClick={() => navigate(makeUnitLinkById(props.id))}>
+            <span
+                className={styles.link}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(makeUnitLinkById(props.id), { state: { id: props.id } });
+                }}
+            >
                 {props.name}
             </span>
         </>

@@ -12,7 +12,13 @@ export default function EventLink(props: EventLinkProps) {
 
     return (
         <>
-            <span className={styles.link} onClick={() => navigate(makeEventLinkById(props.eventId))}>
+            <span
+                className={styles.link}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(makeEventLinkById(props.eventId), { state: { id: props.eventId } });
+                }}
+            >
                 {props.eventName}
             </span>
         </>

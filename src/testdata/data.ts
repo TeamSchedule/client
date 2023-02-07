@@ -78,6 +78,14 @@ export const task: TaskResponseSchema = {
     expirationTime: new Date().toLocaleDateString(),
     assigneeId: 1,
     authorId: 2,
+    event: {
+        id: 1,
+        name: "Событие 1",
+        color: "#ff0864",
+        description: "desc",
+        endDate: new Date().toLocaleDateString(),
+        tasks: [],
+    },
     unit: units[0],
 };
 
@@ -88,7 +96,7 @@ export const eventsData: EventResponseItemSchema[] = [
         color: "#ff0864",
         description: "desc",
         endDate: new Date().toLocaleDateString(),
-        tasks: [],
+        tasks: [task],
     },
     {
         id: 2,

@@ -1,7 +1,6 @@
 import React from "react";
 import { createBrowserRouter, createRoutesFromElements, Navigate, Outlet, Route } from "react-router-dom";
 import App from "../components/App";
-import AvatarEditorModal from "../components/AvatarEditorModal/AvatarEditorModal";
 import { TaskPage } from "../components/taskPage/TaskPage";
 import { TaskViewer } from "../components/taskPage/TaskViewer";
 import CreateTaskForm from "../components/taskForms/CreateTaskForm";
@@ -15,16 +14,22 @@ import EventList from "../components/events/EventList/EventList";
 import CreateEventForm from "../components/events/CreateEventForm/CreateEventForm";
 import {
     baseCalendarPath,
-    baseEventPath,
     baseNotificationPath,
-    baseUnitPath,
+    CreateNewEventPath,
+    CreateNewUnitPath,
+    EditEventPath,
+    EditUnitPath,
+    EventListPath,
     forgotPasswordPath,
+    FullViewEventPath,
+    FullViewUnitPath,
     loginPath,
     newPasswordPath,
     notFound,
     registrationPath,
     resetPasswordCodePath,
     successRegistrationPath,
+    UnitListPath,
 } from "./paths";
 import NotificationList from "../components/notifications/NotificationList/NotificationList";
 import useAuth from "../hooks/useAuth";
@@ -35,6 +40,9 @@ import NewPasswordForm from "../components/auth/reset_password/NewPasswordForm";
 import RegisterForm from "../components/auth/RegisterForm";
 import SuccessRegisteredMsg from "../components/auth/SuccessRegisteredMsg";
 import AuthProvider from "./AuthProvider";
+import FullEventView from "../components/events/FullEventView/FullEventView";
+import EditEventForm from "../components/events/EditEventForm/EditEventForm";
+import AvatarEditorModal from "../components/AvatarEditorModal";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -62,7 +70,7 @@ const PublicLayout = () => {
     const { user } = useAuth();
 
     if (user) {
-        return <Navigate to={baseUnitPath} />;
+        return <Navigate to={UnitListPath} />;
     }
 
     return <Outlet />;
@@ -100,34 +108,28 @@ export const router = createBrowserRouter(
 
                 <Route element={<ProtectedLayout />}>
                     <Route element={<App />} /*loader={API.users.getUser}*/>
-                        <Route index element={<Navigate to={"calendar/"} replace={true} />} />
+                        <Route index element={<Navigate to={EventListPath} replace={true} />} />
 
-                        <Route path="profile/avatar" element={<AvatarEditorModal avatarType="personal" />} />
+                        <Route path="/profile/avatar" element={<AvatarEditorModal avatarType="personal" />} />
 
-                        <Route path={baseEventPath} element={<Outlet />}>
-                            <Route index element={<EventList />} />
-                            <Route path="new" element={<CreateEventForm />} />
+                        {/* ==================== events routes ==================== */}
+                        <Route path={EventListPath} element={<EventList />} />
+                        <Route path={CreateNewEventPath} element={<CreateEventForm />} />
+                        <Route path={FullViewEventPath} element={<FullEventView />} />
+                        <Route path={EditEventPath} element={<EditEventForm />} />
 
-                            <Route path=":id/" element={<Outlet />}>
-                                {/*<Route index element={< />} />*/}
-                                {/*<Route path="edit" element={< />} />*/}
-                            </Route>
-                        </Route>
-
+                        {/* ==================== notifications routes ==================== */}
                         <Route path={baseNotificationPath} element={<Outlet />}>
                             <Route index element={<NotificationList />} />
                         </Route>
 
-                        <Route path={baseUnitPath} element={<Outlet />}>
-                            <Route index element={<UnitList />} />
-                            <Route path="new" element={<CreateUnitForm />} />
+                        {/* ==================== units routes ==================== */}
+                        <Route path={UnitListPath} element={<UnitList />} />
+                        <Route path={CreateNewUnitPath} element={<CreateUnitForm />} />
+                        <Route path={FullViewUnitPath} element={<FullUnitView />} />
+                        <Route path={EditUnitPath} element={<EditUnitForm />} />
 
-                            <Route path=":id/" element={<Outlet />}>
-                                <Route index element={<FullUnitView />} />
-                                <Route path="edit" element={<EditUnitForm />} />
-                            </Route>
-                        </Route>
-
+                        {/* ==================== calendar routes ==================== */}
                         <Route path={baseCalendarPath} element={<TaskPage />}>
                             <Route index element={<TaskViewer />} />
                             <Route path="new/:date" element={<CreateTaskForm />} />
