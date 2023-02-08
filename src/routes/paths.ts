@@ -10,6 +10,7 @@ export const successRegistrationPath: string = "/ready";
 /* ---------------------------------------------------- */
 
 export const baseNotificationPath: string = "notifications/";
+export const NotificationListPath: string = "/notifications";
 
 /* ---------------------------------------------------- */
 

@@ -55,14 +55,16 @@ export default function EventList(props: EventListProps) {
     return (
         <>
             <div>
-                <ScreenHeader text="События" />
+                <div className="d-flex justify-content-center">
+                    <ScreenHeader text="События" />
 
-                <PlainSelector
-                    filterValue={eventFilterValue}
-                    setFilterValue={setEventFilterValue}
-                    id="event-filter"
-                    filterObj={EventFilters}
-                />
+                    <PlainSelector
+                        filterValue={eventFilterValue}
+                        setFilterValue={setEventFilterValue}
+                        id="event-filter"
+                        filterObj={EventFilters}
+                    />
+                </div>
 
                 {events.map((event) => (
                     <EventPreview key={event.id} event={event} />

@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import styles from "./Header.module.scss";
 import { Badge, BadgeProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { startPagePath } from "../../routes/paths";
 
 export const iconSize = 36;
 
@@ -24,8 +25,8 @@ interface HeaderLinkProps {
 export default function HeaderLink(props: HeaderLinkProps) {
     const Icon = props.Icon;
 
-    const location = useLocation();
-    const match = location.pathname.startsWith(props.linkTo);
+    const { pathname } = useLocation();
+    const match = props.linkTo === startPagePath ? false : pathname.startsWith(props.linkTo);
 
     return (
         <>

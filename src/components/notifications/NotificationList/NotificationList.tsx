@@ -29,14 +29,16 @@ export default function NotificationList(props: NotificationListProps) {
 
     return (
         <>
-            <ScreenHeader text="Оповещения" />
+            <div className="d-flex justify-content-center">
+                <ScreenHeader text="Уведомления" />
 
-            <PlainSelector
-                filterValue={filterValue}
-                setFilterValue={setFilterValue}
-                id="notifications-filter"
-                filterObj={NotificationFilters}
-            />
+                <PlainSelector
+                    filterValue={filterValue}
+                    setFilterValue={setFilterValue}
+                    id="notifications-filter"
+                    filterObj={NotificationFilters}
+                />
+            </div>
         </>
     );
 }

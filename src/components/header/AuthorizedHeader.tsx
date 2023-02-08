@@ -6,9 +6,10 @@ import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
 import {
     baseCalendarPath,
-    baseNotificationPath,
     baseSettingsPath,
     EventListPath,
+    NotificationListPath,
+    startPagePath,
     UnitListPath,
 } from "../../routes/paths";
 import BellNotificationIcon from "../svg/BellNotificationIcon";
@@ -34,9 +35,10 @@ function HeaderUserInfoSection() {
     return (
         <div className={styles.headerUserInfoSection}>
             <HeaderLink
-                linkTo={baseNotificationPath}
+                linkTo={NotificationListPath}
                 Icon={BellNotificationIcon}
                 badgeContent={newNotifications.length}
+                className="mx-1"
             />
 
             <MainAvatar size={iconSize} src={user?.avatar} />
@@ -44,7 +46,7 @@ function HeaderUserInfoSection() {
                 {login}
             </Link>
 
-            <HeaderLink linkTo="/" onClick={logout} Icon={LogoutIcon} className="d-none d-md-inline-flex" />
+            <HeaderLink linkTo={startPagePath} onClick={logout} Icon={LogoutIcon} className="d-none d-md-inline-flex" />
         </div>
     );
 }
