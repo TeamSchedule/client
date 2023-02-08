@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
 import { BaseButton } from "../../buttons";
 import { useNavigate } from "react-router-dom";
-import { MenuItem, Select } from "@mui/material";
 import EventPreview from "../EventPreview/EventPreview";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { eventsData } from "../../../testdata/data";
+import PlainSelector from "../../selectors/PlainSelector";
 
 enum EventFilterEnum {
     All = 0,
@@ -14,6 +14,13 @@ enum EventFilterEnum {
     Done = 2,
     Closed = 3,
 }
+
+const EventFilters: Array<[string, string]> = [
+    [EventFilterEnum.All.toString(), "Все"],
+    [EventFilterEnum.InProgress.toString(), "Активные"],
+    [EventFilterEnum.Done.toString(), "Завершенные"],
+    [EventFilterEnum.Closed.toString(), "Отмененные"],
+];
 
 interface EventListProps {}
 
@@ -49,18 +56,13 @@ export default function EventList(props: EventListProps) {
         <>
             <div>
                 <ScreenHeader text="События" />
-                <Select
+
+                <PlainSelector
+                    filterValue={eventFilterValue}
+                    setFilterValue={setEventFilterValue}
                     id="event-filter"
-                    value={eventFilterValue}
-                    onChange={(e) => {
-                        setEventFilterValue(e.target.value as number);
-                    }}
-                >
-                    <MenuItem value={EventFilterEnum.All}>Все</MenuItem>
-                    <MenuItem value={EventFilterEnum.InProgress}>Активные</MenuItem>
-                    <MenuItem value={EventFilterEnum.Done}>Завершенные</MenuItem>
-                    <MenuItem value={EventFilterEnum.Closed}>Отмененные</MenuItem>
-                </Select>
+                    filterObj={EventFilters}
+                />
 
                 {events.map((event) => (
                     <EventPreview key={event.id} event={event} />

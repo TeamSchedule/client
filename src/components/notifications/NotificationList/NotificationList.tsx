@@ -1,18 +1,24 @@
-import { useEffect, useState } from "react";
-import { MenuItem, Select } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
+import PlainSelector from "../../selectors/PlainSelector";
 
-enum NotificationFilter {
+enum NotificationFilterEnum {
     All = 1, // показать все
     Unread = 2, // показать только непрочитанные
     Read = 3, // показать только прочитанные
 }
 
+const NotificationFilters: Array<[string, string]> = [
+    [NotificationFilterEnum.All.toString(), "Все"],
+    [NotificationFilterEnum.Read.toString(), "Прочитанные"],
+    [NotificationFilterEnum.Unread.toString(), "Непрочитанные"],
+];
+
 interface NotificationListProps {}
 
 export default function NotificationList(props: NotificationListProps) {
     // параметр отображения оповещений
-    const [filterValue, setFilterValue] = useState<number>(NotificationFilter.All);
+    const [filterValue, setFilterValue] = useState<number>(NotificationFilterEnum.All);
 
     // список отображаемых оповещений
     const [notifications, setNotifications] = useState<Array<any>>([]);
@@ -24,17 +30,13 @@ export default function NotificationList(props: NotificationListProps) {
     return (
         <>
             <ScreenHeader text="Оповещения" />
-            <Select
+
+            <PlainSelector
+                filterValue={filterValue}
+                setFilterValue={setFilterValue}
                 id="notifications-filter"
-                value={filterValue}
-                onChange={(e) => {
-                    setFilterValue(e.target.value as number);
-                }}
-            >
-                <MenuItem value={NotificationFilter.All}>Все</MenuItem>
-                <MenuItem value={NotificationFilter.Unread}>Непрочитанные</MenuItem>
-                <MenuItem value={NotificationFilter.Read}>Прочитанные</MenuItem>
-            </Select>
+                filterObj={NotificationFilters}
+            />
         </>
     );
 }
