@@ -23,15 +23,16 @@ import { UnitResponseItemSchema } from "../../api/schemas/responses/units";
 export function TaskViewer() {
     const navigate = useNavigate();
 
-    const [isLoaded, setIsLoaded] = useState(false); // все задачи
-    const [tasks, setTasks] = useState<Array<TaskResponseSchema>>([]); // все задачи
-    const [filteredTasks, setFilteredTasks] = useState<Array<TaskResponseSchema>>([]); // задачи для выбранных команд
+    const [tasks, setTasks] = useState<Array<TaskResponseSchema>>([]); // все задачи для ближайших дат
+    const [filteredTasks, setFilteredTasks] = useState<Array<TaskResponseSchema>>([]); // задачи выбранные фильтрами
 
-    const [teams, setTeams] = useState<Array<UnitResponseItemSchema>>([]); // все команды
-    const [showedTeams, setShowedTeams] = useState<Array<number>>([]); // команды, выбранные в фильтре
+    const [teams, setTeams] = useState<UnitResponseItemSchema[]>([]); // все отделы
+    const [showedTeams, setShowedTeams] = useState<Array<number>>([]); // выбранные отделы, для которых отображаются задачи
 
     const [calendarTasks, setCalendarTasks] = useState<EventSourceInput>([]);
     const [teamToColor] = useState({});
+
+    const [isLoaded, setIsLoaded] = useState(false); // статус загрузки задач
 
     const calendarRef: React.RefObject<any> = React.createRef();
 
@@ -60,11 +61,16 @@ export function TaskViewer() {
                 all: true,
             };
 
-            API.tasks.getTasks(filterTasksParams).then((tasks: Array<TaskResponseSchema>) => {
-                setTasks(tasks);
-                setFilteredTasks(() => tasks);
-                setIsLoaded(true);
-            });
+            API.tasks
+                .getTasks(filterTasksParams)
+                .then((tasks: Array<TaskResponseSchema>) => {
+                    setTasks(tasks);
+                    setFilteredTasks(() => tasks);
+                })
+                .catch(() => {})
+                .finally(() => {
+                    setIsLoaded(false);
+                });
         });
     }, [teamToColor]);
 

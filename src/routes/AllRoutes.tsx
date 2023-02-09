@@ -43,6 +43,7 @@ import AuthProvider from "./AuthProvider";
 import FullEventView from "../components/events/FullEventView/FullEventView";
 import EditEventForm from "../components/events/EditEventForm/EditEventForm";
 import AvatarEditorModal from "../components/AvatarEditorModal";
+import FullCalendarMobileView from "../components/calendars/FullCalendarMobileView";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -130,6 +131,8 @@ export const router = createBrowserRouter(
                         <Route path={EditUnitPath} element={<EditUnitForm />} />
 
                         {/* ==================== calendar routes ==================== */}
+                        <Route path="/mcalendar" element={<FullCalendarMobileView />} />
+
                         <Route path={baseCalendarPath} element={<TaskPage />}>
                             <Route index element={<TaskViewer />} />
                             <Route path="new/:date" element={<CreateTaskForm />} />
