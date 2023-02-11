@@ -1,5 +1,6 @@
 import { UnitResponseItemSchema } from "./units";
 import { EventResponseItemSchema } from "./events";
+import { UserSchema } from "./users";
 
 export interface GetTaskResponseSchemas {
     task: TaskResponseItemSchema;
@@ -12,7 +13,7 @@ export interface TaskResponseItemSchema {
     closed: boolean;
     creationTime: string;
     expirationTime: string;
-    assigneeId: number;
+    assignee: UserSchema;
     authorId: number;
     unit: UnitResponseItemSchema;
     event: EventResponseItemSchema;

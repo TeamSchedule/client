@@ -232,7 +232,7 @@ function AvatarEditorSection(props: AvatarEditorSectionProps) {
                             onClick={onClickPreview}
                             disabled={!enabledToSave}
                         />
-                        {croppedImg && <MainAvatar src={croppedImg} size={125} />}
+                        {croppedImg && <MainAvatar src={croppedImg} />}
                     </div>
                 </div>
                 <BaseButton

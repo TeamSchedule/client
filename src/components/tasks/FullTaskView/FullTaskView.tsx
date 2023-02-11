@@ -7,11 +7,12 @@ import TaskDeadline from "../common/TaskDeadline";
 import TaskEvent from "../common/TaskEvent";
 import TaskUnit from "../common/TaskUnit";
 import { taskData } from "../../../testdata/data";
+import Executors from "../common/Executors";
 
 export default function FullTaskView() {
     const { id } = useParams();
 
-    const [task, setTask] = useState<TaskResponseItemSchema | null>(taskData);
+    const [task, setTask] = useState<TaskResponseItemSchema | undefined>(taskData);
 
     useEffect(() => {
         if (!id) {
@@ -26,17 +27,14 @@ export default function FullTaskView() {
             .finally(() => {});
     }, []);
 
-    if (!task) {
-        return null;
-    }
-
     return (
         <>
             <div>
-                <TaskName name={task.name} />
-                <TaskDeadline deadline={new Date(task.expirationTime)} />
-                <TaskEvent event={task.event} />
-                <TaskUnit unit={task.unit} />
+                <TaskName name={task?.name} />
+                <TaskDeadline deadline={task ? new Date(task?.expirationTime) : undefined} />
+                <TaskEvent event={task?.event} />
+                <TaskUnit unit={task?.unit} />
+                <Executors users={task ? [task.assignee] : []} />
             </div>
         </>
     );

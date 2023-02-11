@@ -8,7 +8,6 @@ function makeAvatarURL(path: string | undefined | null) {
 }
 
 interface MainAvatarProps {
-    size: number;
     placeholder?: string;
     src?: string;
     fullPath?: boolean;

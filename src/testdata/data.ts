@@ -76,7 +76,7 @@ export const taskData: TaskResponseItemSchema = {
     closed: false,
     creationTime: new Date().toLocaleDateString(),
     expirationTime: new Date().toLocaleDateString(),
-    assigneeId: 1,
+    assignee: user1,
     authorId: 2,
     event: {
         id: 1,

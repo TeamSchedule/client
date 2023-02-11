@@ -2,6 +2,7 @@ import { LocalizationProvider, PickersDay, PickersDayProps, StaticDatePicker } f
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Box, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import { weekCount } from "../../../utils/dateutils";
 
 const MaxDateSize = 80;
 
@@ -16,12 +17,16 @@ function CustomDayRenderer(date: Date, selectedDays: Array<Date | null>, pickers
 /* https://github.com/mui/material-ui/issues/27700 */
 
 interface MobileCalendarProps {
-    value: Date;
-    handleChange: (value: Date) => void;
+    viewedDate: Date;
+    setViewedDate: (value: Date) => void;
+    chosenDate: Date;
+    setChosenDate: (value: Date) => void;
 }
 
 export default function MobileCalendar(props: MobileCalendarProps) {
     const [dateSize, setDateSize] = useState<number>(44);
+    const [currentMonth, setCurrentMonth] = useState<number>(props.viewedDate.getMonth() + 1);
+    const [currentYear, setCurrentYear] = useState<number>(props.viewedDate.getFullYear());
 
     useEffect(() => {
         let timerId = setInterval(() => {
@@ -33,6 +38,10 @@ export default function MobileCalendar(props: MobileCalendarProps) {
             clearInterval(timerId);
         };
     }, []);
+
+    useEffect(() => {
+        props.setViewedDate(new Date(currentYear, currentMonth));
+    }, [currentMonth, currentYear]);
 
     return (
         <div className="d-block d-md-none">
@@ -61,8 +70,8 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                             width: dateSize,
                             margin: 0,
                         },
-                        "& .PrivatePickersSlideTransition-root": {
-                            minHeight: dateSize * 6,
+                        "& .PrivatePickersSlideTransition-root, & .MuiDayPicker-monthContainer": {
+                            minHeight: dateSize * weekCount(currentYear, currentMonth),
                         },
                         '& .PrivatePickersSlideTransition-root [role="row"]': {
                             margin: 0,
@@ -76,20 +85,26 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         "& .MuiPickersDay-root": {
                             width: dateSize,
                             height: dateSize,
+                            fontSize: "1rem",
                         },
                     }}
                 >
                     <StaticDatePicker
                         className="w-100"
                         showDaysOutsideCurrentMonth
-                        minDate={new Date("2000-01-01")}
+                        // minDate={new Date("2000-01-01")}
                         displayStaticWrapperAs="desktop"
                         openTo="day"
-                        value={props.value}
+                        value={props.chosenDate}
                         onChange={(v) => {
                             // @ts-ignore
-                            props.handleChange(v !== null ? v["$d"] : new Date());
+                            props.setChosenDate(v["$d"]);
                         }}
+                        onMonthChange={(month) => {
+                            // @ts-ignore
+                            setCurrentMonth(month["$M"]);
+                        }}
+                        onYearChange={setCurrentYear}
                         renderInput={(params) => <TextField {...params} />}
                         // renderDay={CustomDayRenderer}
                         componentsProps={{

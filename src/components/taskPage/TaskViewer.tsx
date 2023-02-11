@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { getNextDayDate } from "../../utils/getPrevDayDate";
 import FilterColumn from "./FilterColumn";
 
 import FullCalendar, { CalendarApi, EventClickArg } from "@fullcalendar/react";
@@ -19,6 +18,7 @@ import { TaskResponseItemSchema } from "../../api/schemas/responses/tasks";
 import { EventSourceInput } from "@fullcalendar/core";
 import { EventInput } from "@fullcalendar/common";
 import { UnitResponseItemSchema } from "../../api/schemas/responses/units";
+import { getNextDayDate } from "../../utils/dateutils";
 
 export function TaskViewer() {
     const navigate = useNavigate();

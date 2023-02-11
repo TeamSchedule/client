@@ -5,11 +5,11 @@ import { CalendarIcon, LogoutIcon, SettingsIcon, TeamIcon, ToDoListIcon } from "
 import HeaderLink, { iconSize } from "./HeaderLink";
 import styles from "./Header.module.scss";
 import {
-    baseCalendarPath,
     baseSettingsPath,
     EventListPath,
     NotificationListPath,
     startPagePath,
+    TaskListPath,
     UnitListPath,
 } from "../../routes/paths";
 import BellNotificationIcon from "../svg/BellNotificationIcon";
@@ -41,7 +41,7 @@ function HeaderUserInfoSection() {
                 className="mx-1"
             />
 
-            <MainAvatar size={iconSize} src={user?.avatar} />
+            <MainAvatar src={user?.avatar} />
             <Link to={`${login}/profile`} className="px-3 fs-5 d-none d-sm-block">
                 {login}
             </Link>
@@ -54,7 +54,7 @@ function HeaderUserInfoSection() {
 function HeaderMainNavigationSection() {
     return (
         <div className={styles.headerMainNavigationSection}>
-            <HeaderLink linkTo={baseCalendarPath} Icon={CalendarIcon} />
+            <HeaderLink linkTo={TaskListPath} Icon={CalendarIcon} />
             <HeaderLink linkTo={UnitListPath} Icon={TeamIcon} />
             <HeaderLink linkTo={EventListPath} Icon={ToDoListIcon} />
             <HeaderLink linkTo={baseSettingsPath} Icon={SettingsIcon} />

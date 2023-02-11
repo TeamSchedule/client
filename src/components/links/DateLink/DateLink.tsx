@@ -2,8 +2,8 @@ import styles from "../Link.module.scss";
 import { useNavigate } from "react-router-dom";
 import { makeDateLink } from "../../../routes/paths";
 import Typography from "@mui/material/Typography";
-import getDateRepresentation from "../../../utils/getDateRepresentation";
 import SkeletonWrapper from "../../SkeletonWrapper";
+import { getDateRepresentation } from "../../../utils/dateutils";
 
 interface DateLinkProps {
     date: Date | undefined;

@@ -1,4 +1,4 @@
-import getDateRepresentation from "../utils/getDateRepresentation";
+import { getDateRepresentation } from "../utils/dateutils";
 
 export const notFound = "*";
 export const startPagePath = "/";
@@ -26,13 +26,6 @@ export function makeUnitLinkById(id: number): string {
 }
 
 /* ---------------------------------------------------- */
-export const baseTaskPath: string = "/tasks";
-
-export function makeTaskLinkById(id: number): string {
-    return baseTaskPath + "/" + id.toString();
-}
-
-/* ---------------------------------------------------- */
 
 export const EventListPath: string = "/events";
 export const CreateNewEventPath: string = "/events/new";
@@ -49,6 +42,10 @@ export const TaskListPath: string = "/tasks";
 export const CreateNewTaskPath: string = "/tasks/new";
 export const FullViewTaskPath: string = "/tasks/:id";
 export const EditTaskPath: string = "/tasks/:id/edit";
+
+export function makeTaskLinkById(id: number): string {
+    return TaskListPath + "/" + id.toString();
+}
 
 /* ---------------------------------------------------- */
 
