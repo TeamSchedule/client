@@ -1,13 +1,14 @@
 @use "../../../assets/styles/colors.scss";
 
 .taskName {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: colors.$brand;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: colors.$brand;
+    text-align: center;
 }
 
 .taskDeadlineLable {
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: colors.$secondary;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: colors.$secondary;
 }

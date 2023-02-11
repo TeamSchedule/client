@@ -1,10 +1,11 @@
 @use "../../assets/styles/colors";
 
 .link {
-  text-decoration: underline;
-  color: colors.$brand;
+    text-decoration: underline;
+    color: colors.$brand;
+    flex-grow: 1;
 
-  &:hover {
-    cursor: pointer;
-  }
+    &:hover {
+        cursor: pointer;
+    }
 }

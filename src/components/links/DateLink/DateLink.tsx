@@ -1,28 +1,28 @@
 import styles from "../Link.module.scss";
 import { useNavigate } from "react-router-dom";
 import { makeDateLink } from "../../../routes/paths";
+import Typography from "@mui/material/Typography";
+import getDateRepresentation from "../../../utils/getDateRepresentation";
+import SkeletonWrapper from "../../SkeletonWrapper";
 
 interface DateLinkProps {
-    date: Date;
+    date: Date | undefined;
 }
 
 export default function DateLink(props: DateLinkProps) {
     const navigate = useNavigate();
 
-    // const dateStr = [props.date.getFullYear(), props.date.getMonth() + 1, props.date.getDate()].join("-");
-    const dateStr = props.date.toLocaleDateString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" });
+    function onClick(e: React.MouseEvent<any>) {
+        e.stopPropagation();
+        if (!props.date) return;
+        navigate(makeDateLink(props.date));
+    }
 
     return (
-        <>
-            <span
-                className={styles.link}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(makeDateLink(props.date));
-                }}
-            >
-                {dateStr}
-            </span>
-        </>
+        <span onClick={onClick} className={styles.link}>
+            <Typography variant="subtitle1" component="div">
+                {props.date ? getDateRepresentation(props.date) : <SkeletonWrapper />}
+            </Typography>
+        </span>
     );
 }

@@ -3,14 +3,14 @@ import TaskDeadline from "../common/TaskDeadline";
 import TaskEvent from "../common/TaskEvent";
 import styles from "./TaskPreview.module.scss";
 import TaskUnit from "../common/TaskUnit";
-import { task } from "../../../testdata/data";
-import { TaskResponseSchema } from "../../../api/schemas/responses/tasks";
+import { taskData } from "../../../testdata/data";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { useNavigate } from "react-router-dom";
 import { makeTaskLinkById } from "../../../routes/paths";
 import StatusBadge, { StatusBadgeEnum } from "../../StatusBadge/StatusBadge";
 
 interface TaskPreviewProps {
-    task: TaskResponseSchema;
+    task: TaskResponseItemSchema;
 }
 
 export default function TaskPreview(props: TaskPreviewProps) {
@@ -22,7 +22,7 @@ export default function TaskPreview(props: TaskPreviewProps) {
                 className={styles.taskPreview}
                 onClick={(e) => {
                     e.stopPropagation();
-                    navigate(makeTaskLinkById(task.id));
+                    navigate(makeTaskLinkById(taskData.id));
                 }}
             >
                 <StatusBadge status={StatusBadgeEnum.Ok} text="Выполнено" />

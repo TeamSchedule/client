@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Auth.module.scss";
 
 interface AuthFormLayoutProps {
-    children: React.ReactElement;
+    children: string | JSX.Element | JSX.Element[];
     onSubmit: React.FormEventHandler;
     autocomplete?: string;
 }

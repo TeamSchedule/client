@@ -10,4 +10,7 @@ const MIN_TEAM_NAME_LEN: number = 4;
 // Ключ данных текущего пользователя в localStorage
 const AuthUserKey: string = "user";
 
-export { AuthUserKey, MIN_PASSWORD_LENGTH, MIN_TEAM_NAME_LEN, MIN_USERNAME_LENGTH };
+// Цвет скелетонов
+const SkeletonColor: string = "grey.400";
+
+export { AuthUserKey, MIN_PASSWORD_LENGTH, MIN_TEAM_NAME_LEN, MIN_USERNAME_LENGTH, SkeletonColor };

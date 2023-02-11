@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import MobileCalendar from "../MobileCalendar";
-import { TaskResponseSchema } from "../../../api/schemas/responses/tasks";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import TaskPreview from "../../tasks/TaskPreview/TaskPreview";
-import { task } from "../../../testdata/data";
+import { taskData } from "../../../testdata/data";
 
 export default function FullCalendarMobileView() {
     const [currentDate, setCurrentDate] = useState<Date>(new Date()); // дата, для которой показываются задачи
@@ -10,13 +10,13 @@ export default function FullCalendarMobileView() {
     return (
         <>
             <MobileCalendar value={currentDate} handleChange={setCurrentDate} />
-            <DayTaskList day={currentDate} tasks={[task, task]} />
+            <DayTaskList day={currentDate} tasks={[taskData, taskData]} />
         </>
     );
 }
 
 interface DayTaskListProps {
-    tasks: Array<TaskResponseSchema>;
+    tasks: Array<TaskResponseItemSchema>;
     day: Date;
 }
 

@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import RightAngleIcon from "../../svg/RightAngleIcon";
 import { PrimaryPreviewText, SecondaryPreviewText } from "../PreviewComponents";
 import styles from "./ShortPreviewTaskItem.module.scss";
-import { TaskResponseSchema } from "../../../api/schemas/responses/tasks";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 
 interface ShortPreviewTaskItemProps {
-    task: TaskResponseSchema;
+    task: TaskResponseItemSchema;
     imgSrc?: string;
     isPrivate?: boolean;
     taskName: string;

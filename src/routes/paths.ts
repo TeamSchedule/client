@@ -1,3 +1,5 @@
+import getDateRepresentation from "../utils/getDateRepresentation";
+
 export const notFound = "*";
 export const startPagePath = "/";
 export const loginPath: string = "/login";
@@ -43,10 +45,17 @@ export function makeEventLinkById(id: number): string {
 
 /* ---------------------------------------------------- */
 
+export const TaskListPath: string = "/tasks";
+export const CreateNewTaskPath: string = "/tasks/new";
+export const FullViewTaskPath: string = "/tasks/:id";
+export const EditTaskPath: string = "/tasks/:id/edit";
+
+/* ---------------------------------------------------- */
+
 export const baseCalendarPath: string = "/calendar";
 
 export function makeDateLink(date: Date): string {
-    const dateStr = date.toLocaleDateString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" });
+    const dateStr = getDateRepresentation(date);
     const urlDateStr = dateStr.split(".").join("-");
 
     return baseCalendarPath + "/" + urlDateStr;

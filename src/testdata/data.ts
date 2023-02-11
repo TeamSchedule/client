@@ -1,6 +1,6 @@
 import { UserSchema } from "../api/schemas/responses/users";
 import { UnitResponseItemSchema } from "../api/schemas/responses/units";
-import { TaskResponseSchema } from "../api/schemas/responses/tasks";
+import { TaskResponseItemSchema } from "../api/schemas/responses/tasks";
 import { EventResponseItemSchema } from "../api/schemas/responses/events";
 
 const user1: UserSchema = {
@@ -69,7 +69,7 @@ export const units: UnitResponseItemSchema[] = [
     },
 ];
 
-export const task: TaskResponseSchema = {
+export const taskData: TaskResponseItemSchema = {
     id: 1,
     name: "Задача 3",
     description: "расширенное описание",
@@ -96,7 +96,7 @@ export const eventsData: EventResponseItemSchema[] = [
         color: "#ff0864",
         description: "desc",
         endDate: new Date().toLocaleDateString(),
-        tasks: [task],
+        tasks: [taskData],
     },
     {
         id: 2,

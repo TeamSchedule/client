@@ -6,7 +6,7 @@ import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionHeader";
 import UserPreview from "../../users/UsersPreview/UserPreview";
 import TaskPreview from "../../tasks/TaskPreview/TaskPreview";
-import { task, users } from "../../../testdata/data";
+import { taskData, users } from "../../../testdata/data";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 
 export default function FullUnitView() {
@@ -49,7 +49,7 @@ export default function FullUnitView() {
                 <ScreenHeader text={unit?.name || "Отдел социальных медиа"} />
 
                 <ScreenSectionHeader text="Открытые задачи" />
-                <TaskPreview task={task} />
+                <TaskPreview task={taskData} />
 
                 <ScreenSectionHeader text="Состав отдела" />
                 {members}

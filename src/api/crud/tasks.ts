@@ -1,5 +1,6 @@
 import { CreateTaskRequestSchema, FilterTasksParamsSchema, UpdateTaskRequestSchema } from "../schemas/requests/tasks";
 import requestApi from "../fetchApi";
+import { GetTaskResponseSchemas, TaskResponseItemSchema } from "../schemas/responses/tasks";
 
 export class tasks {
     static prefixUrl = "/schedule/task";
@@ -22,8 +23,10 @@ export class tasks {
         )["tasks"];
     }
 
-    static async getTaskById(id: number) {
-        return requestApi.GET(`${this.prefixUrl}/${id}`);
+    static async getTaskById(id: number): Promise<TaskResponseItemSchema> {
+        return requestApi.GET(`${this.prefixUrl}/${id}`).then((data: GetTaskResponseSchemas) => {
+            return data.task;
+        });
     }
 
     static async updateTaskById(id: number, data: UpdateTaskRequestSchema) {

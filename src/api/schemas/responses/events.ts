@@ -1,4 +1,4 @@
-import { TaskResponseSchema } from "./tasks";
+import { TaskResponseItemSchema } from "./tasks";
 
 /**
  * Схема ответа на запрос получения списка событий.
@@ -23,5 +23,5 @@ export interface EventResponseItemSchema {
     description: string;
     color: string;
     endDate: string;
-    tasks: TaskResponseSchema[];
+    tasks: TaskResponseItemSchema[];
 }

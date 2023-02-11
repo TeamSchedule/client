@@ -1,7 +1,11 @@
 import { UnitResponseItemSchema } from "./units";
 import { EventResponseItemSchema } from "./events";
 
-export interface TaskResponseSchema {
+export interface GetTaskResponseSchemas {
+    task: TaskResponseItemSchema;
+}
+
+export interface TaskResponseItemSchema {
     id: number;
     name: string;
     description: string;
