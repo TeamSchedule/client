@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { API } from "../../api/api";
 import AuthFormLayout from "./AuthFormLayout";
@@ -16,7 +16,6 @@ import useAuth from "../../hooks/useAuth";
 import { ACCESS_TOKEN_STORAGE_NAME, REFRESH_TOKEN_STORAGE_NAME } from "../../api/config";
 
 export default function LoginForm() {
-    const navigate = useNavigate();
     const { login } = useAuth();
 
     const [username, setUsername] = useState("");

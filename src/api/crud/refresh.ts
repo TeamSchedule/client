@@ -9,7 +9,7 @@ let currentRequest: Promise<any> | null = null;
 /**
  * Количество попыток на обновление пары токенов
  */
-let REFRESH_RETRIES = 3;
+const REFRESH_RETRIES: number = 3;
 
 /**
  * Создает новый Promise на обновление пары токенов
@@ -40,8 +40,7 @@ const refresh = async (callback: () => void, handleError: () => void) => {
             break;
         } catch (error) {
             handleError();
-            if (retryNumber == REFRESH_RETRIES - 1) {
-                //    TODO: logout
+            if (retryNumber === REFRESH_RETRIES - 1) {
                 localStorage.clear();
                 window.history.pushState("object or string", "Title", "/");
             }

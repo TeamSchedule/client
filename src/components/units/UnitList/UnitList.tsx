@@ -5,18 +5,13 @@ import Button from "@mui/material/Button";
 import { NewTeamIcon } from "../../svg";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { API } from "../../../api/api";
-import { units } from "../../../testdata/data";
+import { unitsData } from "../../../testdata/data";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 
 export default function UnitList() {
-    const [unitss, setUnits] = useState<UnitResponseItemSchema[]>([]);
-
-    // статус загрузки
-    const [inProgress, setInProgress] = useState<boolean>(false);
+    const [units, setUnits] = useState<UnitResponseItemSchema[]>(unitsData);
 
     useEffect(() => {
-        setInProgress(true);
-
         API.units
             .all()
             .then((units: UnitResponseItemSchema[]) => {
@@ -25,9 +20,7 @@ export default function UnitList() {
             .catch(() => {
                 // TODO: ЧТо-то пошло не так
             })
-            .finally(() => {
-                setInProgress(false);
-            });
+            .finally(() => {});
     }, []);
 
     return (

@@ -43,3 +43,7 @@ export function getNextDayDate(d: string | Date): Date {
     prevDate.setDate(prevDate.getDate() + 1);
     return prevDate;
 }
+
+export function isEqualYearMonthDate(d1: Date, d2: Date): boolean {
+    return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+}

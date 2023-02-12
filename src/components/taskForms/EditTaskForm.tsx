@@ -36,7 +36,7 @@ export default function EditTaskForm() {
             // Available use full info about task in data
             setTaskName(task.name);
             setTaskDescription(task.description);
-            setTaskClosedStatus(task.closed);
+            setTaskClosedStatus(task.status);
             setTaskExpirationDatetime(new Date(task.expirationTime));
             setTaskTeamName(task.unit.name);
         });

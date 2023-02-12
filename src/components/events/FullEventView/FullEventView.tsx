@@ -1,24 +1,22 @@
-import { useNavigate, useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import { API } from "../../../api/api";
-import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import {useNavigate, useParams} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {API} from "../../../api/api";
+import {EventResponseItemSchema} from "../../../api/schemas/responses/events";
 import TaskPreview from "../../tasks/TaskPreview/TaskPreview";
-import { eventsData } from "../../../testdata/data";
-import { BaseButton } from "../../buttons";
+import {eventsData} from "../../../testdata/data";
+import {BaseButton} from "../../buttons";
 import styles from "./FullEventView.module.scss";
 
-interface FullEventViewProps {}
+interface FullEventViewProps {
+}
 
 export default function FullEventView(props: FullEventViewProps) {
     const navigate = useNavigate();
 
-    const { id } = useParams();
+    const {id} = useParams();
 
     // данные события
     const [event, setEvent] = useState<EventResponseItemSchema>(eventsData[0]);
-
-    // статус загрузки
-    const [inProgress, setInProgress] = useState<boolean>(false);
 
     useEffect(() => {
         /* Получение  данных события */
@@ -27,18 +25,16 @@ export default function FullEventView(props: FullEventViewProps) {
             return;
         }
 
-        setInProgress(true);
         API.events
             .getById(+id)
             .then((event: any) => {
-                setInProgress(false);
                 setEvent(event);
             })
             .catch(() => {
                 // TODO: ЧТо-то пошло не так
             })
             .finally();
-    }, []);
+    }, [id]);
 
     return (
         <>
@@ -53,7 +49,7 @@ export default function FullEventView(props: FullEventViewProps) {
                 {event?.tasks.length && <span className="fw-bold">Открытые задачи</span>}
 
                 {event?.tasks.map((task) => (
-                    <TaskPreview key={task.id} task={task} />
+                    <TaskPreview key={task.id} task={task}/>
                 ))}
 
                 <BaseButton

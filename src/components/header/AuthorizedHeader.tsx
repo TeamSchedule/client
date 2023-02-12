@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import MainAvatar from "../MainAvatar";
 import { CalendarIcon, LogoutIcon, SettingsIcon, TeamIcon, ToDoListIcon } from "../svg";
-import HeaderLink, { iconSize } from "./HeaderLink";
+import HeaderLink from "./HeaderLink";
 import styles from "./Header.module.scss";
 import {
     baseSettingsPath,

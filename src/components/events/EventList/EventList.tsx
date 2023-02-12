@@ -33,12 +33,7 @@ export default function EventList(props: EventListProps) {
     // параметр, по которому фильтруются собыития
     const [eventFilterValue, setEventFilterValue] = useState(EventFilterEnum.InProgress);
 
-    // статус загрузки
-    const [inProgress, setInProgress] = useState<boolean>(false);
-
     useEffect(() => {
-        setInProgress(true);
-
         API.events
             .all()
             .then((events: EventResponseItemSchema[]) => {
@@ -47,9 +42,7 @@ export default function EventList(props: EventListProps) {
             .catch(() => {
                 // TODO: Что-то пошло не так
             })
-            .finally(() => {
-                setInProgress(false);
-            });
+            .finally(() => {});
     }, []);
 
     return (

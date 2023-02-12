@@ -10,11 +10,13 @@ export interface TaskResponseItemSchema {
     id: number;
     name: string;
     description: string;
-    closed: boolean;
-    creationTime: string;
+    status?: any;
     expirationTime: string;
-    assignee: UserSchema;
+
+    assignee: UserSchema[];
     authorId: number;
+
     unit: UnitResponseItemSchema;
     event: EventResponseItemSchema;
+    files?: Array<any>;
 }

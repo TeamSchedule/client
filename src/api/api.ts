@@ -4,7 +4,6 @@ import { NotificationsApi } from "./crud/notificationsApi";
 import { users } from "./crud/users";
 import { UnitsApi } from "./crud/unitsApi";
 import { tasks } from "./crud/tasks";
-import { invitations } from "./crud/invitations";
 import { AvatarsApi } from "./crud/avatarsApi";
 
 /**
@@ -18,5 +17,4 @@ export class API {
     static tasks = tasks;
     static units = UnitsApi;
     static users = users;
-    static invitations = invitations;
 }

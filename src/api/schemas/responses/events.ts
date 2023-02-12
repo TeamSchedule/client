@@ -24,4 +24,6 @@ export interface EventResponseItemSchema {
     color: string;
     endDate: string;
     tasks: TaskResponseItemSchema[];
+    status?: any;
+    files?: Array<any>;
 }

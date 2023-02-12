@@ -36,7 +36,7 @@ const user3: UserSchema = {
 
 export const users: UserSchema[] = [user1, user2, user3];
 
-export const units: UnitResponseItemSchema[] = [
+export const unitsData: UnitResponseItemSchema[] = [
     {
         id: 1,
         name: "Отдел социальных медиа",
@@ -73,10 +73,9 @@ export const taskData: TaskResponseItemSchema = {
     id: 1,
     name: "Задача 3",
     description: "расширенное описание",
-    closed: false,
-    creationTime: new Date().toLocaleDateString(),
+    status: false,
     expirationTime: new Date().toLocaleDateString(),
-    assignee: user1,
+    assignee: [user1],
     authorId: 2,
     event: {
         id: 1,
@@ -86,7 +85,7 @@ export const taskData: TaskResponseItemSchema = {
         endDate: new Date().toLocaleDateString(),
         tasks: [],
     },
-    unit: units[0],
+    unit: unitsData[0],
 };
 
 export const eventsData: EventResponseItemSchema[] = [

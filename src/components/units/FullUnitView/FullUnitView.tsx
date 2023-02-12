@@ -17,9 +17,6 @@ export default function FullUnitView() {
     // данные отдела
     const [unit, setUnit] = useState<UnitResponseItemSchema>();
 
-    // статус загрузки
-    const [inProgress, setInProgress] = useState<boolean>(false);
-
     useEffect(() => {
         /* Получение  данных отдела */
         if (!id) {
@@ -27,18 +24,16 @@ export default function FullUnitView() {
             return;
         }
 
-        setInProgress(true);
         API.units
             .getById(+id)
             .then((unit: UnitResponseItemSchema) => {
-                setInProgress(false);
                 setUnit(unit);
             })
             .catch(() => {
                 // TODO: ЧТо-то пошло не так
             })
             .finally();
-    }, []);
+    }, [id]);
 
     // const members = unit?.members.map((user) => <UserPreview key={user.id} user={user} />);
     const members = users.map((user) => <UserPreview user={user} key={user.id} clickable={true} />);

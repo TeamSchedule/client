@@ -131,7 +131,7 @@ export function TaskViewer() {
             eventTask.extendedProps = {
                 description: task.description,
                 groupName: task.unit.name,
-                closed: task.closed,
+                closed: task.status,
             };
             calTasks.push(eventTask);
         }

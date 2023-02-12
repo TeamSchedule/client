@@ -21,7 +21,7 @@ export default function NotificationList(props: NotificationListProps) {
     const [filterValue, setFilterValue] = useState<number>(NotificationFilterEnum.All);
 
     // список отображаемых оповещений
-    const [notifications, setNotifications] = useState<Array<any>>([]);
+    // const [notifications, setNotifications] = useState<Array<any>>([]);
 
     useEffect(() => {
         // TODO: получить все оповещения определенного типа (NotificationFilter)

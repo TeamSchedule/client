@@ -1,5 +1,4 @@
 import { UpdateUserInfoRequestSchema } from "../schemas/requests/users";
-import { AuthUserKey } from "../../consts/common";
 import { GetMeResponseSchema, UserSchema } from "../schemas/responses/users";
 import requestApi from "../fetchApi";
 
@@ -8,7 +7,6 @@ export class users {
 
     static async getUser(): Promise<UserSchema> {
         return requestApi.GET(`${this.apiPrefix}/me`).then((data: GetMeResponseSchema) => {
-            localStorage.setItem(AuthUserKey, JSON.stringify(data.user));
             return data.user;
         });
     }

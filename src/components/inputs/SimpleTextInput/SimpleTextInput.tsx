@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./SimpleTextInput.module.scss";
 import { TextField } from "@mui/material";
 
 interface SimpleTextInputProps {
@@ -23,19 +22,6 @@ export default function SimpleTextInput(props: SimpleTextInputProps) {
                 fullWidth={true}
                 className={props.className}
             />
-        </>
-    );
-}
-
-interface InputLabelTextProps {
-    text?: string;
-}
-
-function InputLabelText(props: InputLabelTextProps) {
-    if (!props.text) return null;
-    return (
-        <>
-            <span className={styles.inputLabelText}>{props.text}</span>
         </>
     );
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MobileCalendar from "../MobileCalendar";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import TaskPreview from "../../tasks/TaskPreview/TaskPreview";
-import { taskData } from "../../../testdata/data";
+import { taskData, unitsData } from "../../../testdata/data";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { purple } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
@@ -11,7 +11,15 @@ import { CreateNewEventPath, CreateNewTaskPath } from "../../../routes/paths";
 import Typography from "@mui/material/Typography";
 import { API } from "../../../api/api";
 import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
-import { getDateRepresentation } from "../../../utils/dateutils";
+import { getDateRepresentation, isEqualYearMonthDate } from "../../../utils/dateutils";
+import FilterUnit from "../../filters/FilterUnit";
+import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
+import FilterEvent from "../../filters/FilterEvent";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import FilterUser from "../../filters/FilterUser";
+import { UserSchema } from "../../../api/schemas/responses/users";
+import buildFilterParams from "../../../api/utils/buildFilterParams";
+import styles from "../CalendarStyles.module.scss";
 
 const RightSideButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText(purple[500]),
@@ -34,55 +42,33 @@ export default function FullCalendarMobileView() {
     const [viewedDate, setViewedDate] = useState<Date>(new Date()); // дата, в диапазоне которой показываются задачи
     const [chosenDate, setChosenDate] = useState<Date>(new Date()); // выбранный день, для него показываюся задачи на мобильной версии
 
-    return (
-        <>
-            <div className="d-flex justify-content-center">
-                <LeftSideButton
-                    fullWidth
-                    variant="contained"
-                    sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
-                    onClick={(e) => {
-                        navigate(CreateNewEventPath);
-                    }}
-                >
-                    Новое событие
-                </LeftSideButton>
-                <RightSideButton
-                    fullWidth
-                    variant="contained"
-                    onClick={(e) => {
-                        navigate(CreateNewTaskPath);
-                    }}
-                >
-                    Новая задача
-                </RightSideButton>
-            </div>
-            <MobileCalendar
-                viewedDate={viewedDate}
-                setViewedDate={setViewedDate}
-                chosenDate={chosenDate}
-                setChosenDate={setChosenDate}
-            />
-            <DayTaskList day={viewedDate} />
-        </>
-    );
-}
+    const [units, setUnits] = useState<UnitResponseItemSchema[]>(unitsData); // данные для фильтров
+    const [selectedUsers, setSelectedUsers] = useState<UserSchema[]>([]);
+    const [selectedUnits, setSelectedUnits] = useState<UnitResponseItemSchema[]>([]);
+    const [selectedEvents, setSelectedEvents] = useState<EventResponseItemSchema[]>([]);
+    // const [showClosed, setShowClosed] = useState<boolean>(true); // показывать закрытые и выполненеые
 
-const FetchingMonthRange: number = 2;
-
-interface DayTaskListProps {
-    day: Date;
-}
-
-function DayTaskList(props: DayTaskListProps) {
-    const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([taskData, taskData]);
+    const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([taskData]);
 
     useEffect(() => {
-        const params: FilterTasksParamsSchema = {
-            from: new Date(props.day.getFullYear(), props.day.getMonth() - FetchingMonthRange, 1),
-            to: new Date(props.day.getFullYear(), props.day.getMonth() + FetchingMonthRange),
-            teams: [],
-        };
+        API.units
+            .all()
+            .then((units: UnitResponseItemSchema[]) => {
+                setUnits(units);
+            })
+            .catch(() => {
+                // TODO: ЧТо-то пошло не так
+            })
+            .finally(() => {});
+    }, []);
+
+    useEffect(() => {
+        const params: FilterTasksParamsSchema = buildFilterParams(
+            chosenDate,
+            selectedUnits,
+            selectedEvents,
+            selectedUsers
+        );
 
         API.tasks
             .getTasks(params)
@@ -91,11 +77,69 @@ function DayTaskList(props: DayTaskListProps) {
             })
             .catch(() => {})
             .finally(() => {});
-    }, [props.day]);
+    }, [selectedUnits, selectedUnits, selectedEvents]);
 
+    function resetFilters() {
+        setSelectedUnits([]);
+        setSelectedUsers([]);
+        setSelectedEvents([]);
+    }
+
+    return (
+        <>
+            <div className="d-flex justify-content-center">
+                <LeftSideButton
+                    fullWidth
+                    variant="contained"
+                    sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
+                    onClick={() => {
+                        navigate(CreateNewEventPath);
+                    }}
+                >
+                    Новое событие
+                </LeftSideButton>
+                <RightSideButton
+                    fullWidth
+                    variant="contained"
+                    onClick={() => {
+                        navigate(CreateNewTaskPath);
+                    }}
+                >
+                    Новая задача
+                </RightSideButton>
+            </div>
+
+            <div>
+                <div className={styles.filtersWrapper}>
+                    <FilterUnit onChange={setSelectedUnits} selectedValues={selectedUnits} units={units} />
+                    <FilterEvent onChange={setSelectedEvents} selectedValues={selectedEvents} />
+                    <FilterUser onChange={setSelectedUsers} selectedValues={selectedUsers} units={units} />
+                </div>
+                <Button fullWidth onClick={resetFilters}>
+                    Сбросить фильтры
+                </Button>
+            </div>
+
+            <MobileCalendar
+                viewedDate={viewedDate}
+                setViewedDate={setViewedDate}
+                chosenDate={chosenDate}
+                setChosenDate={setChosenDate}
+            />
+            <DayTaskList day={chosenDate} tasks={tasks} />
+        </>
+    );
+}
+
+interface DayTaskListProps {
+    day: Date;
+    tasks: TaskResponseItemSchema[];
+}
+
+function DayTaskList(props: DayTaskListProps) {
     const todayDateStr: string = props.day ? getDateRepresentation(props.day) : "";
 
-    if (tasks.length === 0) {
+    if (props.tasks.length === 0) {
         return (
             <>
                 <div>
@@ -105,6 +149,10 @@ function DayTaskList(props: DayTaskListProps) {
         );
     }
 
+    const dayTasks: TaskResponseItemSchema[] = props.tasks.filter((task) =>
+        isEqualYearMonthDate(new Date(task.expirationTime), props.day)
+    );
+
     return (
         <>
             <div>
@@ -112,8 +160,8 @@ function DayTaskList(props: DayTaskListProps) {
                     Задачи на {todayDateStr}
                 </Typography>
 
-                {tasks.map((task) => (
-                    <div className="mb-2">
+                {dayTasks.map((task) => (
+                    <div className="mb-2" key={task.id}>
                         <TaskPreview key={task.id} task={task} />
                     </div>
                 ))}

@@ -1,18 +1,10 @@
-import { LocalizationProvider, PickersDay, PickersDayProps, StaticDatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider, StaticDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Box, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { weekCount } from "../../../utils/dateutils";
 
 const MaxDateSize = 80;
-
-function CustomDayRenderer(date: Date, selectedDays: Array<Date | null>, pickersDayProps: PickersDayProps<Date>) {
-    return (
-        <>
-            <PickersDay {...pickersDayProps} />
-        </>
-    );
-}
 
 /* https://github.com/mui/material-ui/issues/27700 */
 

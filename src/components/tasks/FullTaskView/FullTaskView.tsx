@@ -25,7 +25,7 @@ export default function FullTaskView() {
             })
             .catch(() => {})
             .finally(() => {});
-    }, []);
+    }, [id]);
 
     return (
         <>
@@ -34,7 +34,7 @@ export default function FullTaskView() {
                 <TaskDeadline deadline={task ? new Date(task?.expirationTime) : undefined} />
                 <TaskEvent event={task?.event} />
                 <TaskUnit unit={task?.unit} />
-                <Executors users={task ? [task.assignee] : []} />
+                <Executors users={task ? task.assignee : []} />
             </div>
         </>
     );

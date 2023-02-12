@@ -20,7 +20,7 @@ export default function CreateEventForm(props: CreateEventFormProps) {
     const [description, setDescription] = useState<string>("");
     const [deadline, setDeadline] = useState<Date | null>(null);
     const [color, setColor] = useState<string | undefined>();
-    const [attachments, setAttachments] = useState<object[]>();
+    // const [attachments, setAttachments] = useState<object[]>();
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);

@@ -16,7 +16,7 @@ export class tasks {
 
         return (
             await requestApi.GET(
-                `${this.prefixUrl}?from=${params.from.toJSON()}&to=${params.to.toJSON()}&teams=${params.teams.join(
+                `${this.prefixUrl}?from=${params.from.toJSON()}&to=${params.to.toJSON()}&teams=${params.teams?.join(
                     ","
                 )}&private=true&all=${params.all}`
             )

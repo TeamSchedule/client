@@ -42,7 +42,7 @@ export default function EditUnitForm() {
         //         //    TODO: Что-то пошло не так
         //     })
         //     .finally(() => {});
-    }, []);
+    }, [id]);
 
     function editUnitHandler() {
         setInProgress(true);
