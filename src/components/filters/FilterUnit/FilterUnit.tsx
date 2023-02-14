@@ -1,6 +1,8 @@
 import { Checkbox, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import styles from "../FilterItem.module.scss";
+import Typography from "@mui/material/Typography";
+import { FilterBadge } from "../common";
 
 interface FilterUnitProps {
     units: UnitResponseItemSchema[];
@@ -26,14 +28,18 @@ export default function FilterUnit(props: FilterUnitProps) {
                 fullWidth
                 displayEmpty
                 // @ts-ignore
-                renderValue={() => <span>Отделы</span>}
+                renderValue={() => (
+                    <FilterBadge badgeContent={props.selectedValues.length} color="primary">
+                        <Typography>Отделы</Typography>
+                    </FilterBadge>
+                )}
                 value={props.selectedValues}
                 onChange={onChangeSelectedUnit}
             >
                 {props.units.map((unit) => (
                     <MenuItem key={unit.id} value={unit as any}>
                         <Checkbox checked={props.selectedValues.indexOf(unit) > -1} />
-                        {unit.name + " " + unit.id.toString()}
+                        <Typography>{unit.name}</Typography>
                     </MenuItem>
                 ))}
             </Select>

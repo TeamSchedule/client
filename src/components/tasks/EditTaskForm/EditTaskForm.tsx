@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Checkbox, FormControlLabel } from "@mui/material";
 
-import { API } from "../../api/api";
-import CloseFormIcon from "../generic/CloseFormIcon";
-import InputDatetimeFormItem from "../inputs/InputDatetimeFormItem";
-import BaseForm from "../generic/BaseForm";
-import { TaskResponseItemSchema } from "../../api/schemas/responses/tasks";
-import { UpdateTaskRequestSchema } from "../../api/schemas/requests/tasks";
-import { BaseButton } from "../buttons";
-import MultilineTextInput from "../inputs/MultilineTextInput/MultilineTextInput";
-import SimpleTextInput from "../inputs/SimpleTextInput";
+import { API } from "../../../api/api";
+import CloseFormIcon from "../../generic/CloseFormIcon";
+import InputDatetimeFormItem from "../../inputs/InputDatetimeFormItem";
+import BaseForm from "../../generic/BaseForm";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
+import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
+import { BaseButton } from "../../buttons";
+import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
+import SimpleTextInput from "../../inputs/SimpleTextInput";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
