@@ -3,7 +3,7 @@ import { UserSchema } from "../schemas/responses/users";
 import { UnitResponseItemSchema } from "../schemas/responses/units";
 import { EventResponseItemSchema } from "../schemas/responses/events";
 
-const FetchingMonthRange: number = 2;
+export const FetchingMonthRange: number = 2;
 
 export default function buildFilterParams(
     chosenDate: Date,

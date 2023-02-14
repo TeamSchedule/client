@@ -20,6 +20,8 @@ import FilterUser from "../../filters/FilterUser";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import buildFilterParams from "../../../api/utils/buildFilterParams";
 import styles from "../CalendarStyles.module.scss";
+import ReplayIcon from "@mui/icons-material/Replay";
+import { IconButton, Tooltip } from "@mui/material";
 
 const RightSideButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText(purple[500]),
@@ -46,9 +48,10 @@ export default function FullCalendarMobileView() {
     const [selectedUsers, setSelectedUsers] = useState<UserSchema[]>([]);
     const [selectedUnits, setSelectedUnits] = useState<UnitResponseItemSchema[]>([]);
     const [selectedEvents, setSelectedEvents] = useState<EventResponseItemSchema[]>([]);
-    // const [showClosed, setShowClosed] = useState<boolean>(true); // показывать закрытые и выполненеые
+    const [showClosed, setShowClosed] = useState<boolean>(true); // показывать закрытые и выполненеые
 
     const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([taskData]);
+    const [displayedTasks, setDisplayedTasks] = useState<TaskResponseItemSchema[]>([]);
 
     useEffect(() => {
         API.units
@@ -62,9 +65,9 @@ export default function FullCalendarMobileView() {
             .finally(() => {});
     }, []);
 
-    useEffect(() => {
+    const getTasks = () => {
         const params: FilterTasksParamsSchema = buildFilterParams(
-            chosenDate,
+            viewedDate,
             selectedUnits,
             selectedEvents,
             selectedUsers
@@ -77,7 +80,22 @@ export default function FullCalendarMobileView() {
             })
             .catch(() => {})
             .finally(() => {});
-    }, [selectedUnits, selectedUnits, selectedEvents]);
+    };
+
+    useEffect(() => {
+        // Получение задач при изменении фильтров или страницы календаря
+        getTasks();
+    }, [selectedUnits, selectedUnits, selectedEvents, viewedDate]);
+
+    useEffect(() => {
+        if (showClosed) {
+            // показывать закрытые
+            setDisplayedTasks(tasks);
+        } else {
+            // НЕ показывать закрытые
+            setDisplayedTasks(displayedTasks.filter((task) => task.status != "OPEN" && task.status != "IN_PROGRESS"));
+        }
+    }, [showClosed]);
 
     function resetFilters() {
         setSelectedUnits([]);
@@ -110,17 +128,26 @@ export default function FullCalendarMobileView() {
             </div>
 
             <div>
+                <div className="text-center">
+                    <Typography variant="subtitle1" component="span">
+                        Фильтры
+                    </Typography>
+
+                    <Tooltip title="Сбросить фильтры">
+                        <IconButton aria-label="reset" color="primary" onClick={resetFilters}>
+                            <ReplayIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                </div>
                 <div className={styles.filtersWrapper}>
                     <FilterUnit onChange={setSelectedUnits} selectedValues={selectedUnits} units={units} />
                     <FilterEvent onChange={setSelectedEvents} selectedValues={selectedEvents} />
                     <FilterUser onChange={setSelectedUsers} selectedValues={selectedUsers} units={units} />
                 </div>
-                <Button fullWidth onClick={resetFilters}>
-                    Сбросить фильтры
-                </Button>
             </div>
 
             <MobileCalendar
+                tasks={displayedTasks}
                 viewedDate={viewedDate}
                 setViewedDate={setViewedDate}
                 chosenDate={chosenDate}

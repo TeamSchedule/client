@@ -8,6 +8,7 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { useNavigate } from "react-router-dom";
 import { makeTaskLinkById } from "../../../routes/paths";
 import StatusBadge, { StatusBadgeEnum } from "../../StatusBadge/StatusBadge";
+import Executors from "../common/Executors";
 
 interface TaskPreviewProps {
     task: TaskResponseItemSchema;
@@ -30,7 +31,7 @@ export default function TaskPreview(props: TaskPreviewProps) {
                 <TaskDeadline deadline={new Date(props.task.expirationTime)} />
                 <TaskEvent event={props.task.event} />
                 <TaskUnit unit={props.task.unit} />
-                <span>Исполнители</span>
+                <Executors users={props.task.assignee} />
             </div>
         </>
     );

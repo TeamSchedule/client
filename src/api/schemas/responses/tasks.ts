@@ -20,3 +20,17 @@ export interface TaskResponseItemSchema {
     event: EventResponseItemSchema;
     files?: Array<any>;
 }
+
+export enum TaskStatusEnum {
+    Done = 1,
+    Closed = 2,
+    InProgress = 2,
+}
+
+export const TaskExecutionStatus = {
+    NotAssigned: "Нет исполнителя",
+    InProgress: "В процессе",
+    Expired: "Просрочено",
+    Rejected: "Отменено",
+    Done: "Выполнено",
+};

@@ -1,18 +1,33 @@
-import { LocalizationProvider, StaticDatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider, PickersDay, PickersDayProps, StaticDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Box, TextField } from "@mui/material";
+import { Badge, BadgeProps, Box, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { weekCount } from "../../../utils/dateutils";
+import { styled } from "@mui/material/styles";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
+import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";
 
-const MaxDateSize = 80;
+const MaxDateSize = 80; // максимальный размер отображаемого на мобильном календаре дня
 
 /* https://github.com/mui/material-ui/issues/27700 */
+
+const CalendarDayBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+    "& .MuiBadge-badge": {
+        right: 10,
+        top: 8,
+        padding: 0,
+        fontSize: "0.7rem",
+        width: "15px",
+        height: "18px",
+    },
+}));
 
 interface MobileCalendarProps {
     viewedDate: Date;
     setViewedDate: (value: Date) => void;
     chosenDate: Date;
     setChosenDate: (value: Date) => void;
+    tasks: TaskResponseItemSchema[];
 }
 
 export default function MobileCalendar(props: MobileCalendarProps) {
@@ -32,8 +47,42 @@ export default function MobileCalendar(props: MobileCalendarProps) {
     }, []);
 
     useEffect(() => {
-        props.setViewedDate(new Date(currentYear, currentMonth));
+        // Так как задачи запрашиваются в диапазоне нескольких месяцев от текущего, изменять дату, только если она вышла из диапазона
+
+        const minViewedDate: Date = new Date(
+            props.viewedDate.getFullYear(),
+            props.viewedDate.getMonth() - FetchingMonthRange
+        );
+        const maxViewedDate: Date = new Date(
+            props.viewedDate.getFullYear(),
+            props.viewedDate.getMonth() + FetchingMonthRange
+        );
+
+        const newViewedDate: Date = new Date(currentYear, currentMonth);
+
+        if (newViewedDate > maxViewedDate || newViewedDate < minViewedDate) {
+            // вышли из диапазона, надо обновить дату и запросить задачи еще раз
+            props.setViewedDate(new Date(currentYear, currentMonth));
+        }
     }, [currentMonth, currentYear]);
+
+    function CustomDayRenderer(date: Date, selectedDays: Array<Date | null>, pickersDayProps: PickersDayProps<Date>) {
+        return (
+            <>
+                <CalendarDayBadge
+                    badgeContent={
+                        props.tasks.filter((task) => {
+                            // @ts-ignore
+                            return new Date(task.expirationTime).getTime() === date["$d"].getTime();
+                        }).length
+                    }
+                    color="secondary"
+                >
+                    <PickersDay {...pickersDayProps} />
+                </CalendarDayBadge>
+            </>
+        );
+    }
 
     return (
         <div className="d-block d-md-none">
@@ -98,7 +147,8 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         }}
                         onYearChange={setCurrentYear}
                         renderInput={(params) => <TextField {...params} />}
-                        // renderDay={CustomDayRenderer}
+                        // @ts-ignore
+                        renderDay={CustomDayRenderer}
                         componentsProps={{
                             actionBar: {
                                 actions: ["today"],
