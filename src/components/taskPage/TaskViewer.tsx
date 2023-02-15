@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import FilterColumn from "./FilterColumn";
 
 import FullCalendar, { CalendarApi, EventClickArg } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -35,14 +34,6 @@ export function TaskViewer() {
     const [isLoaded, setIsLoaded] = useState(false); // статус загрузки задач
 
     const calendarRef: React.RefObject<any> = React.createRef();
-
-    function changeShowedTeams(teamId: number) {
-        if (showedTeams.includes(teamId)) {
-            setShowedTeams(() => showedTeams.filter((tId) => tId !== teamId));
-        } else {
-            setShowedTeams(() => [...showedTeams, teamId]);
-        }
-    }
 
     useEffect(() => {
         API.units.all().then((allTeams: Array<UnitResponseItemSchema>) => {
@@ -153,7 +144,6 @@ export function TaskViewer() {
         <>
             <LoaderScreen loaded={isLoaded} />
             <div id="full-calendar-wrapper" className="d-flex">
-                <FilterColumn teams={teams} onChangeShowedTeams={changeShowedTeams} />
                 <FullCalendar
                     ref={calendarRef}
                     plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]}

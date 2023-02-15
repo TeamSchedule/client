@@ -1,5 +1,11 @@
+import { UserPostsStrings } from "../../../enums/usersEnums";
+
 export interface GetMeResponseSchema {
     user: UserSchema;
+}
+
+export interface GetAllUsersResponseSchema {
+    users: UserSchema[];
 }
 
 export interface UserSchema {
@@ -10,5 +16,5 @@ export interface UserSchema {
     fullName: string;
     confirmed: boolean;
     creationDate: Date;
-    post: string;
+    post: UserPostsStrings;
 }

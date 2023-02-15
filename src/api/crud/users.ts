@@ -1,9 +1,15 @@
 import { UpdateUserInfoRequestSchema } from "../schemas/requests/users";
-import { GetMeResponseSchema, UserSchema } from "../schemas/responses/users";
+import { GetAllUsersResponseSchema, GetMeResponseSchema, UserSchema } from "../schemas/responses/users";
 import requestApi from "../fetchApi";
 
 export class users {
     static apiPrefix = "/user";
+
+    static async all(): Promise<UserSchema[]> {
+        return requestApi.GET(`${this.apiPrefix}/all`).then((data: GetAllUsersResponseSchema) => {
+            return data.users;
+        });
+    }
 
     static async getUser(): Promise<UserSchema> {
         return requestApi.GET(`${this.apiPrefix}/me`).then((data: GetMeResponseSchema) => {

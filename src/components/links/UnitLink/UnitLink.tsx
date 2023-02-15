@@ -21,7 +21,7 @@ export default function UnitLink(props: UnitLinkProps) {
     return (
         <>
             <span className={styles.link} onClick={onClick}>
-                <Typography variant="subtitle1" component="div">
+                <Typography variant="subtitle1" component="span">
                     {props.name ? props.name : <SkeletonWrapper />}
                 </Typography>
             </span>

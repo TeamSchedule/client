@@ -21,7 +21,7 @@ export default function EventLink(props: EventLinkProps) {
     return (
         <>
             <span onClick={onClick} className={styles.link}>
-                <Typography variant="subtitle1" component="div">
+                <Typography variant="subtitle1" component="span">
                     {props.eventName ? props.eventName : <SkeletonWrapper />}
                 </Typography>
             </span>

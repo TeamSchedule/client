@@ -7,8 +7,8 @@ import { BaseButton } from "../../buttons";
 import { API } from "../../../api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
-import { users } from "../../../testdata/data";
 import { UserSchema } from "../../../api/schemas/responses/users";
+import UsersSelector from "../../selectors/UsersSelector";
 
 export default function EditUnitForm() {
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function EditUnitForm() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [unitHead, setUnitHead] = useState<UserSchema | null>(null);
-    const [unitMembers, setUnitMembers] = useState<Array<UserSchema>>([]);
+    const [unitMembers, setUnitMembers] = useState<UserSchema[]>([]);
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);
@@ -86,18 +86,17 @@ export default function EditUnitForm() {
                 <UserSelector
                     label="Выберите руководителя отдела"
                     placeholder="Руководитель"
-                    users={users}
                     className="mt-2"
-                    handleChange={setUnitHead}
+                    setInputValue={setUnitHead}
+                    inputValue={unitHead}
                 />
 
-                <UserSelector
-                    label="Выберите сотрудников отдела"
+                <UsersSelector
+                    label="Добавить сотрудников"
                     placeholder="Сотрудники"
-                    users={users}
                     className="mt-2"
-                    handleChange={setUnitMembers}
-                    multiple={true}
+                    setInputValue={setUnitMembers}
+                    inputValue={unitMembers}
                 />
 
                 <BaseButton

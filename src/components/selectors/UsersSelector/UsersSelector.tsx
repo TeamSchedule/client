@@ -1,14 +1,14 @@
 import { Autocomplete, TextField } from "@mui/material";
+import styles from "../UserSelector/UserSelector.module.scss";
 import UserPreview from "../../users/UsersPreview/UserPreview";
-import styles from "./UserSelector.module.scss";
 import { useEffect, useState } from "react";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import { usersData } from "../../../testdata/data";
 import { API } from "../../../api/api";
 
-interface UserSelectorProps {
-    setInputValue: (users: UserSchema | null) => void;
-    inputValue: UserSchema | null;
+interface UsersSelectorProps {
+    setInputValue: (users: UserSchema[]) => void;
+    inputValue: UserSchema[];
     users?: UserSchema[];
     className?: string;
     label?: string;
@@ -16,8 +16,8 @@ interface UserSelectorProps {
     disabled?: boolean;
 }
 
-export default function UserSelector(props: UserSelectorProps) {
-    const [users, setUsers] = useState<UserSchema[]>(usersData);
+export default function UsersSelector(props: UsersSelectorProps) {
+    const [users, setUsers] = useState<UserSchema[]>([]);
 
     useEffect(() => {
         if (props.users) {
@@ -31,17 +31,20 @@ export default function UserSelector(props: UserSelectorProps) {
             })
             .catch(() => {})
             .finally(() => {
-                setUsers(usersData);
+                setUsers([...usersData]);
             });
-    }, []);
+        setUsers([...usersData]);
+    }, [props.users]);
 
     return (
         <>
             <div>
                 <Autocomplete
-                    id="user-selector"
+                    id="users-selector"
                     disabled={props.disabled}
+                    multiple
                     options={users}
+                    disableCloseOnSelect
                     fullWidth
                     freeSolo={true}
                     // @ts-ignore

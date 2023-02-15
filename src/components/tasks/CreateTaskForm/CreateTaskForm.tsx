@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { API } from "../../../api/api";
 import CloseFormIcon from "../../generic/CloseFormIcon";
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { FormControlLabel, FormGroup, Switch } from "@mui/material";
 import InputDatetimeFormItem from "../../inputs/InputDatetimeFormItem";
 import BaseForm from "../../generic/BaseForm";
 import { CreateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
@@ -13,46 +13,50 @@ import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInp
 import SimpleTextInput from "../../inputs/SimpleTextInput";
 import useAuth from "../../../hooks/useAuth";
 import { getPrevDayDate } from "../../../utils/dateutils";
-
-interface TeamItemProps {
-    groupId: string;
-    groupTitle: string;
-}
-
-function TeamItem({ groupId, groupTitle }: TeamItemProps) {
-    return (
-        <option id={groupId} value={groupId}>
-            {groupTitle}
-        </option>
-    );
-}
+import UnitSelector from "../../selectors/UnitSelector/UnitSelector";
+import EventSelector from "../../selectors/EventSelector/EventSelector";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import { UserSchema } from "../../../api/schemas/responses/users";
+import UsersSelector from "../../selectors/UsersSelector";
+import { UserPostsEnum } from "../../../enums/usersEnums";
 
 function CreateTaskForm() {
     const navigate = useNavigate();
     const { user } = useAuth();
-
-    const [teams, setTeams] = useState<Array<UnitResponseItemSchema>>([]);
-
     const { date } = useParams();
+
+    const [users, setUsers] = useState<UserSchema[] | undefined>();
+
     const [taskDescription, setTaskDescription] = useState("");
-    const [isPrivateFlag, setIsPrivateFlag] = useState(true);
     const [taskName, setTaskName] = useState("");
     const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(new Date());
-    const [selectedTeam, setSelectedTeam] = useState(0);
-    const [isActionInProgress, setIsActionInProgress] = useState(false);
 
-    useEffect(() => {
-        API.units.all().then((teams: Array<UnitResponseItemSchema>) => {
-            setTeams(teams);
-            if (teams.length > 0) {
-                setSelectedTeam(teams[0].id);
-            }
-        });
-    }, []);
+    const [isPrivateFlag, setIsPrivateFlag] = useState<boolean>(false); // флаг приватной задачи, в этом случае отдел и исполнители устанавливаются автоматически
+
+    const [selectedEvent, setSelectedEvent] = useState<EventResponseItemSchema | null>(null);
+    const [selectedUnit, setSelectedUnit] = useState<UnitResponseItemSchema | null>(null);
+    const [selectedExecutors, setSelectedExecutors] = useState<UserSchema[]>([]);
+
+    const [isActionInProgress, setIsActionInProgress] = useState(false);
 
     useEffect(() => {
         setTaskExpirationDatetime(getPrevDayDate(date || ""));
     }, [date]);
+
+    useEffect(() => {
+        if (isPrivateFlag) {
+            setSelectedExecutors(user ? [user].slice() : []);
+        } else {
+            setSelectedExecutors([]);
+        }
+        setSelectedUnit(null);
+    }, [isPrivateFlag]);
+
+    useEffect(() => {
+        if (selectedUnit) {
+            setSelectedExecutors(selectedUnit?.members.filter((member) => member.post === UserPostsEnum.UNIT_HEAD));
+        }
+    }, [selectedUnit]);
 
     function onCreateTaskHandler(event: React.FormEvent) {
         event.preventDefault();
@@ -70,7 +74,7 @@ function CreateTaskForm() {
             name: taskName,
             description: taskDescription,
             expirationTime: taskExpirationDatetime,
-            teamId: isPrivateFlag ? null : selectedTeam,
+            unitId: selectedUnit?.id,
             assigneeId: user.id,
         };
 
@@ -82,12 +86,6 @@ function CreateTaskForm() {
             .finally(() => {
                 setIsActionInProgress(false);
             });
-    }
-
-    function onChangePrivateFlag() {
-        if (teams.length > 0) {
-            setIsPrivateFlag(!isPrivateFlag);
-        }
     }
 
     return (
@@ -111,26 +109,23 @@ function CreateTaskForm() {
                 handleChange={setTaskExpirationDatetime}
             />
 
-            <div>
+            <FormGroup>
                 <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={isPrivateFlag}
-                            color="success"
-                            onChange={onChangePrivateFlag}
-                            name="private"
-                        />
-                    }
-                    label="Создать задачу только для себя"
+                    control={<Switch checked={isPrivateFlag} onChange={(e) => setIsPrivateFlag(e.target.checked)} />}
+                    label="Создать для себя"
                 />
-                {!isPrivateFlag && (
-                    <select id="taskGroup" name="list1" onChange={(e) => setSelectedTeam(+e.target.value)} required>
-                        {teams.map((team: UnitResponseItemSchema) => (
-                            <TeamItem key={team.id} groupTitle={team.name} groupId={team.id.toString()} />
-                        ))}
-                    </select>
-                )}
-            </div>
+            </FormGroup>
+
+            <EventSelector setInputValue={setSelectedEvent} inputValue={selectedEvent} />
+            <UnitSelector setInputValue={setSelectedUnit} inputValue={selectedUnit} disabled={isPrivateFlag} />
+            <UsersSelector
+                users={selectedUnit ? selectedUnit.members : undefined}
+                setInputValue={setSelectedExecutors}
+                inputValue={selectedExecutors}
+                label="Выберите исполнителей"
+                disabled={isPrivateFlag}
+            />
+
             <BaseButton text="Создать задачу" loading={isActionInProgress} color="common" className="mt-4" />
         </BaseForm>
     );

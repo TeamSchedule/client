@@ -20,7 +20,7 @@ export default function DateLink(props: DateLinkProps) {
 
     return (
         <span onClick={onClick} className={styles.link}>
-            <Typography variant="subtitle1" component="div">
+            <Typography variant="subtitle1" component="span">
                 {props.date ? getDateRepresentation(props.date) : <SkeletonWrapper />}
             </Typography>
         </span>

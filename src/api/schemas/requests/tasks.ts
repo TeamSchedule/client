@@ -1,9 +1,10 @@
 export interface CreateTaskRequestSchema {
     name: string;
-    description: string;
-    teamId: null | number;
-    assigneeId: null | number;
-    expirationTime: Date;
+    description?: string;
+    unitId?: number;
+    eventId?: number;
+    assigneeId?: number;
+    expirationTime?: Date;
 }
 
 export interface UpdateTaskRequestSchema {

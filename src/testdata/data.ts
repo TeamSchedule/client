@@ -2,6 +2,7 @@ import { UserSchema } from "../api/schemas/responses/users";
 import { UnitResponseItemSchema } from "../api/schemas/responses/units";
 import { TaskResponseItemSchema } from "../api/schemas/responses/tasks";
 import { EventResponseItemSchema } from "../api/schemas/responses/events";
+import { UserPostsEnum } from "../enums/usersEnums";
 
 const user1: UserSchema = {
     avatar: "",
@@ -11,7 +12,7 @@ const user1: UserSchema = {
     creationDate: new Date(),
     login: "",
     fullName: "Сяглова Анна Михайловна",
-    post: "Специалист",
+    post: UserPostsEnum.UNIT_HEAD,
 };
 const user2: UserSchema = {
     avatar: "",
@@ -21,7 +22,7 @@ const user2: UserSchema = {
     creationDate: new Date(),
     login: "",
     fullName: "Сяглова Анна Михайловна",
-    post: "Специалист",
+    post: UserPostsEnum.MEMBER,
 };
 const user3: UserSchema = {
     avatar: "",
@@ -31,16 +32,27 @@ const user3: UserSchema = {
     creationDate: new Date(),
     login: "",
     fullName: "Сяглова Анна Михайловна",
-    post: "Специалист",
+    post: UserPostsEnum.MEMBER,
 };
 
-export const users: UserSchema[] = [user1, user2, user3];
+const user4: UserSchema = {
+    avatar: "",
+    id: 4,
+    email: "",
+    confirmed: true,
+    creationDate: new Date(),
+    login: "",
+    fullName: "Сяглова Анна Михайловна",
+    post: UserPostsEnum.MEMBER,
+};
+
+export const usersData: UserSchema[] = [user1, user2, user3, user4];
 
 export const unitsData: UnitResponseItemSchema[] = [
     {
         id: 1,
         name: "Отдел социальных медиа",
-        members: users,
+        members: usersData.slice(0, 2),
         openTasks: [],
         adminId: 1,
         avatar: "",
@@ -50,7 +62,7 @@ export const unitsData: UnitResponseItemSchema[] = [
     {
         id: 2,
         name: "Отдел социальных медиа",
-        members: users,
+        members: usersData.slice(0, 2),
         openTasks: [],
         adminId: 1,
         avatar: "",
@@ -60,7 +72,7 @@ export const unitsData: UnitResponseItemSchema[] = [
     {
         id: 3,
         name: "Отдел социальных медиа",
-        members: users,
+        members: usersData.slice(0, 2),
         openTasks: [],
         adminId: 1,
         avatar: "",
