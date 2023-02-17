@@ -58,7 +58,7 @@ export const unitsData: UnitResponseItemSchema[] = [
         adminId: 1,
         avatar: "",
         color: "",
-        creationDate: new Date().toLocaleDateString(),
+        creationDate: new Date().toJSON(),
     },
     {
         id: 2,
@@ -68,7 +68,7 @@ export const unitsData: UnitResponseItemSchema[] = [
         adminId: 1,
         avatar: "",
         color: "",
-        creationDate: new Date().toLocaleDateString(),
+        creationDate: new Date().toJSON(),
     },
     {
         id: 3,
@@ -78,7 +78,7 @@ export const unitsData: UnitResponseItemSchema[] = [
         adminId: 1,
         avatar: "",
         color: "",
-        creationDate: new Date().toLocaleDateString(),
+        creationDate: new Date().toJSON(),
     },
 ];
 
@@ -87,7 +87,7 @@ export const taskData: TaskResponseItemSchema = {
     name: "Задача 3",
     description: "расширенное описание",
     taskStatus: TaskStatusEnum.IN_PROGRESS,
-    expirationTime: new Date().toLocaleDateString(),
+    expirationTime: new Date().toJSON(),
     assignee: [user1],
     author: user2,
     event: {
@@ -95,7 +95,7 @@ export const taskData: TaskResponseItemSchema = {
         name: "Событие 1",
         color: "#ff0864",
         description: "desc",
-        endDate: new Date().toLocaleDateString(),
+        endDate: new Date().toJSON(),
         tasks: [],
     },
     department: unitsData[0],
@@ -107,7 +107,7 @@ export const eventsData: EventResponseItemSchema[] = [
         name: "Событие 1",
         color: "#ff0864",
         description: "desc",
-        endDate: new Date().toLocaleDateString(),
+        endDate: new Date().toJSON(),
         tasks: [taskData],
     },
     {
@@ -115,7 +115,7 @@ export const eventsData: EventResponseItemSchema[] = [
         name: "Событие 2",
         color: "#ff0864",
         description: "desc",
-        endDate: new Date().toLocaleDateString(),
+        endDate: new Date().toJSON(),
         tasks: [],
     },
     {
@@ -123,7 +123,7 @@ export const eventsData: EventResponseItemSchema[] = [
         name: "Событие 3",
         color: "#ff0864",
         description: "desc",
-        endDate: new Date().toLocaleDateString(),
+        endDate: new Date().toJSON(),
         tasks: [],
     },
 ];

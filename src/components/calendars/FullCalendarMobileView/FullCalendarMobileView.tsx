@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MobileCalendar from "../MobileCalendar";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
-import TaskPreview from "../../tasks/TaskPreview/TaskPreview";
+import TaskPreview from "../../tasks/TaskPreview";
 import { taskData, unitsData } from "../../../testdata/data";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { purple } from "@mui/material/colors";
@@ -167,7 +167,11 @@ interface DayTaskListProps {
 function DayTaskList(props: DayTaskListProps) {
     const todayDateStr: string = props.day ? getDateRepresentation(props.day) : "";
 
-    if (props.tasks.length === 0) {
+    const dayTasks: TaskResponseItemSchema[] = props.tasks.filter((task) =>
+        isEqualYearMonthDate(new Date(task.expirationTime), props.day)
+    );
+
+    if (dayTasks.length === 0) {
         return (
             <>
                 <div>
@@ -176,10 +180,6 @@ function DayTaskList(props: DayTaskListProps) {
             </>
         );
     }
-
-    const dayTasks: TaskResponseItemSchema[] = props.tasks.filter((task) =>
-        isEqualYearMonthDate(new Date(task.expirationTime), props.day)
-    );
 
     return (
         <>

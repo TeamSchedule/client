@@ -7,8 +7,8 @@ import Typography from "@mui/material/Typography";
 import { getDateRepresentation } from "../../../utils/dateutils";
 import UnitLink from "../../links/UnitLink/UnitLink";
 import EventLink from "../../links/EventLink/EventLink";
-import StatusDone from "../../StatusBadge/StatusDone";
-import InProgressStatus from "../../StatusBadge/InProgressStatus";
+import StatusDone from "../../statuses/StatusDone";
+import InProgressStatus from "../../statuses/InProgressStatus";
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { makeTaskLinkById } from "../../../routes/paths";
@@ -33,7 +33,7 @@ export default function TaskPreview(props: TaskPreviewProps) {
                     minWidth: 275,
                 }}
             >
-                <CardContent sx={{ paddingBottom: 0 }}>
+                <CardContent sx={{ paddingBottom: 0, marginBottom: 1 }}>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         <Box component="span" sx={{ marginRight: 1 }}>
                             {props.task.taskStatus ? <StatusDone /> : <InProgressStatus />}
