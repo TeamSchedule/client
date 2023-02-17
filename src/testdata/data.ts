@@ -3,6 +3,7 @@ import { UnitResponseItemSchema } from "../api/schemas/responses/units";
 import { TaskResponseItemSchema } from "../api/schemas/responses/tasks";
 import { EventResponseItemSchema } from "../api/schemas/responses/events";
 import { UserPostsEnum } from "../enums/usersEnums";
+import { TaskStatusEnum } from "../enums/tasksEnums";
 
 const user1: UserSchema = {
     avatar: "",
@@ -85,10 +86,10 @@ export const taskData: TaskResponseItemSchema = {
     id: 1,
     name: "Задача 3",
     description: "расширенное описание",
-    status: false,
+    taskStatus: TaskStatusEnum.IN_PROGRESS,
     expirationTime: new Date().toLocaleDateString(),
     assignee: [user1],
-    authorId: 2,
+    author: user2,
     event: {
         id: 1,
         name: "Событие 1",
@@ -97,7 +98,7 @@ export const taskData: TaskResponseItemSchema = {
         endDate: new Date().toLocaleDateString(),
         tasks: [],
     },
-    unit: unitsData[0],
+    department: unitsData[0],
 };
 
 export const eventsData: EventResponseItemSchema[] = [

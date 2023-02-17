@@ -4,14 +4,7 @@ import { UserSchema } from "./users";
  * Схема ответа на запрос получения всех отделов.
  * */
 export interface GetAllUnitsResponseSchema {
-    units: UnitResponseItemSchema[];
-}
-
-/**
- * Схема ответа на запрос получения отдела по `id`.
- * */
-export interface GetUnitByIdResponseSchema {
-    unit: UnitResponseItemSchema;
+    departments: UnitResponseItemSchema[];
 }
 
 /**

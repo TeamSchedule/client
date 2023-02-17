@@ -6,14 +6,14 @@ import requestApi from "../fetchApi";
  * Класс с методами доступа к api отделов.
  * */
 export class UnitsApi {
-    static apiPrefix = "/schedule/team";
+    static apiPrefix = "/schedule/department";
 
     /**
      * Получить все отделы.
      * */
     static async all(): Promise<UnitResponseItemSchema[]> {
         return requestApi.GET(`${this.apiPrefix}`).then((data: GetAllUnitsResponseSchema) => {
-            return data.units;
+            return data.departments;
         });
     }
 

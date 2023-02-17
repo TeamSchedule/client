@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Checkbox, FormControlLabel } from "@mui/material";
 
 import { API } from "../../../api/api";
 import CloseFormIcon from "../../generic/CloseFormIcon";
@@ -11,6 +10,7 @@ import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import { BaseButton } from "../../buttons";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../../inputs/SimpleTextInput";
+import { TaskStatusStrings } from "../../../enums/tasksEnums";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function EditTaskForm() {
     const [taskName, setTaskName] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
     const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(new Date());
-    const [taskClosedStatus, setTaskClosedStatus] = useState(false);
+    const [taskClosedStatus, setTaskClosedStatus] = useState<TaskStatusStrings>();
     const [taskTeamName, setTaskTeamName] = useState("");
 
     // circular loaders
@@ -36,9 +36,9 @@ export default function EditTaskForm() {
             // Available use full info about task in data
             setTaskName(task.name);
             setTaskDescription(task.description);
-            setTaskClosedStatus(task.status);
+            setTaskClosedStatus(task.taskStatus);
             setTaskExpirationDatetime(new Date(task.expirationTime));
-            setTaskTeamName(task.unit.name);
+            setTaskTeamName(task.department.name);
         });
     }, [taskId]);
 
@@ -53,7 +53,6 @@ export default function EditTaskForm() {
             name: taskName,
             description: taskDescription,
             expirationTime: new Date(taskExpirationDatetime).toJSON(),
-            closed: taskClosedStatus,
         };
 
         API.tasks
@@ -105,18 +104,6 @@ export default function EditTaskForm() {
 
             <div>
                 <p className="my-1">{taskTeamName === "" ? "персональная задача" : `Команда: ${taskTeamName}`}</p>
-
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={taskClosedStatus}
-                            color="success"
-                            onChange={() => setTaskClosedStatus(!taskClosedStatus)}
-                            name="closed"
-                        />
-                    }
-                    label="Отметить выполненной"
-                />
             </div>
 
             <BaseButton

@@ -35,7 +35,7 @@ export default function FullTaskView() {
                 <TaskName name={task?.name} />
                 <TaskDeadline deadline={task ? new Date(task?.expirationTime) : undefined} />
                 <EventLink id={task?.event.id} name={task?.event.name} />
-                <UnitLink id={task?.unit.id} name={task?.unit.name} />
+                <UnitLink id={task?.department.id} name={task?.department.name} />
                 <Executors users={task ? task.assignee : []} />
                 <BaseButton text="Изменить" onClick={() => navigate("edit")} className="mt-2" color="common" />
             </div>

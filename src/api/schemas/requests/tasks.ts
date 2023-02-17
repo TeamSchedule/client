@@ -8,10 +8,10 @@ export interface CreateTaskRequestSchema {
 }
 
 export interface UpdateTaskRequestSchema {
-    name: string;
-    description: string;
-    expirationTime: string;
-    closed: boolean;
+    name?: string;
+    description?: string;
+    expirationTime?: string;
+    status?: boolean;
 }
 
 export interface FilterTasksParamsSchema {

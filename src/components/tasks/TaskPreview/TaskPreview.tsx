@@ -36,7 +36,7 @@ export default function TaskPreview(props: TaskPreviewProps) {
                 <CardContent sx={{ paddingBottom: 0 }}>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         <Box component="span" sx={{ marginRight: 1 }}>
-                            {props.task.status ? <StatusDone /> : <InProgressStatus />}
+                            {props.task.taskStatus ? <StatusDone /> : <InProgressStatus />}
                         </Box>
 
                         {getDateRepresentation(new Date(props.task.expirationTime))}
@@ -45,7 +45,7 @@ export default function TaskPreview(props: TaskPreviewProps) {
                     <TaskName name={props.task.name} />
                     <Typography variant="body2">{props.task.description}</Typography>
                     <EventLink id={props.task.event.id} name={props.task.event.name} />
-                    <UnitLink id={props.task.unit.id} name={props.task.unit.name} />
+                    <UnitLink id={props.task.department.id} name={props.task.department.name} />
                 </CardContent>
 
                 <CardActions>

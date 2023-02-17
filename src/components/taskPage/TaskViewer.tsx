@@ -66,7 +66,9 @@ export function TaskViewer() {
     }, [teamToColor]);
 
     useEffect(() => {
-        setFilteredTasks(tasks.filter((task) => showedTeams.includes(task.unit.id) || task.unit.name === null));
+        setFilteredTasks(
+            tasks.filter((task) => showedTeams.includes(task.department.id) || task.department.name === null)
+        );
     }, [showedTeams, tasks]);
 
     useEffect(() => {
@@ -106,8 +108,8 @@ export function TaskViewer() {
 
             eventTask.title = task.name;
             eventTask.id = task.id.toString();
-            eventTask.groupId = task.unit.id.toString();
-            eventTask.textColor = task.unit.name ? "white" : "black";
+            eventTask.groupId = task.department.id.toString();
+            eventTask.textColor = task.department.name ? "white" : "black";
 
             eventTask.start = new Date(task.expirationTime);
             eventTask.end = new Date(task.expirationTime);
@@ -117,12 +119,12 @@ export function TaskViewer() {
             const TeamPublicColor = teamToColor[task.team.id.toString()];
             eventTask.color = TeamPublicColor ? TeamPublicColor : "white";
 
-            eventTask.backgroundColor = task.unit.name ? eventTask.color : "#eef1ff";
+            eventTask.backgroundColor = task.department.name ? eventTask.color : "#eef1ff";
             eventTask.borderColor = eventTask.color;
             eventTask.extendedProps = {
                 description: task.description,
-                groupName: task.unit.name,
-                closed: task.status,
+                groupName: task.department.name,
+                closed: task.taskStatus,
             };
             calTasks.push(eventTask);
         }

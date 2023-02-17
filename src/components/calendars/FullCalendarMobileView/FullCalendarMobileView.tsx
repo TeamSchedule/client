@@ -22,6 +22,7 @@ import buildFilterParams from "../../../api/utils/buildFilterParams";
 import styles from "../CalendarStyles.module.scss";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { IconButton, Tooltip } from "@mui/material";
+import { TaskStatusEnum } from "../../../enums/tasksEnums";
 
 const RightSideButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText(purple[500]),
@@ -93,7 +94,7 @@ export default function FullCalendarMobileView() {
             setDisplayedTasks(tasks);
         } else {
             // НЕ показывать закрытые
-            setDisplayedTasks(displayedTasks.filter((task) => task.status != "OPEN" && task.status != "IN_PROGRESS"));
+            setDisplayedTasks(displayedTasks.filter((task) => task.taskStatus !== TaskStatusEnum.COMPLETED));
         }
     }, [showClosed]);
 

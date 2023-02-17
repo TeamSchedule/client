@@ -1,13 +1,9 @@
-import {
-    EventResponseItemSchema,
-    GetEventsResponseSchema,
-    GetEventByIdResponseSchema,
-} from "../schemas/responses/events";
+import { EventResponseItemSchema, GetEventsResponseSchema } from "../schemas/responses/events";
 import { CreateEventRequestSchema } from "../schemas/requests/events";
 import requestApi from "../fetchApi";
 
 export class EventsApi {
-    static apiPrefix: string = "/events";
+    static apiPrefix: string = "/schedule/event";
 
     /**
      * Получить все события.
@@ -24,9 +20,7 @@ export class EventsApi {
      * @param id - Идентификатор события
      * */
     static async getById(id: number): Promise<EventResponseItemSchema> {
-        return requestApi.GET(`${this.apiPrefix}/${id}`).then((data: GetEventByIdResponseSchema) => {
-            return data.event;
-        });
+        return requestApi.GET(`${this.apiPrefix}/${id}`);
     }
 
     /**
