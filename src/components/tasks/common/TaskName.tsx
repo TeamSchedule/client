@@ -1,4 +1,3 @@
-import styles from "./TaskCommon.module.scss";
 import Typography from "@mui/material/Typography";
 import SkeletonWrapper from "../../SkeletonWrapper";
 
@@ -8,7 +7,7 @@ export interface TaskNameProps {
 
 export default function TaskName(props: TaskNameProps) {
     return (
-        <Typography variant="h6" component="div" className={styles.taskName}>
+        <Typography variant="h6" component="div">
             {props.name ? props.name : <SkeletonWrapper />}
         </Typography>
     );

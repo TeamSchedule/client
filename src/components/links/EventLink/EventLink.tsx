@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { makeEventLinkById } from "../../../routes/paths";
-import styles from "../Link.module.scss";
 import Typography from "@mui/material/Typography";
 import SkeletonWrapper from "../../SkeletonWrapper";
+import { IconButton } from "@mui/material";
+import Link from "@mui/material/Link";
+import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 
 interface EventLinkProps {
-    eventId: number | undefined;
-    eventName: string | undefined;
+    id: number | undefined;
+    name: string | undefined;
 }
 
 export default function EventLink(props: EventLinkProps) {
@@ -14,17 +16,20 @@ export default function EventLink(props: EventLinkProps) {
 
     function onClick(e: React.MouseEvent<any>) {
         e.stopPropagation();
-        if (!props.eventName || !props.eventId) return;
-        navigate(makeEventLinkById(props.eventId), { state: { id: props.eventId } });
+        if (!props.name || !props.id) return;
+        navigate(makeEventLinkById(props.id), { state: { id: props.id } });
     }
 
     return (
         <>
-            <span onClick={onClick} className={styles.link}>
-                <Typography variant="subtitle1" component="span">
-                    {props.eventName ? props.eventName : <SkeletonWrapper />}
-                </Typography>
-            </span>
+            <Typography variant="body1" component="div">
+                <IconButton>
+                    <LocalActivityIcon />
+                </IconButton>
+                <Link component="button" variant="body2" onClick={onClick}>
+                    {props.name ? props.name : <SkeletonWrapper />}
+                </Link>
+            </Typography>
         </>
     );
 }

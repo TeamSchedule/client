@@ -19,7 +19,7 @@ export default function EventPreview(props: EventPreviewProps) {
                     navigate(makeEventLinkById(props.event.id));
                 }}
             >
-                <StatusBadge text="Завершен" status={StatusBadgeEnum.Ok} />
+                <StatusBadge text="Завершено" status={StatusBadgeEnum.Ok} />
                 <div className={styles.colorBadge}></div>
                 <div className="d-flex justify-content-between">
                     <span className={styles.eventName}>{props.event.name}</span>

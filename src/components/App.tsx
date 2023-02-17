@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
-import AuthorizedHeader from "./header/AuthorizedHeader";
+import PrimaryAppBar from "./header/PrimaryAppBar";
 
 const NotificationRequestPeriod: number = 10;
 
@@ -24,7 +24,7 @@ export default function App() {
     return (
         <div className="h-100 container-fluid m-0 p-0">
             <NotificationsContext.Provider value={newNotifications}>
-                <AuthorizedHeader />
+                <PrimaryAppBar />
             </NotificationsContext.Provider>
             <div className="position-relative">
                 <div className="row m-0 d-flex px-2">
