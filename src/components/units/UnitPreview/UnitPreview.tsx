@@ -3,6 +3,8 @@ import styles from "./UnitPreview.module.scss";
 import UserPreview from "../../users/UsersPreview/UserPreview";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
 interface UnitPreviewProps {
     unit: UnitResponseItemSchema;
@@ -15,18 +17,22 @@ export default function UnitPreview(props: UnitPreviewProps) {
 
     return (
         <>
-            <div
-                className={styles.unit}
-                onClick={() => {
-                    navigate(props.unit.id.toString());
-                }}
-            >
-                <Typography variant="subtitle1" component="div">
-                    {props.unit.name}
-                </Typography>
-                <OpenTasksLabel tasks={props.unit.openTasks} />
-                {members}
-            </div>
+            <Card sx={{ minWidth: 280, marginBottom: 1 }}>
+                <CardContent>
+                    <div
+                        className={styles.unit}
+                        onClick={() => {
+                            navigate(props.unit.id.toString());
+                        }}
+                    >
+                        <Typography variant="subtitle1" component="div">
+                            {props.unit.name}
+                        </Typography>
+                        <OpenTasksLabel tasks={props.unit.openTasks} />
+                        {members}
+                    </div>
+                </CardContent>
+            </Card>
         </>
     );
 }

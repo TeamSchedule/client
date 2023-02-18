@@ -2,25 +2,23 @@
 
 
 .userPreview {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  padding: 4px 0;
-  background: colors.$light_brand;
-  border-bottom: 1px solid #dcdbff;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 4px 0;
 
-  &_clickable:hover {
-    cursor: pointer;
-  }
+    &_clickable:hover {
+        cursor: pointer;
+    }
 
-  &__name {
-    margin: 0;
-    font-size: 1rem;
-  }
+    &__name {
+        margin: 0;
+        font-size: 1rem;
+    }
 
-  &__post {
-    margin: 0;
-    font-size: 0.9rem;
-    color: colors.$secondary;
-  }
+    &__post {
+        margin: 0;
+        font-size: 0.9rem;
+        color: colors.$secondary;
+    }
 }

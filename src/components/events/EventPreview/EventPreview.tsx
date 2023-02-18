@@ -39,14 +39,16 @@ export default function EventPreview(props: EventPreviewProps) {
                             {getDateRepresentation(new Date(props.event.endDate))}
                         </Typography>
 
-                        <Tooltip title={`Открытых задач: ${openTasks} `}>
-                            <IconButton>
-                                <AssignmentIcon />
-                                <Typography variant="subtitle2" color="text.secondary" component="span">
-                                    {props.event.tasks.length}
-                                </Typography>
-                            </IconButton>
-                        </Tooltip>
+                        {openTasks !== 0 && (
+                            <Tooltip title={`Открытых задач: ${openTasks} `}>
+                                <IconButton>
+                                    <AssignmentIcon />
+                                    <Typography variant="subtitle2" color="text.secondary" component="span">
+                                        {props.event.tasks.length}
+                                    </Typography>
+                                </IconButton>
+                            </Tooltip>
+                        )}
                     </Box>
 
                     <Typography gutterBottom variant="h6" component="div">

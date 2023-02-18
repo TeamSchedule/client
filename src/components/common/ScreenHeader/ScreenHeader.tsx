@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./ScreenHeader.module.scss";
+import Typography from "@mui/material/Typography";
 
 interface ScreenHeaderProps {
     text: string;
@@ -8,7 +8,9 @@ interface ScreenHeaderProps {
 export default function ScreenHeader(props: ScreenHeaderProps) {
     return (
         <>
-            <h1 className={styles.layoutHeader}>{props.text}</h1>
+            <Typography variant="h6" gutterBottom component="h1" align="center">
+                {props.text}
+            </Typography>
         </>
     );
 }

@@ -1,12 +1,14 @@
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
-import { BaseButton } from "../../buttons";
 import { useNavigate } from "react-router-dom";
 import EventPreview from "../EventPreview/EventPreview";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { eventsData } from "../../../testdata/data";
 import PlainSelector from "../../selectors/PlainSelector";
+import SpeedDial from "@mui/material/SpeedDial";
+import SpeedDialIcon from "@mui/material/SpeedDialIcon";
+import { CreateNewEventPath } from "../../../routes/paths";
 
 enum EventFilterEnum {
     All = 0,
@@ -62,15 +64,14 @@ export default function EventList(props: EventListProps) {
                 {events.map((event) => (
                     <EventPreview key={event.id} event={event} />
                 ))}
-
-                <BaseButton
-                    text="Новое событие"
+                <SpeedDial
+                    ariaLabel="create new event"
+                    sx={{ position: "fixed", bottom: 16, right: 16 }}
+                    icon={<SpeedDialIcon />}
                     onClick={() => {
-                        navigate("new");
+                        navigate(CreateNewEventPath);
                     }}
-                    className="mt-2"
-                    color="common"
-                />
+                ></SpeedDial>
             </div>
         </>
     );
