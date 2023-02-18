@@ -1,5 +1,6 @@
 import React from "react";
 import { MenuItem, Select } from "@mui/material";
+import Box from "@mui/material/Box";
 
 interface PlainSelectorProps {
     id?: string;
@@ -10,7 +11,13 @@ interface PlainSelectorProps {
 
 export default function PlainSelector(props: PlainSelectorProps) {
     return (
-        <>
+        <Box
+            sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                    border: "none",
+                },
+            }}
+        >
             <Select
                 id={props.id || "filter"}
                 value={props.filterValue}
@@ -24,6 +31,6 @@ export default function PlainSelector(props: PlainSelectorProps) {
                     </MenuItem>
                 ))}
             </Select>
-        </>
+        </Box>
     );
 }

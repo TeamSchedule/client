@@ -18,8 +18,9 @@ import TaskIcon from "@mui/icons-material/Task";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { baseSettingsPath, EventListPath, TaskListPath, UnitListPath } from "../../routes/paths";
+import { baseSettingsPath, EventListPath, NotificationListPath, TaskListPath, UnitListPath } from "../../routes/paths";
 import { NotificationsContext } from "../App";
+import { Tooltip } from "@mui/material";
 
 export default function PrimaryAppBar() {
     const navigate = useNavigate();
@@ -28,11 +29,17 @@ export default function PrimaryAppBar() {
 
     const newNotifications = useContext<Array<object>>(NotificationsContext);
 
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const [isNotificationsBarOpen, setIsNotificationsBarOpen] = React.useState<boolean>(false);
+
+    const handleNotificationsButtonClick = () => {
+        if (isNotificationsBarOpen) {
+            navigate(NotificationListPath);
+        }
+        setIsNotificationsBarOpen(!isNotificationsBarOpen);
+    };
 
     const handleLogout = (
         event: React.MouseEvent<HTMLElement>,
@@ -44,44 +51,13 @@ export default function PrimaryAppBar() {
         logout();
     };
 
-    const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
     };
 
     const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
-
-    const menuId = "primary-search-account-menu";
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-            }}
-            id={menuId}
-            keepMounted
-            transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-            }}
-            open={isMenuOpen}
-            onClose={handleMenuClose}
-        >
-            <MenuItem onClick={handleMenuClose}>Мои задачи</MenuItem>
-            <MenuItem onClick={(e) => handleLogout(e, handleMenuClose)}>Выйти</MenuItem>
-        </Menu>
-    );
 
     const mobileMenuId = "primary-search-account-menu-mobile";
     const renderMobileMenu = (
@@ -100,7 +76,7 @@ export default function PrimaryAppBar() {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem onClick={handleProfileMenuOpen}>
+            <MenuItem>
                 <IconButton
                     size="large"
                     aria-label="tasks of current user"
@@ -132,33 +108,42 @@ export default function PrimaryAppBar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        sx={{ mr: 2 }}
-                        onClick={() => navigate(TaskListPath)}
-                    >
-                        <CalendarMonthIcon />
-                    </IconButton>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        sx={{ mr: 2 }}
-                        onClick={() => navigate(EventListPath)}
-                    >
-                        <LocalActivityIcon />
-                    </IconButton>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        sx={{ mr: 2 }}
-                        onClick={() => navigate(UnitListPath)}
-                    >
-                        <PeopleIcon />
-                    </IconButton>
+                    <Tooltip title="Задачи">
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            sx={{ mr: 2 }}
+                            onClick={() => navigate(TaskListPath)}
+                        >
+                            <CalendarMonthIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="События">
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            sx={{ mr: 2 }}
+                            onClick={() => navigate(EventListPath)}
+                        >
+                            <LocalActivityIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Отделы">
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            sx={{ mr: 2 }}
+                            onClick={() => navigate(UnitListPath)}
+                        >
+                            <PeopleIcon />
+                        </IconButton>
+                    </Tooltip>
+
                     <IconButton
                         size="large"
                         edge="start"
@@ -175,7 +160,12 @@ export default function PrimaryAppBar() {
                         <Typography color="inherit">{user?.login}</Typography>
                     </Box>
 
-                    <IconButton size="large" aria-label="show new notifications" color="inherit">
+                    <IconButton
+                        size="large"
+                        aria-label="show new notifications"
+                        color="inherit"
+                        onClick={handleNotificationsButtonClick}
+                    >
                         <Badge badgeContent={newNotifications.length} color="error">
                             <NotificationsIcon />
                         </Badge>
@@ -203,7 +193,6 @@ export default function PrimaryAppBar() {
                 </Toolbar>
             </AppBar>
             {renderMobileMenu}
-            {renderMenu}
         </Box>
     );
 }
