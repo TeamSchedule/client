@@ -50,7 +50,7 @@ export default function EditUnitForm() {
         const newUnitData: CreateUnitRequestSchema = {
             name: title,
             description: description,
-            head: unitHead?.id,
+            adminId: unitHead?.id,
             members: unitMembers.map((member) => member.id),
         };
 

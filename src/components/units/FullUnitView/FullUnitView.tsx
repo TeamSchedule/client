@@ -8,6 +8,27 @@ import UserPreview from "../../users/UsersPreview/UserPreview";
 import TaskPreview from "../../tasks/TaskPreview";
 import { taskData, usersData } from "../../../testdata/data";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
+import Collapse from "@mui/material/Collapse";
+import CardContent from "@mui/material/CardContent";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import { styled } from "@mui/material/styles";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+
+interface ExpandMoreProps extends IconButtonProps {
+    expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+    transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+    transition: theme.transitions.create("transform", {
+        duration: theme.transitions.duration.shortest,
+    }),
+}));
 
 export default function FullUnitView() {
     const navigate = useNavigate();
@@ -16,6 +37,13 @@ export default function FullUnitView() {
 
     // данные отдела
     const [unit, setUnit] = useState<UnitResponseItemSchema>();
+
+    // раскрыть раздел с задачами
+    const [expanded, setExpanded] = useState<boolean>(false);
+
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
 
     useEffect(() => {
         /* Получение  данных отдела */
@@ -40,17 +68,34 @@ export default function FullUnitView() {
 
     return (
         <>
-            <div>
+            <Card>
                 <ScreenHeader text={unit?.name || "Отдел социальных медиа"} />
+                <CardContent>
+                    <ScreenSectionHeader text="Состав отдела" />
+                    {members}
+                </CardContent>
 
-                <ScreenSectionHeader text="Открытые задачи" />
-                <TaskPreview task={taskData} />
+                <CardActions
+                    disableSpacing
+                    sx={{
+                        "&:hover": {
+                            cursor: "pointer",
+                        },
+                    }}
+                    onClick={handleExpandClick}
+                >
+                    <ScreenSectionHeader text="Открытые задачи" />
+                    <ExpandMore expand={expanded} aria-expanded={expanded} aria-label="show more">
+                        <ExpandMoreIcon />
+                    </ExpandMore>
+                </CardActions>
 
-                <ScreenSectionHeader text="Состав отдела" />
-                {members}
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <TaskPreview task={taskData} />
+                </Collapse>
 
                 <BaseButton text="Изменить" onClick={() => navigate("edit")} className="mt-2" color="common" />
-            </div>
+            </Card>
         </>
     );
 }

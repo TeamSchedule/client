@@ -2,7 +2,7 @@ import { LocalizationProvider, PickersDay, PickersDayProps, StaticDatePicker } f
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Badge, BadgeProps, Box, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { weekCount } from "../../../utils/dateutils";
+import { isEqualYearMonthDate, weekCount } from "../../../utils/dateutils";
 import { styled } from "@mui/material/styles";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";
@@ -73,7 +73,7 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                     badgeContent={
                         props.tasks.filter((task) => {
                             // @ts-ignore
-                            return new Date(task.expirationTime).getTime() === date["$d"].getTime();
+                            return isEqualYearMonthDate(new Date(task.expirationTime), date["$d"]);
                         }).length
                     }
                     color="secondary"

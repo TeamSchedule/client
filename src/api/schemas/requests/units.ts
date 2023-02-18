@@ -4,7 +4,7 @@
 export interface CreateUnitRequestSchema {
     name: string;
     description?: string;
-    head?: number;
+    adminId?: number;
     members?: Array<number>;
 }
 

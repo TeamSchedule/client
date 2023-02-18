@@ -1,11 +1,13 @@
 export interface SignInRequestSchema {
-    login: string;
+    email: string;
     password: string;
 }
 
 export interface SignUpRequestSchema {
     email: string;
-    login: string;
+    firstName: string;
+    secondName: string;
+    thirdName?: string;
     password: string;
 }
 

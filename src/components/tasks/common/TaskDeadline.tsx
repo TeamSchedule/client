@@ -1,6 +1,5 @@
-import DateLink from "../../links/DateLink/DateLink";
-import styles from "./TaskCommon.module.scss";
-import Typography from "@mui/material/Typography";
+import { Tooltip } from "@mui/material";
+import { getDateRepresentation } from "../../../utils/dateutils";
 
 interface TaskDeadlineProps {
     deadline: Date | undefined;
@@ -9,10 +8,9 @@ interface TaskDeadlineProps {
 export default function TaskDeadline(props: TaskDeadlineProps) {
     return (
         <>
-            <div className="d-flex align-items-center align-content-stretch justify-content-stretch">
-                <Typography className={styles.taskDeadlineLable}>Выполнить до:&nbsp;</Typography>
-                <DateLink date={props.deadline} />
-            </div>
+            <Tooltip title="Дедлайн задачи">
+                <span>{props.deadline ? getDateRepresentation(props.deadline) : ""}</span>
+            </Tooltip>
         </>
     );
 }

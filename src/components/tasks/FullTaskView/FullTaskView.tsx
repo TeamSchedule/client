@@ -33,7 +33,7 @@ export default function FullTaskView() {
         <>
             <div>
                 <TaskName name={task?.name} />
-                <TaskDeadline deadline={task ? new Date(task?.expirationTime) : undefined} />
+                <TaskDeadline deadline={task?.expirationTime ? new Date(task?.expirationTime) : undefined} />
                 <EventLink id={task?.event.id} name={task?.event.name} />
                 <UnitLink id={task?.department.id} name={task?.department.name} />
                 <Executors users={task ? task.assignee : []} />

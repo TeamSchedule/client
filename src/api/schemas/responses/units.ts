@@ -14,9 +14,8 @@ export interface UnitResponseItemSchema {
     id: number;
     name: string;
     creationDate: string;
-    adminId: number;
+    admin: UserSchema;
     color: string;
     members: Array<UserSchema>;
-    avatar?: string;
     openTasks: Array<object>;
 }

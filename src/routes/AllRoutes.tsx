@@ -36,11 +36,9 @@ import {
 } from "./paths";
 import NotificationList from "../components/notifications/NotificationList/NotificationList";
 import useAuth from "../hooks/useAuth";
-import LoginForm from "../components/auth/LoginForm";
 import ForgotPasswordForm from "../components/auth/reset_password/ForgotPasswordForm";
 import ResetPasswordCodeForm from "../components/auth/reset_password/ResetPasswordCodeForm";
 import NewPasswordForm from "../components/auth/reset_password/NewPasswordForm";
-import RegisterForm from "../components/auth/RegisterForm";
 import SuccessRegisteredMsg from "../components/auth/SuccessRegisteredMsg";
 import AuthProvider from "./AuthProvider";
 import FullEventView from "../components/events/FullEventView/FullEventView";
@@ -48,6 +46,8 @@ import EditEventForm from "../components/events/EditEventForm/EditEventForm";
 import AvatarEditorModal from "../components/AvatarEditorModal";
 import FullCalendarMobileView from "../components/calendars/FullCalendarMobileView";
 import FullTaskView from "../components/tasks/FullTaskView";
+import SignIn from "../components/auth/SignIn";
+import SignUp from "../components/auth/SignUp";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -100,12 +100,12 @@ export const router = createBrowserRouter(
                 <Route element={<PublicLayout />}>
                     <Route index element={<Navigate to={loginPath} replace={true} />} />
 
-                    <Route path={loginPath} element={<LoginForm />} />
+                    <Route path={loginPath} element={<SignIn />} />
                     <Route path={forgotPasswordPath} element={<ForgotPasswordForm />} />
                     <Route path={resetPasswordCodePath} element={<ResetPasswordCodeForm />} />
                     <Route path={newPasswordPath} element={<NewPasswordForm />} />
 
-                    <Route path={registrationPath} element={<RegisterForm />} />
+                    <Route path={registrationPath} element={<SignUp />} />
                     <Route path={successRegistrationPath} element={<SuccessRegisteredMsg />} />
 
                     <Route path={notFound} element={<Navigate to={loginPath} replace={true} />} />

@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import UsersSelector from "../../selectors/UsersSelector";
+import { Snackbar } from "@mui/material";
 
 export default function CreateUnitForm() {
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ export default function CreateUnitForm() {
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);
+    const [isOpenSnack, setIsOpenSnack] = useState<boolean>(false);
 
     function createUnitHandler() {
         setInProgress(true);
@@ -28,15 +30,15 @@ export default function CreateUnitForm() {
         const newUnitData: CreateUnitRequestSchema = {
             name: title,
             description: description,
-            head: unitHead?.id,
+            adminId: unitHead?.id,
             members: unitMembers.map((member) => member.id),
         };
 
         API.units
             .createUnit(newUnitData)
             .then(() => {
-                setInProgress(false);
                 navigate("..");
+                setIsOpenSnack(true);
             })
             .catch(() => {
                 //    TODO: показать сообщение об ошибке - что-то пошло не так
@@ -47,8 +49,16 @@ export default function CreateUnitForm() {
             });
     }
 
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsOpenSnack(false);
+    };
+
     return (
         <>
+            <Snackbar open={isOpenSnack} autoHideDuration={3000} onClose={handleClose} message="Отдел успешно создан" />
             <div>
                 <ScreenHeader text="Создание отдела" />
 
