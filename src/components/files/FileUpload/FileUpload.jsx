@@ -1,22 +1,22 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { SvgIcon } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import './FileUpload.scss'
 import axios from 'axios'
 
 const FileUpload = ({ files, setFiles, removeFile }) => {
     const uploadHandler = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-        file.isUploading = true;
-        setFiles([...files, file])
+        const newFiles = event.target.files;
+        if (!newFiles) return;
+        newFiles.isUploading = true;
+        setFiles([...files, ...newFiles])
 
         // upload file
-        const formData = new FormData();
+        /*const formData = new FormData();
         formData.append(
             "newFile",
-            file,
-            file.name
+            newFiles,
+            newFiles.name
         )
         axios.post('http://localhost:8080/upload', formData)
             .then((res) => {
@@ -27,26 +27,23 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
                 // inform the user
                 console.error(err)
                 removeFile(file.name)
-            });
+            });*/
     }
 
     return (
         <>
             <div className="file-card">
-
                 <div className="file-inputs">
-                    <input type="file" onChange={uploadHandler} />
+                    <input type="file" onChange={uploadHandler} multiple="multiple" />
                     <button>
                         <i>
-                            <FontAwesomeIcon icon={faPlus} />
+                            <SvgIcon component={AddIcon}></SvgIcon>
                         </i>
-                        Загрузить
+                        Загрузить файлы
                     </button>
                 </div>
-
                 <p className="main">Поддерживемые файлы</p>
-                <p className="info">PDF, DOC, JPG</p>
-
+                <p className="info">PDF, DOC, JPG и др.</p>
             </div>
         </>
     )

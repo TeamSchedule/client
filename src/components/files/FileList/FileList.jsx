@@ -8,6 +8,7 @@ const FileList = ({ files, removeFile }) => {
             .then((res) => removeFile(_name))
             .catch((err) => console.error(err));
     }
+    console.log(files)
     return (
         <ul className="file-list">
             {
