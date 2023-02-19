@@ -1,16 +1,16 @@
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import React, { useState } from "react";
-import { BaseButton } from "../../buttons";
 import { API } from "../../../api/api";
 import { useNavigate } from "react-router-dom";
 import { CreateEventRequestSchema } from "../../../api/schemas/requests/events";
-import SimpleTextInput from "../../inputs/SimpleTextInput";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import DateInput from "../../inputs/DateInput";
 import InputColor from "../../inputs/ColorInput";
 import FormInputItemWrapper from "../../common/FormInputItemWrapper";
 import FileUpload from "../../files/FileUpload/FileUpload";
 import FileList from "../../files/FileList/FileList";
+import LoadingButton from "@mui/lab/LoadingButton";
+import TextField from "@mui/material/TextField";
 
 interface CreateEventFormProps {}
 
@@ -39,7 +39,6 @@ export default function CreateEventForm(props: CreateEventFormProps) {
         API.events
             .createEvent(newEventData)
             .then(() => {
-                setInProgress(false);
                 navigate("..");
             })
             .catch(() => {
@@ -57,7 +56,14 @@ export default function CreateEventForm(props: CreateEventFormProps) {
                 <ScreenHeader text="Создание события" />
 
                 <FormInputItemWrapper>
-                    <SimpleTextInput value={title} handleChange={setTitle} label="Название отдела" />
+                    <TextField
+                        required
+                        fullWidth
+                        variant="outlined"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        label="Название отдела"
+                    />
                 </FormInputItemWrapper>
 
                 <FormInputItemWrapper>
@@ -73,7 +79,7 @@ export default function CreateEventForm(props: CreateEventFormProps) {
                     <InputColor color={color} setColor={setColor} className="mx-3" />
                 </FormInputItemWrapper>
 
-                <FormInputItemWrapper className="d-flex align-items-center">
+                <FormInputItemWrapper className="d-flex align-items-center mt-4">
                     <FileUpload files={attachments} setFiles={setAttachments} />
                 </FormInputItemWrapper>
 
@@ -84,13 +90,15 @@ export default function CreateEventForm(props: CreateEventFormProps) {
                     }
                 />
 
-                <BaseButton
-                    text="Создать"
+                <LoadingButton
+                    fullWidth
                     onClick={createUnitHandler}
-                    className="mt-2"
-                    color="common"
                     loading={inProgress}
-                />
+                    variant="contained"
+                    sx={{ mt: 3 }}
+                >
+                    Создать
+                </LoadingButton>
             </div>
         </>
     );
