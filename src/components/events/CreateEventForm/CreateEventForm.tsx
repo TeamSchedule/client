@@ -9,6 +9,8 @@ import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInp
 import DateInput from "../../inputs/DateInput";
 import InputColor from "../../inputs/ColorInput";
 import FormInputItemWrapper from "../../common/FormInputItemWrapper";
+import FileUpload from "../../files/FileUpload/FileUpload";
+import FileList from "../../files/FileList/FileList";
 
 interface CreateEventFormProps {}
 
@@ -20,7 +22,7 @@ export default function CreateEventForm(props: CreateEventFormProps) {
     const [description, setDescription] = useState<string>("");
     const [deadline, setDeadline] = useState<Date | null>(null);
     const [color, setColor] = useState<string | undefined>();
-    // const [attachments, setAttachments] = useState<object[]>();
+    const [attachments, setAttachments] = useState<File[]>([]);
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);
@@ -72,8 +74,15 @@ export default function CreateEventForm(props: CreateEventFormProps) {
                 </FormInputItemWrapper>
 
                 <FormInputItemWrapper className="d-flex align-items-center">
-                    <span>Прикрепить файлы</span>
+                    <FileUpload files={attachments} setFiles={setAttachments} />
                 </FormInputItemWrapper>
+
+                <FileList
+                    files={attachments}
+                    detachFile={(excludeFilename: string) =>
+                        setAttachments([...attachments.filter((attachment) => attachment.name !== excludeFilename)])
+                    }
+                />
 
                 <BaseButton
                     text="Создать"
