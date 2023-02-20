@@ -18,7 +18,7 @@ import TaskIcon from "@mui/icons-material/Task";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { baseSettingsPath, EventListPath, NotificationListPath, TaskListPath, UnitListPath } from "../../routes/paths";
+import { SettingsPath, EventListPath, NotificationListPath, TaskListPath, UnitListPath } from "../../routes/paths";
 import { NotificationsContext } from "../App";
 import { Tooltip } from "@mui/material";
 
@@ -144,15 +144,17 @@ export default function PrimaryAppBar() {
                         </IconButton>
                     </Tooltip>
 
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        sx={{ mr: 2 }}
-                        onClick={() => navigate(baseSettingsPath)}
-                    >
-                        <SettingsIcon />
-                    </IconButton>
+                    <Tooltip title="Настройки профиля">
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            sx={{ mr: 2 }}
+                            onClick={() => navigate(SettingsPath)}
+                        >
+                            <SettingsIcon />
+                        </IconButton>
+                    </Tooltip>
 
                     <Box sx={{ flexGrow: 1 }} />
 
@@ -160,16 +162,18 @@ export default function PrimaryAppBar() {
                         <Typography color="inherit">{user?.login}</Typography>
                     </Box>
 
-                    <IconButton
-                        size="large"
-                        aria-label="show new notifications"
-                        color="inherit"
-                        onClick={handleNotificationsButtonClick}
-                    >
-                        <Badge badgeContent={newNotifications.length} color="error">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
+                    <Tooltip title="Оповещения">
+                        <IconButton
+                            size="large"
+                            aria-label="show new notifications"
+                            color="inherit"
+                            onClick={handleNotificationsButtonClick}
+                        >
+                            <Badge badgeContent={newNotifications.length} color="error">
+                                <NotificationsIcon />
+                            </Badge>
+                        </IconButton>
+                    </Tooltip>
 
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
                         <IconButton size="large" aria-label="logout" color="inherit" onClick={handleLogout}>

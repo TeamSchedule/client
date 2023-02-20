@@ -1,9 +1,9 @@
 export interface CreateTaskRequestSchema {
     name: string;
     description?: string;
-    unitId?: number;
+    departmentId?: number;
     eventId?: number;
-    assigneeId?: number;
+    assigneeIds?: number[];
     expirationTime?: Date;
 }
 

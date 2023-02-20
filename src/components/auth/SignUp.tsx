@@ -133,6 +133,7 @@ export default function SignUp() {
                             fullWidth
                             id="email"
                             label="Email"
+                            helperText="*****@mail.sfu-kras.ru"
                             name="email"
                             autoComplete="email"
                         />

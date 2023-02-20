@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import SimpleTextInput from "../../inputs/SimpleTextInput";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import UserSelector from "../../selectors/UserSelector/UserSelector";
 import { CreateUnitRequestSchema } from "../../../api/schemas/requests/units";
-import { BaseButton } from "../../buttons";
 import { API } from "../../../api/api";
 import { useNavigate } from "react-router-dom";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import UsersSelector from "../../selectors/UsersSelector";
 import { Snackbar } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function CreateUnitForm() {
     const navigate = useNavigate();
@@ -62,7 +62,14 @@ export default function CreateUnitForm() {
             <div>
                 <ScreenHeader text="Создание отдела" />
 
-                <SimpleTextInput handleChange={setTitle} value={title} label={"Название отдела"} className="mt-2" />
+                <TextField
+                    required
+                    fullWidth
+                    variant="outlined"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    label="Название отдела"
+                />
 
                 <MultilineTextInput
                     value={description}
@@ -85,13 +92,16 @@ export default function CreateUnitForm() {
                     inputValue={unitMembers}
                 />
 
-                <BaseButton
-                    text="Создать"
+                <LoadingButton
+                    fullWidth
+                    disabled={title.length === 0}
                     onClick={createUnitHandler}
-                    className="mt-2"
-                    color="common"
                     loading={inProgress}
-                />
+                    variant="contained"
+                    sx={{ mt: 3 }}
+                >
+                    Создать
+                </LoadingButton>
             </div>
         </>
     );

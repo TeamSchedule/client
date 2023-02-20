@@ -4,5 +4,15 @@
 export interface CreateEventRequestSchema {
     name: string;
     description?: string;
-    deadline: Date | null;
+    endDate?: Date | null;
+    color?: string;
+}
+
+/**
+ * Схема изменения события.
+ * */
+export interface EditEventRequestSchema {
+    name?: string;
+    description?: string;
+    deadline?: Date;
 }

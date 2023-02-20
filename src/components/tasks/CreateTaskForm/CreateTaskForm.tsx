@@ -25,7 +25,7 @@ function CreateTaskForm() {
     const { user } = useAuth();
     const { date } = useParams();
 
-    const [users, setUsers] = useState<UserSchema[] | undefined>();
+    const [users, setUsers] = useState<UserSchema[]>([]);
 
     const [taskDescription, setTaskDescription] = useState("");
     const [taskName, setTaskName] = useState("");
@@ -74,8 +74,8 @@ function CreateTaskForm() {
             name: taskName,
             description: taskDescription,
             expirationTime: taskExpirationDatetime,
-            unitId: selectedUnit?.id,
-            assigneeId: user.id,
+            departmentId: selectedUnit?.id,
+            assigneeIds: users.map((user) => user.id),
         };
 
         API.tasks

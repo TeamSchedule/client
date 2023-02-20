@@ -20,3 +20,17 @@ export interface EventResponseItemSchema {
     status?: any;
     files?: Array<any>;
 }
+
+/**
+ * Схема ответа на запрос создания события.
+ * */
+export interface CreateEventResponseSchema {
+    id: number;
+}
+
+/**
+ * Схема ответа на запрос создания события.
+ * */
+export interface EditEventResponseSchema {
+    id: number;
+}

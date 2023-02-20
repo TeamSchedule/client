@@ -60,6 +60,6 @@ export function makeDateLink(date: Date): string {
 
 /* ---------------------------------------------------- */
 
-export const baseSettingsPath: string = "/settings";
+export const SettingsPath: string = "/settings";
 
 /* ---------------------------------------------------- */

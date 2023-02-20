@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
-import { BaseButton } from "../../buttons";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionHeader";
 import UserPreview from "../../users/UsersPreview/UserPreview";
@@ -15,6 +14,8 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import { styled } from "@mui/material/styles";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import SpeedDial from "@mui/material/SpeedDial";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -93,9 +94,16 @@ export default function FullUnitView() {
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <TaskPreview task={taskData} />
                 </Collapse>
-
-                <BaseButton text="Изменить" onClick={() => navigate("edit")} className="mt-2" color="common" />
             </Card>
+
+            <SpeedDial
+                ariaLabel="edit unit"
+                sx={{ position: "fixed", bottom: 16, right: 16 }}
+                icon={<EditIcon />}
+                onClick={() => {
+                    navigate("edit");
+                }}
+            ></SpeedDial>
         </>
     );
 }

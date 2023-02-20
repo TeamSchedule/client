@@ -88,6 +88,7 @@ export default function SignIn() {
                         fullWidth
                         id="email"
                         label="Email"
+                        helperText="*****@mail.sfu-kras.ru"
                         name="email"
                         autoComplete="email"
                     />

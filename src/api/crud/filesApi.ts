@@ -12,7 +12,7 @@ export class FilesApi {
      * */
     static async getEventFiles(id: number): Promise<FileResponseItemSchema[]> {
         return requestApi
-            .GET(`${this.apiPrefix}/add/${EventTypesEnum.EVENT}/${id}`)
+            .GET(`${this.apiPrefix}/${EventTypesEnum.EVENT}/${id}`)
             .then((data: GetFilesResponseSchema) => {
                 return data.files;
             });
@@ -47,10 +47,17 @@ export class FilesApi {
      * @param eventType - Тип события
      * @param file - Прикрепляемый файл
      * */
-    static async addFile(id: number, eventType: EventTypesEnum, file: Blob): Promise<FileResponseItemSchema[]> {
-        return requestApi.GET(`${this.apiPrefix}/${EventTypesEnum.TASK}/${id}`).then((data: GetFilesResponseSchema) => {
-            return data.files;
-        });
+    static async addFile(id: number, eventType: EventTypesEnum, file: File): Promise<FileResponseItemSchema[]> {
+        let formData = new FormData();
+        formData.append("files", file);
+
+        return requestApi
+            .POST_FILE(`${this.apiPrefix}/add/${eventType}/${id}`, {
+                body: formData,
+            })
+            .then((data: GetFilesResponseSchema) => {
+                return data.files;
+            });
     }
 
     /**

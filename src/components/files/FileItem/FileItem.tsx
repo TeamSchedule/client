@@ -50,8 +50,8 @@ const FileItem = (props: FileItemProps) => {
     const fileIcon = fileIcons[props.file.name.split(".").last()] || fileIcons["default"];
 
     return (
-        <>
-            <Grid item xs={8}>
+        <Grid container spacing={1} sx={{ display: "flex", alignItems: "center", mt: 1, wordWrap: "" }}>
+            <Grid item xs={9}>
                 <SvgIcon component={fileIcon} sx={{ mr: 1 }} />
                 <Typography variant="body1" component="span">
                     {props.file.name}
@@ -62,12 +62,12 @@ const FileItem = (props: FileItemProps) => {
                 <Typography>{fileSize(props.file.size)}</Typography>
             </Grid>
 
-            <Grid item xs={2}>
-                <IconButton onClick={() => props.detachFile(props.file.name)}>
+            <Grid item xs={1}>
+                <IconButton onClick={() => props.detachFile(props.file.name)} sx={{ p: 0, m: 0 }}>
                     <ClearIcon />
                 </IconButton>
             </Grid>
-        </>
+        </Grid>
     );
 };
 

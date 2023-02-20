@@ -19,7 +19,7 @@ export default function FileUpload(props: FileUploadProps) {
         <>
             <Box sx={{ width: "100%" }}>
                 <Button fullWidth variant="contained" component="label" startIcon={<AddCircleIcon />}>
-                    Загрузить файлы
+                    Добавить файлы
                     <input hidden multiple type="file" onInput={uploadHandler} />
                 </Button>
             </Box>

@@ -30,6 +30,7 @@ import {
     notFound,
     registrationPath,
     resetPasswordCodePath,
+    SettingsPath,
     successRegistrationPath,
     TaskListPath,
     UnitListPath,
@@ -48,6 +49,7 @@ import FullCalendarMobileView from "../components/calendars/FullCalendarMobileVi
 import FullTaskView from "../components/tasks/FullTaskView";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
+import UserProfileSettings from "../components/UserProfileSettings";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -148,6 +150,9 @@ export const router = createBrowserRouter(
                         <Route path={EditTaskPath} element={<EditTaskForm />} />
                         <Route path={TaskListPath} element={<FullCalendarMobileView />} />
                         <Route path={FullViewTaskPath} element={<FullTaskView />} />
+
+                        {/* ==================== settings routes ==================== */}
+                        <Route path={SettingsPath} element={<UserProfileSettings />} />
                     </Route>
 
                     <Route path={notFound} element={<NotFound />} />

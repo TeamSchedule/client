@@ -49,7 +49,6 @@ const makeRequest = async (requestUrl: string, fetchOptions: object = {}, additi
     async function makeAttempt() {
         return await fetch(`${BASE_URL}${requestUrl}`, {
             headers: {
-                "Content-Type": "application/json",
                 ...additionalHeaders,
                 ...authHeader,
             },
@@ -81,22 +80,24 @@ const makeRequest = async (requestUrl: string, fetchOptions: object = {}, additi
         if (!response.ok) throw new APIRequestError("Неизвестная ошибка", payload, response.status);
         return payload;
     }
+
+    throw new APIRequestError("Ошибка", {}, 0);
 };
 
 const requestApi = {
     GET: (path: string, fetchOptions: object = {}) => {
-        return makeRequest(path, {
-            method: "GET",
-            ...checkOptions(fetchOptions),
-        });
+        return makeRequest(
+            path,
+            {
+                method: "GET",
+                ...checkOptions(fetchOptions),
+            },
+            {
+                "Content-Type": "application/json",
+            }
+        );
     },
     POST: (path: string, fetchOptions: object = {}) => {
-        return makeRequest(path, {
-            method: "POST",
-            ...checkOptions(fetchOptions),
-        });
-    },
-    POST_FILE: (path: string, fetchOptions: object = {}) => {
         return makeRequest(
             path,
             {
@@ -104,27 +105,51 @@ const requestApi = {
                 ...checkOptions(fetchOptions),
             },
             {
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
             }
         );
     },
-    PUT: (path: string, fetchOptions: object = {}) => {
+    POST_FILE: (path: string, fetchOptions: object = {}) => {
         return makeRequest(path, {
-            method: "PUT",
+            method: "POST",
             ...checkOptions(fetchOptions),
         });
+    },
+    PUT: (path: string, fetchOptions: object = {}) => {
+        return makeRequest(
+            path,
+            {
+                method: "PUT",
+                ...checkOptions(fetchOptions),
+            },
+            {
+                "Content-Type": "application/json",
+            }
+        );
     },
     PATCH: (path: string, fetchOptions: object = {}) => {
-        return makeRequest(path, {
-            method: "PATCH",
-            ...checkOptions(fetchOptions),
-        });
+        return makeRequest(
+            path,
+            {
+                method: "PATCH",
+                ...checkOptions(fetchOptions),
+            },
+            {
+                "Content-Type": "application/json",
+            }
+        );
     },
     DELETE: (path: string, fetchOptions: object = {}) => {
-        return makeRequest(path, {
-            method: "DELETE",
-            ...checkOptions(fetchOptions),
-        });
+        return makeRequest(
+            path,
+            {
+                method: "DELETE",
+                ...checkOptions(fetchOptions),
+            },
+            {
+                "Content-Type": "application/json",
+            }
+        );
     },
 };
 

@@ -9,7 +9,7 @@ interface FileListProps {
 
 export default function FileList(props: FileListProps) {
     return (
-        <Grid container spacing={1} sx={{ display: "flex", alignItems: "center" }}>
+        <Grid container spacing={1} sx={{ display: "flex", alignItems: "center", mt: 1 }}>
             {props.files.map((f: File) => (
                 <FileItem key={f.name} file={f} detachFile={props.detachFile} />
             ))}

@@ -6,9 +6,10 @@ import TaskName from "../common/TaskName";
 import TaskDeadline from "../common/TaskDeadline";
 import { taskData } from "../../../testdata/data";
 import Executors from "../common/Executors";
-import { BaseButton } from "../../buttons";
 import EventLink from "../../links/EventLink/EventLink";
 import UnitLink from "../../links/UnitLink/UnitLink";
+import SpeedDial from "@mui/material/SpeedDial";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function FullTaskView() {
     const { id } = useParams();
@@ -37,8 +38,16 @@ export default function FullTaskView() {
                 <EventLink id={task?.event.id} name={task?.event.name} />
                 <UnitLink id={task?.department.id} name={task?.department.name} />
                 <Executors users={task ? task.assignee : []} />
-                <BaseButton text="Изменить" onClick={() => navigate("edit")} className="mt-2" color="common" />
             </div>
+
+            <SpeedDial
+                ariaLabel="edit task"
+                sx={{ position: "fixed", bottom: 16, right: 16 }}
+                icon={<EditIcon />}
+                onClick={() => {
+                    navigate("edit");
+                }}
+            ></SpeedDial>
         </>
     );
 }

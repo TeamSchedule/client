@@ -8,7 +8,7 @@ interface ScreenHeaderProps {
 export default function ScreenHeader(props: ScreenHeaderProps) {
     return (
         <>
-            <Typography variant="h6" gutterBottom component="h1" align="center">
+            <Typography variant="h6" component="h1" align="center">
                 {props.text}
             </Typography>
         </>
