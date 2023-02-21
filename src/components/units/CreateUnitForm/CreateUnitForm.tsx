@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import UsersSelector from "../../selectors/UsersSelector";
-import { Snackbar } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
+import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
+import { makeUnitLinkById } from "../../../routes/paths";
+import { CreateUnitsResponseSchema } from "../../../api/schemas/responses/units";
 
 export default function CreateUnitForm() {
     const navigate = useNavigate();
@@ -22,7 +24,7 @@ export default function CreateUnitForm() {
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);
-    const [isOpenSnack, setIsOpenSnack] = useState<boolean>(false);
+    const [isCreatingError, setIsCreatingError] = useState<boolean>(false);
 
     function createUnitHandler() {
         setInProgress(true);
@@ -36,29 +38,26 @@ export default function CreateUnitForm() {
 
         API.units
             .createUnit(newUnitData)
-            .then(() => {
-                navigate("..");
-                setIsOpenSnack(true);
+            .then((data: CreateUnitsResponseSchema) => {
+                navigate(makeUnitLinkById(data.id), { state: { created: 1 } });
             })
             .catch(() => {
-                //    TODO: показать сообщение об ошибке - что-то пошло не так
+                setIsCreatingError(true);
             })
             .finally(() => {
                 setInProgress(false);
-                navigate("..");
             });
     }
 
-    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+    const handleCloseErrorSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
             return;
         }
-        setIsOpenSnack(false);
+        setIsCreatingError(false);
     };
 
     return (
         <>
-            <Snackbar open={isOpenSnack} autoHideDuration={3000} onClose={handleClose} message="Отдел успешно создан" />
             <div>
                 <ScreenHeader text="Создание отдела" />
 
@@ -103,6 +102,10 @@ export default function CreateUnitForm() {
                     Создать
                 </LoadingButton>
             </div>
+
+            <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isCreatingError}>
+                Не удалось создать отдел!
+            </ErrorSnackbar>
         </>
     );
 }

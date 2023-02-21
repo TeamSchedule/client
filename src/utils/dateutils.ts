@@ -28,7 +28,8 @@ export function weekCount(year: number, monthIndex: number): number {
     return 4;
 }
 
-export function getDateRepresentation(date: Date): string {
+export function getDateRepresentation(date: Date | undefined): string {
+    if (!date) return "**-**-****";
     return date.toLocaleDateString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" });
 }
 

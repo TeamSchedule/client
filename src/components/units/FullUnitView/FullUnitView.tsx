@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
@@ -16,6 +16,7 @@ import { styled } from "@mui/material/styles";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import SpeedDial from "@mui/material/SpeedDial";
 import EditIcon from "@mui/icons-material/Edit";
+import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -35,6 +36,12 @@ export default function FullUnitView() {
     const navigate = useNavigate();
 
     const { id } = useParams();
+    const { state } = useLocation();
+    const { created = 0, unitData = null } = state || {}; // считываем значения из state
+    window.history.replaceState({}, document.title); // очищаем state
+
+    // если произошел редирект после создания, то true
+    const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
 
     // данные отдела
     const [unit, setUnit] = useState<UnitResponseItemSchema>();
@@ -53,6 +60,8 @@ export default function FullUnitView() {
             return;
         }
 
+        if (unitData) return;
+
         API.units
             .getById(+id)
             .then((unit: UnitResponseItemSchema) => {
@@ -62,7 +71,14 @@ export default function FullUnitView() {
                 // TODO: ЧТо-то пошло не так
             })
             .finally();
-    }, [id]);
+    }, [id, unitData]);
+
+    const handleCloseSuccessSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsCreatingFinished(false);
+    };
 
     // const members = unit?.members.map((user) => <UserPreview key={user.id} user={user} />);
     const members = usersData.map((user) => <UserPreview user={user} key={user.id} clickable={true} />);
@@ -104,6 +120,10 @@ export default function FullUnitView() {
                     navigate("edit");
                 }}
             ></SpeedDial>
+
+            <SuccessSnackbar handleClose={handleCloseSuccessSnackbar} isOpen={isCreatingFinished}>
+                Отдел создан!
+            </SuccessSnackbar>
         </>
     );
 }

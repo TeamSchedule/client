@@ -20,7 +20,7 @@ export default function EventPreview(props: EventPreviewProps) {
 
     const onClick = (event: React.MouseEvent<any>) => {
         event.stopPropagation();
-        navigate(makeEventLinkById(props.event.id));
+        navigate(makeEventLinkById(props.event.id), { state: { eventData: props.event } });
     };
 
     const openTasks: number = props.event.tasks.filter((task) => task.taskStatus === TaskStatusEnum.IN_PROGRESS).length;

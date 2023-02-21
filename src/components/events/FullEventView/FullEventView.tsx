@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import TaskPreview from "../../tasks/TaskPreview";
-import { eventsData } from "../../../testdata/data";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import { EventDeadline, EventDescription, EventName } from "../common";
 import CardActions from "@mui/material/CardActions";
@@ -36,13 +35,14 @@ export default function FullEventView() {
 
     const { id } = useParams();
     const { state } = useLocation();
-    const { created = 0 } = state || {}; // Read values passed on state
+    const { created = 0, eventData = null } = state || {}; // считываем значения из state
+    window.history.replaceState({}, document.title); // очищаем state
 
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
 
     // данные события
-    const [event, setEvent] = useState<EventResponseItemSchema>(eventsData[0]);
+    const [event, setEvent] = useState<EventResponseItemSchema | undefined>(Boolean(eventData) ? eventData : undefined);
 
     // раскрыть раздел с задачами
     const [expanded, setExpanded] = useState<boolean>(false);
@@ -52,17 +52,19 @@ export default function FullEventView() {
         if (!id) {
             return;
         }
+        if (eventData) return;
 
         API.events
             .getById(+id)
             .then((event: EventResponseItemSchema) => {
+                event.tasks = [];
                 setEvent(event);
             })
             .catch(() => {
                 // TODO: ЧТо-то пошло не так
             })
             .finally();
-    }, []);
+    }, [eventData, id]);
 
     const handleCloseSuccessSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
@@ -75,7 +77,7 @@ export default function FullEventView() {
         <>
             <Card>
                 <CardContent>
-                    <EventDeadline endDate={new Date(event.endDate)} status={event.status} />
+                    <EventDeadline endDate={event ? new Date(event.endDate) : undefined} status={event?.status} />
                     <EventName>{event?.name}</EventName>
                     <EventDescription>{event?.description}</EventDescription>
                 </CardContent>

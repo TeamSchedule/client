@@ -33,8 +33,8 @@ export function EventDescription(props: EventDescriptionProps) {
 }
 
 interface EventDeadlineProps {
-    endDate: Date;
-    status: any;
+    endDate?: Date;
+    status?: any;
 }
 
 export function EventDeadline(props: EventDeadlineProps) {

@@ -22,7 +22,7 @@ export default function UnitPreview(props: UnitPreviewProps) {
                     <div
                         className={styles.unit}
                         onClick={() => {
-                            navigate(props.unit.id.toString());
+                            navigate(props.unit.id.toString(), { state: { unitData: props.unit } });
                         }}
                     >
                         <Typography variant="subtitle1" component="div">
