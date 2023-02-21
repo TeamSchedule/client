@@ -23,6 +23,7 @@ import styles from "../CalendarStyles.module.scss";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { IconButton, Tooltip } from "@mui/material";
 import { TaskStatusEnum } from "../../../enums/tasksEnums";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const RightSideButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText(purple[500]),
@@ -110,21 +111,23 @@ export default function FullCalendarMobileView() {
                 <LeftSideButton
                     fullWidth
                     variant="contained"
+                    startIcon={<AddCircleIcon />}
                     sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                     onClick={() => {
                         navigate(CreateNewEventPath);
                     }}
                 >
-                    Новое событие
+                    Событие
                 </LeftSideButton>
                 <RightSideButton
                     fullWidth
                     variant="contained"
+                    startIcon={<AddCircleIcon />}
                     onClick={() => {
                         navigate(CreateNewTaskPath);
                     }}
                 >
-                    Новая задача
+                    Задача
                 </RightSideButton>
             </div>
 

@@ -15,4 +15,5 @@ export interface EditEventRequestSchema {
     name?: string;
     description?: string;
     deadline?: Date;
+    color?: string;
 }

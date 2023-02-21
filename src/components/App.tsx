@@ -3,19 +3,23 @@ import { Outlet } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import PrimaryAppBar from "./header/PrimaryAppBar";
 import { Box } from "@mui/material";
+import { NotificationsResponseItemSchema } from "../api/schemas/responses/notifications";
+import { API } from "../api/api";
 
-const NotificationRequestPeriod: number = 10;
+const NotificationRequestPeriodMS: number = 10000;
 
-export const NotificationsContext = React.createContext<Array<object>>([]);
+export const NotificationsContext = React.createContext<NotificationsResponseItemSchema[]>([]);
 
 export default function App() {
-    const [newNotifications, setNewNotifications] = useState<Array<object>>([]);
+    const [newNotifications, setNewNotifications] = useState<NotificationsResponseItemSchema[]>([]);
 
     useEffect(() => {
-        // запрос количества новых оповещений каждые NotificationRequestPeriod секунд
+        // запрос количества новых оповещений каждые NotificationRequestPeriodMS секунд
         const notificationIntervalId = setInterval(() => {
-            // TODO: make request
-        }, NotificationRequestPeriod);
+            API.notifications.all().then((notifications: NotificationsResponseItemSchema[]) => {
+                setNewNotifications(notifications);
+            });
+        }, NotificationRequestPeriodMS);
 
         return () => {
             clearInterval(notificationIntervalId);

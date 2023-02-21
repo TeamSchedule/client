@@ -7,8 +7,9 @@ import Link from "@mui/material/Link";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 
 interface EventLinkProps {
-    id: number | undefined;
-    name: string | undefined;
+    id?: number;
+    name?: string;
+    color?: string;
 }
 
 export default function EventLink(props: EventLinkProps) {
@@ -24,7 +25,7 @@ export default function EventLink(props: EventLinkProps) {
         <>
             <Typography variant="body1" component="div">
                 <IconButton>
-                    <LocalActivityIcon />
+                    <LocalActivityIcon sx={{ color: props.color || "" }} />
                 </IconButton>
                 <Link component="button" variant="body2" onClick={onClick}>
                     {props.name ? props.name : <SkeletonWrapper />}

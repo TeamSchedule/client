@@ -4,7 +4,7 @@ import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import TeamIcon from "../../svg/TeamIcon";
 import { ToDoListIcon } from "../../svg";
 import styles from "./ShortPreviewTeamItem.module.scss";
-import hexAToRGBA from "../../../utils/hexToRGBA";
+import { hexAToRGBA } from "../../../utils/colorUtils";
 
 interface ShortPreviewTeamItemProps {
     team: UnitResponseItemSchema;

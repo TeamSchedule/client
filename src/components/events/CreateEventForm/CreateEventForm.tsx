@@ -12,6 +12,7 @@ import { API } from "../../../api/api";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import { makeEventLinkById } from "../../../routes/paths";
 import { CreateEventResponseSchema } from "../../../api/schemas/responses/events";
+import { getRandomColor } from "../../../utils/colorUtils";
 
 export default function CreateEventForm() {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function CreateEventForm() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [deadline, setDeadline] = useState<Date | null>(null);
-    const [color, setColor] = useState<string | undefined>();
+    const [color, setColor] = useState<string>(getRandomColor());
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);
@@ -33,7 +34,7 @@ export default function CreateEventForm() {
             name: title,
             description: description,
             endDate: deadline,
-            color: color,
+            color: color === "" ? undefined : color,
         };
 
         API.events

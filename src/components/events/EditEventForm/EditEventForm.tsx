@@ -24,7 +24,7 @@ export default function EditEventForm() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [deadline, setDeadline] = useState<Date | null>(null);
-    const [color, setColor] = useState<string | undefined>();
+    const [color, setColor] = useState<string>("");
     const [attachments, setAttachments] = useState<File[]>([]);
 
     // статус загрузки
@@ -42,6 +42,7 @@ export default function EditEventForm() {
             name: title,
             description: description,
             deadline: deadline || undefined,
+            color: color === "" ? undefined : color,
         };
 
         API.events

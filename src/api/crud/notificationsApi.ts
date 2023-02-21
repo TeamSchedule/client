@@ -1,4 +1,5 @@
 import requestApi from "../fetchApi";
+import { NotificationsResponseItemSchema } from "../schemas/responses/notifications";
 
 /**
  * Класс с методами доступа к api оповещений.
@@ -9,21 +10,21 @@ export class NotificationsApi {
     /**
      * Получить все оповещения.
      * */
-    static async all(): Promise<any> {
+    static async all(): Promise<NotificationsResponseItemSchema[]> {
         return requestApi.GET(`${this.apiPrefix}`);
     }
 
     /**
      * Получить непрочитанные оповещения.
      * */
-    static async unread(): Promise<any> {
+    static async unread(): Promise<NotificationsResponseItemSchema[]> {
         return requestApi.GET(`${this.apiPrefix}`);
     }
 
     /**
      * Получить прочитанные оповещения.
      * */
-    static async read(): Promise<any> {
+    static async read(): Promise<NotificationsResponseItemSchema[]> {
         return requestApi.GET(`${this.apiPrefix}`);
     }
 

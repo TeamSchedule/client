@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import PlainSelector from "../../selectors/PlainSelector";
+import { NotificationsResponseItemSchema } from "../../../api/schemas/responses/notifications";
+import { NotificationsContext } from "../../App";
 
 enum NotificationFilterEnum {
     All = 1, // показать все
@@ -20,16 +22,24 @@ export default function NotificationList(props: NotificationListProps) {
     // параметр отображения оповещений
     const [filterValue, setFilterValue] = useState<number>(NotificationFilterEnum.All);
 
+    const notifications = useContext<NotificationsResponseItemSchema[]>(NotificationsContext);
     // список отображаемых оповещений
-    // const [notifications, setNotifications] = useState<Array<any>>([]);
+    const [displayedNotifications, setDisplayedNotifications] = useState<NotificationsResponseItemSchema[]>([]);
 
     useEffect(() => {
-        // TODO: получить все оповещения определенного типа (NotificationFilter)
+        if (filterValue === NotificationFilterEnum.All) {
+            setDisplayedNotifications(() => [...notifications]);
+        } else if (filterValue === NotificationFilterEnum.Read) {
+            // TODO: filter on read status
+            setDisplayedNotifications(() => [...notifications]);
+        } else if (filterValue === NotificationFilterEnum.Unread) {
+            setDisplayedNotifications(() => [...notifications]);
+        }
     }, [filterValue]);
 
     return (
         <>
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center align-items-center">
                 <ScreenHeader text="Уведомления" />
 
                 <PlainSelector
@@ -38,6 +48,10 @@ export default function NotificationList(props: NotificationListProps) {
                     id="notifications-filter"
                     filterObj={NotificationFilters}
                 />
+
+                {displayedNotifications.map((notification) => (
+                    <div key={notification.id}>{notification.text}</div>
+                ))}
             </div>
         </>
     );

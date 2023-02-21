@@ -4,4 +4,7 @@ export interface GetNotificationsResponseSchema {
 
 export interface NotificationsResponseItemSchema {
     id: number;
+    date: string;
+    text: string;
+    isRead: boolean;
 }

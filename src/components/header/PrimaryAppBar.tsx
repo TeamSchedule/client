@@ -21,13 +21,14 @@ import Typography from "@mui/material/Typography";
 import { SettingsPath, EventListPath, NotificationListPath, TaskListPath, UnitListPath } from "../../routes/paths";
 import { NotificationsContext } from "../App";
 import { Tooltip } from "@mui/material";
+import { NotificationsResponseItemSchema } from "../../api/schemas/responses/notifications";
 
 export default function PrimaryAppBar() {
     const navigate = useNavigate();
 
     const { user, logout } = useAuth();
 
-    const newNotifications = useContext<Array<object>>(NotificationsContext);
+    const newNotifications = useContext<NotificationsResponseItemSchema[]>(NotificationsContext);
 
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -162,7 +163,7 @@ export default function PrimaryAppBar() {
                         <Typography color="inherit">{user?.login}</Typography>
                     </Box>
 
-                    <Tooltip title="Оповещения">
+                    <Tooltip title="Уведомления">
                         <IconButton
                             size="large"
                             aria-label="show new notifications"
