@@ -4,13 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { API } from "../../../api/api";
 import CloseFormIcon from "../../generic/CloseFormIcon";
 import { FormControlLabel, FormGroup, Switch } from "@mui/material";
-import InputDatetimeFormItem from "../../inputs/InputDatetimeFormItem";
-import BaseForm from "../../generic/BaseForm";
 import { CreateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
-import { BaseButton } from "../../buttons";
-import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
-import SimpleTextInput from "../../inputs/SimpleTextInput";
 import useAuth from "../../../hooks/useAuth";
 import { getPrevDayDate } from "../../../utils/dateutils";
 import UnitSelector from "../../selectors/UnitSelector/UnitSelector";
@@ -19,6 +14,12 @@ import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import UsersSelector from "../../selectors/UsersSelector";
 import { UserPostsEnum } from "../../../enums/usersEnums";
+import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
+import LoadingButton from "@mui/lab/LoadingButton";
+import TextField from "@mui/material/TextField";
+import DateInput from "../../inputs/DateInput";
+import Box from "@mui/material/Box";
+import TextHelp from "../../TextHelp/TextHelp";
 
 function CreateTaskForm() {
     const navigate = useNavigate();
@@ -27,9 +28,9 @@ function CreateTaskForm() {
 
     const [users, setUsers] = useState<UserSchema[]>([]);
 
-    const [taskDescription, setTaskDescription] = useState("");
-    const [taskName, setTaskName] = useState("");
-    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(new Date());
+    const [taskDescription, setTaskDescription] = useState<string>("");
+    const [taskName, setTaskName] = useState<string>("");
+    const [taskExpirationDate, setTaskExpirationDate] = useState<Date>(new Date());
 
     const [isPrivateFlag, setIsPrivateFlag] = useState<boolean>(false); // флаг приватной задачи, в этом случае отдел и исполнители устанавливаются автоматически
 
@@ -37,10 +38,12 @@ function CreateTaskForm() {
     const [selectedUnit, setSelectedUnit] = useState<UnitResponseItemSchema | null>(null);
     const [selectedExecutors, setSelectedExecutors] = useState<UserSchema[]>([]);
 
-    const [isActionInProgress, setIsActionInProgress] = useState(false);
+    // статус загрузки
+    const [inProgress, setInProgress] = useState<boolean>(false);
+    const [isCreatingError, setIsCreatingError] = useState<boolean>(false);
 
     useEffect(() => {
-        setTaskExpirationDatetime(getPrevDayDate(date || ""));
+        setTaskExpirationDate(getPrevDayDate(date || ""));
     }, [date]);
 
     useEffect(() => {
@@ -65,59 +68,87 @@ function CreateTaskForm() {
             return;
         }
 
-        setIsActionInProgress(true);
+        setInProgress(true);
         // поправляем время, так как toJSON() даст UTC время
-        const hoursDiff = taskExpirationDatetime.getHours() - taskExpirationDatetime.getTimezoneOffset() / 60;
-        taskExpirationDatetime.setHours(hoursDiff);
+        const hoursDiff = taskExpirationDate.getHours() - taskExpirationDate.getTimezoneOffset() / 60;
+        taskExpirationDate.setHours(hoursDiff);
 
         const createTaskData: CreateTaskRequestSchema = {
             name: taskName,
             description: taskDescription,
-            expirationTime: taskExpirationDatetime,
+            expirationTime: taskExpirationDate,
             departmentId: selectedUnit?.id,
             assigneeIds: users.map((user) => user.id),
         };
 
         API.tasks
             .createTask(createTaskData)
-            .then(() => {
-                navigate(-1);
+            .then(() => {})
+            .catch(() => {
+                setIsCreatingError(true);
             })
             .finally(() => {
-                setIsActionInProgress(false);
+                setInProgress(false);
             });
     }
 
+    const handleCloseErrorSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsCreatingError(false);
+    };
+
     return (
-        // @ts-ignore
-        <BaseForm onSubmit={onCreateTaskHandler}>
+        <>
             <div className="d-flex justify-content-between position-relative">
                 <p className="fw-bold">Новая задача</p>
                 <CloseFormIcon />
             </div>
 
-            <SimpleTextInput label="Название задачи" value={taskName} handleChange={setTaskName} className="mb-3" />
-            <MultilineTextInput
-                label="Подробное описание"
-                value={taskDescription}
-                handleChange={setTaskDescription}
-                className="mb-3"
-            />
-            <InputDatetimeFormItem
-                label="Срок выполнения"
-                value={taskExpirationDatetime}
-                handleChange={setTaskExpirationDatetime}
+            <TextField
+                required
+                fullWidth
+                variant="outlined"
+                value={taskName}
+                onChange={(e) => setTaskName(e.target.value)}
+                label="Название задачи"
+                sx={{ mb: 2 }}
             />
 
-            <FormGroup>
+            <TextField
+                id="outlined-multiline-static"
+                label="Подробное описание"
+                multiline
+                fullWidth
+                rows={4}
+                variant="outlined"
+                value={taskDescription}
+                onChange={(e) => setTaskDescription(e.target.value)}
+                sx={{ mb: 2 }}
+            />
+
+            <Box sx={{ mb: 3 }}>
+                {/*@ts-ignore*/}
+                <DateInput value={taskExpirationDate} handleChange={setTaskExpirationDate} />
+            </Box>
+
+            <FormGroup row sx={{ alignItems: "center" }}>
                 <FormControlLabel
                     control={<Switch checked={isPrivateFlag} onChange={(e) => setIsPrivateFlag(e.target.checked)} />}
                     label="Создать для себя"
                 />
+                <TextHelp title="Приватные задачи не отображаются в отделе, только Вы будете их видеть" />
             </FormGroup>
 
-            <EventSelector setInputValue={setSelectedEvent} inputValue={selectedEvent} />
-            <UnitSelector setInputValue={setSelectedUnit} inputValue={selectedUnit} disabled={isPrivateFlag} />
+            <Box sx={{ mb: 2 }}>
+                <EventSelector setInputValue={setSelectedEvent} inputValue={selectedEvent} />
+            </Box>
+
+            <Box sx={{ mb: 2 }}>
+                <UnitSelector setInputValue={setSelectedUnit} inputValue={selectedUnit} disabled={isPrivateFlag} />
+            </Box>
+
             <UsersSelector
                 users={selectedUnit ? selectedUnit.members : undefined}
                 setInputValue={setSelectedExecutors}
@@ -126,8 +157,21 @@ function CreateTaskForm() {
                 disabled={isPrivateFlag}
             />
 
-            <BaseButton text="Создать задачу" loading={isActionInProgress} color="common" className="mt-4" />
-        </BaseForm>
+            <LoadingButton
+                fullWidth
+                disabled={taskName.length === 0}
+                onClick={onCreateTaskHandler}
+                loading={inProgress}
+                variant="contained"
+                sx={{ mt: 3 }}
+            >
+                Создать
+            </LoadingButton>
+
+            <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isCreatingError}>
+                Не удалось создать событие!
+            </ErrorSnackbar>
+        </>
     );
 }
 

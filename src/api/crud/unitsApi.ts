@@ -1,5 +1,9 @@
 import { CreateUnitRequestSchema, UpdateTeamRequestSchema } from "../schemas/requests/units";
-import { GetAllUnitsResponseSchema, UnitResponseItemSchema } from "../schemas/responses/units";
+import {
+    CreateUnitsResponseSchema,
+    GetAllUnitsResponseSchema,
+    UnitResponseItemSchema,
+} from "../schemas/responses/units";
 import requestApi from "../fetchApi";
 
 /**
@@ -31,7 +35,7 @@ export class UnitsApi {
      *
      * @param data - Объект с данными отдела
      * */
-    static async createUnit(data: CreateUnitRequestSchema) {
+    static async createUnit(data: CreateUnitRequestSchema): Promise<CreateUnitsResponseSchema> {
         return requestApi.POST(`${this.apiPrefix}`, { body: data });
     }
 

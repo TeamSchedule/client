@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { API } from "../../../api/api";
 import CloseFormIcon from "../../generic/CloseFormIcon";
-import InputDatetimeFormItem from "../../inputs/InputDatetimeFormItem";
 import BaseForm from "../../generic/BaseForm";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
@@ -11,6 +10,7 @@ import { BaseButton } from "../../buttons";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../../inputs/SimpleTextInput";
 import { TaskStatusStrings } from "../../../enums/tasksEnums";
+import DateInput from "../../inputs/DateInput";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function EditTaskForm() {
     // task data
     const [taskName, setTaskName] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
-    const [taskExpirationDatetime, setTaskExpirationDatetime] = useState(new Date());
+    const [taskExpirationDate, setTaskExpirationDate] = useState<Date>(new Date());
     const [taskClosedStatus, setTaskClosedStatus] = useState<TaskStatusStrings>();
     const [taskTeamName, setTaskTeamName] = useState("");
 
@@ -37,7 +37,7 @@ export default function EditTaskForm() {
             setTaskName(task.name);
             setTaskDescription(task.description);
             setTaskClosedStatus(task.taskStatus);
-            setTaskExpirationDatetime(new Date(task.expirationTime));
+            setTaskExpirationDate(new Date(task.expirationTime));
             setTaskTeamName(task.department.name);
         });
     }, [taskId]);
@@ -52,7 +52,7 @@ export default function EditTaskForm() {
         const updateTaskRequestBody: UpdateTaskRequestSchema = {
             name: taskName,
             description: taskDescription,
-            expirationTime: new Date(taskExpirationDatetime).toJSON(),
+            expirationTime: new Date(taskExpirationDate).toJSON(),
         };
 
         API.tasks
@@ -96,11 +96,9 @@ export default function EditTaskForm() {
                 handleChange={setTaskDescription}
                 className="mb-3"
             />
-            <InputDatetimeFormItem
-                label="Срок выполнения"
-                value={taskExpirationDatetime}
-                handleChange={setTaskExpirationDatetime}
-            />
+
+            {/*@ts-ignore*/}
+            <DateInput value={taskExpirationDate} handleChange={setTaskExpirationDate} />
 
             <div>
                 <p className="my-1">{taskTeamName === "" ? "персональная задача" : `Команда: ${taskTeamName}`}</p>

@@ -14,7 +14,6 @@ export default function DateInput(props: DateInputProps) {
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
                 <DatePicker
                     label="Дата завершения события"
-                    disablePast
                     inputFormat="DD-MM-YYYY"
                     value={props.value}
                     onChange={(v) => props.handleChange(v)}
