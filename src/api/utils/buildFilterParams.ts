@@ -11,11 +11,20 @@ export default function buildFilterParams(
     selectedEvents: EventResponseItemSchema[] = [],
     selectedUsers: UserSchema[] = []
 ): FilterTasksParamsSchema {
-    return {
-        from: new Date(chosenDate.getFullYear(), chosenDate.getMonth() - FetchingMonthRange, 1),
-        to: new Date(chosenDate.getFullYear(), chosenDate.getMonth() + FetchingMonthRange),
-        teams: selectedUnits.map((unit) => unit.id),
-        events: selectedEvents.map((event) => event.id),
-        users: selectedUsers.map((user) => user.id),
-    } as FilterTasksParamsSchema;
+    const params: FilterTasksParamsSchema = {
+        from: new Date(chosenDate.getFullYear(), chosenDate.getMonth() - FetchingMonthRange, 1).toJSON(),
+        to: new Date(chosenDate.getFullYear(), chosenDate.getMonth() + FetchingMonthRange).toJSON(),
+    };
+
+    if (selectedUnits.length > 0) {
+        params.departments = selectedUnits.map((unit) => unit.id);
+    }
+    if (selectedEvents.length > 0) {
+        params.events = selectedEvents.map((unit) => unit.id);
+    }
+    if (selectedUsers.length > 0) {
+        params.assignee = selectedUsers.map((unit) => unit.id);
+    }
+
+    return params;
 }

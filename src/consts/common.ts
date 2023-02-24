@@ -13,4 +13,6 @@ const AuthUserKey: string = "user";
 // Цвет скелетонов
 const SkeletonColor: string = "grey.400";
 
-export { AuthUserKey, MIN_PASSWORD_LENGTH, MIN_TEAM_NAME_LEN, MIN_USERNAME_LENGTH, SkeletonColor };
+const AllowedEmailDomain: string = "@mail.sfu-kras.ru";
+
+export { AllowedEmailDomain, AuthUserKey, MIN_PASSWORD_LENGTH, MIN_TEAM_NAME_LEN, MIN_USERNAME_LENGTH, SkeletonColor };

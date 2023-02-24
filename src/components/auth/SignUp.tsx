@@ -127,7 +127,7 @@ export default function SignUp() {
                     <Grid container>
                         <TextField
                             value={email}
-                            onChange={(e) => onChangeEmail(e.target.value)}
+                            onChange={(e) => onChangeEmail(e.target.value.trim())}
                             margin="normal"
                             required
                             fullWidth

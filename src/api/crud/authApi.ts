@@ -1,6 +1,5 @@
 import {
     CreateNewPasswordRequestSchema,
-    RefreshTokensRequestSchema,
     ResetPasswordCodeRequestSchema,
     ResetPasswordEmailRequestSchema,
     SignInRequestSchema,
@@ -20,12 +19,6 @@ export class AuthApi {
     static signUp(data: SignUpRequestSchema) {
         return requestApi.POST(`/registration`, {
             body: data,
-        });
-    }
-
-    static refreshAccessToken(token: RefreshTokensRequestSchema) {
-        return requestApi.POST(`/jwt/refresh`, {
-            body: token,
         });
     }
 

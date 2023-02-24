@@ -17,11 +17,9 @@ export interface UpdateTaskRequestSchema {
 }
 
 export interface FilterTasksParamsSchema {
-    from?: Date;
-    to?: Date;
-    teams?: Array<number>;
-    users?: Array<number>;
-    events?: Array<number>;
-    private?: boolean;
-    all?: boolean;
+    from?: string;
+    to?: string;
+    departments?: number[];
+    assignee?: number[];
+    events?: number[];
 }

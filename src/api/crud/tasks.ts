@@ -10,19 +10,17 @@ export class tasks {
     }
 
     static async getTasks(params: FilterTasksParamsSchema): Promise<TaskResponseItemSchema[]> {
-        if (!params.from) params.from = new Date("1970-01-01");
-        if (!params.to) params.to = new Date("2070-01-01");
-        if (!params.all) params.all = false;
-
-        return requestApi
-            .GET(
-                `${this.prefixUrl}?from=${params.from.toJSON()}&to=${params.to.toJSON()}&teams=${params.teams?.join(
-                    ","
-                )}&private=true&all=${params.all}`
-            )
-            .then((data: GetTasksResponseSchema) => {
-                return data.tasks;
-            });
+        const filteredParams: object = Object.fromEntries(
+            Object.entries(params).filter((pair) => pair[1] !== undefined)
+        );
+        return (
+            requestApi
+                // @ts-ignore
+                .GET(`${this.prefixUrl}?` + new URLSearchParams(filteredParams).toString())
+                .then((data: GetTasksResponseSchema) => {
+                    return data.tasks;
+                })
+        );
     }
 
     static async getTaskById(id: number): Promise<TaskResponseItemSchema> {

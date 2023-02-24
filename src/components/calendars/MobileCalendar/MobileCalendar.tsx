@@ -77,6 +77,7 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         }).length
                     }
                     color="secondary"
+                    key={date.toJSON()}
                 >
                     <PickersDay {...pickersDayProps} />
                 </CalendarDayBadge>

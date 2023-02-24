@@ -20,15 +20,4 @@ export class users {
     static async updateUserInfo(userId: number, data: UpdateUserInfoRequestSchema) {
         return await requestApi.PUT(`${this.apiPrefix}/${userId}`, data);
     }
-
-    static async filterByUsername(username: string) {
-        return (await requestApi.GET(`/user?criteria=${username}`)).data["users"];
-    }
-
-    static isUsernameExist(username: string) {
-        return requestApi
-            .GET(`/user?criteria=${username}`)
-            .then((res) => res.data)
-            .then((users) => users.length > 0);
-    }
 }

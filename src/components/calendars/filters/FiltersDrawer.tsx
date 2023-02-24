@@ -18,7 +18,6 @@ import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import Badge from "@mui/material/Badge";
 import DefaultDict from "../../../utils/defaultdict";
-import { eventsData, unitsData } from "../../../testdata/data";
 import { API } from "../../../api/api";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 
@@ -29,8 +28,8 @@ interface FiltersDrawerProps {
 
 export default function FiltersDrawer(props: FiltersDrawerProps) {
     // данные для фильтров
-    const [units, setUnits] = useState<UnitResponseItemSchema[]>(unitsData);
-    const [events, setEvents] = useState<EventResponseItemSchema[]>(eventsData);
+    const [units, setUnits] = useState<UnitResponseItemSchema[]>([]);
+    const [events, setEvents] = useState<EventResponseItemSchema[]>([]);
 
     // открыт sidebar или нет
     const [state, setState] = React.useState<boolean>(false);

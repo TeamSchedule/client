@@ -1,7 +1,6 @@
 import React from "react";
 import { createBrowserRouter, createRoutesFromElements, Navigate, Outlet, Route } from "react-router-dom";
 import App from "../components/App";
-import { TaskViewer } from "../components/taskPage/TaskViewer";
 import CreateTaskForm from "../components/tasks/CreateTaskForm";
 import EditTaskForm from "../components/tasks/EditTaskForm";
 import NotFound from "../components/generic/NotFound";
@@ -12,7 +11,6 @@ import EditUnitForm from "../components/units/EditUnitForm/EditUnitForm";
 import EventList from "../components/events/EventList/EventList";
 import CreateEventForm from "../components/events/CreateEventForm/CreateEventForm";
 import {
-    baseCalendarPath,
     baseNotificationPath,
     CreateNewEventPath,
     CreateNewTaskPath,
@@ -50,6 +48,7 @@ import FullTaskView from "../components/tasks/FullTaskView";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
 import UserProfileSettings from "../components/UserProfileSettings";
+import ErrorPage from "../components/generic/ErrorPage";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -114,7 +113,7 @@ export const router = createBrowserRouter(
                 </Route>
 
                 <Route element={<ProtectedLayout />}>
-                    <Route element={<App />} /*loader={API.users.getUser}*/>
+                    <Route element={<App />} /*loader={API.users.getUser}*/ errorElement={<ErrorPage />}>
                         <Route index element={<Navigate to={EventListPath} replace={true} />} />
 
                         <Route path="/profile/avatar" element={<AvatarEditorModal avatarType="personal" />} />
@@ -137,18 +136,11 @@ export const router = createBrowserRouter(
                         <Route path={EditUnitPath} element={<EditUnitForm />} />
 
                         {/* ==================== calendar routes ==================== */}
-                        <Route path="/mcalendar" element={<FullCalendarMobileView />} />
-
-                        <Route path={baseCalendarPath} element={<Outlet />}>
-                            <Route index element={<TaskViewer />} />
-                            <Route path="new/:date" element={<CreateTaskForm />} />
-                        </Route>
+                        <Route path={TaskListPath} element={<FullCalendarMobileView />} />
 
                         {/* ==================== task routes ==================== */}
-
                         <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />
                         <Route path={EditTaskPath} element={<EditTaskForm />} />
-                        <Route path={TaskListPath} element={<FullCalendarMobileView />} />
                         <Route path={FullViewTaskPath} element={<FullTaskView />} />
 
                         {/* ==================== settings routes ==================== */}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MobileCalendar from "../MobileCalendar";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
-import { taskData } from "../../../testdata/data";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { CreateNewTaskPath } from "../../../routes/paths";
@@ -20,11 +19,12 @@ export default function FullCalendarMobileView() {
     const [chosenDate, setChosenDate] = useState<Date>(new Date()); // выбранный день, для него показываюся задачи на мобильной версии
 
     // все задачи в диапазоне нескольких месяцев
-    const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([taskData]);
+    const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([]);
     // отображаемые задачи
     const [displayedTasks, setDisplayedTasks] = useState<TaskResponseItemSchema[]>([]);
 
     useEffect(() => {
+        // запрашиваем еще задач, если пользователь далеко проликнул в календаре
         const params: FilterTasksParamsSchema = buildFilterParams(viewedDate);
 
         API.tasks
@@ -32,9 +32,11 @@ export default function FullCalendarMobileView() {
             .then((tasks: TaskResponseItemSchema[]) => {
                 setTasks(tasks);
             })
-            .catch(() => {})
+            .catch(() => {
+                //    TODO: показать сообщение об ошибке
+            })
             .finally(() => {});
-    }, []);
+    }, [viewedDate]);
 
     return (
         <>

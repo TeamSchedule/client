@@ -3,33 +3,42 @@ import UnitPreview from "../UnitPreview/UnitPreview";
 import { useNavigate } from "react-router-dom";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { API } from "../../../api/api";
-import { unitsData } from "../../../testdata/data";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { CreateNewUnitPath } from "../../../routes/paths";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 
 export default function UnitList() {
     const navigate = useNavigate();
 
-    const [units, setUnits] = useState<UnitResponseItemSchema[]>(unitsData);
+    const [units, setUnits] = useState<UnitResponseItemSchema[]>([]);
 
     const [unitsLoading, setUnitsLoading] = useState<boolean>(true);
+    const [isLoadingError, setIsLoadingError] = useState<boolean>(false);
 
     useEffect(() => {
         API.units
             .all()
             .then((units: UnitResponseItemSchema[]) => {
                 setUnits(units);
-                setUnitsLoading(false);
             })
             .catch(() => {
-                // TODO: ЧТо-то пошло не так
+                setIsLoadingError(true);
             })
-            .finally(() => {});
+            .finally(() => {
+                setUnitsLoading(false);
+            });
     }, []);
+
+    const handleCloseErrorSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsLoadingError(false);
+    };
 
     return (
         <>
@@ -49,6 +58,10 @@ export default function UnitList() {
                     navigate(CreateNewUnitPath);
                 }}
             ></SpeedDial>
+
+            <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isLoadingError}>
+                Не удалось загрузить данные!
+            </ErrorSnackbar>
         </>
     );
 }

@@ -3,7 +3,6 @@ import UserPreview from "../../users/UsersPreview/UserPreview";
 import styles from "./UserSelector.module.scss";
 import { useEffect, useState } from "react";
 import { UserSchema } from "../../../api/schemas/responses/users";
-import { usersData } from "../../../testdata/data";
 import { API } from "../../../api/api";
 
 interface UserSelectorProps {

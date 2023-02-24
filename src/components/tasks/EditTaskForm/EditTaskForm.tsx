@@ -9,7 +9,6 @@ import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import { BaseButton } from "../../buttons";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../../inputs/SimpleTextInput";
-import { TaskStatusStrings } from "../../../enums/tasksEnums";
 import DateInput from "../../inputs/DateInput";
 
 export default function EditTaskForm() {
@@ -21,7 +20,6 @@ export default function EditTaskForm() {
     const [taskName, setTaskName] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
     const [taskExpirationDate, setTaskExpirationDate] = useState<Date>(new Date());
-    const [taskClosedStatus, setTaskClosedStatus] = useState<TaskStatusStrings>();
     const [taskTeamName, setTaskTeamName] = useState("");
 
     // circular loaders
@@ -36,7 +34,6 @@ export default function EditTaskForm() {
             // Available use full info about task in data
             setTaskName(task.name);
             setTaskDescription(task.description);
-            setTaskClosedStatus(task.taskStatus);
             setTaskExpirationDate(new Date(task.expirationTime));
             setTaskTeamName(task.department.name);
         });
