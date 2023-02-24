@@ -1,3 +1,5 @@
+import { TaskStatusStrings } from "../../../enums/tasksEnums";
+
 export interface CreateTaskRequestSchema {
     name: string;
     description?: string;
@@ -11,7 +13,7 @@ export interface UpdateTaskRequestSchema {
     name?: string;
     description?: string;
     expirationTime?: string;
-    status?: boolean;
+    status?: TaskStatusStrings;
 }
 
 export interface FilterTasksParamsSchema {

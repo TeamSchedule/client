@@ -17,7 +17,7 @@ interface UserSelectorProps {
 }
 
 export default function UserSelector(props: UserSelectorProps) {
-    const [users, setUsers] = useState<UserSchema[]>(usersData);
+    const [users, setUsers] = useState<UserSchema[]>([]);
 
     useEffect(() => {
         if (props.users) {
@@ -30,9 +30,7 @@ export default function UserSelector(props: UserSelectorProps) {
                 setUsers(users);
             })
             .catch(() => {})
-            .finally(() => {
-                setUsers(usersData);
-            });
+            .finally(() => {});
     }, []);
 
     return (
@@ -57,7 +55,7 @@ export default function UserSelector(props: UserSelectorProps) {
                         props.setInputValue(value as any);
                     }}
                     renderInput={(params) => (
-                        <TextField {...params} label={props.label} placeholder={props.placeholder} />
+                        <TextField required {...params} label={props.label} placeholder={props.placeholder} />
                     )}
                     className={props.className}
                 />

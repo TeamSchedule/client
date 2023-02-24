@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
@@ -16,27 +16,83 @@ import Collapse from "@mui/material/Collapse";
 import Divider from "@mui/material/Divider";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
+import Badge from "@mui/material/Badge";
+import DefaultDict from "../../../utils/defaultdict";
+import { eventsData, unitsData } from "../../../testdata/data";
+import { API } from "../../../api/api";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 
 interface FiltersDrawerProps {
-    events: EventResponseItemSchema[];
-    units: UnitResponseItemSchema[];
-    resetFiltersHandler: () => void;
-
-    selectedUnits: {};
-    setSelectedUnits: (val: object) => void;
-
-    selectedEventsIds: {};
-    setSelectedEventsIds: (val: object) => void;
-
-    selectedUsersIds: {};
-    setSelectedUsersIds: (val: object) => void;
+    tasks: TaskResponseItemSchema[];
+    setDisplayedTasks: (tasks: TaskResponseItemSchema[]) => void;
 }
 
 export default function FiltersDrawer(props: FiltersDrawerProps) {
-    // открыт sidebar или нет
-    const [state, setState] = React.useState<boolean>(true);
+    // данные для фильтров
+    const [units, setUnits] = useState<UnitResponseItemSchema[]>(unitsData);
+    const [events, setEvents] = useState<EventResponseItemSchema[]>(eventsData);
 
+    // открыт sidebar или нет
+    const [state, setState] = React.useState<boolean>(false);
+
+    // фильтры
+    const [selectedUsersIds, setSelectedUsersIds] = useState<object>(DefaultDict());
+    const [selectedUnitsIds, setSelectedUnitsIds] = useState<object>(DefaultDict());
+    const [selectedEventsIds, setSelectedEventsIds] = useState<object>(DefaultDict());
     const [showClosed, setShowClosed] = useState<boolean>(false); // показывать закрытые и выполненные
+
+    // Количество выбранных параметров каждого типа в фильтрах
+    const selectedUnits: number = Object.values(selectedUnitsIds).filter(Boolean).length;
+    const selectedUsers: number = Object.values(selectedUsersIds).filter(Boolean).length;
+    const selectedEvents: number = Object.values(selectedEventsIds).filter(Boolean).length;
+
+    const isAnyFiltersActive: number = selectedUnits + selectedUsers + selectedEvents + +showClosed;
+
+    useEffect(() => {
+        // Получение данных по отделам (пользователи внутри) и событиям для формирования фильтров
+        API.units
+            .all()
+            .then((units: UnitResponseItemSchema[]) => {
+                setUnits(units);
+            })
+            .catch(() => {
+                // TODO: ЧТо-то пошло не так
+            })
+            .finally(() => {});
+
+        API.events
+            .all()
+            .then((events: EventResponseItemSchema[]) => {
+                setEvents(events);
+            })
+            .catch(() => {
+                // TODO: ЧТо-то пошло не так
+            })
+            .finally(() => {});
+    }, []);
+
+    function filterTasks(e: React.MouseEvent) {
+        let filteredTasks: TaskResponseItemSchema[] = props.tasks.slice();
+        if (selectedUnits > 0) {
+            filteredTasks = filteredTasks.filter((task) => {
+                // @ts-ignore
+                return selectedUnitsIds[task.department.id];
+            });
+        }
+
+        if (selectedEvents > 0) {
+            filteredTasks = filteredTasks.filter((task) => {
+                // @ts-ignore
+                return selectedEvents[task.event.id];
+            });
+        }
+
+        if (selectedUsers > 0) {
+        }
+
+        props.setDisplayedTasks(filteredTasks);
+        toggleDrawer(false)(e);
+    }
 
     const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
         if (
@@ -46,20 +102,27 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
         ) {
             return;
         }
-
         setState(open);
     };
+
+    function resetFilters() {
+        setSelectedUnitsIds(() => DefaultDict());
+        setSelectedUsersIds(() => DefaultDict());
+        setSelectedEventsIds(() => DefaultDict());
+    }
 
     return (
         <>
             <Button onClick={toggleDrawer(true)} sx={{ py: 0 }}>
-                <IconButton aria-label="reset" color="primary" sx={{ p: 0 }}>
-                    <TuneIcon fontSize="large" sx={{ p: 0, m: 0 }} />
-                </IconButton>
+                <Badge variant="dot" color="info" badgeContent={isAnyFiltersActive}>
+                    <IconButton aria-label="reset" color="primary" sx={{ p: 0 }}>
+                        <TuneIcon fontSize="large" sx={{ p: 0, m: 0 }} />
+                    </IconButton>
+                </Badge>
             </Button>
             <SwipeableDrawer
                 disableBackdropTransition
-                anchor="left"
+                anchor="right"
                 open={state}
                 onClose={toggleDrawer(false)}
                 onOpen={toggleDrawer(true)}
@@ -75,19 +138,19 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                     </FormGroup>
 
                     <Divider />
-                    <FilterSection title="Отделы">
-                        {props.units.map((unit) => (
+                    <FilterSection title="Отделы" selectedValueCount={selectedUnits}>
+                        {units.map((unit) => (
                             <FormGroup key={unit.id}>
                                 <FormControlLabel
                                     control={
                                         <Checkbox
                                             // @ts-ignore
-                                            checked={props.selectedUnits[unit.id]}
+                                            checked={selectedUnitsIds[unit.id]}
                                             onChange={() => {
-                                                props.setSelectedUnits({
-                                                    ...props.selectedUnits,
+                                                setSelectedUnitsIds({
+                                                    ...selectedUnitsIds,
                                                     // @ts-ignore
-                                                    [unit.id]: !props.selectedUnits[unit.id],
+                                                    [unit.id]: !selectedUnitsIds[unit.id],
                                                 });
                                             }}
                                         />
@@ -98,19 +161,19 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                         ))}
                     </FilterSection>
 
-                    <FilterSection title="События">
-                        {props.events.map((event) => (
+                    <FilterSection title="События" selectedValueCount={selectedEvents}>
+                        {events.map((event) => (
                             <FormGroup key={event.id}>
                                 <FormControlLabel
                                     control={
                                         <Checkbox
                                             // @ts-ignore
-                                            checked={props.selectedEventsIds[event.id]}
+                                            checked={selectedEventsIds[event.id]}
                                             onChange={() => {
-                                                props.setSelectedEventsIds({
-                                                    ...props.selectedEventsIds,
+                                                setSelectedEventsIds({
+                                                    ...selectedEventsIds,
                                                     // @ts-ignore
-                                                    [event.id]: !props.selectedEventsIds[event.id],
+                                                    [event.id]: !selectedEventsIds[event.id],
                                                 });
                                             }}
                                         />
@@ -120,8 +183,8 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                             </FormGroup>
                         ))}
                     </FilterSection>
-                    <FilterSection title="Исполнители">
-                        {props.units.map((unit) => (
+                    <FilterSection title="Исполнители" selectedValueCount={selectedUsers}>
+                        {units.map((unit) => (
                             <Box key={unit.id} sx={{ mb: 1 }}>
                                 {unit.members.map((user) => (
                                     <FormGroup key={user.id}>
@@ -129,12 +192,12 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                                             control={
                                                 <Checkbox
                                                     // @ts-ignore
-                                                    checked={props.selectedUsersIds[user.id]}
+                                                    checked={selectedUsersIds[user.id]}
                                                     onChange={() => {
-                                                        props.setSelectedUsersIds({
-                                                            ...props.selectedUsersIds,
+                                                        setSelectedUsersIds({
+                                                            ...selectedUsersIds,
                                                             // @ts-ignore
-                                                            [user.id]: !props.selectedUsersIds[user.id],
+                                                            [user.id]: !selectedUsersIds[user.id],
                                                         });
                                                     }}
                                                 />
@@ -148,11 +211,11 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                         ))}
                     </FilterSection>
 
-                    <Button fullWidth variant="contained" sx={{ mt: 2 }}>
+                    <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={filterTasks}>
                         Применить
                     </Button>
 
-                    <Button fullWidth variant="outlined" sx={{ mt: 3 }} onClick={() => props.resetFiltersHandler()}>
+                    <Button fullWidth variant="outlined" sx={{ mt: 3 }} onClick={resetFilters}>
                         Сбросить
                     </Button>
                 </Box>
@@ -179,6 +242,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 interface FilterSectionProps {
     title: string;
     children?: any;
+    selectedValueCount: number;
 }
 
 function FilterSection(props: FilterSectionProps) {
@@ -195,8 +259,20 @@ function FilterSection(props: FilterSectionProps) {
                     <ExpandMore expand={expanded} aria-expanded={expanded} aria-label="show more" sx={{ pl: 0 }}>
                         <ExpandMoreIcon />
                     </ExpandMore>
+
                     <Typography variant="subtitle1" component="span" sx={{ fontWeight: "bold" }}>
-                        {props.title}
+                        <Badge
+                            badgeContent={props.selectedValueCount}
+                            color="primary"
+                            sx={{
+                                "& .MuiBadge-badge": {
+                                    right: -15,
+                                    top: 15,
+                                },
+                            }}
+                        >
+                            {props.title}
+                        </Badge>
                     </Typography>
                 </Box>
 

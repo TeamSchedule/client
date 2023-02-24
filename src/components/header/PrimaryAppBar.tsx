@@ -18,10 +18,13 @@ import TaskIcon from "@mui/icons-material/Task";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { SettingsPath, EventListPath, NotificationListPath, TaskListPath, UnitListPath } from "../../routes/paths";
+import { EventListPath, NotificationListPath, SettingsPath, TaskListPath, UnitListPath } from "../../routes/paths";
 import { NotificationsContext } from "../App";
 import { Tooltip } from "@mui/material";
 import { NotificationsResponseItemSchema } from "../../api/schemas/responses/notifications";
+import MenuIcon from "@mui/icons-material/Menu";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Divider from "@mui/material/Divider";
 
 export default function PrimaryAppBar() {
     const navigate = useNavigate();
@@ -34,6 +37,20 @@ export default function PrimaryAppBar() {
 
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const [isNotificationsBarOpen, setIsNotificationsBarOpen] = React.useState<boolean>(false);
+
+    // открыт sidebar или нет
+    const [state, setState] = React.useState<boolean>(false);
+
+    const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+        if (
+            event &&
+            event.type === "keydown" &&
+            ((event as React.KeyboardEvent).key === "Tab" || (event as React.KeyboardEvent).key === "Shift")
+        ) {
+            return;
+        }
+        setState(open);
+    };
 
     const handleNotificationsButtonClick = () => {
         if (isNotificationsBarOpen) {
@@ -105,57 +122,135 @@ export default function PrimaryAppBar() {
         </Menu>
     );
 
+    const renderSwipeableAppBar = (
+        <SwipeableDrawer
+            disableBackdropTransition
+            anchor="left"
+            open={state}
+            onClose={toggleDrawer(false)}
+            onOpen={toggleDrawer(true)}
+        >
+            <Box
+                sx={{
+                    mt: 2,
+                    minWidth: 300,
+                }}
+            >
+                <Divider sx={{ my: "0 !important" }} />
+                <MenuItem
+                    onClick={(e) => {
+                        navigate(TaskListPath);
+                        toggleDrawer(false)(e);
+                    }}
+                    sx={{ py: { xs: 1, sm: 2 } }}
+                >
+                    <CalendarMonthIcon sx={{ mr: 1 }} />
+                    Задачи
+                </MenuItem>
+                <Divider sx={{ my: "0 !important" }} />
+                <MenuItem
+                    onClick={(e) => {
+                        navigate(EventListPath);
+                        toggleDrawer(false)(e);
+                    }}
+                    sx={{ py: { xs: 1, sm: 2 } }}
+                >
+                    <LocalActivityIcon sx={{ mr: 1 }} />
+                    События
+                </MenuItem>
+                <Divider sx={{ my: "0 !important" }} />
+                <MenuItem
+                    onClick={(e) => {
+                        navigate(UnitListPath);
+                        toggleDrawer(false)(e);
+                    }}
+                    sx={{ py: { xs: 1, sm: 2 } }}
+                >
+                    <PeopleIcon sx={{ mr: 1 }} />
+                    Отделы
+                </MenuItem>
+                <Divider sx={{ my: "0 !important" }} />
+                <MenuItem
+                    onClick={(e) => {
+                        navigate(SettingsPath);
+                        toggleDrawer(false)(e);
+                    }}
+                    sx={{ py: { xs: 1, sm: 2 } }}
+                >
+                    <SettingsIcon sx={{ mr: 1 }} />
+                    Настройки профиля
+                </MenuItem>
+                <Divider sx={{ my: "0 !important" }} />
+            </Box>
+        </SwipeableDrawer>
+    );
+
     return (
         <Box sx={{ flexGrow: 1 }}>
+            {renderSwipeableAppBar}
             <AppBar position="static">
                 <Toolbar>
-                    <Tooltip title="Задачи">
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            sx={{ mr: 2 }}
-                            onClick={() => navigate(TaskListPath)}
-                        >
-                            <CalendarMonthIcon />
-                        </IconButton>
-                    </Tooltip>
+                    <Box sx={{ display: { xs: "none", md: "block" } }}>
+                        <Tooltip title="Задачи">
+                            <IconButton
+                                size="large"
+                                edge="start"
+                                color="inherit"
+                                sx={{ mr: 2 }}
+                                onClick={() => navigate(TaskListPath)}
+                            >
+                                <CalendarMonthIcon />
+                            </IconButton>
+                        </Tooltip>
 
-                    <Tooltip title="События">
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            sx={{ mr: 2 }}
-                            onClick={() => navigate(EventListPath)}
-                        >
-                            <LocalActivityIcon />
-                        </IconButton>
-                    </Tooltip>
+                        <Tooltip title="События">
+                            <IconButton
+                                size="large"
+                                edge="start"
+                                color="inherit"
+                                sx={{ mr: 2 }}
+                                onClick={() => navigate(EventListPath)}
+                            >
+                                <LocalActivityIcon />
+                            </IconButton>
+                        </Tooltip>
 
-                    <Tooltip title="Отделы">
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            sx={{ mr: 2 }}
-                            onClick={() => navigate(UnitListPath)}
-                        >
-                            <PeopleIcon />
-                        </IconButton>
-                    </Tooltip>
+                        <Tooltip title="Отделы">
+                            <IconButton
+                                size="large"
+                                edge="start"
+                                color="inherit"
+                                sx={{ mr: 2 }}
+                                onClick={() => navigate(UnitListPath)}
+                            >
+                                <PeopleIcon />
+                            </IconButton>
+                        </Tooltip>
 
-                    <Tooltip title="Настройки профиля">
+                        <Tooltip title="Настройки профиля">
+                            <IconButton
+                                size="large"
+                                edge="start"
+                                color="inherit"
+                                sx={{ mr: 2 }}
+                                onClick={() => navigate(SettingsPath)}
+                            >
+                                <SettingsIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+
+                    <Box sx={{ display: { xs: "block", md: "none" } }}>
                         <IconButton
                             size="large"
                             edge="start"
                             color="inherit"
                             sx={{ mr: 2 }}
-                            onClick={() => navigate(SettingsPath)}
+                            onClick={toggleDrawer(true)}
                         >
-                            <SettingsIcon />
+                            <MenuIcon />
                         </IconButton>
-                    </Tooltip>
+                    </Box>
 
                     <Box sx={{ flexGrow: 1 }} />
 

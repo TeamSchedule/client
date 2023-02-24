@@ -5,7 +5,6 @@ import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionHeader";
 import UserPreview from "../../users/UsersPreview/UserPreview";
 import TaskPreview from "../../tasks/TaskPreview";
-import { taskData, usersData } from "../../../testdata/data";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import Collapse from "@mui/material/Collapse";
 import CardContent from "@mui/material/CardContent";
@@ -80,8 +79,7 @@ export default function FullUnitView() {
         setIsCreatingFinished(false);
     };
 
-    // const members = unit?.members.map((user) => <UserPreview key={user.id} user={user} />);
-    const members = usersData.map((user) => <UserPreview user={user} key={user.id} clickable={true} />);
+    const members = unit?.members.map((user) => <UserPreview user={user} key={user.id} clickable={true} />);
 
     return (
         <>
@@ -108,7 +106,7 @@ export default function FullUnitView() {
                 </CardActions>
 
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <TaskPreview task={taskData} />
+                    {unit?.openTasks && unit?.openTasks.map((task) => <TaskPreview key={task.id} task={task} />)}
                 </Collapse>
             </Card>
 

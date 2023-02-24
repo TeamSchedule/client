@@ -1,23 +1,40 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import TaskName from "../common/TaskName";
 import TaskDeadline from "../common/TaskDeadline";
-import { taskData } from "../../../testdata/data";
 import Executors from "../common/Executors";
 import EventLink from "../../links/EventLink/EventLink";
 import UnitLink from "../../links/UnitLink/UnitLink";
 import SpeedDial from "@mui/material/SpeedDial";
 import EditIcon from "@mui/icons-material/Edit";
+import DoneIcon from "@mui/icons-material/Done";
+import Button from "@mui/material/Button";
+import { TaskStatusEnum } from "../../../enums/tasksEnums";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
+import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
+import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 
 export default function FullTaskView() {
     const { id } = useParams();
+    const { state } = useLocation();
+    const { created = 0, taskData = null } = state || {}; // считываем значения из state
+    window.history.replaceState({}, document.title); // очищаем state
+
+    // если произошел редирект после создания, то true
+    const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
+
+    // статус успешности изменения статуса задачи
+    const [isChangeStatusOk, setIsChangeStatusOk] = useState<boolean>(false);
+    const [isChangeStatusError, setIsChangeStatusError] = useState<boolean>(false);
+
     const navigate = useNavigate();
 
     const [task, setTask] = useState<TaskResponseItemSchema | undefined>(taskData);
 
-    useEffect(() => {
+    function getTaskData() {
         if (!id) {
             return;
         }
@@ -28,8 +45,51 @@ export default function FullTaskView() {
             })
             .catch(() => {})
             .finally(() => {});
-    }, [id]);
+    }
 
+    useEffect(() => {
+        getTaskData();
+    }, []);
+
+    const toggleTaskStatus = (open: boolean) => (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (!id) {
+            return;
+        }
+
+        const updateStatusData: UpdateTaskRequestSchema = {
+            status: open ? TaskStatusEnum.IN_PROGRESS : TaskStatusEnum.COMPLETED,
+        };
+
+        API.tasks
+            .updateTaskById(+id, updateStatusData)
+            .then(() => {
+                setIsChangeStatusOk(true);
+            })
+            .catch(() => {});
+        getTaskData();
+    };
+
+    const handleCloseSuccessSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsCreatingFinished(false);
+    };
+
+    const handleChangeStatusSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsChangeStatusOk(false);
+    };
+
+    const handleChangeStatusErrorSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsChangeStatusError(false);
+    };
     return (
         <>
             <div>
@@ -38,6 +98,18 @@ export default function FullTaskView() {
                 <EventLink id={task?.event.id} name={task?.event.name} />
                 <UnitLink id={task?.department.id} name={task?.department.name} />
                 <Executors users={task ? task.assignee : []} />
+
+                {task?.taskStatus === TaskStatusEnum.IN_PROGRESS && (
+                    <Button variant="contained" startIcon={<DoneIcon />} onClick={toggleTaskStatus(false)}>
+                        Выполнено
+                    </Button>
+                )}
+
+                {task?.taskStatus === TaskStatusEnum.COMPLETED && (
+                    <Button variant="contained" startIcon={<RestartAltIcon />} onClick={toggleTaskStatus(true)}>
+                        Открыть
+                    </Button>
+                )}
             </div>
 
             <SpeedDial
@@ -48,6 +120,18 @@ export default function FullTaskView() {
                     navigate("edit");
                 }}
             ></SpeedDial>
+
+            <SuccessSnackbar handleClose={handleChangeStatusSnackbar} isOpen={isChangeStatusOk}>
+                Статус изменен!
+            </SuccessSnackbar>
+
+            <ErrorSnackbar handleClose={handleChangeStatusErrorSnackbar} isOpen={isChangeStatusError}>
+                Произошла ошибка!
+            </ErrorSnackbar>
+
+            <SuccessSnackbar handleClose={handleCloseSuccessSnackbar} isOpen={isCreatingFinished}>
+                Задача создана!
+            </SuccessSnackbar>
         </>
     );
 }

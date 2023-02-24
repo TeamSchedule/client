@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import StatusDone from "../statuses/StatusDone";
 import InProgressStatus from "../statuses/InProgressStatus";
 import { getDateRepresentation } from "../../utils/dateutils";
+import { EventStatusEnum, EventStatusStrings } from "../../enums/eventsEnums";
 
 interface EventNameProps {
     children?: any;
@@ -34,7 +35,7 @@ export function EventDescription(props: EventDescriptionProps) {
 
 interface EventDeadlineProps {
     endDate?: Date;
-    status?: any;
+    status?: EventStatusStrings;
 }
 
 export function EventDeadline(props: EventDeadlineProps) {
@@ -42,7 +43,11 @@ export function EventDeadline(props: EventDeadlineProps) {
         <>
             <Typography sx={{ display: "flex", alignItems: "center", mb: 0 }} color="text.secondary" gutterBottom>
                 <Box component="span" sx={{ marginRight: 1 }}>
-                    {props.status ? <StatusDone /> : <InProgressStatus />}
+                    {props.status !== undefined && props.status === EventStatusEnum.COMPLETED ? (
+                        <StatusDone />
+                    ) : (
+                        <InProgressStatus />
+                    )}
                 </Box>
                 {getDateRepresentation(props.endDate)}
             </Typography>

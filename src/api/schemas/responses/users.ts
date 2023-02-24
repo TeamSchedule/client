@@ -14,7 +14,6 @@ export interface UserSchema {
     login: string;
     email: string;
     fullName: string;
-    confirmed: boolean;
     creationDate: Date;
     post: UserPostsStrings;
 }

@@ -3,10 +3,10 @@ import { GetAllUsersResponseSchema, GetMeResponseSchema, UserSchema } from "../s
 import requestApi from "../fetchApi";
 
 export class users {
-    static apiPrefix = "/user";
+    static apiPrefix = "/schedule/user";
 
     static async all(): Promise<UserSchema[]> {
-        return requestApi.GET(`${this.apiPrefix}/all`).then((data: GetAllUsersResponseSchema) => {
+        return requestApi.GET(`${this.apiPrefix}`).then((data: GetAllUsersResponseSchema) => {
             return data.users;
         });
     }

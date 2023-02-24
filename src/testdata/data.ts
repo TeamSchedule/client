@@ -4,12 +4,12 @@ import { TaskResponseItemSchema } from "../api/schemas/responses/tasks";
 import { EventResponseItemSchema } from "../api/schemas/responses/events";
 import { UserPostsEnum } from "../enums/usersEnums";
 import { TaskStatusEnum } from "../enums/tasksEnums";
+import { EventStatusEnum } from "../enums/eventsEnums";
 
 const user1: UserSchema = {
     avatar: "",
     id: 1,
     email: "",
-    confirmed: true,
     creationDate: new Date(),
     login: "",
     fullName: "Сяглова Анна Михайловна",
@@ -19,7 +19,6 @@ const user2: UserSchema = {
     avatar: "",
     id: 2,
     email: "",
-    confirmed: true,
     creationDate: new Date(),
     login: "",
     fullName: "Сяглова Анна Михайловна",
@@ -29,7 +28,6 @@ const user3: UserSchema = {
     avatar: "",
     id: 3,
     email: "",
-    confirmed: true,
     creationDate: new Date(),
     login: "",
     fullName: "Сяглова Анна Михайловна",
@@ -40,7 +38,6 @@ const user4: UserSchema = {
     avatar: "",
     id: 4,
     email: "",
-    confirmed: true,
     creationDate: new Date(),
     login: "",
     fullName: "Сяглова Анна Михайловна",
@@ -94,6 +91,7 @@ export const taskData: TaskResponseItemSchema = {
         description: "desc",
         endDate: new Date().toJSON(),
         tasks: [],
+        status: EventStatusEnum.IN_PROGRESS,
     },
     department: unitsData[0],
 };
@@ -106,6 +104,7 @@ export const eventsData: EventResponseItemSchema[] = [
         description: "desc",
         endDate: new Date().toJSON(),
         tasks: [taskData],
+        status: EventStatusEnum.IN_PROGRESS,
     },
     {
         id: 2,
@@ -114,6 +113,7 @@ export const eventsData: EventResponseItemSchema[] = [
         description: "desc",
         endDate: new Date().toJSON(),
         tasks: [],
+        status: EventStatusEnum.IN_PROGRESS,
     },
     {
         id: 3,
@@ -122,5 +122,6 @@ export const eventsData: EventResponseItemSchema[] = [
         description: "desc",
         endDate: new Date().toJSON(),
         tasks: [],
+        status: EventStatusEnum.IN_PROGRESS,
     },
 ];

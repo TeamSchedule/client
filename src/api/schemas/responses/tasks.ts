@@ -11,7 +11,7 @@ export interface TaskResponseItemSchema {
     id: number;
     name: string;
     description: string;
-    taskStatus?: TaskStatusStrings;
+    taskStatus: TaskStatusStrings;
     expirationTime: string;
 
     assignee: UserSchema[];
