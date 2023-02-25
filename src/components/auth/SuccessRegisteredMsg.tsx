@@ -1,24 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./Auth.module.scss";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
 export default function SuccessRegisteredMsg() {
     return (
-        <form
-            className={[
-                styles.authForm,
-                "col-sm-12 col-md-8 col-xl-6 col-xxl-6 p-1 p-sm-2 p-md-3 p-xl-4 mx-auto mt-0 mt-md-2",
-            ].join(" ")}
-        >
-            <p className={styles.formHeader}>Завершение регистрации</p>
-            <p className="fs-5">Поздравляем! Вы успешно зарегистрировались!</p>
-            <div className="fs-5">
-                <p>На Вашу почту было выслано письмо для активации аккаунта.</p>
-                <p className="fw-bold">Перейдите по ссылке в этом письме.</p>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                <Typography variant="h5" component="h1" sx={{ mb: 4 }}>
+                    Завершение регистрации
+                </Typography>
+
+                <Typography variant="body1" component="p">
+                    На Вашу почту было выслано письмо для активации аккаунта. Перейдите по ссылке в этом письме.
+                </Typography>
+
                 <p>
                     После этого можно перейти на <Link to={"/login"}>страницу входа.</Link>
                 </p>
-            </div>
-        </form>
+            </Box>
+        </Container>
     );
 }

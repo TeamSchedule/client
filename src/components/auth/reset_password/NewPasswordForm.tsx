@@ -1,13 +1,14 @@
-import AuthFormLayout from "../AuthFormLayout";
-import BaseButton from "../../buttons/BaseButton";
 import React, { FormEvent, useEffect, useState } from "react";
 import { CreateNewPasswordRequestSchema } from "../../../api/schemas/requests/auth";
 import { API } from "../../../api/api";
 import { ERRORS, MIN_PASSWORD_LENGTH } from "../../../consts";
-import { PasswordInput } from "../../inputs";
-import styles from "../Auth.module.scss";
 import ErrorMsg from "../../ErrorMsg";
 import useAuth from "../../../hooks/useAuth";
+import LoadingButton from "@mui/lab/LoadingButton";
+import TextField from "@mui/material/TextField";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 
 export default function NewPasswordForm() {
     /*
@@ -82,41 +83,64 @@ export default function NewPasswordForm() {
     }
 
     return (
-        <>
-            <AuthFormLayout onSubmit={onInputNewPassword}>
-                <>
-                    <PasswordInput
-                        value={password}
-                        setValue={setPassword}
-                        isOk={isPasswordHasGoodLen || isPasswordsOK}
-                        className={styles.formInputWrapper}
-                    />
-                    <PasswordInput
-                        value={password2}
-                        setValue={setPassword2}
-                        placeholder="Повторите пароль"
-                        isOk={isPasswordsOK}
-                        className={styles.formInputWrapper}
-                    />
-                    <ErrorMsg
-                        errText={ERRORS.SignUp.PasswordsDontMatch}
-                        visible={isPasswordsMatch !== undefined && !isPasswordsMatch}
-                    />
-                    <ErrorMsg
-                        errText={ERRORS.SignUp.PasswordsTooShort}
-                        visible={isPasswordHasGoodLen !== undefined && !isPasswordHasGoodLen}
-                    />
-                    <ErrorMsg errText={ERRORS.Service.ServiceUnavailable} visible={isNewPasswordErrShown} />
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                <TextField
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    margin="dense"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Пароль"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                    sx={{ mt: 2 }}
+                />
+                <TextField
+                    value={password2}
+                    onChange={(e) => setPassword2(e.target.value)}
+                    margin="dense"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Повторите пароль"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                />
 
-                    <BaseButton
-                        text="Сохранить пароль"
-                        color="success"
-                        disabled={!isPasswordsOK}
-                        loading={isActionInProgress}
-                        className="mt-3"
-                    />
-                </>
-            </AuthFormLayout>
-        </>
+                <ErrorMsg
+                    errText={ERRORS.SignUp.PasswordsDontMatch}
+                    visible={isPasswordsMatch !== undefined && !isPasswordsMatch}
+                />
+                <ErrorMsg
+                    errText={ERRORS.SignUp.PasswordsTooShort}
+                    visible={isPasswordHasGoodLen !== undefined && !isPasswordHasGoodLen}
+                />
+                <ErrorMsg errText={ERRORS.Service.ServiceUnavailable} visible={isNewPasswordErrShown} />
+
+                <LoadingButton
+                    disabled={!isPasswordsOK}
+                    loading={isActionInProgress}
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={onInputNewPassword}
+                >
+                    Сохранить пароль
+                </LoadingButton>
+            </Box>
+        </Container>
     );
 }

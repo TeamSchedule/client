@@ -1,11 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import AuthFormLayout from "../AuthFormLayout";
-import BaseButton from "../../buttons/BaseButton";
 import React, { FormEvent, useEffect, useState } from "react";
 import { ResetPasswordCodeRequestSchema } from "../../../api/schemas/requests/auth";
 import { API } from "../../../api/api";
-import { TextField } from "@mui/material";
 import { newPasswordPath } from "../../../routes/paths";
+import LoadingButton from "@mui/lab/LoadingButton";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
 
 const TrueResetCodeLength = 6;
 const onlyDigitRegex = /^[0-9\b]+$/;
@@ -60,36 +62,45 @@ export default function ResetPasswordCodeForm() {
     }
 
     return (
-        <>
-            <div>
-                <AuthFormLayout onSubmit={onInputResetCode}>
-                    <>
-                        <p>
-                            На Вашу почту <span style={{ fontFamily: "monospace", fontWeight: "bold" }}>{email}</span>{" "}
-                            был выслан одноразовый код для восстановления доступа. Введите его для сброса пароля.
-                        </p>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                <p>
+                    На Вашу почту <span style={{ fontFamily: "monospace", fontWeight: "bold" }}>{email}</span> был
+                    выслан одноразовый код для восстановления доступа. Введите его для сброса пароля.
+                </p>
 
-                        <TextField
-                            fullWidth
-                            label="КОД"
-                            inputProps={{
-                                style: { textAlign: "center", fontFamily: "monospace" },
-                            }}
-                            error={!(isResetCodeValid === null || isResetCodeValid)}
-                            variant="outlined"
-                            value={resetCode}
-                            onChange={handleChangeResetCode}
-                        />
-                        <BaseButton
-                            text="Отправить"
-                            color="success"
-                            disabled={!isResetCodeValid}
-                            loading={isActionInProgress}
-                            className="mt-3"
-                        />
-                    </>
-                </AuthFormLayout>
-            </div>
-        </>
+                <TextField
+                    fullWidth
+                    label="КОД"
+                    inputProps={{
+                        style: { textAlign: "center", fontFamily: "monospace" },
+                    }}
+                    error={!(isResetCodeValid === null || isResetCodeValid)}
+                    variant="outlined"
+                    value={resetCode}
+                    onChange={handleChangeResetCode}
+                />
+
+                <LoadingButton
+                    disabled={!isResetCodeValid}
+                    loading={isActionInProgress}
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={onInputResetCode}
+                >
+                    Отправить
+                </LoadingButton>
+            </Box>
+        </Container>
     );
 }

@@ -7,6 +7,10 @@ export interface GetTasksResponseSchema {
     tasks: TaskResponseItemSchema[];
 }
 
+export interface CreateTasksResponseSchema {
+    id: number;
+}
+
 export interface TaskResponseItemSchema {
     id: number;
     name: string;

@@ -5,9 +5,6 @@ export interface SignInRequestSchema {
 
 export interface SignUpRequestSchema {
     email: string;
-    firstName: string;
-    secondName: string;
-    thirdName?: string;
     password: string;
 }
 

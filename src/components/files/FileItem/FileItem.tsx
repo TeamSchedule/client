@@ -38,13 +38,12 @@ interface FileItemProps {
 }
 
 const FileItem = (props: FileItemProps) => {
-    // @ts-ignore
-    if (!Array.prototype.last) {
-        // @ts-ignore
-        Array.prototype.last = function () {
+    // eslint-disable-next-line no-extend-native
+    Object.defineProperty(Array.prototype, "last", {
+        value: function () {
             return this[this.length - 1];
-        };
-    }
+        },
+    });
 
     // @ts-ignore
     const fileIcon = fileIcons[props.file.name.split(".").last()] || fileIcons["default"];

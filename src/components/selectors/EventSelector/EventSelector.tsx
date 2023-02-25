@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { eventsData } from "../../../testdata/data";
 import { API } from "../../../api/api";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { Autocomplete, TextField } from "@mui/material";
@@ -11,7 +10,7 @@ interface EventSelectorProps {
 }
 
 export default function EventSelecLtor(props: EventSelectorProps) {
-    const [events, setEvents] = useState<EventResponseItemSchema[]>(eventsData);
+    const [events, setEvents] = useState<EventResponseItemSchema[]>([]);
 
     useEffect(() => {
         API.events

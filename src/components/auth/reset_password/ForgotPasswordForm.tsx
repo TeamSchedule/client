@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import AuthFormLayout from "../AuthFormLayout";
 import React, { FormEvent, useState } from "react";
-import { EmailInput } from "../../inputs";
-import styles from "../Auth.module.scss";
-import BaseButton from "../../buttons/BaseButton";
 import validateEmail from "../../../utils/validateEmail";
 import { API } from "../../../api/api";
 import { ResetPasswordEmailRequestSchema } from "../../../api/schemas/requests/auth";
 import { resetPasswordCodePath } from "../../../routes/paths";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function ForgotPasswordForm() {
     /*
@@ -46,25 +47,44 @@ export default function ForgotPasswordForm() {
 
     return (
         <>
-            <AuthFormLayout onSubmit={onInputResetEmail}>
-                <>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
+                >
                     <p>Введите Ваш email для восстановления досутпа</p>
-                    <EmailInput
+                    <TextField
                         value={email}
-                        setValue={onChangeEmail}
-                        isOk={isEmailValid}
-                        className={styles.formInputWrapper}
+                        onChange={(e) => onChangeEmail(e.target.value.trim())}
+                        margin="normal"
+                        required
+                        error={email !== "" ? !isEmailValid : false}
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        helperText="*****@mail.sfu-kras.ru"
+                        name="email"
+                        autoComplete="email"
                     />
 
-                    <BaseButton
-                        text="Получить код"
-                        color="success"
+                    <LoadingButton
                         disabled={!isEmailValid}
                         loading={isActionInProgress}
-                        className="mt-3"
-                    />
-                </>
-            </AuthFormLayout>
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                        onClick={onInputResetEmail}
+                    >
+                        Получить код
+                    </LoadingButton>
+                </Box>
+            </Container>
         </>
     );
 }

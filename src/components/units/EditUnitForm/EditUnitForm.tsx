@@ -3,12 +3,12 @@ import SimpleTextInput from "../../inputs/SimpleTextInput";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import UserSelector from "../../selectors/UserSelector/UserSelector";
 import { CreateUnitRequestSchema } from "../../../api/schemas/requests/units";
-import { BaseButton } from "../../buttons";
 import { API } from "../../../api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import UsersSelector from "../../selectors/UsersSelector";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function EditUnitForm() {
     const navigate = useNavigate();
@@ -44,7 +44,9 @@ export default function EditUnitForm() {
         //     .finally(() => {});
     }, [id]);
 
-    function editUnitHandler() {
+    function editUnitHandler(event: React.MouseEvent) {
+        event.preventDefault();
+
         setInProgress(true);
 
         const newUnitData: CreateUnitRequestSchema = {
@@ -99,13 +101,16 @@ export default function EditUnitForm() {
                     inputValue={unitMembers}
                 />
 
-                <BaseButton
-                    text="Сохранить изменения"
+                <LoadingButton
                     onClick={editUnitHandler}
-                    className="mt-2"
-                    color="common"
                     loading={inProgress}
-                />
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                >
+                    Сохранить изменения
+                </LoadingButton>
             </div>
         </>
     );

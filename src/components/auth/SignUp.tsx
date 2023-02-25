@@ -19,10 +19,6 @@ import ErrorMsg from "../ErrorMsg";
 export default function SignUp() {
     const navigate = useNavigate();
 
-    const [firstName, setFirstName] = useState<string>("");
-    const [secondName, setSecondName] = useState<string>("");
-    const [thirdName, setThirdName] = useState<string>("");
-
     const [email, setEmail] = useState<string>("");
     const [isEmailValid, setIsEmailValid] = useState<boolean | undefined>();
 
@@ -67,8 +63,8 @@ export default function SignUp() {
     }, [isPasswordsMatch, isPasswordHasGoodLen]);
 
     useEffect(() => {
-        setIsFormDisabled(!isPasswordsOK || !isEmailValid || !firstName || !secondName);
-    }, [isEmailValid, isPasswordsOK, firstName, secondName]);
+        setIsFormDisabled(!isPasswordsOK || !isEmailValid);
+    }, [isEmailValid, isPasswordsOK]);
 
     function onChangeEmail(email: string) {
         setEmail(email);
@@ -78,15 +74,12 @@ export default function SignUp() {
     function handleSubmit(event: React.FormEvent) {
         event.preventDefault();
         if (isFormDisabled) return;
-        if (!firstName || !secondName || !password) return;
+        if (!password) return;
 
         setIsActionInProgress(true);
 
         const signUpRequestData: SignUpRequestSchema = {
             email: email,
-            firstName: firstName,
-            secondName: secondName,
-            thirdName: thirdName,
             password: password,
         };
 
@@ -94,7 +87,7 @@ export default function SignUp() {
             .signUp(signUpRequestData)
             .then(() => {
                 setPassword("");
-                navigate(successRegistrationPath);
+                navigate(successRegistrationPath, { state: { email: email } });
             })
             .catch((err) => {
                 const statusCode = err.response.status;
@@ -130,6 +123,7 @@ export default function SignUp() {
                             onChange={(e) => onChangeEmail(e.target.value.trim())}
                             margin="normal"
                             required
+                            error={email !== "" ? !isEmailValid : false}
                             fullWidth
                             id="email"
                             label="Email"
@@ -138,39 +132,6 @@ export default function SignUp() {
                             autoComplete="email"
                         />
 
-                        <TextField
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            margin="dense"
-                            autoComplete="given-name"
-                            name="firstName"
-                            required
-                            fullWidth
-                            id="firstName"
-                            label="Имя"
-                            sx={{ mt: 2 }}
-                        />
-                        <TextField
-                            value={secondName}
-                            onChange={(e) => setSecondName(e.target.value)}
-                            margin="dense"
-                            required
-                            fullWidth
-                            id="lastName"
-                            label="Фамилия"
-                            name="lastName"
-                            autoComplete="family-name"
-                        />
-                        <TextField
-                            value={thirdName}
-                            onChange={(e) => setThirdName(e.target.value)}
-                            margin="dense"
-                            fullWidth
-                            id="lastName"
-                            label="Отчество"
-                            name="lastName"
-                            autoComplete="family-name"
-                        />
                         <TextField
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}

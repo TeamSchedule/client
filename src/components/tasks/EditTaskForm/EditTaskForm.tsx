@@ -6,10 +6,10 @@ import CloseFormIcon from "../../generic/CloseFormIcon";
 import BaseForm from "../../generic/BaseForm";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
-import { BaseButton } from "../../buttons";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../../inputs/SimpleTextInput";
 import DateInput from "../../inputs/DateInput";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
@@ -101,20 +101,28 @@ export default function EditTaskForm() {
                 <p className="my-1">{taskTeamName === "" ? "персональная задача" : `Команда: ${taskTeamName}`}</p>
             </div>
 
-            <BaseButton
-                text="Сохранить изменения"
+            <LoadingButton
+                onClick={onSubmit}
                 loading={isUpdateActionInProgress}
-                color="success"
-                className="mt-4"
-            />
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+            >
+                Сохранить изменения
+            </LoadingButton>
 
-            <BaseButton
-                text="Удалить задачу"
-                loading={isDeleteActionInProgress}
-                color="danger"
-                className="mt-4"
+            <LoadingButton
                 onClick={onDeleteTaskBtn}
-            />
+                loading={isDeleteActionInProgress}
+                color="error"
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+            >
+                Удалить задачу
+            </LoadingButton>
         </BaseForm>
     );
 }

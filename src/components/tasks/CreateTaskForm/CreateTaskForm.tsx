@@ -20,6 +20,8 @@ import TextField from "@mui/material/TextField";
 import DateInput from "../../inputs/DateInput";
 import Box from "@mui/material/Box";
 import TextHelp from "../../TextHelp/TextHelp";
+import { makeTaskLinkById } from "../../../routes/paths";
+import { CreateTasksResponseSchema } from "../../../api/schemas/responses/tasks";
 
 function CreateTaskForm() {
     const navigate = useNavigate();
@@ -53,7 +55,7 @@ function CreateTaskForm() {
             setSelectedExecutors([]);
         }
         setSelectedUnit(null);
-    }, [isPrivateFlag]);
+    }, [user, isPrivateFlag]);
 
     useEffect(() => {
         if (selectedUnit) {
@@ -83,7 +85,9 @@ function CreateTaskForm() {
 
         API.tasks
             .createTask(createTaskData)
-            .then(() => {})
+            .then((data: CreateTasksResponseSchema) => {
+                navigate(makeTaskLinkById(data.id), { state: { created: true } });
+            })
             .catch(() => {
                 setIsCreatingError(true);
             })
