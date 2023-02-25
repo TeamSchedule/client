@@ -9,6 +9,9 @@ import { EventStatusEnum } from "../enums/eventsEnums";
 const user1: UserSchema = {
     avatar: "",
     id: 1,
+    firstName: "Name",
+    secondName: "Secondname",
+    lastName: "Lastname",
     email: "",
     creationDate: new Date(),
     login: "",
@@ -18,6 +21,9 @@ const user1: UserSchema = {
 const user2: UserSchema = {
     avatar: "",
     id: 2,
+    firstName: "Name",
+    secondName: "Secondname",
+    lastName: "Lastname",
     email: "",
     creationDate: new Date(),
     login: "",
@@ -27,6 +33,9 @@ const user2: UserSchema = {
 const user3: UserSchema = {
     avatar: "",
     id: 3,
+    firstName: "Name",
+    secondName: "Secondname",
+    lastName: "Lastname",
     email: "",
     creationDate: new Date(),
     login: "",
@@ -37,6 +46,9 @@ const user3: UserSchema = {
 const user4: UserSchema = {
     avatar: "",
     id: 4,
+    firstName: "Name",
+    secondName: "Secondname",
+    lastName: "Lastname",
     email: "",
     creationDate: new Date(),
     login: "",
