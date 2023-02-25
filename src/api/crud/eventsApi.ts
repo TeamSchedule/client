@@ -6,6 +6,7 @@ import {
 } from "../schemas/responses/events";
 import { CreateEventRequestSchema, EditEventRequestSchema } from "../schemas/requests/events";
 import requestApi from "../fetchApi";
+import { EventStatusStrings } from "../../enums/eventsEnums";
 
 export class EventsApi {
     static apiPrefix: string = "/schedule/event";
@@ -15,6 +16,10 @@ export class EventsApi {
      * */
     static async all(): Promise<EventResponseItemSchema[]> {
         return requestApi.GET(`${this.apiPrefix}`).then((data: GetEventsResponseSchema) => {
+            for (let i = 0; i < data.events.length; i++) {
+                data.events[i].files = [];
+                data.events[i].tasks = [];
+            }
             return data.events;
         });
     }
@@ -44,5 +49,15 @@ export class EventsApi {
      * */
     static async editEvent(data: EditEventRequestSchema): Promise<EditEventResponseSchema> {
         return requestApi.POST(`${this.apiPrefix}`, { body: data });
+    }
+
+    /**
+     * Изменить статус события.
+     *
+     * @param id - Идентификатор события
+     * @param status - Новый статус события
+     * */
+    static async changeEventStatus(id: number, status: EventStatusStrings): Promise<EditEventResponseSchema> {
+        return requestApi.PATCH(`${this.apiPrefix}/${id}`, { body: { status: status } });
     }
 }
