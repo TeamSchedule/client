@@ -6,7 +6,6 @@ import TaskPreview from "../../tasks/TaskPreview";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import { EventDeadline, EventDescription, EventName } from "../common";
 import CardActions from "@mui/material/CardActions";
-import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionHeader";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
@@ -15,6 +14,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import SpeedDial from "@mui/material/SpeedDial";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
+import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { EventStatusEnum, EventStatusStrings } from "../../../enums/eventsEnums";
+import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
+import Typography from "@mui/material/Typography";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -41,8 +46,17 @@ export default function FullEventView() {
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
 
+    // статус загрузки данных события
+    const [isLoadingError, setIsLoadingError] = useState<boolean>(false);
+
+    // статус запроса на изменения статуса события
+    const [isChangingStatus, setIsChangingStatus] = useState<boolean>(false);
+    const [isChangingStatusError, setIsChangingStatusError] = useState<boolean>(false);
+    const [isChangingStatusSuccess, setIsChangingStatusSuccess] = useState<boolean>(false);
+
     // данные события
     const [event, setEvent] = useState<EventResponseItemSchema | undefined>(Boolean(eventData) ? eventData : undefined);
+    const [eventTasks, setEventTasks] = useState<TaskResponseItemSchema[]>([]);
 
     // раскрыть раздел с задачами
     const [expanded, setExpanded] = useState<boolean>(false);
@@ -52,25 +66,77 @@ export default function FullEventView() {
         if (!id) {
             return;
         }
-        if (eventData) return;
 
-        API.events
-            .getById(+id)
-            .then((event: EventResponseItemSchema) => {
-                event.tasks = [];
-                setEvent(event);
-            })
-            .catch(() => {
-                // TODO: ЧТо-то пошло не так
-            })
-            .finally();
+        if (!eventData) {
+            API.events
+                .getById(+id)
+                .then((event: EventResponseItemSchema) => {
+                    event.tasks = [];
+                    setEvent(event);
+                })
+                .catch(() => {
+                    setIsLoadingError(true);
+                });
+        }
+
+        const params: FilterTasksParamsSchema = {
+            events: [+id],
+            from: new Date("2000-01-01").toJSON(),
+            to: new Date("2100-01-01").toJSON(),
+        };
+        API.tasks.getTasks(params).then((tasks: TaskResponseItemSchema[]) => {
+            setEventTasks(tasks);
+        });
     }, [eventData, id]);
 
-    const handleCloseSuccessSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    const onChangeEventStatus = (complete: boolean) => (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (!id) return;
+        setIsChangingStatus(true);
+
+        const newStatus: EventStatusStrings = complete ? EventStatusEnum.COMPLETED : EventStatusEnum.IN_PROGRESS;
+
+        API.events
+            .changeEventStatus(+id, newStatus)
+            .then(() => {
+                if (event) {
+                    setEvent({ ...event, status: newStatus });
+                }
+            })
+            .catch(() => {
+                setIsChangingStatusError(true);
+            })
+            .finally(() => {
+                setIsChangingStatus(false);
+            });
+    };
+
+    const handleCloseSuccessfullyCreatedSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
             return;
         }
         setIsCreatingFinished(false);
+    };
+
+    const handleCloseErrorLoadedSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsLoadingError(false);
+    };
+
+    const handleCloseErrorChangeStatusSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsChangingStatusError(false);
+    };
+
+    const handleCloseSuccessChangeStatusSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsChangingStatusSuccess(false);
     };
 
     return (
@@ -91,17 +157,43 @@ export default function FullEventView() {
                     }}
                     onClick={() => setExpanded(!expanded)}
                 >
-                    <ScreenSectionHeader text="Открытые задачи" />
+                    <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold" }}>
+                        Задачи - {eventTasks.length}
+                    </Typography>
                     <ExpandMore expand={expanded} aria-expanded={expanded} aria-label="show more">
                         <ExpandMoreIcon />
                     </ExpandMore>
                 </CardActions>
 
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    {event?.tasks.map((task) => (
+                    {eventTasks.map((task) => (
                         <TaskPreview key={task.id} task={task} />
                     ))}
                 </Collapse>
+
+                {event?.status === EventStatusEnum.IN_PROGRESS && (
+                    <LoadingButton
+                        fullWidth
+                        onClick={onChangeEventStatus(false)}
+                        loading={isChangingStatus}
+                        variant="contained"
+                        sx={{ my: 2 }}
+                    >
+                        Завершить событие
+                    </LoadingButton>
+                )}
+
+                {event?.status === EventStatusEnum.COMPLETED && (
+                    <LoadingButton
+                        fullWidth
+                        onClick={onChangeEventStatus(true)}
+                        loading={isChangingStatus}
+                        variant="outlined"
+                        sx={{ my: 2 }}
+                    >
+                        Открыть событие
+                    </LoadingButton>
+                )}
             </Card>
             <SpeedDial
                 ariaLabel="edit event"
@@ -112,9 +204,20 @@ export default function FullEventView() {
                 }}
             ></SpeedDial>
 
-            <SuccessSnackbar handleClose={handleCloseSuccessSnackbar} isOpen={isCreatingFinished}>
+            <SuccessSnackbar handleClose={handleCloseSuccessfullyCreatedSnackbar} isOpen={isCreatingFinished}>
                 Событие создано!
             </SuccessSnackbar>
+
+            <ErrorSnackbar handleClose={handleCloseErrorLoadedSnackbar} isOpen={isLoadingError}>
+                Ошибка загрузки
+            </ErrorSnackbar>
+
+            <SuccessSnackbar handleClose={handleCloseSuccessChangeStatusSnackbar} isOpen={isChangingStatusSuccess}>
+                Статус события обновлен!
+            </SuccessSnackbar>
+            <ErrorSnackbar handleClose={handleCloseErrorChangeStatusSnackbar} isOpen={isChangingStatusError}>
+                Произошла ошибка, попробуйте позже
+            </ErrorSnackbar>
         </>
     );
 }

@@ -1,3 +1,5 @@
 export interface UpdateUserInfoRequestSchema {
-    description?: string;
+    firstName?: string;
+    secondName?: string;
+    lastName?: string;
 }

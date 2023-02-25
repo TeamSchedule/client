@@ -6,7 +6,7 @@ interface GoBackButtonProps {
     buttonText?: string;
 }
 
-const DefaultButtonText: string = "Вернуться назад";
+const DefaultButtonText: string = "Назад";
 
 export default function GoBackButton(props: GoBackButtonProps) {
     /*
@@ -15,7 +15,7 @@ export default function GoBackButton(props: GoBackButtonProps) {
     const navigate = useNavigate();
 
     function onClick() {
-        navigate("../");
+        navigate("..");
     }
 
     return (

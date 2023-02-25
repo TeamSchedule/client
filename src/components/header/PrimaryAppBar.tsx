@@ -20,14 +20,16 @@ import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { EventListPath, NotificationListPath, SettingsPath, TaskListPath, UnitListPath } from "../../routes/paths";
 import { NotificationsContext } from "../App";
-import { Tooltip } from "@mui/material";
+import { Paper, Tooltip, useTheme } from "@mui/material";
 import { NotificationsResponseItemSchema } from "../../api/schemas/responses/notifications";
 import MenuIcon from "@mui/icons-material/Menu";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Divider from "@mui/material/Divider";
+import { lightBlue } from "@mui/material/colors";
 
 export default function PrimaryAppBar() {
     const navigate = useNavigate();
+    const theme = useTheme();
 
     const { user, logout } = useAuth();
 
@@ -94,19 +96,6 @@ export default function PrimaryAppBar() {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
-                <IconButton
-                    size="large"
-                    aria-label="tasks of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <TaskIcon />
-                </IconButton>
-                <span>Мои задачи</span>
-            </MenuItem>
-
             <MenuItem onClick={(e) => handleLogout(e)}>
                 <IconButton
                     size="large"
@@ -122,6 +111,33 @@ export default function PrimaryAppBar() {
         </Menu>
     );
 
+    interface SwipeableAppBarItemProps {
+        title: string;
+        linkTo: string;
+        icon: any;
+    }
+
+    function SwipeableAppBarItem(props: SwipeableAppBarItemProps) {
+        const navigate = useNavigate();
+
+        return (
+            <>
+                <MenuItem
+                    onClick={(e) => {
+                        navigate(props.linkTo);
+                        toggleDrawer(false)(e);
+                    }}
+                    sx={{ py: { xs: 1, sm: 2 } }}
+                >
+                    {props.icon}
+                    <Typography sx={{ ml: 1 }}>{props.title}</Typography>
+                </MenuItem>
+            </>
+        );
+    }
+
+    const SwipeableAppBarDivider = () => <Divider sx={{ my: "0 !important", background: theme.palette.grey[300] }} />;
+
     const renderSwipeableAppBar = (
         <SwipeableDrawer
             disableBackdropTransition
@@ -130,58 +146,38 @@ export default function PrimaryAppBar() {
             onClose={toggleDrawer(false)}
             onOpen={toggleDrawer(true)}
         >
-            <Box
+            <Paper
+                elevation={0}
                 sx={{
-                    mt: 2,
-                    minWidth: 300,
+                    height: "100%",
+                    borderRadius: 0,
+                    background: lightBlue[900],
+                    color: theme.palette.grey[300],
                 }}
             >
-                <Divider sx={{ my: "0 !important" }} />
-                <MenuItem
-                    onClick={(e) => {
-                        navigate(TaskListPath);
-                        toggleDrawer(false)(e);
+                <Box
+                    sx={{
+                        mt: 2,
+                        minWidth: 300,
                     }}
-                    sx={{ py: { xs: 1, sm: 2 } }}
                 >
-                    <CalendarMonthIcon sx={{ mr: 1 }} />
-                    Задачи
-                </MenuItem>
-                <Divider sx={{ my: "0 !important" }} />
-                <MenuItem
-                    onClick={(e) => {
-                        navigate(EventListPath);
-                        toggleDrawer(false)(e);
-                    }}
-                    sx={{ py: { xs: 1, sm: 2 } }}
-                >
-                    <LocalActivityIcon sx={{ mr: 1 }} />
-                    События
-                </MenuItem>
-                <Divider sx={{ my: "0 !important" }} />
-                <MenuItem
-                    onClick={(e) => {
-                        navigate(UnitListPath);
-                        toggleDrawer(false)(e);
-                    }}
-                    sx={{ py: { xs: 1, sm: 2 } }}
-                >
-                    <PeopleIcon sx={{ mr: 1 }} />
-                    Отделы
-                </MenuItem>
-                <Divider sx={{ my: "0 !important" }} />
-                <MenuItem
-                    onClick={(e) => {
-                        navigate(SettingsPath);
-                        toggleDrawer(false)(e);
-                    }}
-                    sx={{ py: { xs: 1, sm: 2 } }}
-                >
-                    <SettingsIcon sx={{ mr: 1 }} />
-                    Настройки профиля
-                </MenuItem>
-                <Divider sx={{ my: "0 !important" }} />
-            </Box>
+                    <Typography variant="subtitle1" component="p" sx={{ py: 1, px: 2 }}>
+                        {user?.login}
+                    </Typography>
+
+                    <SwipeableAppBarDivider />
+                    <SwipeableAppBarItem title="Календарь" linkTo={TaskListPath} icon={<CalendarMonthIcon />} />
+                    <SwipeableAppBarDivider />
+                    <SwipeableAppBarItem title="Задачи" linkTo={TaskListPath} icon={<TaskIcon />} />
+                    <SwipeableAppBarDivider />
+                    <SwipeableAppBarItem title="События" linkTo={EventListPath} icon={<LocalActivityIcon />} />
+                    <SwipeableAppBarDivider />
+                    <SwipeableAppBarItem title="Отделы" linkTo={UnitListPath} icon={<PeopleIcon />} />
+                    <SwipeableAppBarDivider />
+                    <SwipeableAppBarItem title="Настройки профиля" linkTo={SettingsPath} icon={<SettingsIcon />} />
+                    <SwipeableAppBarDivider />
+                </Box>
+            </Paper>
         </SwipeableDrawer>
     );
 
@@ -191,7 +187,7 @@ export default function PrimaryAppBar() {
             <AppBar position="static">
                 <Toolbar>
                     <Box sx={{ display: { xs: "none", md: "block" } }}>
-                        <Tooltip title="Задачи">
+                        <Tooltip title="Календарь">
                             <IconButton
                                 size="large"
                                 edge="start"
@@ -200,6 +196,18 @@ export default function PrimaryAppBar() {
                                 onClick={() => navigate(TaskListPath)}
                             >
                                 <CalendarMonthIcon />
+                            </IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="Задачи">
+                            <IconButton
+                                size="large"
+                                edge="start"
+                                color="inherit"
+                                sx={{ mr: 2 }}
+                                onClick={() => navigate(TaskListPath)}
+                            >
+                                <TaskIcon />
                             </IconButton>
                         </Tooltip>
 
