@@ -44,7 +44,11 @@ export default function TaskPreview(props: TaskPreviewProps) {
 
                     <TaskName name={props.task.name} />
                     <Typography variant="body2">{props.task.description}</Typography>
-                    <EventLink id={props.task.event.id} name={props.task.event.name} color={props.task.event.color} />
+                    <EventLink
+                        id={props.task.event?.id}
+                        name={props.task.event?.name}
+                        color={props.task.event?.color}
+                    />
                     <UnitLink id={props.task.department.id} name={props.task.department.name} />
                 </CardContent>
 

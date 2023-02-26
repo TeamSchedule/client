@@ -22,6 +22,6 @@ export interface TaskResponseItemSchema {
     author: UserSchema;
 
     department: UnitResponseItemSchema;
-    event: EventResponseItemSchema;
+    event?: EventResponseItemSchema;
     files?: Array<any>;
 }

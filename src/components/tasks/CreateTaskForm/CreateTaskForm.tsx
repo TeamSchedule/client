@@ -28,8 +28,6 @@ function CreateTaskForm() {
     const { user } = useAuth();
     const { date } = useParams();
 
-    const [users, setUsers] = useState<UserSchema[]>([]);
-
     const [taskDescription, setTaskDescription] = useState<string>("");
     const [taskName, setTaskName] = useState<string>("");
     const [taskExpirationDate, setTaskExpirationDate] = useState<Date>(new Date());
@@ -71,16 +69,12 @@ function CreateTaskForm() {
         }
 
         setInProgress(true);
-        // поправляем время, так как toJSON() даст UTC время
-        const hoursDiff = taskExpirationDate.getHours() - taskExpirationDate.getTimezoneOffset() / 60;
-        taskExpirationDate.setHours(hoursDiff);
-
         const createTaskData: CreateTaskRequestSchema = {
             name: taskName,
             description: taskDescription,
             expirationTime: taskExpirationDate,
             departmentId: selectedUnit?.id,
-            assigneeIds: users.map((user) => user.id),
+            assigneeIds: selectedExecutors.map((user) => user.id),
         };
 
         API.tasks

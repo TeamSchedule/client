@@ -17,7 +17,7 @@ export default function UserProfileSettings() {
     // данные пользователя
     const [firstName, setFirstName] = useState<string>(user?.firstName || "");
     const [secondName, setSecondName] = useState<string>(user?.secondName || "");
-    const [lastName, setLastName] = useState<string>(user?.lastName || "");
+    const [patronymic, setPatronymic] = useState<string>(user?.lastName || "");
 
     // статус запроса на обновление данных
     const [isEditPersonalDataInProgress, setIsEditPersonalDataInProgress] = useState<boolean>(false);
@@ -33,9 +33,9 @@ export default function UserProfileSettings() {
 
         setIsEditPersonalDataInProgress(true);
         const newUserData: UpdateUserInfoRequestSchema = {
-            firstName: firstName,
-            secondName: secondName,
-            lastName: lastName,
+            firstName: firstName || undefined,
+            lastName: secondName || undefined,
+            patronymic: patronymic || undefined,
         };
         API.users
             .updateUserInfo(user?.id, newUserData)
@@ -93,8 +93,8 @@ export default function UserProfileSettings() {
                 autoComplete="family-name"
             />
             <TextField
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value.trim())}
+                value={patronymic}
+                onChange={(e) => setPatronymic(e.target.value.trim())}
                 margin="dense"
                 fullWidth
                 id="lastName"
@@ -117,6 +117,7 @@ export default function UserProfileSettings() {
             <SuccessSnackbar handleClose={handleCloseSuccessEditPersonalSnackbar} isOpen={isEditPersonalDataSuccess}>
                 Данные успешно обновлены
             </SuccessSnackbar>
+
             <ErrorSnackbar handleClose={handleCloseErrorEditPersonalSnackbar} isOpen={isEditPersonalDataError}>
                 Произошла ошибка, попробуйте позже
             </ErrorSnackbar>

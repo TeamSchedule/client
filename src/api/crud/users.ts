@@ -18,6 +18,6 @@ export class users {
     }
 
     static async updateUserInfo(userId: number, data: UpdateUserInfoRequestSchema) {
-        return await requestApi.PUT(`${this.apiPrefix}/${userId}`, data);
+        return await requestApi.PUT(`/user/${userId}`, { body: data });
     }
 }

@@ -5,7 +5,6 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import TaskName from "../common/TaskName";
 import TaskDeadline from "../common/TaskDeadline";
 import Executors from "../common/Executors";
-import EventLink from "../../links/EventLink/EventLink";
 import UnitLink from "../../links/UnitLink/UnitLink";
 import SpeedDial from "@mui/material/SpeedDial";
 import EditIcon from "@mui/icons-material/Edit";
@@ -95,7 +94,6 @@ export default function FullTaskView() {
             <div>
                 <TaskName name={task?.name} />
                 <TaskDeadline deadline={task?.expirationTime ? new Date(task?.expirationTime) : undefined} />
-                <EventLink id={task?.event.id} name={task?.event.name} />
                 <UnitLink id={task?.department.id} name={task?.department.name} />
                 <Executors users={task ? task.assignee : []} />
 
