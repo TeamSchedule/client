@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { TaskStatusEnum } from "../../../enums/tasksEnums";
-import { EventDeadline, EventDescription, EventName } from "../common";
+import { EventColorLeft, EventDeadline, EventDescription, EventName } from "../common";
 
 interface EventPreviewProps {
     event: EventResponseItemSchema;
@@ -44,7 +44,11 @@ export default function EventPreview(props: EventPreviewProps) {
                         )}
                     </Box>
 
-                    <EventName>{props.event.name}</EventName>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "stretch" }}>
+                        <EventColorLeft color={props.event.color} />
+                        <EventName>{props.event.name}</EventName>
+                    </Box>
+
                     <EventDescription>{props.event.description}</EventDescription>
                 </CardContent>
                 <CardActions>

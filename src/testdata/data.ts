@@ -121,7 +121,7 @@ export const eventsData: EventResponseItemSchema[] = [
     {
         id: 2,
         name: "Событие 2",
-        color: "#ff0864",
+        color: "#2aad6b",
         description: "desc",
         endDate: new Date().toJSON(),
         tasks: [],
@@ -130,10 +130,10 @@ export const eventsData: EventResponseItemSchema[] = [
     {
         id: 3,
         name: "Событие 3",
-        color: "#ff0864",
+        color: "#bd8c11",
         description: "desc",
         endDate: new Date().toJSON(),
         tasks: [],
-        status: EventStatusEnum.IN_PROGRESS,
+        status: EventStatusEnum.COMPLETED,
     },
 ];

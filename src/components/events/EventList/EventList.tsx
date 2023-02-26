@@ -11,6 +11,8 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { CreateNewEventPath } from "../../../routes/paths";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
+import { EventStatusEnum } from "../../../enums/eventsEnums";
+import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 
 enum EventFilterEnum {
     All = 0,
@@ -30,6 +32,7 @@ export default function EventList() {
     // все существующие события
     const [events, setEvents] = useState<EventResponseItemSchema[]>(eventsData);
     const [eventsLoading, setEventsLoading] = useState<boolean>(true);
+    const [isLoadingError, setIsLoadingError] = useState<boolean>(false);
 
     // список отображаемых событий
     const [showedEvents, setShowedEvents] = useState<EventResponseItemSchema[]>([]);
@@ -42,25 +45,31 @@ export default function EventList() {
             .all()
             .then((events: EventResponseItemSchema[]) => {
                 setEvents(events);
-                setEventsLoading(false);
             })
             .catch(() => {
-                // TODO: Что-то пошло не так
+                setIsLoadingError(true);
             })
-            .finally(() => {});
+            .finally(() => {
+                setEventsLoading(false);
+            });
     }, []);
 
     useEffect(() => {
         if (+eventFilterValue === +EventFilterEnum.All) {
             setShowedEvents(() => [...events]);
         } else if (+eventFilterValue === +EventFilterEnum.InProgress) {
-            setShowedEvents(() => [
-                ...events.filter((event) => !Boolean(event.endDate) || new Date(event.endDate) > new Date()),
-            ]);
+            setShowedEvents(() => [...events.filter((event) => event.status === EventStatusEnum.IN_PROGRESS)]);
         } else if (+eventFilterValue === +EventFilterEnum.Done) {
-            setShowedEvents(() => [...events.filter((event) => new Date(event.endDate) < new Date())]);
+            setShowedEvents(() => [...events.filter((event) => event.status === EventStatusEnum.COMPLETED)]);
         }
     }, [eventFilterValue, events]);
+
+    const handleCloseErrorSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsLoadingError(false);
+    };
 
     return (
         <>
@@ -92,6 +101,9 @@ export default function EventList() {
                     }}
                 ></SpeedDial>
             </div>
+            <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isLoadingError}>
+                Не удалось загрузить данные!
+            </ErrorSnackbar>
         </>
     );
 }

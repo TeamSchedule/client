@@ -168,7 +168,7 @@ export default function PrimaryAppBar() {
                     <SwipeableAppBarDivider />
                     <SwipeableAppBarItem title="Календарь" linkTo={TaskListPath} icon={<CalendarMonthIcon />} />
                     <SwipeableAppBarDivider />
-                    <SwipeableAppBarItem title="Задачи" linkTo={TaskListPath} icon={<TaskIcon />} />
+                    <SwipeableAppBarItem title="Приватные задачи" linkTo={TaskListPath} icon={<TaskIcon />} />
                     <SwipeableAppBarDivider />
                     <SwipeableAppBarItem title="События" linkTo={EventListPath} icon={<LocalActivityIcon />} />
                     <SwipeableAppBarDivider />
@@ -199,7 +199,7 @@ export default function PrimaryAppBar() {
                             </IconButton>
                         </Tooltip>
 
-                        <Tooltip title="Задачи">
+                        <Tooltip title="Приватные задачи">
                             <IconButton
                                 size="large"
                                 edge="start"

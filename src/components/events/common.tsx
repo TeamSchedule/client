@@ -12,7 +12,7 @@ interface EventNameProps {
 export function EventName(props: EventNameProps) {
     return (
         <>
-            <Typography gutterBottom variant="h6" component="div">
+            <Typography variant="h6" component="div">
                 {props.children}
             </Typography>
         </>
@@ -41,16 +41,43 @@ interface EventDeadlineProps {
 export function EventDeadline(props: EventDeadlineProps) {
     return (
         <>
-            <Typography sx={{ display: "flex", alignItems: "center", mb: 0 }} color="text.secondary" gutterBottom>
-                <Box component="span" sx={{ marginRight: 1 }}>
+            <Typography
+                sx={{ display: "flex", alignItems: "flex-end", mb: 0, verticalAlign: "bottom" }}
+                color="text.secondary"
+                gutterBottom
+            >
+                <span>{getDateRepresentation(props.endDate)}</span>
+                <Box component="span" sx={{ ml: 1 }}>
                     {props.status !== undefined && props.status === EventStatusEnum.COMPLETED ? (
                         <StatusDone />
                     ) : (
                         <InProgressStatus />
                     )}
                 </Box>
-                {getDateRepresentation(props.endDate)}
             </Typography>
+        </>
+    );
+}
+
+interface EventColorProps {
+    color?: string;
+}
+
+export function EventColorLeft(props: EventColorProps) {
+    return (
+        <>
+            {props.color !== undefined && (
+                <Box
+                    sx={{
+                        borderRadius: "50%",
+                        backgroundColor: props.color || "white",
+                        width: "18px",
+                        height: "18px",
+                        mr: 1,
+                        flexGrow: 0,
+                    }}
+                ></Box>
+            )}
         </>
     );
 }

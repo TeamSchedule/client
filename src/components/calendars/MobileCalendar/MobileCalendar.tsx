@@ -1,17 +1,19 @@
-import { LocalizationProvider, PickersDay, PickersDayProps, StaticDatePicker } from "@mui/x-date-pickers";
+import { PickersDay, PickersDayProps, StaticDatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Badge, BadgeProps, Box, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isEqualYearMonthDate, weekCount } from "../../../utils/dateutils";
 import { styled } from "@mui/material/styles";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";
+import "dayjs/locale/ru"; // be careful, it must be imported!
 
 const MaxDateSize = 80; // максимальный размер отображаемого на мобильном календаре дня
 
 /* https://github.com/mui/material-ui/issues/27700 */
 
-const CalendarDayBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+const CalendarDayBadge = styled(Badge)<BadgeProps>(() => ({
     "& .MuiBadge-badge": {
         right: 10,
         top: 8,
@@ -87,7 +89,15 @@ export default function MobileCalendar(props: MobileCalendarProps) {
 
     return (
         <div className="d-block d-md-none">
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
+            <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                adapterLocale="ru"
+                localeText={{
+                    todayButtonLabel: "Сегодня",
+                    previousMonth: "Предыдущий месяц",
+                    nextMonth: "Следующий месяц",
+                }}
+            >
                 <Box
                     sx={{
                         "& div": {
