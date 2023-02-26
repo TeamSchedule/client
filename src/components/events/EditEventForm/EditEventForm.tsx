@@ -36,28 +36,34 @@ export default function EditEventForm() {
     const [isNewFilesFinished, setIsNewFilesFinished] = useState<boolean>(false);
 
     function editEventHandler() {
+        if (!id) {
+            setIsEditingError(true);
+            return;
+        }
+
         setInProgress(true);
 
         const newEventData: EditEventRequestSchema = {
+            eventId: +id,
             name: title,
             description: description,
-            deadline: deadline || undefined,
+            endDate: deadline || undefined,
             color: color === "" ? undefined : color,
         };
 
         API.events
-            .editEvent(newEventData)
-            .then(() => {
-                setIsEditingFinished(true);
-                navigate("..");
-            })
-            .catch(() => {
-                //    TODO: показать сообщение об ошибке - что-то пошло не так
-            })
-            .finally(() => {
-                setInProgress(false);
-                navigate("..");
-            });
+          .editEvent(newEventData)
+          .then(() => {
+              setIsEditingFinished(true);
+              navigate("..");
+          })
+          .catch(() => {
+              //    TODO: показать сообщение об ошибке - что-то пошло не так
+          })
+          .finally(() => {
+              setInProgress(false);
+              navigate("..");
+          });
     }
 
     function onLoadFiles(event: React.MouseEvent<HTMLButtonElement>) {
@@ -66,21 +72,23 @@ export default function EditEventForm() {
         setInProgressFiles(true);
 
         const saveFilePromises = attachments.map((attachment) =>
-            API.files
-                .addFile(+id, EventTypesEnum.EVENT, attachment)
-                .then(() => {})
-                .catch()
-                .finally()
+          API.files
+            .addFile(+id, EventTypesEnum.EVENT, attachment)
+            .then(() => {
+            })
+            .catch()
+            .finally()
         );
 
         Promise.all(saveFilePromises)
-            .then(() => {
-                setIsNewFilesFinished(true);
-            })
-            .catch(() => {})
-            .finally(() => {
-                setInProgressFiles(false);
-            });
+          .then(() => {
+              setIsNewFilesFinished(true);
+          })
+          .catch(() => {
+          })
+          .finally(() => {
+              setInProgressFiles(false);
+          });
     }
 
     const handleCloseEditSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -105,77 +113,77 @@ export default function EditEventForm() {
     };
 
     return (
-        <>
-            <div>
-                <ScreenHeader text="Изменение события" />
+      <>
+          <div>
+              <ScreenHeader text="Изменение события" />
 
-                <FormInputItemWrapper>
-                    <TextField
-                        required
-                        fullWidth
-                        variant="outlined"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        label="Название отдела"
-                    />
-                </FormInputItemWrapper>
-
-                <FormInputItemWrapper>
-                    <MultilineTextInput value={description} handleChange={setDescription} label="Описание события" />
-                </FormInputItemWrapper>
-
-                <FormInputItemWrapper>
-                    <DateInput value={deadline} handleChange={setDeadline} />
-                </FormInputItemWrapper>
-
-                <FormInputItemWrapper className="d-flex align-items-center">
-                    <span>Цвет отображения задач</span>
-                    <InputColor color={color} setColor={setColor} className="mx-3" />
-                </FormInputItemWrapper>
-
-                <LoadingButton
+              <FormInputItemWrapper>
+                  <TextField
+                    required
                     fullWidth
-                    onClick={editEventHandler}
-                    loading={inProgress}
-                    variant="contained"
-                    sx={{ my: 2 }}
+                    variant="outlined"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    label="Название отдела"
+                  />
+              </FormInputItemWrapper>
+
+              <FormInputItemWrapper>
+                  <MultilineTextInput value={description} handleChange={setDescription} label="Описание события" />
+              </FormInputItemWrapper>
+
+              <FormInputItemWrapper>
+                  <DateInput value={deadline} handleChange={setDeadline} />
+              </FormInputItemWrapper>
+
+              <FormInputItemWrapper className="d-flex align-items-center">
+                  <span>Цвет отображения задач</span>
+                  <InputColor color={color} setColor={setColor} className="mx-3" />
+              </FormInputItemWrapper>
+
+              <LoadingButton
+                fullWidth
+                onClick={editEventHandler}
+                loading={inProgress}
+                variant="contained"
+                sx={{ my: 2 }}
+              >
+                  Сохранить изменения
+              </LoadingButton>
+
+              <FormInputItemWrapper className="d-flex align-items-center mt-4">
+                  <FileUpload files={attachments} setFiles={setAttachments} />
+              </FormInputItemWrapper>
+
+              <FileList
+                files={attachments}
+                detachFile={(excludeFilename: string) =>
+                  setAttachments([...attachments.filter((attachment) => attachment.name !== excludeFilename)])
+                }
+              />
+
+              {attachments.length > 0 && (
+                <LoadingButton
+                  fullWidth
+                  onClick={onLoadFiles}
+                  loading={inProgressFiles}
+                  variant="contained"
+                  sx={{ my: 2 }}
                 >
-                    Сохранить изменения
+                    Загрузить
                 </LoadingButton>
+              )}
+          </div>
 
-                <FormInputItemWrapper className="d-flex align-items-center mt-4">
-                    <FileUpload files={attachments} setFiles={setAttachments} />
-                </FormInputItemWrapper>
-
-                <FileList
-                    files={attachments}
-                    detachFile={(excludeFilename: string) =>
-                        setAttachments([...attachments.filter((attachment) => attachment.name !== excludeFilename)])
-                    }
-                />
-
-                {attachments.length > 0 && (
-                    <LoadingButton
-                        fullWidth
-                        onClick={onLoadFiles}
-                        loading={inProgressFiles}
-                        variant="contained"
-                        sx={{ my: 2 }}
-                    >
-                        Загрузить
-                    </LoadingButton>
-                )}
-            </div>
-
-            <SuccessSnackbar handleClose={handleCloseEditSnackbar} isOpen={isEditingFinished}>
-                Изменения сохранены!
-            </SuccessSnackbar>
-            <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isEditingError}>
-                Не удалось сохранить изменения!
-            </ErrorSnackbar>
-            <SuccessSnackbar handleClose={handleCloseNewFilesSnackbar} isOpen={isNewFilesFinished}>
-                Файлы загружены!
-            </SuccessSnackbar>
-        </>
+          <SuccessSnackbar handleClose={handleCloseEditSnackbar} isOpen={isEditingFinished}>
+              Изменения сохранены!
+          </SuccessSnackbar>
+          <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isEditingError}>
+              Не удалось сохранить изменения!
+          </ErrorSnackbar>
+          <SuccessSnackbar handleClose={handleCloseNewFilesSnackbar} isOpen={isNewFilesFinished}>
+              Файлы загружены!
+          </SuccessSnackbar>
+      </>
     );
 }

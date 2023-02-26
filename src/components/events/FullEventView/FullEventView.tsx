@@ -20,6 +20,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { EventStatusEnum, EventStatusStrings } from "../../../enums/eventsEnums";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import Typography from "@mui/material/Typography";
+import { EditEventRequestSchema } from "../../../api/schemas/requests/events";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -71,7 +72,6 @@ export default function FullEventView() {
             API.events
                 .getById(+id)
                 .then((event: EventResponseItemSchema) => {
-                    event.tasks = [];
                     setEvent(event);
                 })
                 .catch(() => {
@@ -95,9 +95,10 @@ export default function FullEventView() {
         setIsChangingStatus(true);
 
         const newStatus: EventStatusStrings = complete ? EventStatusEnum.COMPLETED : EventStatusEnum.IN_PROGRESS;
+        const newEventData: EditEventRequestSchema = { eventId: +id, status: newStatus };
 
         API.events
-            .changeEventStatus(+id, newStatus)
+            .editEvent(newEventData)
             .then(() => {
                 if (event) {
                     setEvent({ ...event, status: newStatus });
@@ -174,7 +175,7 @@ export default function FullEventView() {
                 {event?.status === EventStatusEnum.IN_PROGRESS && (
                     <LoadingButton
                         fullWidth
-                        onClick={onChangeEventStatus(false)}
+                        onClick={onChangeEventStatus(true)}
                         loading={isChangingStatus}
                         variant="contained"
                         sx={{ my: 2 }}
@@ -186,7 +187,7 @@ export default function FullEventView() {
                 {event?.status === EventStatusEnum.COMPLETED && (
                     <LoadingButton
                         fullWidth
-                        onClick={onChangeEventStatus(true)}
+                        onClick={onChangeEventStatus(false)}
                         loading={isChangingStatus}
                         variant="outlined"
                         sx={{ my: 2 }}

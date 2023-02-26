@@ -48,7 +48,7 @@ export class EventsApi {
      * @param data - Объект с данными события
      * */
     static async editEvent(data: EditEventRequestSchema): Promise<EditEventResponseSchema> {
-        return requestApi.POST(`${this.apiPrefix}`, { body: data });
+        return requestApi.PATCH(`${this.apiPrefix}`, { body: data });
     }
 
     /**
