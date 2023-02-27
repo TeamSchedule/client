@@ -75,6 +75,7 @@ function CreateTaskForm() {
             expirationTime: taskExpirationDate,
             departmentId: selectedUnit?.id,
             assigneeIds: selectedExecutors.map((user) => user.id),
+            eventId: selectedEvent?.id,
         };
 
         API.tasks

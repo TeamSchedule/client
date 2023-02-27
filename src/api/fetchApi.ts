@@ -32,7 +32,11 @@ class APIRequestError {
  * @param {Object} [additionalHeaders]
  * @returns {Object}
  */
-const makeRequest = async (requestUrl: string, fetchOptions: object = {}, additionalHeaders: object = {}) => {
+const makeRequest = async (
+    requestUrl: string,
+    fetchOptions: object = {},
+    additionalHeaders: object = {}
+): Promise<any> => {
     // Если запрос на аутентификацию, он не требует токена
     const isAuthentication = requestUrl.includes(API.auth.baseUrl);
     const authHeader = isAuthentication
@@ -73,8 +77,11 @@ const makeRequest = async (requestUrl: string, fetchOptions: object = {}, additi
         if (response.status === 404) throw new APIRequestError("Сервис недоступен", {}, response.status);
         if (response.status === 401) {
             const makeRequestAgain = () => makeRequest(requestUrl, fetchOptions, additionalHeaders);
-            await refresh(makeRequestAgain, () => {} /* logoutObserver.notify*/);
-            return;
+            await refresh(() => {
+                localStorage.clear();
+                window.location.replace("/");
+            });
+            return makeRequestAgain();
         }
         const payload = response.status !== 204 ? await response.json() : undefined;
         if (!response.ok) throw new APIRequestError("Неизвестная ошибка", payload, response.status);

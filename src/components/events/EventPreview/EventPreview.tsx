@@ -8,7 +8,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import { TaskStatusEnum } from "../../../enums/tasksEnums";
 import { EventColorLeft, EventDeadline, EventDescription, EventName } from "../common";
 
 interface EventPreviewProps {
@@ -23,7 +22,7 @@ export default function EventPreview(props: EventPreviewProps) {
         navigate(makeEventLinkById(props.event.id), { state: { eventData: props.event } });
     };
 
-    const openTasks: number = props.event.tasks.filter((task) => task.taskStatus === TaskStatusEnum.IN_PROGRESS).length;
+    const openTasks: number = 0;
 
     return (
         <>
@@ -37,7 +36,7 @@ export default function EventPreview(props: EventPreviewProps) {
                                 <IconButton>
                                     <AssignmentIcon />
                                     <Typography variant="subtitle2" color="text.secondary" component="span">
-                                        {props.event.tasks.length}
+                                        {"-"}
                                     </Typography>
                                 </IconButton>
                             </Tooltip>

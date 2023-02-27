@@ -29,25 +29,23 @@ function makeRefresh() {
  * Когда нужно обновить токен, проверяем, не обновляется ли он уже.
  * Если за несколько попыток обновить токен не удалось, то производим logout.
  */
-const refresh = async (callback: () => void, handleError: () => void) => {
+const refresh = async (handleError: () => void) => {
     for (let retryNumber = 0; retryNumber < REFRESH_RETRIES; retryNumber++) {
         try {
             currentRequest = currentRequest || makeRefresh();
             const res = await currentRequest;
             localStorage.setItem(ACCESS_TOKEN_STORAGE_NAME, res.access);
             localStorage.setItem(REFRESH_TOKEN_STORAGE_NAME, res.refresh);
-            callback();
             break;
         } catch (error) {
-            handleError();
             if (retryNumber === REFRESH_RETRIES - 1) {
-                localStorage.clear();
-                window.history.pushState("object or string", "Title", "/");
+                handleError();
             }
         } finally {
             currentRequest = null;
         }
     }
+    currentRequest = null;
 };
 
 export default refresh;

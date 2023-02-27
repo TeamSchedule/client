@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { makeEventLinkById } from "../../../routes/paths";
 import Typography from "@mui/material/Typography";
 import SkeletonWrapper from "../../SkeletonWrapper";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import Link from "@mui/material/Link";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 
@@ -24,9 +24,12 @@ export default function EventLink(props: EventLinkProps) {
     return (
         <>
             <Typography variant="body1" component="div">
-                <IconButton>
-                    <LocalActivityIcon sx={{ color: props.color || "" }} />
-                </IconButton>
+                <Tooltip title="Событие задачи">
+                    <IconButton>
+                        <LocalActivityIcon sx={{ color: props.color || "" }} />
+                    </IconButton>
+                </Tooltip>
+
                 <Link component="button" variant="body2" onClick={onClick}>
                     {props.name ? props.name : <SkeletonWrapper />}
                 </Link>

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { makeTaskLinkById } from "../../../routes/paths";
 import TaskName from "../common/TaskName";
 import TaskDeadline from "../common/TaskDeadline";
+import { TaskStatusEnum } from "../../../enums/tasksEnums";
 
 interface TaskPreviewProps {
     task: TaskResponseItemSchema;
@@ -37,19 +38,24 @@ export default function TaskPreview(props: TaskPreviewProps) {
                 <CardContent sx={{ paddingBottom: 0 }}>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         <Box component="span" sx={{ marginRight: 1 }}>
-                            {props.task.taskStatus ? <StatusDone /> : <InProgressStatus />}
+                            {props.task.taskStatus === TaskStatusEnum.COMPLETED ? <StatusDone /> : <InProgressStatus />}
                         </Box>
                         <TaskDeadline deadline={new Date(props.task.expirationTime)} />
                     </Typography>
 
                     <TaskName name={props.task.name} />
                     <Typography variant="body2">{props.task.description}</Typography>
-                    <EventLink
-                        id={props.task.event?.id}
-                        name={props.task.event?.name}
-                        color={props.task.event?.color}
-                    />
-                    <UnitLink id={props.task.department.id} name={props.task.department.name} />
+                    {props.task.event && (
+                        <EventLink
+                            id={props.task.event?.id}
+                            name={props.task.event?.name}
+                            color={props.task.event?.color}
+                        />
+                    )}
+
+                    {props.task.department && (
+                        <UnitLink id={props.task.department.id} name={props.task.department.name} />
+                    )}
                 </CardContent>
 
                 <CardActions>

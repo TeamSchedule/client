@@ -65,6 +65,7 @@ export default function FullEventView() {
     useEffect(() => {
         /* Получение  данных события */
         if (!id) {
+            setIsLoadingError(true);
             return;
         }
 

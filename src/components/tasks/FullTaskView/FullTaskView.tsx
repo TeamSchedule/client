@@ -9,12 +9,12 @@ import UnitLink from "../../links/UnitLink/UnitLink";
 import SpeedDial from "@mui/material/SpeedDial";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
-import Button from "@mui/material/Button";
 import { TaskStatusEnum } from "../../../enums/tasksEnums";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function FullTaskView() {
     const { id } = useParams();
@@ -98,15 +98,27 @@ export default function FullTaskView() {
                 <Executors users={task ? task.assignee : []} />
 
                 {task?.taskStatus === TaskStatusEnum.IN_PROGRESS && (
-                    <Button variant="contained" startIcon={<DoneIcon />} onClick={toggleTaskStatus(false)}>
+                    <LoadingButton
+                        fullWidth
+                        variant="contained"
+                        startIcon={<DoneIcon />}
+                        onClick={toggleTaskStatus(false)}
+                        sx={{ my: 2 }}
+                    >
                         Выполнено
-                    </Button>
+                    </LoadingButton>
                 )}
 
                 {task?.taskStatus === TaskStatusEnum.COMPLETED && (
-                    <Button variant="contained" startIcon={<RestartAltIcon />} onClick={toggleTaskStatus(true)}>
+                    <LoadingButton
+                        fullWidth
+                        variant="outlined"
+                        startIcon={<RestartAltIcon />}
+                        onClick={toggleTaskStatus(true)}
+                        sx={{ my: 2 }}
+                    >
                         Открыть
-                    </Button>
+                    </LoadingButton>
                 )}
             </div>
 
