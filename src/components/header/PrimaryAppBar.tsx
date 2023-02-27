@@ -168,8 +168,6 @@ export default function PrimaryAppBar() {
                     <SwipeableAppBarDivider />
                     <SwipeableAppBarItem title="Календарь" linkTo={TaskListPath} icon={<CalendarMonthIcon />} />
                     <SwipeableAppBarDivider />
-                    <SwipeableAppBarItem title="Приватные задачи" linkTo={TaskListPath} icon={<TaskIcon />} />
-                    <SwipeableAppBarDivider />
                     <SwipeableAppBarItem title="События" linkTo={EventListPath} icon={<LocalActivityIcon />} />
                     <SwipeableAppBarDivider />
                     <SwipeableAppBarItem title="Отделы" linkTo={UnitListPath} icon={<PeopleIcon />} />
@@ -196,18 +194,6 @@ export default function PrimaryAppBar() {
                                 onClick={() => navigate(TaskListPath)}
                             >
                                 <CalendarMonthIcon />
-                            </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title="Приватные задачи">
-                            <IconButton
-                                size="large"
-                                edge="start"
-                                color="inherit"
-                                sx={{ mr: 2 }}
-                                onClick={() => navigate(TaskListPath)}
-                            >
-                                <TaskIcon />
                             </IconButton>
                         </Tooltip>
 
