@@ -11,12 +11,15 @@ interface MainAvatarProps {
     placeholder?: string;
     src?: string;
     fullPath?: boolean;
+    size?: number;
 }
 
 export default function MainAvatar(props: MainAvatarProps) {
     /*
      * Компонент для аватара ползователя или команды (юнита, отдела).
      * */
+    const baseAvatarSize: number = 48;
+
     if (!props.src) {
         return (
             <>
@@ -28,7 +31,11 @@ export default function MainAvatar(props: MainAvatarProps) {
     }
     return (
         <>
-            <Avatar alt="" src={props.fullPath ? props.src : makeAvatarURL(props.src)}>
+            <Avatar
+                alt=""
+                src={props.fullPath ? props.src : makeAvatarURL(props.src)}
+                sx={{ width: props.size || baseAvatarSize, height: props.size || baseAvatarSize }}
+            >
                 {props.placeholder || ""}
             </Avatar>
         </>

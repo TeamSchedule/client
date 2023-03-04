@@ -10,7 +10,7 @@ import FolderZipIcon from "@mui/icons-material/FolderZip";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import fileSize from "../../../utils/fileSize";
+import { fileSize } from "../../../utils/fileUtils";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
 

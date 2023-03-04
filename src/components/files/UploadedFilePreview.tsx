@@ -1,12 +1,11 @@
 import { FileResponseItemSchema } from "../../api/schemas/responses/files";
 import Typography from "@mui/material/Typography";
-import fileSize from "../../utils/fileSize";
 import IconButton from "@mui/material/IconButton";
 import DownloadIcon from "@mui/icons-material/Download";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import React, { useState } from "react";
-import { makeFileLink } from "../../utils/fileUtils";
+import { fileSize, makeFileLink } from "../../utils/fileUtils";
 import { EventTypesStrings } from "../../enums/filesEnums";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
