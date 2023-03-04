@@ -1,12 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { BaseButton } from "../index";
+import Button from "@mui/material/Button";
 
 interface GoBackButtonProps {
+    to?: string;
     buttonText?: string;
 }
 
-const DefaultButtonText: string = "Назад";
+const DefaultButtonText: string = "Вернуться назад";
 
 export default function GoBackButton(props: GoBackButtonProps) {
     /*
@@ -14,16 +15,9 @@ export default function GoBackButton(props: GoBackButtonProps) {
      * */
     const navigate = useNavigate();
 
-    function onClick() {
-        navigate("..");
-    }
-
     return (
-        <BaseButton
-            text={props.buttonText || DefaultButtonText}
-            color="backdown"
-            className="mt-4 w-100"
-            onClick={onClick}
-        />
+        <Button fullWidth onClick={() => navigate(props.to || "..")} variant="outlined" sx={{ mt: 4 }}>
+            {props.buttonText || DefaultButtonText}
+        </Button>
     );
 }

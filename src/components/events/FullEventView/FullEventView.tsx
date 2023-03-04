@@ -21,6 +21,11 @@ import { EventStatusEnum, EventStatusStrings } from "../../../enums/eventsEnums"
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import Typography from "@mui/material/Typography";
 import { EditEventRequestSchema } from "../../../api/schemas/requests/events";
+import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
+import UploadedFilePreview from "../../files/UploadedFilePreview";
+import { EventTypesEnum } from "../../../enums/filesEnums";
+import GoBackButton from "../../buttons/GoBackButton";
+import { EventListPath } from "../../../routes/paths";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -58,6 +63,7 @@ export default function FullEventView() {
     // данные события
     const [event, setEvent] = useState<EventResponseItemSchema | undefined>(Boolean(eventData) ? eventData : undefined);
     const [eventTasks, setEventTasks] = useState<TaskResponseItemSchema[]>([]);
+    const [eventFiles, setEventFiles] = useState<FileResponseItemSchema[]>([]);
 
     // раскрыть раздел с задачами
     const [expanded, setExpanded] = useState<boolean>(false);
@@ -87,6 +93,16 @@ export default function FullEventView() {
         };
         API.tasks.getTasks(params).then((tasks: TaskResponseItemSchema[]) => {
             setEventTasks(tasks);
+        });
+    }, [eventData, id]);
+
+    useEffect(() => {
+        if (!id) {
+            return;
+        }
+
+        API.files.getEventFiles(+id).then((files: FileResponseItemSchema[]) => {
+            setEventFiles(files);
         });
     }, [eventData, id]);
 
@@ -145,57 +161,67 @@ export default function FullEventView() {
         <>
             <Card>
                 <CardContent>
-                    <EventDeadline endDate={event ? new Date(event.endDate) : undefined} status={event?.status} />
+                    <EventDeadline endDate={event?.endDate} status={event?.status} />
                     <EventName>{event?.name}</EventName>
                     <EventDescription>{event?.description}</EventDescription>
-                </CardContent>
 
-                <CardActions
-                    disableSpacing
-                    sx={{
-                        "&:hover": {
-                            cursor: "pointer",
-                        },
-                    }}
-                    onClick={() => setExpanded(!expanded)}
-                >
-                    <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold" }}>
-                        Задачи - {eventTasks.length}
+                    <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold", mt: 2, p: 0 }}>
+                        Файлы события
                     </Typography>
-                    <ExpandMore expand={expanded} aria-expanded={expanded} aria-label="show more">
-                        <ExpandMoreIcon />
-                    </ExpandMore>
-                </CardActions>
-
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    {eventTasks.map((task) => (
-                        <TaskPreview key={task.id} task={task} />
+                    {eventFiles.map((file) => (
+                        <UploadedFilePreview key={file.id} file={file} eventType={EventTypesEnum.EVENT} />
                     ))}
-                </Collapse>
 
-                {event?.status === EventStatusEnum.IN_PROGRESS && (
-                    <LoadingButton
-                        fullWidth
-                        onClick={onChangeEventStatus(true)}
-                        loading={isChangingStatus}
-                        variant="contained"
-                        sx={{ my: 2 }}
+                    <CardActions
+                        disableSpacing
+                        sx={{
+                            "&:hover": {
+                                cursor: "pointer",
+                            },
+                            px: 0,
+                        }}
+                        onClick={() => setExpanded(!expanded)}
                     >
-                        Завершить событие
-                    </LoadingButton>
-                )}
+                        <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold" }}>
+                            Задачи - {eventTasks.length}
+                        </Typography>
+                        <ExpandMore expand={expanded} aria-expanded={expanded} aria-label="show more">
+                            <ExpandMoreIcon />
+                        </ExpandMore>
+                    </CardActions>
 
-                {event?.status === EventStatusEnum.COMPLETED && (
-                    <LoadingButton
-                        fullWidth
-                        onClick={onChangeEventStatus(false)}
-                        loading={isChangingStatus}
-                        variant="outlined"
-                        sx={{ my: 2 }}
-                    >
-                        Открыть событие
-                    </LoadingButton>
-                )}
+                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                        {eventTasks.map((task) => (
+                            <TaskPreview key={task.id} task={task} />
+                        ))}
+                    </Collapse>
+
+                    {event?.status === EventStatusEnum.IN_PROGRESS && (
+                        <LoadingButton
+                            fullWidth
+                            onClick={onChangeEventStatus(true)}
+                            loading={isChangingStatus}
+                            variant="contained"
+                            sx={{ my: 2 }}
+                        >
+                            Завершить событие
+                        </LoadingButton>
+                    )}
+
+                    {event?.status === EventStatusEnum.COMPLETED && (
+                        <LoadingButton
+                            fullWidth
+                            onClick={onChangeEventStatus(false)}
+                            loading={isChangingStatus}
+                            variant="outlined"
+                            sx={{ my: 2 }}
+                        >
+                            Открыть событие
+                        </LoadingButton>
+                    )}
+
+                    <GoBackButton to={EventListPath} buttonText="Вернуться к списку событий" />
+                </CardContent>
             </Card>
             <SpeedDial
                 ariaLabel="edit event"

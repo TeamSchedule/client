@@ -1,5 +1,5 @@
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { EditEventRequestSchema } from "../../../api/schemas/requests/events";
@@ -14,6 +14,11 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { EventTypesEnum } from "../../../enums/filesEnums";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import CardContent from "@mui/material/CardContent";
+import Card from "@mui/material/Card";
+import GoBackButton from "../../buttons/GoBackButton";
+import { makeEventLinkById } from "../../../routes/paths";
 
 export default function EditEventForm() {
     const navigate = useNavigate();
@@ -21,7 +26,7 @@ export default function EditEventForm() {
     const { id } = useParams();
 
     // данные нового события
-    const [title, setTitle] = useState<string>("");
+    const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [deadline, setDeadline] = useState<Date | null>(null);
     const [color, setColor] = useState<string>("");
@@ -35,6 +40,21 @@ export default function EditEventForm() {
     const [isEditingError, setIsEditingError] = useState<boolean>(false);
     const [isNewFilesFinished, setIsNewFilesFinished] = useState<boolean>(false);
 
+    useEffect(() => {
+        if (!id) return;
+
+        API.events
+            .getById(+id)
+            .then((data: EventResponseItemSchema) => {
+                setName(data.name);
+                setDescription(data.description);
+                setColor(data.color);
+                setDeadline(data.endDate ? new Date(data.endDate) : null);
+            })
+            .catch(() => {})
+            .finally(() => {});
+    }, [id]);
+
     function editEventHandler() {
         if (!id) {
             setIsEditingError(true);
@@ -45,25 +65,24 @@ export default function EditEventForm() {
 
         const newEventData: EditEventRequestSchema = {
             eventId: +id,
-            name: title,
+            name: name,
             description: description,
             endDate: deadline || undefined,
             color: color === "" ? undefined : color,
         };
 
         API.events
-          .editEvent(newEventData)
-          .then(() => {
-              setIsEditingFinished(true);
-              navigate("..");
-          })
-          .catch(() => {
-              //    TODO: показать сообщение об ошибке - что-то пошло не так
-          })
-          .finally(() => {
-              setInProgress(false);
-              navigate("..");
-          });
+            .editEvent(newEventData)
+            .then(() => {
+                setIsEditingFinished(true);
+                navigate("..");
+            })
+            .catch(() => {
+                setIsEditingError(true);
+            })
+            .finally(() => {
+                setInProgress(false);
+            });
     }
 
     function onLoadFiles(event: React.MouseEvent<HTMLButtonElement>) {
@@ -72,23 +91,21 @@ export default function EditEventForm() {
         setInProgressFiles(true);
 
         const saveFilePromises = attachments.map((attachment) =>
-          API.files
-            .addFile(+id, EventTypesEnum.EVENT, attachment)
-            .then(() => {
-            })
-            .catch()
-            .finally()
+            API.files
+                .addFile(+id, EventTypesEnum.EVENT, attachment)
+                .then(() => {})
+                .catch(() => {})
+                .finally(() => {})
         );
 
         Promise.all(saveFilePromises)
-          .then(() => {
-              setIsNewFilesFinished(true);
-          })
-          .catch(() => {
-          })
-          .finally(() => {
-              setInProgressFiles(false);
-          });
+            .then(() => {
+                setIsNewFilesFinished(true);
+            })
+            .catch(() => {})
+            .finally(() => {
+                setInProgressFiles(false);
+            });
     }
 
     const handleCloseEditSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -113,77 +130,85 @@ export default function EditEventForm() {
     };
 
     return (
-      <>
-          <div>
-              <ScreenHeader text="Изменение события" />
+        <>
+            <Card sx={{ minWidth: 280, marginBottom: 1 }}>
+                <CardContent sx={{ paddingBottom: 0 }}>
+                    <ScreenHeader text="Изменение события" />
 
-              <FormInputItemWrapper>
-                  <TextField
-                    required
-                    fullWidth
-                    variant="outlined"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    label="Название отдела"
-                  />
-              </FormInputItemWrapper>
+                    <FormInputItemWrapper>
+                        <TextField
+                            required
+                            fullWidth
+                            variant="outlined"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            label="Название события"
+                        />
+                    </FormInputItemWrapper>
 
-              <FormInputItemWrapper>
-                  <MultilineTextInput value={description} handleChange={setDescription} label="Описание события" />
-              </FormInputItemWrapper>
+                    <FormInputItemWrapper>
+                        <MultilineTextInput
+                            value={description}
+                            handleChange={setDescription}
+                            label="Описание события"
+                        />
+                    </FormInputItemWrapper>
 
-              <FormInputItemWrapper>
-                  <DateInput value={deadline} handleChange={setDeadline} />
-              </FormInputItemWrapper>
+                    <FormInputItemWrapper>
+                        <DateInput value={deadline} handleChange={setDeadline} />
+                    </FormInputItemWrapper>
 
-              <FormInputItemWrapper className="d-flex align-items-center">
-                  <span>Цвет отображения задач</span>
-                  <InputColor color={color} setColor={setColor} className="mx-3" />
-              </FormInputItemWrapper>
+                    <FormInputItemWrapper className="d-flex align-items-center">
+                        <span>Цвет отображения задач</span>
+                        <InputColor color={color} setColor={setColor} className="mx-3" />
+                    </FormInputItemWrapper>
 
-              <LoadingButton
-                fullWidth
-                onClick={editEventHandler}
-                loading={inProgress}
-                variant="contained"
-                sx={{ my: 2 }}
-              >
-                  Сохранить изменения
-              </LoadingButton>
+                    <LoadingButton
+                        fullWidth
+                        onClick={editEventHandler}
+                        loading={inProgress}
+                        variant="contained"
+                        sx={{ my: 2 }}
+                    >
+                        Сохранить изменения
+                    </LoadingButton>
 
-              <FormInputItemWrapper className="d-flex align-items-center mt-4">
-                  <FileUpload files={attachments} setFiles={setAttachments} />
-              </FormInputItemWrapper>
+                    <FormInputItemWrapper className="d-flex align-items-center mt-4">
+                        <FileUpload files={attachments} setFiles={setAttachments} />
+                    </FormInputItemWrapper>
 
-              <FileList
-                files={attachments}
-                detachFile={(excludeFilename: string) =>
-                  setAttachments([...attachments.filter((attachment) => attachment.name !== excludeFilename)])
-                }
-              />
+                    <FileList
+                        files={attachments}
+                        detachFile={(excludeFilename: string) =>
+                            setAttachments([...attachments.filter((attachment) => attachment.name !== excludeFilename)])
+                        }
+                    />
 
-              {attachments.length > 0 && (
-                <LoadingButton
-                  fullWidth
-                  onClick={onLoadFiles}
-                  loading={inProgressFiles}
-                  variant="contained"
-                  sx={{ my: 2 }}
-                >
-                    Загрузить
-                </LoadingButton>
-              )}
-          </div>
+                    {attachments.length > 0 && (
+                        <LoadingButton
+                            fullWidth
+                            onClick={onLoadFiles}
+                            loading={inProgressFiles}
+                            variant="contained"
+                            sx={{ my: 2 }}
+                        >
+                            Прикрепить файлы
+                        </LoadingButton>
+                    )}
 
-          <SuccessSnackbar handleClose={handleCloseEditSnackbar} isOpen={isEditingFinished}>
-              Изменения сохранены!
-          </SuccessSnackbar>
-          <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isEditingError}>
-              Не удалось сохранить изменения!
-          </ErrorSnackbar>
-          <SuccessSnackbar handleClose={handleCloseNewFilesSnackbar} isOpen={isNewFilesFinished}>
-              Файлы загружены!
-          </SuccessSnackbar>
-      </>
+                    <GoBackButton to={id ? makeEventLinkById(+id) : ".."} />
+                </CardContent>
+            </Card>
+
+            <SuccessSnackbar handleClose={handleCloseEditSnackbar} isOpen={isEditingFinished}>
+                Изменения сохранены!
+            </SuccessSnackbar>
+            <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isEditingError}>
+                Не удалось сохранить изменения!
+            </ErrorSnackbar>
+            <SuccessSnackbar handleClose={handleCloseNewFilesSnackbar} isOpen={isNewFilesFinished}>
+                Файлы загружены!
+            </SuccessSnackbar>
+        </>
     );
 }

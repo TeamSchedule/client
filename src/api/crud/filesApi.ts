@@ -1,6 +1,7 @@
 import requestApi from "../fetchApi";
 import { EventTypesEnum } from "../../enums/filesEnums";
 import { FileResponseItemSchema, GetFileResponseSchema, GetFilesResponseSchema } from "../schemas/responses/files";
+import { ACCESS_TOKEN_STORAGE_NAME, SERVER_ORIGIN } from "../config";
 
 export class FilesApi {
     static apiPrefix: string = "/files";
@@ -48,12 +49,18 @@ export class FilesApi {
      * @param file - Прикрепляемый файл
      * */
     static async addFile(id: number, eventType: EventTypesEnum, file: File): Promise<FileResponseItemSchema[]> {
-        let formData = new FormData();
+        const formData: FormData = new FormData();
         formData.append("files", file);
 
-        return requestApi
-            .POST_FILE(`${this.apiPrefix}/add/${eventType}/${id}`, {
-                body: formData,
+        return await fetch(`${SERVER_ORIGIN}${this.apiPrefix}/add/${eventType}/${id}`, {
+            method: "POST",
+            body: formData,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_STORAGE_NAME)}`,
+            },
+        })
+            .then((r: Response) => {
+                return r.json();
             })
             .then((data: GetFilesResponseSchema) => {
                 return data.files;
@@ -67,15 +74,5 @@ export class FilesApi {
      * */
     static async dropFileById(id: number): Promise<any> {
         return requestApi.DELETE(`${this.apiPrefix}/${id}`);
-    }
-
-    /**
-     * Удалить файлы ассоциированные с событием.
-     *
-     * @param id - Идентификатор события
-     * @param eventType - Тип события
-     * */
-    static async dropEventFiles(id: number, eventType: EventTypesEnum): Promise<any> {
-        return requestApi.DELETE(`${this.apiPrefix}/${eventType}/${id}`);
     }
 }

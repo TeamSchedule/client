@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import { API } from "../../api/api";
 import MainAvatar from "../MainAvatar";
 import { AlternateAvatarImageIcon } from "../svg";
-import { BaseButton } from "../buttons";
 import BaseModal from "../modals/BaseModal";
 import styles from "./AvatarEditorModal.module.scss";
 
@@ -217,35 +216,32 @@ function AvatarEditorSection(props: AvatarEditorSectionProps) {
                                 className={styles.avatarEditorElem}
                             />
                         </div>
-                        <BaseButton
-                            text="Сбросить настройки"
-                            color="common"
-                            onClick={resetEditorParams}
-                            className="w-100"
-                        />
+                        <Button onClick={resetEditorParams} fullWidth>
+                            Сбросить настройки
+                        </Button>
                     </div>
                     <div className="p-2 d-flex flex-column-reverse col px-0 ml-2">
-                        <BaseButton
-                            text="Показать превью"
-                            color="common"
-                            className="w-100"
-                            onClick={onClickPreview}
-                            disabled={!enabledToSave}
-                        />
+                        <Button fullWidth onClick={onClickPreview} disabled={!enabledToSave}>
+                            Показать превью
+                        </Button>
                         {croppedImg && <MainAvatar src={croppedImg} />}
                     </div>
                 </div>
-                <BaseButton
-                    text="Сохранить новый аватар"
+                <Button
+                    fullWidth
                     color="success"
                     onClick={(event) => {
                         event.preventDefault();
                         props.saveHandler(fetchBlobFromEditor());
                     }}
-                    className="mt-4 w-100"
+                    sx={{ mt: 4 }}
                     disabled={!enabledToSave}
-                />
-                <BaseButton text="Удалить аватар" color="danger" className="mt-4 w-100" onClick={props.deleteHandler} />
+                >
+                    Сохранить новый аватар
+                </Button>
+                <Button color="error" className="mt-4 w-100" onClick={props.deleteHandler}>
+                    Удалить аватар
+                </Button>
             </div>
         </BaseModal>
     );

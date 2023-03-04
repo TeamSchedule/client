@@ -68,8 +68,10 @@ export default function FullUnitView() {
             return;
         }
 
-        if (unitData) return;
-
+        if (unitData) {
+            setUnit(unitData);
+            return;
+        }
         API.units
             .getById(+id)
             .then((unit: UnitResponseItemSchema) => {

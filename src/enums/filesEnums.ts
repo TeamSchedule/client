@@ -3,3 +3,5 @@ export enum EventTypesEnum {
     TASK = "TASK",
     PROCESS = "PROCESS",
 }
+
+export type EventTypesStrings = (typeof EventTypesEnum)[keyof typeof EventTypesEnum];

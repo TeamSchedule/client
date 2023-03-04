@@ -108,6 +108,66 @@ export const taskData: TaskResponseItemSchema = {
     department: unitsData[0],
 };
 
+export const tasksData: TaskResponseItemSchema[] = [
+    {
+        id: 1,
+        name: "Задача 1",
+        description: "расширенное описание",
+        taskStatus: TaskStatusEnum.IN_PROGRESS,
+        expirationTime: new Date().toJSON(),
+        assignee: [user1],
+        author: user2,
+        event: {
+            id: 1,
+            name: "Событие 1",
+            color: "#ff0864",
+            description: "desc",
+            endDate: new Date().toJSON(),
+            tasks: [],
+            status: EventStatusEnum.IN_PROGRESS,
+        },
+        department: unitsData[1],
+    },
+    {
+        id: 2,
+        name: "Задача 2",
+        description: "расширенное описание",
+        taskStatus: TaskStatusEnum.IN_PROGRESS,
+        expirationTime: new Date().toJSON(),
+        assignee: [user1],
+        author: user2,
+        event: {
+            id: 1,
+            name: "Событие 1",
+            color: "#ff0864",
+            description: "desc",
+            endDate: new Date().toJSON(),
+            tasks: [],
+            status: EventStatusEnum.IN_PROGRESS,
+        },
+        department: unitsData[0],
+    },
+    {
+        id: 3,
+        name: "Задача 3",
+        description: "расширенное описание",
+        taskStatus: TaskStatusEnum.COMPLETED,
+        expirationTime: new Date().toJSON(),
+        assignee: [user1],
+        author: user2,
+        event: {
+            id: 1,
+            name: "Событие 1",
+            color: "#ff0864",
+            description: "desc",
+            endDate: new Date().toJSON(),
+            tasks: [],
+            status: EventStatusEnum.IN_PROGRESS,
+        },
+        department: unitsData[0],
+    },
+];
+
 export const eventsData: EventResponseItemSchema[] = [
     {
         id: 1,

@@ -1,41 +1,26 @@
-import { PickersDay, PickersDayProps, StaticDatePicker } from "@mui/x-date-pickers";
+import { Box, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Badge, BadgeProps, Box, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { isEqualYearMonthDate, weekCount } from "../../../utils/dateutils";
-import { styled } from "@mui/material/styles";
-import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
-import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";
-import "dayjs/locale/ru"; // be careful, it must be imported!
+import { weekCount } from "../../../utils/dateutils";
+import { StaticDatePicker } from "@mui/x-date-pickers";
 
-const MaxDateSize = 80; // максимальный размер отображаемого на мобильном календаре дня
+import "dayjs/locale/ru";
+import { AdaptiveCalendarProps } from "./AdaptiveCalendar";
 
-/* https://github.com/mui/material-ui/issues/27700 */
+const MaxDateSize = 250; // максимальный размер отображаемого на мобильном календаре дня
 
-const CalendarDayBadge = styled(Badge)<BadgeProps>(() => ({
-    "& .MuiBadge-badge": {
-        right: 10,
-        top: 8,
-        padding: 0,
-        fontSize: "0.7rem",
-        width: "15px",
-        height: "18px",
-    },
-}));
-
-interface MobileCalendarProps {
-    viewedDate: Date;
-    setViewedDate: (value: Date) => void;
-    chosenDate: Date;
-    setChosenDate: (value: Date) => void;
-    tasks: TaskResponseItemSchema[];
+export interface MainCalendarProps extends AdaptiveCalendarProps {
+    customDayRenderer: any;
 }
 
-export default function MobileCalendar(props: MobileCalendarProps) {
-    const [dateSize, setDateSize] = useState<number>(44);
+export default function MainCalendar(props: MainCalendarProps) {
     const [currentMonth, setCurrentMonth] = useState<number>(props.viewedDate.getMonth() + 1);
     const [currentYear, setCurrentYear] = useState<number>(props.viewedDate.getFullYear());
+
+    // размер ячейки календаря
+    const [dateSize, setDateSize] = useState<number>(44);
 
     useEffect(() => {
         let timerId = setInterval(() => {
@@ -68,27 +53,8 @@ export default function MobileCalendar(props: MobileCalendarProps) {
         }
     }, [currentMonth, currentYear]);
 
-    function CustomDayRenderer(date: Date, selectedDays: Array<Date | null>, pickersDayProps: PickersDayProps<Date>) {
-        return (
-            <>
-                <CalendarDayBadge
-                    badgeContent={
-                        props.tasks.filter((task) => {
-                            // @ts-ignore
-                            return isEqualYearMonthDate(new Date(task.expirationTime), date["$d"]);
-                        }).length
-                    }
-                    color="secondary"
-                    key={date.toJSON()}
-                >
-                    <PickersDay {...pickersDayProps} />
-                </CalendarDayBadge>
-            </>
-        );
-    }
-
     return (
-        <div className="d-block d-md-none">
+        <>
             <LocalizationProvider
                 dateAdapter={AdapterDayjs}
                 adapterLocale="ru"
@@ -101,7 +67,7 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                 <Box
                     sx={{
                         "& div": {
-                            maxHeight: 580,
+                            maxHeight: 5800,
                             maxWidth: "100%",
                         },
                         "& .MuiCalendarOrClockPicker-root > div": {
@@ -159,7 +125,7 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         onYearChange={setCurrentYear}
                         renderInput={(params) => <TextField {...params} />}
                         // @ts-ignore
-                        renderDay={CustomDayRenderer}
+                        renderDay={props.customDayRenderer}
                         componentsProps={{
                             actionBar: {
                                 actions: ["today"],
@@ -168,6 +134,6 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                     />
                 </Box>
             </LocalizationProvider>
-        </div>
+        </>
     );
 }

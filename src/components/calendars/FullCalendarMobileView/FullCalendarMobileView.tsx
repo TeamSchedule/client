@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import MobileCalendar from "../MobileCalendar";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +8,11 @@ import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
 import buildFilterParams from "../../../api/utils/buildFilterParams";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FiltersDrawer from "../filters/FiltersDrawer";
-import DayTaskList from "./DayTaskList";
+import DayTaskList from "../dayTasksSections/DayTaskList";
+import { tasksData } from "../../../testdata/data";
+import Box from "@mui/material/Box";
+import DayTaskListDesktop from "../dayTasksSections/DayTaskListDesktop";
+import AdaptiveCalendar from "../calendarViews/AdaptiveCalendar";
 
 export default function FullCalendarMobileView() {
     const navigate = useNavigate();
@@ -19,9 +22,9 @@ export default function FullCalendarMobileView() {
     const [chosenDate, setChosenDate] = useState<Date>(new Date()); // выбранный день, для него показываюся задачи на мобильной версии
 
     // все задачи в диапазоне нескольких месяцев
-    const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([]);
+    const [tasks, setTasks] = useState<TaskResponseItemSchema[]>(tasksData);
     // отображаемые задачи
-    const [displayedTasks, setDisplayedTasks] = useState<TaskResponseItemSchema[]>([]);
+    const [displayedTasks, setDisplayedTasks] = useState<TaskResponseItemSchema[]>(tasksData);
 
     useEffect(() => {
         // запрашиваем еще задач, если пользователь далеко проликнул в календаре
@@ -55,14 +58,34 @@ export default function FullCalendarMobileView() {
                 <FiltersDrawer tasks={tasks} setDisplayedTasks={setDisplayedTasks} />
             </div>
 
-            <MobileCalendar
+            <AdaptiveCalendar
                 tasks={displayedTasks}
                 viewedDate={viewedDate}
                 setViewedDate={setViewedDate}
                 chosenDate={chosenDate}
                 setChosenDate={setChosenDate}
             />
-            <DayTaskList day={chosenDate} tasks={tasks} />
+
+            <Box
+                sx={{
+                    display: {
+                        sx: "block",
+                        md: "none",
+                    },
+                }}
+            >
+                <DayTaskList day={chosenDate} tasks={displayedTasks} />
+            </Box>
+            <Box
+                sx={{
+                    display: {
+                        sx: "none",
+                        md: "block",
+                    },
+                }}
+            >
+                <DayTaskListDesktop day={chosenDate} tasks={displayedTasks} />
+            </Box>
         </>
     );
 }

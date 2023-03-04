@@ -5,6 +5,7 @@ import PrimaryAppBar from "./header/PrimaryAppBar";
 import { Box } from "@mui/material";
 import { NotificationsResponseItemSchema } from "../api/schemas/responses/notifications";
 import { API } from "../api/api";
+import Toolbar from "@mui/material/Toolbar";
 
 const NotificationRequestPeriodMS: number = 10000;
 
@@ -33,7 +34,7 @@ export default function App() {
                     <PrimaryAppBar />
                 </NotificationsContext.Provider>
             </Box>
-
+            <Toolbar />
             <div className="position-relative">
                 <div className="row m-0 d-flex px-2">
                     <div className="col-sm-12 p-0 position-relative">

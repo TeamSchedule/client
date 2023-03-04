@@ -29,8 +29,7 @@ export default function EventPreview(props: EventPreviewProps) {
             <Card sx={{ minWidth: 280, marginBottom: 1 }}>
                 <CardContent sx={{ paddingBottom: 0 }}>
                     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <EventDeadline endDate={new Date(props.event.endDate)} status={props.event.status} />
-
+                        <EventDeadline endDate={props.event.endDate} status={props.event.status} />
                         {openTasks !== 0 && (
                             <Tooltip title={`Открытых задач: ${openTasks} `}>
                                 <IconButton>

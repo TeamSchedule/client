@@ -20,6 +20,7 @@ import Badge from "@mui/material/Badge";
 import DefaultDict from "../../../utils/defaultdict";
 import { API } from "../../../api/api";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
+import { eventsData, unitsData } from "../../../testdata/data";
 
 interface FiltersDrawerProps {
     tasks: TaskResponseItemSchema[];
@@ -28,14 +29,14 @@ interface FiltersDrawerProps {
 
 export default function FiltersDrawer(props: FiltersDrawerProps) {
     // данные для фильтров
-    const [units, setUnits] = useState<UnitResponseItemSchema[]>([]);
-    const [events, setEvents] = useState<EventResponseItemSchema[]>([]);
+    const [units, setUnits] = useState<UnitResponseItemSchema[]>(unitsData);
+    const [events, setEvents] = useState<EventResponseItemSchema[]>(eventsData);
 
     // открыт sidebar или нет
     const [state, setState] = React.useState<boolean>(false);
 
     // фильтры
-    const [selectedUsersIds, setSelectedUsersIds] = useState<object>(DefaultDict());
+    const [selectedUsersIds, setSelectedUsersIds] = useState<object>(DefaultDict()); // map(unitId: boolean)
     const [selectedUnitsIds, setSelectedUnitsIds] = useState<object>(DefaultDict());
     const [selectedEventsIds, setSelectedEventsIds] = useState<object>(DefaultDict());
     const [showClosed, setShowClosed] = useState<boolean>(false); // показывать закрытые и выполненные
@@ -82,11 +83,18 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
         if (selectedEvents > 0) {
             filteredTasks = filteredTasks.filter((task) => {
                 // @ts-ignore
-                return selectedEvents[task.event.id];
+                return selectedEventsIds[task.event.id];
             });
         }
 
         if (selectedUsers > 0) {
+            filteredTasks = filteredTasks.filter((task) => {
+                for (let u of task.assignee) {
+                    // @ts-ignore
+                    if (selectedUsersIds[u.id] === true) return true;
+                }
+                return false;
+            });
         }
 
         props.setDisplayedTasks(filteredTasks);
@@ -112,13 +120,11 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
 
     return (
         <>
-            <Button onClick={toggleDrawer(true)} sx={{ py: 0 }}>
-                <Badge variant="dot" color="info" badgeContent={isAnyFiltersActive}>
-                    <IconButton aria-label="reset" color="primary" sx={{ p: 0 }}>
-                        <TuneIcon fontSize="large" sx={{ p: 0, m: 0 }} />
-                    </IconButton>
-                </Badge>
-            </Button>
+            <Badge variant="dot" color="info" badgeContent={isAnyFiltersActive}>
+                <IconButton onClick={toggleDrawer(true)} aria-label="reset" color="primary" sx={{ p: 0 }}>
+                    <TuneIcon fontSize="large" sx={{ p: 0, m: 0 }} />
+                </IconButton>
+            </Badge>
             <SwipeableDrawer
                 disableBackdropTransition
                 anchor="right"

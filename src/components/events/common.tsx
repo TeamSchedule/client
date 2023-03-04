@@ -1,5 +1,6 @@
 import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
+import { Tooltip, useTheme } from "@mui/material";
+import Box from "@mui/material/Box";
 import StatusDone from "../statuses/StatusDone";
 import InProgressStatus from "../statuses/InProgressStatus";
 import { getDateRepresentation } from "../../utils/dateutils";
@@ -34,28 +35,66 @@ export function EventDescription(props: EventDescriptionProps) {
 }
 
 interface EventDeadlineProps {
-    endDate?: Date;
+    endDate?: string;
     status?: EventStatusStrings;
 }
 
 export function EventDeadline(props: EventDeadlineProps) {
+    const theme = useTheme();
+
+    if (!props.endDate) {
+        return (
+            <Box sx={{ display: "flex" }}>
+                <Typography
+                    sx={{
+                        px: 1,
+                        color: theme.palette.getContrastText(theme.palette.warning.main),
+                        borderRadius: 1,
+                        backgroundColor: theme.palette.warning.main,
+                    }}
+                >
+                    Дата не назначена
+                </Typography>
+                <EventStatus status={props.status} />
+            </Box>
+        );
+    }
+
+    let endDateColor: string = theme.palette.info.main;
+    const isTimeExpired: boolean = new Date(props.endDate) < new Date();
+
+
+    let dateTooltipText: string = "Событие в работе!";
+
+    if (props.status === EventStatusEnum.COMPLETED) {
+        endDateColor = theme.palette.success.main;
+        dateTooltipText = "Событие завершено!";
+    } else if (isTimeExpired) {
+        endDateColor = theme.palette.error.main;
+        dateTooltipText = "Событие истекло!";
+    }
+
     return (
-        <>
-            <Typography
-                sx={{ display: "flex", alignItems: "flex-end", mb: 0, verticalAlign: "bottom" }}
-                color="text.secondary"
-                gutterBottom
-            >
-                <span>{getDateRepresentation(props.endDate)}</span>
-                <Box component="span" sx={{ ml: 1 }}>
-                    {props.status !== undefined && props.status === EventStatusEnum.COMPLETED ? (
-                        <StatusDone />
-                    ) : (
-                        <InProgressStatus />
-                    )}
-                </Box>
-            </Typography>
-        </>
+        <Typography
+            sx={{ display: "flex", alignItems: "flex-end", mb: 0, verticalAlign: "bottom" }}
+            color="text.secondary"
+            gutterBottom
+        >
+            <Tooltip title={dateTooltipText}>
+                <Typography
+                    sx={{
+                        px: 1,
+                        color: theme.palette.getContrastText(endDateColor),
+                        borderRadius: 1,
+                        backgroundColor: endDateColor,
+                    }}
+                >
+                    {getDateRepresentation(new Date(props.endDate))}
+                </Typography>
+            </Tooltip>
+
+            <EventStatus status={props.status} />
+        </Typography>
     );
 }
 
@@ -79,5 +118,21 @@ export function EventColorLeft(props: EventColorProps) {
                 ></Box>
             )}
         </>
+    );
+}
+
+interface EventStatusProps {
+    status?: EventStatusStrings;
+}
+
+export function EventStatus(props: EventStatusProps) {
+    return (
+        <Box component="span" sx={{ ml: 1 }}>
+            {props.status !== undefined && props.status === EventStatusEnum.COMPLETED ? (
+                <StatusDone />
+            ) : (
+                <InProgressStatus />
+            )}
+        </Box>
     );
 }

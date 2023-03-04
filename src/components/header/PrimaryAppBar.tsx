@@ -14,7 +14,6 @@ import PeopleIcon from "@mui/icons-material/People";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
-import TaskIcon from "@mui/icons-material/Task";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
@@ -157,10 +156,10 @@ export default function PrimaryAppBar() {
             >
                 <Box
                     sx={{
-                        mt: 2,
                         minWidth: 300,
                     }}
                 >
+                    <Toolbar />
                     <Typography variant="subtitle1" component="p" sx={{ py: 1, px: 2 }}>
                         {user?.login}
                     </Typography>
@@ -182,7 +181,7 @@ export default function PrimaryAppBar() {
     return (
         <Box sx={{ flexGrow: 1 }}>
             {renderSwipeableAppBar}
-            <AppBar position="static">
+            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                     <Box sx={{ display: { xs: "none", md: "block" } }}>
                         <Tooltip title="Календарь">
