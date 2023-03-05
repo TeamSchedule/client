@@ -1,7 +1,5 @@
 import requestApi from "../fetchApi";
 import { FileOwnerTypesEnum } from "../../enums/filesEnums";
-import { ACCESS_TOKEN_STORAGE_NAME, SERVER_ORIGIN } from "../config";
-import { GetFilesResponseSchema } from "../schemas/responses/files";
 
 export class AvatarsApi {
     static apiPrefix: string = "/files";
@@ -20,19 +18,10 @@ export class AvatarsApi {
         let formData = new FormData();
         formData.append("file", avatarImage);
 
-        return await fetch(`${SERVER_ORIGIN}${this.apiPrefix}/add/${FileOwnerTypesEnum.USER}/${id}`, {
+        return await requestApi.POST_FILE(`${this.apiPrefix}/add/${FileOwnerTypesEnum.USER}/${id}`, {
             method: "POST",
             body: formData,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_STORAGE_NAME)}`,
-            },
-        })
-            .then((r: Response) => {
-                return r.json();
-            })
-            .then((data: GetFilesResponseSchema) => {
-                return data.files;
-            });
+        });
     }
 
     /**

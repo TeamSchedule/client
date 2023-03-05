@@ -1,7 +1,6 @@
 import requestApi from "../fetchApi";
 import { FileOwnerTypesEnum } from "../../enums/filesEnums";
 import { FileResponseItemSchema, GetFileResponseSchema, GetFilesResponseSchema } from "../schemas/responses/files";
-import { ACCESS_TOKEN_STORAGE_NAME, SERVER_ORIGIN } from "../config";
 
 export class FilesApi {
     static apiPrefix: string = "/files";
@@ -54,19 +53,10 @@ export class FilesApi {
         const formData: FormData = new FormData();
         formData.append("file", file);
 
-        return await fetch(`${SERVER_ORIGIN}${this.apiPrefix}/add/${eventType}/${id}`, {
+        return await requestApi.POST_FILE(`${this.apiPrefix}/add/${eventType}/${id}`, {
             method: "POST",
             body: formData,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_STORAGE_NAME)}`,
-            },
-        })
-            .then((r: Response) => {
-                return r.json();
-            })
-            .then((data: GetFilesResponseSchema) => {
-                return data.files;
-            });
+        });
     }
 
     /**

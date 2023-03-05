@@ -45,18 +45,17 @@ const makeRequest = async (
               const accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_NAME);
               if (!accessToken) return;
               return {
-                  ...additionalHeaders,
                   Authorization: `Bearer ${accessToken}`,
               };
           })();
 
     async function makeAttempt() {
         return await fetch(`${BASE_URL}${requestUrl}`, {
+            ...fetchOptions,
             headers: {
                 ...additionalHeaders,
                 ...authHeader,
             },
-            ...fetchOptions,
         });
     }
 
@@ -119,7 +118,7 @@ const requestApi = {
     POST_FILE: (path: string, fetchOptions: object = {}) => {
         return makeRequest(path, {
             method: "POST",
-            ...checkOptions(fetchOptions),
+            ...fetchOptions,
         });
     },
     PUT: (path: string, fetchOptions: object = {}) => {

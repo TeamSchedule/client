@@ -28,6 +28,8 @@ export default function UserProfileSettings() {
     );
 }
 
+const availableImageFormats = ["bmp", "jpg", "jpeg", "gif", "png", "tiff", "svg"];
+
 function UserAvatarSection() {
     // текущий пользователь
     const { user } = useAuth();
@@ -45,6 +47,14 @@ function UserAvatarSection() {
         if (!user?.id || !newAvatar) {
             return;
         }
+
+        const filename: string = newAvatar.name.toLowerCase();
+        const isGoodExt: boolean = availableImageFormats.some((ext) => filename.endsWith(ext));
+        if (!isGoodExt) {
+            alert("Недопустимое расширение файла! Вставьте картинку");
+            return;
+        }
+
         setIsEditAvatarInProgress(true);
 
         API.avatars
@@ -98,17 +108,23 @@ function UserAvatarSection() {
                     />
                 </Box>
 
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexGrow: 1 }}>
-                    <LoadingButton
-                        fullWidth
-                        variant="contained"
-                        component="label"
-                        startIcon={<AddCircleIcon />}
-                        loading={isEditAvatarInProgress}
-                    >
-                        Загрузить изображение
-                        <input hidden type="file" onInput={uploadAvatarHandler} />
-                    </LoadingButton>
+                <Box sx={{ display: "flex", justifyContent: "space-between", flexGrow: 1, alignItems: "flex-start" }}>
+                    <Box sx={{ flexGrow: 1 }}>
+                        <LoadingButton
+                            fullWidth
+                            variant="contained"
+                            component="label"
+                            startIcon={<AddCircleIcon />}
+                            loading={isEditAvatarInProgress}
+                        >
+                            Загрузить изображение
+                            <input hidden type="file" onInput={uploadAvatarHandler} />
+                        </LoadingButton>
+
+                        <Typography sx={{ fontSize: "0.9rem", color: "grey" }}>
+                            Допустимые типы файлов: {availableImageFormats.join(", ")}
+                        </Typography>
+                    </Box>
 
                     <Tooltip title="Удалить аватар">
                         <IconButton
