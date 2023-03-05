@@ -28,30 +28,10 @@ export default function UnitPreview(props: UnitPreviewProps) {
                         <Typography variant="subtitle1" component="div">
                             {props.unit.name}
                         </Typography>
-                        <OpenTasksLabel tasks={props.unit.openTasks} />
                         {members}
                     </div>
                 </CardContent>
             </Card>
-        </>
-    );
-}
-
-interface OpenTasksLabelProps {
-    tasks: Array<object>;
-}
-
-function OpenTasksLabel(props: OpenTasksLabelProps) {
-    const openTaskNumber: number = props.tasks.length;
-    if (openTaskNumber === 0) {
-        return null;
-    }
-
-    return (
-        <>
-            <div>
-                <p className={styles.openTasksLabel}>Открытых задач: {openTaskNumber}</p>
-            </div>
         </>
     );
 }

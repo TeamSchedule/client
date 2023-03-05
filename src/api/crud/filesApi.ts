@@ -50,7 +50,7 @@ export class FilesApi {
      * */
     static async addFile(id: number, eventType: EventTypesEnum, file: File): Promise<FileResponseItemSchema[]> {
         const formData: FormData = new FormData();
-        formData.append("files", file);
+        formData.append("file", file);
 
         return await fetch(`${SERVER_ORIGIN}${this.apiPrefix}/add/${eventType}/${id}`, {
             method: "POST",

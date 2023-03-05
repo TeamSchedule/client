@@ -63,7 +63,6 @@ export function EventDeadline(props: EventDeadlineProps) {
     let endDateColor: string = theme.palette.info.main;
     const isTimeExpired: boolean = new Date(props.endDate) < new Date();
 
-
     let dateTooltipText: string = "Событие в работе!";
 
     if (props.status === EventStatusEnum.COMPLETED) {
@@ -75,11 +74,7 @@ export function EventDeadline(props: EventDeadlineProps) {
     }
 
     return (
-        <Typography
-            sx={{ display: "flex", alignItems: "flex-end", mb: 0, verticalAlign: "bottom" }}
-            color="text.secondary"
-            gutterBottom
-        >
+        <Box sx={{ display: "flex", alignItems: "flex-end", mb: 0, verticalAlign: "bottom" }} color="text.secondary">
             <Tooltip title={dateTooltipText}>
                 <Typography
                     sx={{
@@ -94,7 +89,7 @@ export function EventDeadline(props: EventDeadlineProps) {
             </Tooltip>
 
             <EventStatus status={props.status} />
-        </Typography>
+        </Box>
     );
 }
 

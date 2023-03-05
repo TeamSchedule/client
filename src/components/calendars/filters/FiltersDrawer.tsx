@@ -21,6 +21,7 @@ import DefaultDict from "../../../utils/defaultdict";
 import { API } from "../../../api/api";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { eventsData, unitsData } from "../../../testdata/data";
+import Toolbar from "@mui/material/Toolbar";
 
 interface FiltersDrawerProps {
     tasks: TaskResponseItemSchema[];
@@ -133,6 +134,7 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                 onOpen={toggleDrawer(true)}
             >
                 <Box sx={{ minWidth: "280px", p: 2 }}>
+                    <Toolbar />
                     <FormGroup>
                         <FormControlLabel
                             control={

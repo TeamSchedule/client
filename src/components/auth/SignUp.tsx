@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { ERRORS, MIN_PASSWORD_LENGTH } from "../../consts";
+import { AllowedEmailDomain, ERRORS, MIN_PASSWORD_LENGTH } from "../../consts";
 import validateEmail from "../../utils/validateEmail";
 import { SignUpRequestSchema } from "../../api/schemas/requests/auth";
 import { API } from "../../api/api";
@@ -127,7 +127,7 @@ export default function SignUp() {
                             fullWidth
                             id="email"
                             label="Email"
-                            helperText="*****@mail.sfu-kras.ru"
+                            helperText={"*****" + AllowedEmailDomain}
                             name="email"
                             autoComplete="email"
                         />

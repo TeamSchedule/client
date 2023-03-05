@@ -14,4 +14,5 @@ export interface FileResponseItemSchema {
     event_id: number;
     content_type: string;
     dt_created: string;
+    size: number;
 }

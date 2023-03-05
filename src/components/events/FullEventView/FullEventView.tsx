@@ -2,14 +2,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
-import TaskPreview from "../../tasks/TaskPreview";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import { EventDeadline, EventDescription, EventName } from "../common";
-import CardActions from "@mui/material/CardActions";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import { styled } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import SpeedDial from "@mui/material/SpeedDial";
 import Card from "@mui/material/Card";
@@ -26,20 +20,7 @@ import UploadedFilePreview from "../../files/UploadedFilePreview";
 import { EventTypesEnum } from "../../../enums/filesEnums";
 import GoBackButton from "../../buttons/GoBackButton";
 import { EventListPath } from "../../../routes/paths";
-
-interface ExpandMoreProps extends IconButtonProps {
-    expand: boolean;
-}
-
-const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-    transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-    transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shortest,
-    }),
-}));
+import TaskListCollapse from "../../common/TaskListCollapse";
 
 export default function FullEventView() {
     const navigate = useNavigate();
@@ -65,9 +46,6 @@ export default function FullEventView() {
     const [eventTasks, setEventTasks] = useState<TaskResponseItemSchema[]>([]);
     const [eventFiles, setEventFiles] = useState<FileResponseItemSchema[]>([]);
 
-    // раскрыть раздел с задачами
-    const [expanded, setExpanded] = useState<boolean>(false);
-
     useEffect(() => {
         /* Получение  данных события */
         if (!id) {
@@ -88,8 +66,6 @@ export default function FullEventView() {
 
         const params: FilterTasksParamsSchema = {
             events: [+id],
-            from: new Date("2000-01-01").toJSON(),
-            to: new Date("2100-01-01").toJSON(),
         };
         API.tasks.getTasks(params).then((tasks: TaskResponseItemSchema[]) => {
             setEventTasks(tasks);
@@ -165,36 +141,18 @@ export default function FullEventView() {
                     <EventName>{event?.name}</EventName>
                     <EventDescription>{event?.description}</EventDescription>
 
-                    <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold", mt: 2, p: 0 }}>
-                        Файлы события
-                    </Typography>
-                    {eventFiles.map((file) => (
-                        <UploadedFilePreview key={file.id} file={file} eventType={EventTypesEnum.EVENT} />
-                    ))}
+                    {eventFiles.length > 0 && (
+                        <>
+                            <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold", mt: 2, p: 0 }}>
+                                Файлы
+                            </Typography>
+                            {eventFiles.map((file) => (
+                                <UploadedFilePreview key={file.id} file={file} eventType={EventTypesEnum.EVENT} />
+                            ))}
+                        </>
+                    )}
 
-                    <CardActions
-                        disableSpacing
-                        sx={{
-                            "&:hover": {
-                                cursor: "pointer",
-                            },
-                            px: 0,
-                        }}
-                        onClick={() => setExpanded(!expanded)}
-                    >
-                        <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold" }}>
-                            Задачи - {eventTasks.length}
-                        </Typography>
-                        <ExpandMore expand={expanded} aria-expanded={expanded} aria-label="show more">
-                            <ExpandMoreIcon />
-                        </ExpandMore>
-                    </CardActions>
-
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
-                        {eventTasks.map((task) => (
-                            <TaskPreview key={task.id} task={task} />
-                        ))}
-                    </Collapse>
+                    <TaskListCollapse tasks={eventTasks} />
 
                     {event?.status === EventStatusEnum.IN_PROGRESS && (
                         <LoadingButton
@@ -216,7 +174,7 @@ export default function FullEventView() {
                             variant="outlined"
                             sx={{ my: 2 }}
                         >
-                            Открыть событие
+                            Запустить событие
                         </LoadingButton>
                     )}
 

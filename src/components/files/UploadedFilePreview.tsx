@@ -58,11 +58,33 @@ export default function UploadedFilePreview(props: UploadedFilePreviewProps) {
                 <>
                     <Box sx={{ display: "flex", alignItems: "center", mt: 1, wordWrap: "" }}>
                         {/*<SvgIcon component={fileIcon} sx={{ mr: 1 }} />*/}
-                        <Typography variant="body1" component="span" sx={{ flexGrow: 1 }}>
+                        <Typography
+                            variant="body1"
+                            component="span"
+                            sx={{
+                                flexGrow: 1,
+                                overflow: "auto",
+                                fontSize: "0.9rem",
+                                "&::-webkit-scrollbar": {
+                                    display: "none",
+                                },
+                                msOverflowStyle: "none" /* IE and Edge */,
+                                scrollbarWidth: "none" /* Firefox */,
+                            }}
+                        >
                             {props.file.filename}
                         </Typography>
 
-                        <Typography sx={{ mx: 3 }}>{fileSize(1234)}</Typography>
+                        <Typography
+                            sx={{
+                                mx: 1,
+                                fontSize: "0.9rem",
+                                verticalAlign: "baseline",
+                                color: "#7a7a7a",
+                            }}
+                        >
+                            {fileSize(props.file.size)}
+                        </Typography>
 
                         <Tooltip title="Скачать файл">
                             <IconButton sx={{ p: 0, m: 0 }}>

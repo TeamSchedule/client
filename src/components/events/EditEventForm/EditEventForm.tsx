@@ -101,6 +101,7 @@ export default function EditEventForm() {
         Promise.all(saveFilePromises)
             .then(() => {
                 setIsNewFilesFinished(true);
+                navigate(makeEventLinkById(+id));
             })
             .catch(() => {})
             .finally(() => {
