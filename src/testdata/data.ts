@@ -14,7 +14,6 @@ const user1: UserSchema = {
     patronymic: "Lastname",
     email: "",
     creationDate: new Date(),
-    login: "",
     fullName: "Сяглова Анна Михайловна",
     post: UserPostsEnum.UNIT_HEAD,
 };
@@ -26,7 +25,6 @@ const user2: UserSchema = {
     patronymic: "Lastname",
     email: "",
     creationDate: new Date(),
-    login: "",
     fullName: "Сяглова Анна Михайловна",
     post: UserPostsEnum.MEMBER,
 };
@@ -38,7 +36,6 @@ const user3: UserSchema = {
     patronymic: "Lastname",
     email: "",
     creationDate: new Date(),
-    login: "",
     fullName: "Сяглова Анна Михайловна",
     post: UserPostsEnum.MEMBER,
 };
@@ -51,7 +48,6 @@ const user4: UserSchema = {
     patronymic: "Lastname",
     email: "",
     creationDate: new Date(),
-    login: "",
     fullName: "Сяглова Анна Михайловна",
     post: UserPostsEnum.MEMBER,
 };

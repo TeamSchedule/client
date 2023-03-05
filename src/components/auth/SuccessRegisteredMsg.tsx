@@ -4,6 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import { loginPath } from "../../routes/paths";
 
 export default function SuccessRegisteredMsg() {
     return (
@@ -26,7 +27,7 @@ export default function SuccessRegisteredMsg() {
                 </Typography>
 
                 <p>
-                    После этого можно перейти на <Link to={"/login"}>страницу входа.</Link>
+                    После этого можно перейти на <Link to={loginPath}>страницу входа.</Link>
                 </p>
             </Box>
         </Container>

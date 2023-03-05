@@ -17,6 +17,8 @@ import IconButton from "@mui/material/IconButton";
 import { Tooltip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { makeAvatarLink } from "../../utils/fileUtils";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import { AuthUserKey } from "../../consts/common";
 
 export default function UserProfileSettings() {
     return (
@@ -148,6 +150,7 @@ function UserAvatarSection() {
 function UsernameSection() {
     // текущий пользователь
     const { user } = useAuth();
+    const [, setUser] = useLocalStorage(AuthUserKey);
 
     // данные пользователя
     const [firstName, setFirstName] = useState<string>(user?.firstName || "");
@@ -177,6 +180,12 @@ function UsernameSection() {
             .updateUserInfo(user?.id, newUserData)
             .then(() => {
                 setIsEditPersonalDataSuccess(true);
+                API.users
+                    .getMe()
+                    .then((data) => {
+                        setUser(data);
+                    })
+                    .catch(() => {});
             })
             .catch(() => {
                 setIsEditPersonalDataError(true);
@@ -218,6 +227,7 @@ function UsernameSection() {
                 id="firstName"
                 label="Имя"
                 sx={{ mt: 2 }}
+                inputProps={{ maxLength: 50 }}
             />
             <TextField
                 value={lastName}
@@ -229,6 +239,7 @@ function UsernameSection() {
                 label="Фамилия"
                 name="lastName"
                 autoComplete="family-name"
+                inputProps={{ maxLength: 50 }}
             />
             <TextField
                 value={patronymic}
@@ -239,6 +250,7 @@ function UsernameSection() {
                 label="Отчество"
                 name="lastName"
                 autoComplete="family-name"
+                inputProps={{ maxLength: 50 }}
             />
 
             <LoadingButton

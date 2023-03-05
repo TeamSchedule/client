@@ -27,6 +27,7 @@ import Divider from "@mui/material/Divider";
 import { lightBlue } from "@mui/material/colors";
 import MainAvatar from "../MainAvatar";
 import { makeAvatarLink } from "../../utils/fileUtils";
+import { makeFullName } from "../../utils/userUtils";
 
 export default function PrimaryAppBar() {
     const navigate = useNavigate();
@@ -165,7 +166,7 @@ export default function PrimaryAppBar() {
                     <Box sx={{ display: "flex", alignItems: "center", mx: 2, my: 1 }}>
                         <MainAvatar src={makeAvatarLink(user?.id ? +user?.id : 0)} fullPath size={35} />
                         <Typography variant="subtitle1" component="p" sx={{ py: 1, px: 2 }}>
-                            {user?.login}
+                            {makeFullName(user)}
                         </Typography>
                     </Box>
 
@@ -274,10 +275,10 @@ export default function PrimaryAppBar() {
                             </Badge>
                         </IconButton>
                     </Tooltip>
-                    
+
                     <Box sx={{ display: { xs: "none", md: "flex", alignItems: "center" } }}>
                         <Typography color="inherit" sx={{ mx: 1 }}>
-                            {user?.login}
+                            {makeFullName(user)}
                         </Typography>
                         <MainAvatar src={makeAvatarLink(user?.id ? +user?.id : 0)} fullPath size={40} />
                     </Box>

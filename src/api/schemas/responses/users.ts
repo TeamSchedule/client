@@ -11,7 +11,7 @@ export interface GetAllUsersResponseSchema {
 export interface UserSchema {
     id: number;
     avatar: string;
-    login: string;
+    login?: string;
     firstName: string;
     lastName: string;
     patronymic: string;
