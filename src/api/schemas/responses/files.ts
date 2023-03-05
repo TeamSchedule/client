@@ -11,7 +11,7 @@ export interface GetFileResponseSchema {
 export interface FileResponseItemSchema {
     id: number;
     filename: string;
-    event_id: number;
+    owner_id: number;
     content_type: string;
     dt_created: string;
     size: number;

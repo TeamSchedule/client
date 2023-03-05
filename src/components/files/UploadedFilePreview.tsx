@@ -88,7 +88,7 @@ export default function UploadedFilePreview(props: UploadedFilePreviewProps) {
 
                         <Tooltip title="Скачать файл">
                             <IconButton sx={{ p: 0, m: 0 }}>
-                                <a href={makeFileLink(props.file, props.file.event_id, props.eventType)}>
+                                <a href={makeFileLink(props.file, props.file.owner_id, props.eventType)}>
                                     <DownloadIcon />
                                 </a>
                             </IconButton>

@@ -165,6 +165,16 @@ export default function PrimaryAppBar() {
                     </Typography>
 
                     <SwipeableAppBarDivider />
+                    <SwipeableAppBarItem
+                        title="Уведомления"
+                        linkTo={NotificationListPath}
+                        icon={
+                            <Badge badgeContent={newNotifications.length} color="error" variant="dot">
+                                <NotificationsIcon />
+                            </Badge>
+                        }
+                    />
+                    <SwipeableAppBarDivider />
                     <SwipeableAppBarItem title="Календарь" linkTo={TaskListPath} icon={<CalendarMonthIcon />} />
                     <SwipeableAppBarDivider />
                     <SwipeableAppBarItem title="События" linkTo={EventListPath} icon={<LocalActivityIcon />} />
