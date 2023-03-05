@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import { EditEventRequestSchema } from "../../../api/schemas/requests/events";
 import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
 import UploadedFilePreview from "../../files/UploadedFilePreview";
-import { EventTypesEnum } from "../../../enums/filesEnums";
+import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import GoBackButton from "../../buttons/GoBackButton";
 import { EventListPath } from "../../../routes/paths";
 import TaskListCollapse from "../../common/TaskListCollapse";
@@ -147,7 +147,7 @@ export default function FullEventView() {
                                 Файлы
                             </Typography>
                             {eventFiles.map((file) => (
-                                <UploadedFilePreview key={file.id} file={file} eventType={EventTypesEnum.EVENT} />
+                                <UploadedFilePreview key={file.id} file={file} eventType={FileOwnerTypesEnum.EVENT} />
                             ))}
                         </>
                     )}

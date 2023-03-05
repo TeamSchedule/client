@@ -11,8 +11,8 @@ export class users {
         });
     }
 
-    static async getUser(): Promise<UserSchema> {
-        return requestApi.GET(`${this.apiPrefix}/me`).then((data: GetMeResponseSchema) => {
+    static async getMe(): Promise<UserSchema> {
+        return requestApi.GET(`/user/me`).then((data: GetMeResponseSchema) => {
             return data.user;
         });
     }

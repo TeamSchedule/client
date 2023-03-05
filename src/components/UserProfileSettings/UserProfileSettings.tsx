@@ -12,11 +12,11 @@ import ErrorSnackbar from "../snackbars/ErrorSnackbar";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import MainAvatar from "../MainAvatar";
-import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import { Tooltip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { makeAvatarLink } from "../../utils/fileUtils";
 
 export default function UserProfileSettings() {
     return (
@@ -32,26 +32,53 @@ function UserAvatarSection() {
     // текущий пользователь
     const { user } = useAuth();
 
-    const [avatar, setAvatar] = useState<File | null>(null);
+    const avatarPlaceholder: string =
+        user?.firstName && user.patronymic ? user.firstName[0] + user.patronymic[0] : "--";
 
-    const avatarPlaceholder: string = user?.firstName && user.lastName ? user.firstName[0] + user.lastName[0] : "--";
+    // статус запроса на обновление аватара
+    const [isEditAvatarInProgress, setIsEditAvatarInProgress] = useState<boolean>(false);
+    const [isEditAvatarError, setIsEditAvatarError] = useState<boolean>(false);
 
     const uploadAvatarHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newAvatar = event.target.files ? event.target.files[0] : null;
-        console.log(newAvatar);
-        setAvatar(newAvatar);
 
-        // API.avatars.
-    };
-
-    const deleteAvatarHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
+        if (!user?.id || !newAvatar) {
+            return;
+        }
+        setIsEditAvatarInProgress(true);
 
         API.avatars
-            .delete()
-            .then(() => {})
+            .set(+user.id, newAvatar)
+            .then(() => {
+                window.location.reload();
+            })
+            .catch(() => {
+                setIsEditAvatarError(true);
+            })
+            .finally(() => {
+                setIsEditAvatarInProgress(false);
+            });
+    };
+
+    const deleteAvatarHandler = () => {
+        if (!user?.id) {
+            return;
+        }
+
+        API.avatars
+            .delete(+user.id)
+            .then(() => {
+                window.location.reload();
+            })
             .catch(() => {})
             .finally(() => {});
+    };
+
+    const handleCloseErrorEditAvatarSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsEditAvatarError(false);
     };
 
     return (
@@ -63,22 +90,41 @@ function UserAvatarSection() {
 
             <Box sx={{ display: "flex", my: 2, mx: 0, px: 0 }}>
                 <Box sx={{ mr: 3 }}>
-                    <MainAvatar src="sjnfkj/skjk" placeholder={avatarPlaceholder} size={100} />
+                    <MainAvatar
+                        src={makeAvatarLink(user?.id ? +user?.id : 0)}
+                        placeholder={avatarPlaceholder}
+                        size={100}
+                        fullPath
+                    />
                 </Box>
 
                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexGrow: 1 }}>
-                    <Button fullWidth variant="contained" component="label" startIcon={<AddCircleIcon />}>
+                    <LoadingButton
+                        fullWidth
+                        variant="contained"
+                        component="label"
+                        startIcon={<AddCircleIcon />}
+                        loading={isEditAvatarInProgress}
+                    >
                         Загрузить изображение
                         <input hidden type="file" onInput={uploadAvatarHandler} />
-                    </Button>
+                    </LoadingButton>
 
                     <Tooltip title="Удалить аватар">
-                        <IconButton color="error" sx={{ borderWidth: 1, borderRadius: 5, borderColor: "red" }}>
+                        <IconButton
+                            color="error"
+                            sx={{ borderWidth: 1, borderRadius: 5, borderColor: "red" }}
+                            onClick={deleteAvatarHandler}
+                        >
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
                 </Box>
             </Box>
+
+            <ErrorSnackbar handleClose={handleCloseErrorEditAvatarSnackbar} isOpen={isEditAvatarError}>
+                Произошла ошибка, попробуйте позже
+            </ErrorSnackbar>
         </>
     );
 }
@@ -89,8 +135,8 @@ function UsernameSection() {
 
     // данные пользователя
     const [firstName, setFirstName] = useState<string>(user?.firstName || "");
-    const [lastName, setLastName] = useState<string>(user?.secondName || "");
-    const [patronymic, setPatronymic] = useState<string>(user?.lastName || "");
+    const [lastName, setLastName] = useState<string>(user?.lastName || "");
+    const [patronymic, setPatronymic] = useState<string>(user?.patronymic || "");
 
     // статус запроса на обновление данных
     const [isEditPersonalDataInProgress, setIsEditPersonalDataInProgress] = useState<boolean>(false);

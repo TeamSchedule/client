@@ -45,7 +45,7 @@ export default function SignIn() {
                 localStorage.setItem(ACCESS_TOKEN_STORAGE_NAME, tokens.access);
                 localStorage.setItem(REFRESH_TOKEN_STORAGE_NAME, tokens.refresh);
 
-                API.users.getUser().then((user: UserSchema) => {
+                API.users.getMe().then((user: UserSchema) => {
                     login(user);
                 });
             })

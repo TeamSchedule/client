@@ -25,6 +25,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Divider from "@mui/material/Divider";
 import { lightBlue } from "@mui/material/colors";
+import MainAvatar from "../MainAvatar";
+import { makeAvatarLink } from "../../utils/fileUtils";
 
 export default function PrimaryAppBar() {
     const navigate = useNavigate();
@@ -160,9 +162,12 @@ export default function PrimaryAppBar() {
                     }}
                 >
                     <Toolbar />
-                    <Typography variant="subtitle1" component="p" sx={{ py: 1, px: 2 }}>
-                        {user?.login}
-                    </Typography>
+                    <Box sx={{ display: "flex", alignItems: "center", mx: 2, my: 1 }}>
+                        <MainAvatar src={makeAvatarLink(user?.id ? +user?.id : 0)} fullPath size={35} />
+                        <Typography variant="subtitle1" component="p" sx={{ py: 1, px: 2 }}>
+                            {user?.login}
+                        </Typography>
+                    </Box>
 
                     <SwipeableAppBarDivider />
                     <SwipeableAppBarItem
@@ -257,10 +262,6 @@ export default function PrimaryAppBar() {
 
                     <Box sx={{ flexGrow: 1 }} />
 
-                    <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <Typography color="inherit">{user?.login}</Typography>
-                    </Box>
-
                     <Tooltip title="Уведомления">
                         <IconButton
                             size="large"
@@ -273,6 +274,13 @@ export default function PrimaryAppBar() {
                             </Badge>
                         </IconButton>
                     </Tooltip>
+                    
+                    <Box sx={{ display: { xs: "none", md: "flex", alignItems: "center" } }}>
+                        <Typography color="inherit" sx={{ mx: 1 }}>
+                            {user?.login}
+                        </Typography>
+                        <MainAvatar src={makeAvatarLink(user?.id ? +user?.id : 0)} fullPath size={40} />
+                    </Box>
 
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
                         <IconButton size="large" aria-label="logout" color="inherit" onClick={handleLogout}>

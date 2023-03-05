@@ -1,9 +1,13 @@
 import { MEDIA_STATIC_SERVER } from "../api/config";
 import { FileResponseItemSchema } from "../api/schemas/responses/files";
-import { EventTypesStrings } from "../enums/filesEnums";
+import { EventTypesStrings, FileOwnerTypesEnum } from "../enums/filesEnums";
 
 export function makeFileLink(file: FileResponseItemSchema, parentId: number, parentType: EventTypesStrings): string {
     return [MEDIA_STATIC_SERVER, parentType, parentId, file.filename].join("/");
+}
+
+export function makeAvatarLink(userId: number): string {
+    return [MEDIA_STATIC_SERVER, FileOwnerTypesEnum.USER, userId, userId].join("/");
 }
 
 export function fileSize(bytes: number): string {

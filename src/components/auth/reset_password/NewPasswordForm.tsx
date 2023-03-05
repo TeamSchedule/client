@@ -69,7 +69,7 @@ export default function NewPasswordForm() {
                 setPassword("");
                 setPassword2("");
                 API.users
-                    .getUser()
+                    .getMe()
                     .then(login)
                     .catch(() => {});
             })

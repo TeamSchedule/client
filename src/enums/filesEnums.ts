@@ -1,7 +1,7 @@
-export enum EventTypesEnum {
+export enum FileOwnerTypesEnum {
     EVENT = "EVENT",
     TASK = "TASK",
-    PROCESS = "PROCESS",
+    USER = "USER",
 }
 
-export type EventTypesStrings = (typeof EventTypesEnum)[keyof typeof EventTypesEnum];
+export type EventTypesStrings = (typeof FileOwnerTypesEnum)[keyof typeof FileOwnerTypesEnum];

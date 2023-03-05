@@ -11,7 +11,7 @@ import InputColor from "../../inputs/ColorInput";
 import FileUpload from "../../files/FileUpload/FileUpload";
 import FileList from "../../files/FileList/FileList";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { EventTypesEnum } from "../../../enums/filesEnums";
+import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
@@ -92,7 +92,7 @@ export default function EditEventForm() {
 
         const saveFilePromises = attachments.map((attachment) =>
             API.files
-                .addFile(+id, EventTypesEnum.EVENT, attachment)
+                .addFile(+id, FileOwnerTypesEnum.EVENT, attachment)
                 .then(() => {})
                 .catch(() => {})
                 .finally(() => {})

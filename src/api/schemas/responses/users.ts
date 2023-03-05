@@ -13,8 +13,8 @@ export interface UserSchema {
     avatar: string;
     login: string;
     firstName: string;
-    secondName: string;
     lastName: string;
+    patronymic: string;
     email: string;
     fullName: string;
     creationDate: Date;

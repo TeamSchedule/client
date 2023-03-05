@@ -48,8 +48,8 @@ import FullTaskView from "../components/tasks/FullTaskView";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
 import UserProfileSettings from "../components/UserProfileSettings";
-import ErrorPage from "../components/generic/ErrorPage";
 import FullScreenWrapper from "../components/common/FullScreenWrapper";
+import { API } from "../api/api";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -88,73 +88,71 @@ const PublicLayout = () => {
  * */
 const AuthLayout = () => {
     return (
-      <AuthProvider>
-          <Outlet />
-      </AuthProvider>
+        <AuthProvider>
+            <Outlet />
+        </AuthProvider>
     );
 };
 
 // Для использования нового api react-router-dom нужно определние с помощью `createRoutesFromElements`
 export const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-        <Route element={<AuthLayout />}>
-            <Route element={<PublicLayout />}>
-                <Route index element={<Navigate to={loginPath} replace={true} />} />
+    createRoutesFromElements(
+        <>
+            <Route element={<AuthLayout />}>
+                <Route element={<PublicLayout />}>
+                    <Route index element={<Navigate to={loginPath} replace={true} />} />
 
-                <Route path={loginPath} element={<SignIn />} />
-                <Route path={forgotPasswordPath} element={<ForgotPasswordForm />} />
-                <Route path={resetPasswordCodePath} element={<ResetPasswordCodeForm />} />
-                <Route path={newPasswordPath} element={<NewPasswordForm />} />
+                    <Route path={loginPath} element={<SignIn />} />
+                    <Route path={forgotPasswordPath} element={<ForgotPasswordForm />} />
+                    <Route path={resetPasswordCodePath} element={<ResetPasswordCodeForm />} />
+                    <Route path={newPasswordPath} element={<NewPasswordForm />} />
 
-                <Route path={registrationPath} element={<SignUp />} />
-                <Route path={successRegistrationPath} element={<SuccessRegisteredMsg />} />
+                    <Route path={registrationPath} element={<SignUp />} />
+                    <Route path={successRegistrationPath} element={<SuccessRegisteredMsg />} />
 
-                <Route path={notFound} element={<Navigate to={loginPath} replace={true} />} />
-            </Route>
-
-            <Route element={<ProtectedLayout />}>
-                <Route element={<App />} /*loader={API.users.getUser}*/ /*errorElement={<ErrorPage />}*/>
-                    <Route index element={<Navigate to={EventListPath} replace={true} />} />
-
-                    <Route path="/profile/avatar" element={<AvatarEditorModal avatarType="personal" />} />
-
-                    <Route element={<FullScreenWrapper />}>
-                        {/* ==================== events routes ==================== */}
-                        <Route path={EventListPath} element={<EventList />} />
-                        <Route path={CreateNewEventPath} element={<CreateEventForm />} />
-                        <Route path={FullViewEventPath} element={<FullEventView />} />
-                        <Route path={EditEventPath} element={<EditEventForm />} />
-
-                        {/* ==================== notifications routes ==================== */}
-                        <Route path={baseNotificationPath} element={<Outlet />}>
-                            <Route index element={<NotificationList />} />
-                        </Route>
-
-                        {/* ==================== units routes ==================== */}
-                        <Route path={UnitListPath} element={<UnitList />} />
-                        <Route path={CreateNewUnitPath} element={<CreateUnitForm />} />
-                        <Route path={FullViewUnitPath} element={<FullUnitView />} />
-                        <Route path={EditUnitPath} element={<EditUnitForm />} />
-
-                        {/* ==================== task routes ==================== */}
-                        <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />
-                        <Route path={EditTaskPath} element={<EditTaskForm />} />
-                        <Route path={FullViewTaskPath} element={<FullTaskView />} />
-
-                        {/* ==================== settings routes ==================== */}
-                        <Route path={SettingsPath} element={<UserProfileSettings />} />
-                    </Route>
-
-
-                    {/* ==================== calendar routes ==================== */}
-                    <Route path={TaskListPath} element={<FullCalendarMobileView />} />
-
+                    <Route path={notFound} element={<Navigate to={loginPath} replace={true} />} />
                 </Route>
 
-                <Route path={notFound} element={<NotFound />} />
+                <Route element={<ProtectedLayout />}>
+                    <Route element={<App />} loader={API.users.getMe} /*errorElement={<ErrorPage />}*/>
+                        <Route index element={<Navigate to={EventListPath} replace={true} />} />
+
+                        <Route path="/profile/avatar" element={<AvatarEditorModal avatarType="personal" />} />
+
+                        <Route element={<FullScreenWrapper />}>
+                            {/* ==================== events routes ==================== */}
+                            <Route path={EventListPath} element={<EventList />} />
+                            <Route path={CreateNewEventPath} element={<CreateEventForm />} />
+                            <Route path={FullViewEventPath} element={<FullEventView />} />
+                            <Route path={EditEventPath} element={<EditEventForm />} />
+
+                            {/* ==================== notifications routes ==================== */}
+                            <Route path={baseNotificationPath} element={<Outlet />}>
+                                <Route index element={<NotificationList />} />
+                            </Route>
+
+                            {/* ==================== units routes ==================== */}
+                            <Route path={UnitListPath} element={<UnitList />} />
+                            <Route path={CreateNewUnitPath} element={<CreateUnitForm />} />
+                            <Route path={FullViewUnitPath} element={<FullUnitView />} />
+                            <Route path={EditUnitPath} element={<EditUnitForm />} />
+
+                            {/* ==================== task routes ==================== */}
+                            <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />
+                            <Route path={EditTaskPath} element={<EditTaskForm />} />
+                            <Route path={FullViewTaskPath} element={<FullTaskView />} />
+
+                            {/* ==================== settings routes ==================== */}
+                            <Route path={SettingsPath} element={<UserProfileSettings />} />
+                        </Route>
+
+                        {/* ==================== calendar routes ==================== */}
+                        <Route path={TaskListPath} element={<FullCalendarMobileView />} />
+                    </Route>
+
+                    <Route path={notFound} element={<NotFound />} />
+                </Route>
             </Route>
-        </Route>
-    </>
-  )
+        </>
+    )
 );
