@@ -43,7 +43,7 @@ export default function FullCalendarMobileView() {
 
     return (
         <>
-            <div className="d-flex justify-content-center">
+            <Box sx={{ display: "flex", justifyContent: "center", mx: 2 }}>
                 <Button
                     fullWidth
                     variant="contained"
@@ -52,11 +52,12 @@ export default function FullCalendarMobileView() {
                         navigate(CreateNewTaskPath);
                     }}
                     color="secondary"
+                    sx={{ mr: 2 }}
                 >
                     Задача
                 </Button>
                 <FiltersDrawer tasks={tasks} setDisplayedTasks={setDisplayedTasks} />
-            </div>
+            </Box>
 
             <AdaptiveCalendar
                 tasks={displayedTasks}

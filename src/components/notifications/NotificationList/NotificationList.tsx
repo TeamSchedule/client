@@ -35,7 +35,7 @@ export default function NotificationList(props: NotificationListProps) {
         } else if (filterValue === NotificationFilterEnum.Unread) {
             setDisplayedNotifications(() => [...notifications]);
         }
-    }, [filterValue]);
+    }, [filterValue, notifications]);
 
     return (
         <>

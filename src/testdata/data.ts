@@ -58,8 +58,8 @@ export const unitsData: UnitResponseItemSchema[] = [
     {
         id: 1,
         name: "Отдел социальных медиа",
+        description: "Описание",
         members: usersData.slice(0, 2),
-        openTasks: [],
         admin: user1,
         color: "",
         creationDate: new Date().toJSON(),
@@ -67,8 +67,8 @@ export const unitsData: UnitResponseItemSchema[] = [
     {
         id: 2,
         name: "Отдел социальных медиа",
+        description: "Описание",
         members: usersData.slice(0, 2),
-        openTasks: [],
         admin: user1,
         color: "",
         creationDate: new Date().toJSON(),
@@ -76,8 +76,8 @@ export const unitsData: UnitResponseItemSchema[] = [
     {
         id: 3,
         name: "Отдел социальных медиа",
+        description: "Описание",
         members: usersData.slice(0, 2),
-        openTasks: [],
         admin: user1,
         color: "",
         creationDate: new Date().toJSON(),

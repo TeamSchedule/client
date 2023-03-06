@@ -48,6 +48,7 @@ export default function FullTaskView() {
 
     useEffect(() => {
         getTaskData();
+        /* eslint-disable react-hooks/exhaustive-deps */
     }, []);
 
     const toggleTaskStatus = (open: boolean) => (e: React.MouseEvent) => {

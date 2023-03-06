@@ -25,7 +25,7 @@ export default function EditEventForm() {
 
     const { id } = useParams();
 
-    // данные нового события
+    // данные события
     const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [deadline, setDeadline] = useState<Date | null>(null);

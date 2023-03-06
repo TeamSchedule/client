@@ -24,6 +24,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface TaskListCollapseProps {
     tasks: TaskResponseItemSchema[];
+    title?: string;
 }
 
 export default function TaskListCollapse(props: TaskListCollapseProps) {
@@ -44,7 +45,7 @@ export default function TaskListCollapse(props: TaskListCollapseProps) {
                     onClick={() => setExpanded(!expanded)}
                 >
                     <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold" }}>
-                        Задачи - {props.tasks.length}
+                        {props.title ? props.title : "Задачи"} - {props.tasks.length}
                     </Typography>
                     <ExpandMore expand={expanded} aria-expanded={expanded} aria-label="show more">
                         <ExpandMoreIcon />

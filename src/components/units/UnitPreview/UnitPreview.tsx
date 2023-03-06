@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./UnitPreview.module.scss";
-import UserPreview from "../../users/UsersPreview/UserPreview";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import { UnitParticipants } from "../common";
+import React from "react";
 
 interface UnitPreviewProps {
     unit: UnitResponseItemSchema;
@@ -12,8 +13,6 @@ interface UnitPreviewProps {
 
 export default function UnitPreview(props: UnitPreviewProps) {
     const navigate = useNavigate();
-
-    const members = props.unit.members.map((user) => <UserPreview key={user.id} user={user} />);
 
     return (
         <>
@@ -28,7 +27,7 @@ export default function UnitPreview(props: UnitPreviewProps) {
                         <Typography variant="subtitle1" component="div">
                             {props.unit.name}
                         </Typography>
-                        {members}
+                        <UnitParticipants admin={props.unit.admin} members={props.unit.members || []} />
                     </div>
                 </CardContent>
             </Card>

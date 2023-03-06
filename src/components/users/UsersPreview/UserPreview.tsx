@@ -2,10 +2,12 @@ import styles from "./UserPreview.module.scss";
 import { useNavigate } from "react-router-dom";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import MainAvatar from "../../MainAvatar";
+import { makeFullName } from "../../../utils/userUtils";
 
 interface UserPreviewProps {
     user: UserSchema;
     clickable?: boolean;
+    userPost?: string;
 }
 
 export default function UserPreview(props: UserPreviewProps) {
@@ -24,8 +26,8 @@ export default function UserPreview(props: UserPreviewProps) {
             >
                 <MainAvatar placeholder={props.user.fullName} src={props.user.avatar} />
                 <div className="ml-2">
-                    <p className={styles.userPreview__name}>{props.user.fullName}</p>
-                    <p className={styles.userPreview__post}>{props.user.post}</p>
+                    <p className={styles.userPreview__name}>{makeFullName(props.user)}</p>
+                    <p className={styles.userPreview__post}>{props.userPost ? props.userPost : props.user.post}</p>
                 </div>
             </div>
         </>

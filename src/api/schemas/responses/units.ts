@@ -24,6 +24,6 @@ export interface UnitResponseItemSchema {
     creationDate: string;
     admin: UserSchema;
     color: string;
+    description: string;
     members: UserSchema[];
-    openTasks: TaskResponseItemSchema[];
 }

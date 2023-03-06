@@ -30,7 +30,7 @@ export default function UserSelector(props: UserSelectorProps) {
             })
             .catch(() => {})
             .finally(() => {});
-    }, []);
+    }, [props.users]);
 
     return (
         <>

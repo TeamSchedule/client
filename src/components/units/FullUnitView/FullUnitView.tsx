@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionHeader";
-import UserPreview from "../../users/UsersPreview/UserPreview";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
@@ -15,6 +14,9 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import { TaskStatusEnum } from "../../../enums/tasksEnums";
 import TaskListCollapse from "../../common/TaskListCollapse";
+import GoBackButton from "../../buttons/GoBackButton";
+import { UnitListPath } from "../../../routes/paths";
+import { UnitParticipants } from "../common";
 
 export default function FullUnitView() {
     const navigate = useNavigate();
@@ -77,7 +79,6 @@ export default function FullUnitView() {
         setIsLoadingError(false);
     };
 
-    const members = unit?.members.map((user) => <UserPreview user={user} key={user.id} clickable={true} />);
     const openTasks: TaskResponseItemSchema[] = unitTasks.filter(
         (task) => task.taskStatus === TaskStatusEnum.IN_PROGRESS
     );
@@ -88,10 +89,11 @@ export default function FullUnitView() {
                 <ScreenHeader text={unit?.name || ""} />
                 <CardContent>
                     <ScreenSectionHeader text="Состав отдела" />
-                    {members}
-                </CardContent>
+                    <UnitParticipants admin={unit?.admin} members={unit?.members || []} />
+                    <TaskListCollapse tasks={openTasks} title="Открытые задачи" />
 
-                <TaskListCollapse tasks={openTasks} />
+                    <GoBackButton to={UnitListPath} buttonText="Вернуться к списку отделов" />
+                </CardContent>
             </Card>
 
             <SpeedDial

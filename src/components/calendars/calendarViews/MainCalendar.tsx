@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";

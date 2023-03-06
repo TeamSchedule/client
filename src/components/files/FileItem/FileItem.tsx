@@ -32,20 +32,18 @@ const fileIcons: object = {
     default: InsertDriveFileIcon,
 };
 
+function getLastItem(arr: Array<any>): any {
+    return arr[arr.length - 1];
+}
+
 interface FileItemProps {
     file: File;
     detachFile: (fileName: string) => void;
 }
 
 const FileItem = (props: FileItemProps) => {
-    // eslint-disable-next-line no-extend-native
     // @ts-ignore
-    Array.prototype["last"] = function (): any {
-        return this[this.length - 1];
-    };
-
-    // @ts-ignore
-    const fileIcon = fileIcons[props.file.name.split(".").last()] || fileIcons["default"];
+    const fileIcon = fileIcons[getLastItem(props.file.name.split("."))] || fileIcons["default"];
 
     return (
         <Grid container spacing={1} sx={{ display: "flex", alignItems: "center", mt: 1, wordWrap: "" }}>

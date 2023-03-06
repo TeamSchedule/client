@@ -10,8 +10,9 @@ import UsersSelector from "../../selectors/UsersSelector";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
-import { makeUnitLinkById } from "../../../routes/paths";
+import { makeUnitLinkById, UnitListPath } from "../../../routes/paths";
 import { CreateUnitsResponseSchema } from "../../../api/schemas/responses/units";
+import GoBackButton from "../../buttons/GoBackButton";
 
 export default function CreateUnitForm() {
     const navigate = useNavigate();
@@ -101,6 +102,8 @@ export default function CreateUnitForm() {
                 >
                     Создать
                 </LoadingButton>
+
+                <GoBackButton to={UnitListPath} />
             </div>
 
             <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isCreatingError}>

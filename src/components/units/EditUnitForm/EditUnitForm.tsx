@@ -9,6 +9,11 @@ import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import UsersSelector from "../../selectors/UsersSelector";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { makeUnitLinkById } from "../../../routes/paths";
+import GoBackButton from "../../buttons/GoBackButton";
+import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
+import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
+import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 
 export default function EditUnitForm() {
     const navigate = useNavigate();
@@ -25,27 +30,36 @@ export default function EditUnitForm() {
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);
 
+    const [isEditingFinished, setIsEditingFinished] = useState<boolean>(false);
+    const [isEditingError, setIsEditingError] = useState<boolean>(false);
+
     useEffect(() => {
         if (!id) {
-            //    TODO: bad id Что-то пошло не так
+            navigate("..");
             return;
         }
-        // API.units
-        //     .getById(+id)
-        //     .then(() => {
-        //         // setTitle("");
-        //         // setDescription("");
-        //         // setUnitMembers([]);
-        //         // setUnitHead({});
-        //     })
-        //     .catch(() => {
-        //         //    TODO: Что-то пошло не так
-        //     })
-        //     .finally(() => {});
+
+        API.units
+            .getById(+id)
+            .then((data: UnitResponseItemSchema) => {
+                setTitle(data.name);
+                setDescription(data.description);
+                setUnitMembers(data.members);
+                setUnitHead(data.admin);
+            })
+            .catch(() => {
+            })
+            .finally(() => {
+            });
+        /* eslint-disable react-hooks/exhaustive-deps */
     }, [id]);
 
     function editUnitHandler(event: React.MouseEvent) {
         event.preventDefault();
+        if (!id) {
+            setIsEditingError(true);
+            return;
+        }
 
         setInProgress(true);
 
@@ -59,17 +73,31 @@ export default function EditUnitForm() {
         API.units
             .createUnit(newUnitData)
             .then(() => {
-                setInProgress(false);
+                setIsEditingFinished(true);
                 navigate("..");
             })
             .catch(() => {
-                //    TODO: показать сообщение об ошибке - что-то пошло не так
+                setIsEditingError(true);
             })
             .finally(() => {
                 setInProgress(false);
                 navigate("..");
             });
     }
+
+    const handleCloseEditSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsEditingFinished(false);
+    };
+
+    const handleCloseErrorSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setIsEditingError(false);
+    };
 
     return (
         <>
@@ -111,7 +139,17 @@ export default function EditUnitForm() {
                 >
                     Сохранить изменения
                 </LoadingButton>
+
+                <GoBackButton to={id ? makeUnitLinkById(+id) : ".."} />
             </div>
+
+            <SuccessSnackbar handleClose={handleCloseEditSnackbar} isOpen={isEditingFinished}>
+                Изменения сохранены!
+            </SuccessSnackbar>
+
+            <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isEditingError}>
+                Не удалось сохранить изменения!
+            </ErrorSnackbar>
         </>
     );
 }

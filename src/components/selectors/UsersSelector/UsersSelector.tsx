@@ -3,7 +3,6 @@ import styles from "../UserSelector/UserSelector.module.scss";
 import UserPreview from "../../users/UsersPreview/UserPreview";
 import { useEffect, useState } from "react";
 import { UserSchema } from "../../../api/schemas/responses/users";
-import { usersData } from "../../../testdata/data";
 import { API } from "../../../api/api";
 
 interface UsersSelectorProps {
@@ -30,10 +29,7 @@ export default function UsersSelector(props: UsersSelectorProps) {
                 setUsers(users);
             })
             .catch(() => {})
-            .finally(() => {
-                setUsers([...usersData]);
-            });
-        setUsers([...usersData]);
+            .finally(() => {});
     }, [props.users]);
 
     return (

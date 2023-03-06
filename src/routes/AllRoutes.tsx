@@ -42,7 +42,6 @@ import SuccessRegisteredMsg from "../components/auth/SuccessRegisteredMsg";
 import AuthProvider from "./AuthProvider";
 import FullEventView from "../components/events/FullEventView/FullEventView";
 import EditEventForm from "../components/events/EditEventForm/EditEventForm";
-import AvatarEditorModal from "../components/AvatarEditorModal";
 import FullCalendarMobileView from "../components/calendars/FullCalendarMobileView";
 import FullTaskView from "../components/tasks/FullTaskView";
 import SignIn from "../components/auth/SignIn";
@@ -116,8 +115,6 @@ export const router = createBrowserRouter(
                 <Route element={<ProtectedLayout />}>
                     <Route element={<App />} loader={API.users.getMe} /*errorElement={<ErrorPage />}*/>
                         <Route index element={<Navigate to={EventListPath} replace={true} />} />
-
-                        <Route path="/profile/avatar" element={<AvatarEditorModal avatarType="personal" />} />
 
                         <Route element={<FullScreenWrapper />}>
                             {/* ==================== events routes ==================== */}
