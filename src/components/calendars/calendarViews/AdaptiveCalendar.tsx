@@ -1,23 +1,8 @@
-import MainCalendar from "./MainCalendar";
-import React from "react";
-import { PickersDay, PickersDayProps } from "@mui/x-date-pickers";
-import { isEqualYearMonthDate } from "../../../utils/dateutils";
-import { Badge, BadgeProps, Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import React, { useRef } from "react";
+import { Box } from "@mui/material";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
-
-/* https://github.com/mui/material-ui/issues/27700 */
-
-const MobileCalendarDayBadge = styled(Badge)<BadgeProps>(() => ({
-    "& .MuiBadge-badge": {
-        right: 10,
-        top: 8,
-        padding: 0,
-        fontSize: "0.7rem",
-        width: "15px",
-        height: "18px",
-    },
-}));
+import MobileCalendar from "./MobileCalendar";
+import DesktopCalendar from "./DesktopCalendar";
 
 export interface AdaptiveCalendarProps {
     viewedDate: Date;
@@ -25,31 +10,11 @@ export interface AdaptiveCalendarProps {
     chosenDate: Date;
     setChosenDate: (value: Date) => void;
     tasks: TaskResponseItemSchema[];
+    setDisplayedTasks: (tasks: TaskResponseItemSchema[]) => void;
 }
 
 export default function AdaptiveCalendar(props: AdaptiveCalendarProps) {
-    function MobileCustomDayRenderer(
-        date: Date,
-        selectedDays: Array<Date | null>,
-        pickersDayProps: PickersDayProps<Date>
-    ) {
-        return (
-            <>
-                <MobileCalendarDayBadge
-                    badgeContent={
-                        props.tasks.filter((task) => {
-                            // @ts-ignore
-                            return isEqualYearMonthDate(new Date(task.expirationTime), date["$d"]);
-                        }).length
-                    }
-                    color="secondary"
-                    key={date.toJSON()}
-                >
-                    <PickersDay {...pickersDayProps} />
-                </MobileCalendarDayBadge>
-            </>
-        );
-    }
+    const desktopRef = useRef(null);
 
     return (
         <>
@@ -61,19 +26,20 @@ export default function AdaptiveCalendar(props: AdaptiveCalendarProps) {
                     },
                 }}
             >
-                <MainCalendar {...props} customDayRenderer={MobileCustomDayRenderer} />
+                <MobileCalendar {...props} />
             </Box>
             <Box
+                ref={desktopRef}
                 sx={{
                     display: {
                         xs: "none",
                         md: "block",
-                        width: "80%",
+                        position: "relative",
+                        minWidth: "320px",
                     },
-                    border: "1px solid black",
                 }}
             >
-                <MainCalendar {...props} customDayRenderer={MobileCustomDayRenderer} />
+                <DesktopCalendar {...props} />
             </Box>
         </>
     );

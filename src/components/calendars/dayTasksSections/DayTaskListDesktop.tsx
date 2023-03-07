@@ -3,12 +3,10 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
-import { getDateRepresentation, isEqualYearMonthDate } from "../../../utils/dateutils";
-import Typography from "@mui/material/Typography";
-import TaskPreview from "../../tasks/TaskPreview";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import Toolbar from "@mui/material/Toolbar";
+import { TodayTaskList } from "./common";
 
 interface DayTaskListDesktopProps {
     day: Date;
@@ -17,13 +15,7 @@ interface DayTaskListDesktopProps {
 
 export default function DayTaskListDesktop(props: DayTaskListDesktopProps) {
     // открыт sidebar или нет
-    const [openState, setOpenState] = React.useState<boolean>(false);
-
-    const todayDateStr: string = props.day ? getDateRepresentation(props.day) : "";
-
-    const dayTasks: TaskResponseItemSchema[] = props.tasks.filter((task) =>
-        isEqualYearMonthDate(new Date(task.expirationTime), props.day)
-    );
+    const [openState, setOpenState] = React.useState<boolean>(true);
 
     const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
         if (
@@ -58,15 +50,8 @@ export default function DayTaskListDesktop(props: DayTaskListDesktopProps) {
                         },
                     }}
                 >
-                    <Typography variant="subtitle1" component="p" className="text-center">
-                        Задачи на {todayDateStr}
-                    </Typography>
+                    <TodayTaskList {...props} />
 
-                    {dayTasks.map((task) => (
-                        <div className="mb-2" key={task.id}>
-                            <TaskPreview key={task.id} task={task} />
-                        </div>
-                    ))}
                     <IconButton onClick={toggleDrawer(!openState)} aria-label="reset" color="primary">
                         {openState ? (
                             <KeyboardDoubleArrowRightIcon fontSize="large" sx={{ p: 0, m: 0 }} />

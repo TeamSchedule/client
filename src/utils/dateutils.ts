@@ -48,3 +48,11 @@ export function getNextDayDate(d: string | Date): Date {
 export function isEqualYearMonthDate(d1: Date, d2: Date): boolean {
     return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
 }
+
+export function compareDatetime(d1: Date, d2: Date): number {
+    d1.setSeconds(0);
+    d2.setSeconds(0);
+    d1.setMilliseconds(0);
+    d2.setMilliseconds(0);
+    return d1.getTime() - d2.getTime();
+}
