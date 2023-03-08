@@ -145,7 +145,7 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                                 width: dateSize,
                                 minHeight: `${BaseDateHeight}px`,
                                 height: "100%",
-                                fontSize: "1rem",
+                                fontSize: "0.85rem",
                                 border: "1px solid",
                                 borderColor: theme.palette.primary.light,
                                 borderRadius: 0,

@@ -42,7 +42,7 @@ import SuccessRegisteredMsg from "../components/auth/SuccessRegisteredMsg";
 import AuthProvider from "./AuthProvider";
 import FullEventView from "../components/events/FullEventView/FullEventView";
 import EditEventForm from "../components/events/EditEventForm/EditEventForm";
-import FullCalendarMobileView from "../components/calendars/FullCalendarMobileView";
+import FullCalendar from "../components/calendars/FullCalendar";
 import FullTaskView from "../components/tasks/FullTaskView";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
@@ -144,7 +144,7 @@ export const router = createBrowserRouter(
                         </Route>
 
                         {/* ==================== calendar routes ==================== */}
-                        <Route path={TaskListPath} element={<FullCalendarMobileView />} />
+                        <Route path={TaskListPath} element={<FullCalendar />} />
                     </Route>
 
                     <Route path={notFound} element={<NotFound />} />

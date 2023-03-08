@@ -10,6 +10,9 @@ export interface CreateTaskRequestSchema {
 }
 
 export interface UpdateTaskRequestSchema {
+    taskId: number;
+    eventId?: number;
+    departmentId?: number;
     name?: string;
     description?: string;
     expirationTime?: string;

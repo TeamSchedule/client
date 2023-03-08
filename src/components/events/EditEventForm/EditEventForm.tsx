@@ -8,8 +8,6 @@ import TextField from "@mui/material/TextField";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import DateInput from "../../inputs/DateInput";
 import InputColor from "../../inputs/ColorInput";
-import FileUpload from "../../files/FileUpload/FileUpload";
-import FileList from "../../files/FileList/FileList";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
@@ -19,6 +17,7 @@ import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import GoBackButton from "../../buttons/GoBackButton";
 import { makeEventLinkById } from "../../../routes/paths";
+import Uploader from "../../files/Uploader";
 
 export default function EditEventForm() {
     const navigate = useNavigate();
@@ -30,15 +29,12 @@ export default function EditEventForm() {
     const [description, setDescription] = useState<string>("");
     const [deadline, setDeadline] = useState<Date | null>(null);
     const [color, setColor] = useState<string>("");
-    const [attachments, setAttachments] = useState<File[]>([]);
 
     // статус загрузки
     const [inProgress, setInProgress] = useState<boolean>(false);
-    const [inProgressFiles, setInProgressFiles] = useState<boolean>(false);
 
     const [isEditingFinished, setIsEditingFinished] = useState<boolean>(false);
     const [isEditingError, setIsEditingError] = useState<boolean>(false);
-    const [isNewFilesFinished, setIsNewFilesFinished] = useState<boolean>(false);
 
     useEffect(() => {
         if (!id) return;
@@ -51,8 +47,10 @@ export default function EditEventForm() {
                 setColor(data.color);
                 setDeadline(data.endDate ? new Date(data.endDate) : null);
             })
-            .catch(() => {})
-            .finally(() => {});
+            .catch(() => {
+            })
+            .finally(() => {
+            });
     }, [id]);
 
     function editEventHandler() {
@@ -85,42 +83,11 @@ export default function EditEventForm() {
             });
     }
 
-    function onLoadFiles(event: React.MouseEvent<HTMLButtonElement>) {
-        event.preventDefault();
-        if (!id) return;
-        setInProgressFiles(true);
-
-        const saveFilePromises = attachments.map((attachment) =>
-            API.files
-                .addFile(+id, FileOwnerTypesEnum.EVENT, attachment)
-                .then(() => {})
-                .catch(() => {})
-                .finally(() => {})
-        );
-
-        Promise.all(saveFilePromises)
-            .then(() => {
-                setIsNewFilesFinished(true);
-                navigate(makeEventLinkById(+id));
-            })
-            .catch(() => {})
-            .finally(() => {
-                setInProgressFiles(false);
-            });
-    }
-
     const handleCloseEditSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
             return;
         }
         setIsEditingFinished(false);
-    };
-
-    const handleCloseNewFilesSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setIsNewFilesFinished(false);
     };
 
     const handleCloseErrorSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -174,27 +141,14 @@ export default function EditEventForm() {
                         Сохранить изменения
                     </LoadingButton>
 
-                    <FormInputItemWrapper className="d-flex align-items-center mt-4">
-                        <FileUpload files={attachments} setFiles={setAttachments} />
-                    </FormInputItemWrapper>
-
-                    <FileList
-                        files={attachments}
-                        detachFile={(excludeFilename: string) =>
-                            setAttachments([...attachments.filter((attachment) => attachment.name !== excludeFilename)])
-                        }
-                    />
-
-                    {attachments.length > 0 && (
-                        <LoadingButton
-                            fullWidth
-                            onClick={onLoadFiles}
-                            loading={inProgressFiles}
-                            variant="contained"
-                            sx={{ my: 2 }}
-                        >
-                            Прикрепить файлы
-                        </LoadingButton>
+                    {id && (
+                        <Uploader
+                            destType={FileOwnerTypesEnum.EVENT}
+                            destId={+id}
+                            successHandler={() => {
+                                navigate(makeEventLinkById(+id));
+                            }}
+                        />
                     )}
 
                     <GoBackButton to={id ? makeEventLinkById(+id) : ".."} />
@@ -207,9 +161,6 @@ export default function EditEventForm() {
             <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isEditingError}>
                 Не удалось сохранить изменения!
             </ErrorSnackbar>
-            <SuccessSnackbar handleClose={handleCloseNewFilesSnackbar} isOpen={isNewFilesFinished}>
-                Файлы загружены!
-            </SuccessSnackbar>
         </>
     );
 }

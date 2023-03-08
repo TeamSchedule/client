@@ -28,7 +28,7 @@ export class tasks {
     }
 
     static async updateTaskById(id: number, data: UpdateTaskRequestSchema) {
-        return requestApi.PATCH(`${this.prefixUrl}/${id}`, { body: data });
+        return requestApi.PATCH(`${this.prefixUrl}`, { body: data });
     }
 
     static async deleteTaskById(taskId: number) {

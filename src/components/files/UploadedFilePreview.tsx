@@ -13,6 +13,7 @@ import { API } from "../../api/api";
 import ErrorSnackbar from "../snackbars/ErrorSnackbar";
 import SuccessSnackbar from "../snackbars/SuccessSnackbar";
 import Divider from "@mui/material/Divider";
+import WarningDialog from "../WarningDialog/WarningDialog";
 
 interface UploadedFilePreviewProps {
     file: FileResponseItemSchema;
@@ -20,12 +21,19 @@ interface UploadedFilePreviewProps {
 }
 
 export default function UploadedFilePreview(props: UploadedFilePreviewProps) {
-    const [isDeleted, setIsDeleted] = useState<boolean>(false);
+    // состояние видимости окна подтверждения удаления
+    const [openDeleteConfirm, setOpenDeleteConfirm] = useState<boolean>(false);
 
+    // результаты api запросов
+    const [isDeleted, setIsDeleted] = useState<boolean>(false);
     const [isDeletingSuccess, setIsDeletingSuccess] = useState<boolean>(false);
     const [isDeletingError, setIsDeletingError] = useState<boolean>(false);
 
     function onClickDelete() {
+        setOpenDeleteConfirm(true);
+    }
+
+    function dropFile() {
         API.files
             .dropFileById(props.file.id)
             .then(() => {
@@ -103,6 +111,14 @@ export default function UploadedFilePreview(props: UploadedFilePreviewProps) {
                     <Divider />
                 </>
             )}
+            <WarningDialog
+                open={openDeleteConfirm}
+                setOpen={setOpenDeleteConfirm}
+                title="Удалить файл?"
+                text={`Вы уверены, что хотите удалить "${props.file.filename}"?`}
+                handleAgree={dropFile}
+            />
+
             <ErrorSnackbar handleClose={handleCloseErrorDeleteSnackbar} isOpen={isDeletingError}>
                 Не удалось удалить файл {props.file.filename}!
             </ErrorSnackbar>

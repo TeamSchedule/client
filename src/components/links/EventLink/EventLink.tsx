@@ -5,11 +5,10 @@ import SkeletonWrapper from "../../SkeletonWrapper";
 import { IconButton, Tooltip } from "@mui/material";
 import Link from "@mui/material/Link";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 
 interface EventLinkProps {
-    id?: number;
-    name?: string;
-    color?: string;
+    event?: EventResponseItemSchema;
 }
 
 export default function EventLink(props: EventLinkProps) {
@@ -17,23 +16,25 @@ export default function EventLink(props: EventLinkProps) {
 
     function onClick(e: React.MouseEvent<any>) {
         e.stopPropagation();
-        if (!props.name || !props.id) return;
-        navigate(makeEventLinkById(props.id), { state: { id: props.id } });
+        if (!props.event?.name || !props.event?.id) return;
+        navigate(makeEventLinkById(props.event?.id), { state: { id: props.event?.id } });
     }
 
     return (
         <>
-            <Typography variant="body1" component="div">
-                <Tooltip title="Событие задачи">
-                    <IconButton>
-                        <LocalActivityIcon sx={{ color: props.color || "" }} />
-                    </IconButton>
-                </Tooltip>
+            {props.event && (
+                <Typography variant="body1" component="div">
+                    <Tooltip title="Событие задачи">
+                        <IconButton>
+                            <LocalActivityIcon sx={{ color: props.event.color || "" }} />
+                        </IconButton>
+                    </Tooltip>
 
-                <Link component="button" variant="body2" onClick={onClick}>
-                    {props.name ? props.name : <SkeletonWrapper />}
-                </Link>
-            </Typography>
+                    <Link component="button" variant="body2" onClick={onClick}>
+                        {props.event.name ? props.event.name : <SkeletonWrapper />}
+                    </Link>
+                </Typography>
+            )}
         </>
     );
 }

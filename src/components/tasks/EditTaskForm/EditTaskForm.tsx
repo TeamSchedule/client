@@ -3,18 +3,21 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { API } from "../../../api/api";
 import CloseFormIcon from "../../generic/CloseFormIcon";
-import BaseForm from "../../generic/BaseForm";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../../inputs/SimpleTextInput";
 import DateInput from "../../inputs/DateInput";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { makeEventLinkById, makeTaskLinkById } from "../../../routes/paths";
+import GoBackButton from "../../buttons/GoBackButton";
+import Uploader from "../../files/Uploader";
+import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
 
-    const { taskId } = useParams();
+    const { id } = useParams();
 
     // task data
     const [taskName, setTaskName] = useState("");
@@ -27,33 +30,34 @@ export default function EditTaskForm() {
     const [isDeleteActionInProgress, setIsDeleteActionInProgress] = useState(false);
 
     useEffect(() => {
-        if (taskId === undefined) {
+        if (id === undefined) {
             return;
         }
-        API.tasks.getTaskById(+taskId).then((task: TaskResponseItemSchema) => {
+        API.tasks.getTaskById(+id).then((task: TaskResponseItemSchema) => {
             // Available use full info about task in data
             setTaskName(task.name);
             setTaskDescription(task.description);
             setTaskExpirationDate(new Date(task.expirationTime));
             setTaskTeamName(task.department.name);
         });
-    }, [taskId]);
+    }, [id]);
 
     function onSubmit(event: React.FormEvent) {
         event.preventDefault();
-        if (taskId === undefined) {
+        if (id === undefined) {
             return;
         }
         setIsUpdateActionInProgress(true);
 
         const updateTaskRequestBody: UpdateTaskRequestSchema = {
+            taskId: +id,
             name: taskName,
             description: taskDescription,
             expirationTime: new Date(taskExpirationDate).toJSON(),
         };
 
         API.tasks
-            .updateTaskById(+taskId, updateTaskRequestBody)
+            .updateTaskById(+id, updateTaskRequestBody)
             .then(() => {
                 navigate(-1);
             })
@@ -64,12 +68,12 @@ export default function EditTaskForm() {
 
     function onDeleteTaskBtn(event: React.FormEvent) {
         event.preventDefault();
-        if (taskId === undefined) {
+        if (id === undefined) {
             return;
         }
         setIsDeleteActionInProgress(true);
         API.tasks
-            .deleteTaskById(+taskId)
+            .deleteTaskById(+id)
             .then(() => {
                 navigate(-1);
             })
@@ -79,8 +83,7 @@ export default function EditTaskForm() {
     }
 
     return (
-        // @ts-ignore
-        <BaseForm onSubmit={onSubmit}>
+        <>
             <div className="d-flex justify-content-between">
                 <p className="fw-bold">Изменить задачу</p>
                 <CloseFormIcon />
@@ -112,6 +115,16 @@ export default function EditTaskForm() {
                 Сохранить изменения
             </LoadingButton>
 
+            {id && (
+                <Uploader
+                    destType={FileOwnerTypesEnum.TASK}
+                    destId={+id}
+                    successHandler={() => {
+                        navigate(makeTaskLinkById(+id));
+                    }}
+                />
+            )}
+
             <LoadingButton
                 onClick={onDeleteTaskBtn}
                 loading={isDeleteActionInProgress}
@@ -123,6 +136,8 @@ export default function EditTaskForm() {
             >
                 Удалить задачу
             </LoadingButton>
-        </BaseForm>
+
+            <GoBackButton to={id ? makeEventLinkById(+id) : ".."} />
+        </>
     );
 }

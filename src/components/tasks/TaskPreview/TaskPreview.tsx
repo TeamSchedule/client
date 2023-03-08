@@ -3,17 +3,13 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import UnitLink from "../../links/UnitLink/UnitLink";
 import EventLink from "../../links/EventLink/EventLink";
-import StatusDone from "../../statuses/StatusDone";
-import InProgressStatus from "../../statuses/InProgressStatus";
-import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { makeTaskLinkById } from "../../../routes/paths";
 import TaskName from "../common/TaskName";
-import TaskDeadline from "../common/TaskDeadline";
-import { TaskStatusEnum } from "../../../enums/tasksEnums";
+import React from "react";
+import { TaskDeadline, TaskDescription } from "../common/common";
 
 interface TaskPreviewProps {
     task: TaskResponseItemSchema;
@@ -36,23 +32,12 @@ export default function TaskPreview(props: TaskPreviewProps) {
                 }}
             >
                 <CardContent sx={{ paddingBottom: 0 }}>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        <Box component="span" sx={{ marginRight: 1 }}>
-                            {props.task.taskStatus === TaskStatusEnum.COMPLETED ? <StatusDone /> : <InProgressStatus />}
-                        </Box>
-                        <TaskDeadline deadline={new Date(props.task.expirationTime)} />
-                    </Typography>
+                    <TaskDeadline endDate={props.task.expirationTime} status={props.task.taskStatus} />
 
                     <TaskName name={props.task.name} />
-                    <Typography variant="body2">{props.task.description}</Typography>
-                    {props.task.event && (
-                        <EventLink
-                            id={props.task.event?.id}
-                            name={props.task.event?.name}
-                            color={props.task.event?.color}
-                        />
-                    )}
-
+                    <TaskDescription>{props.task.description}</TaskDescription>
+                    
+                    {props.task.event && <EventLink event={props.task?.event} />}
                     {props.task.department && (
                         <UnitLink id={props.task.department.id} name={props.task.department.name} />
                     )}

@@ -1,30 +1,16 @@
 import Typography from "@mui/material/Typography";
 import { Tooltip, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
-import StatusDone from "../statuses/StatusDone";
-import InProgressStatus from "../statuses/InProgressStatus";
-import { getDateRepresentation } from "../../utils/dateutils";
-import { EventStatusEnum, EventStatusStrings } from "../../enums/eventsEnums";
+import { getDateRepresentation } from "../../../utils/dateutils";
+import { TaskStatusEnum, TaskStatusStrings } from "../../../enums/tasksEnums";
+import StatusDone from "../../statuses/StatusDone";
+import InProgressStatus from "../../statuses/InProgressStatus";
 
-interface EventNameProps {
+interface TaskDescriptionProps {
     children?: any;
 }
 
-export function EventName(props: EventNameProps) {
-    return (
-        <>
-            <Typography variant="h6" component="div">
-                {props.children}
-            </Typography>
-        </>
-    );
-}
-
-interface EventDescriptionProps {
-    children?: any;
-}
-
-export function EventDescription(props: EventDescriptionProps) {
+export function TaskDescription(props: TaskDescriptionProps) {
     return (
         <>
             <Typography variant="body2" color="text.secondary">
@@ -34,12 +20,12 @@ export function EventDescription(props: EventDescriptionProps) {
     );
 }
 
-interface EventDeadlineProps {
+interface TaskDeadlineProps {
     endDate?: string;
-    status?: EventStatusStrings;
+    status?: TaskStatusStrings;
 }
 
-export function EventDeadline(props: EventDeadlineProps) {
+export function TaskDeadline(props: TaskDeadlineProps) {
     const theme = useTheme();
 
     if (!props.endDate) {
@@ -63,14 +49,14 @@ export function EventDeadline(props: EventDeadlineProps) {
     let endDateColor: string = theme.palette.info.main;
     const isTimeExpired: boolean = new Date(props.endDate) < new Date();
 
-    let dateTooltipText: string = "Событие в работе!";
+    let dateTooltipText: string = "В работе";
 
-    if (props.status === EventStatusEnum.COMPLETED) {
+    if (props.status === TaskStatusEnum.COMPLETED) {
         endDateColor = theme.palette.success.main;
-        dateTooltipText = "Событие завершено!";
+        dateTooltipText = "Выполнено";
     } else if (isTimeExpired) {
         endDateColor = theme.palette.error.main;
-        dateTooltipText = "Событие истекло!";
+        dateTooltipText = "Просрочено";
     }
 
     return (
@@ -93,37 +79,14 @@ export function EventDeadline(props: EventDeadlineProps) {
     );
 }
 
-interface EventColorProps {
-    color?: string;
-}
-
-export function EventColorLeft(props: EventColorProps) {
-    return (
-        <>
-            {props.color !== undefined && (
-                <Box
-                    sx={{
-                        borderRadius: "50%",
-                        backgroundColor: props.color || "white",
-                        width: "18px",
-                        height: "18px",
-                        mr: 1,
-                        flexGrow: 0,
-                    }}
-                ></Box>
-            )}
-        </>
-    );
-}
-
 interface WorkStatusProps {
-    status?: EventStatusStrings;
+    status?: TaskStatusStrings;
 }
 
 export function WorkStatus(props: WorkStatusProps) {
     return (
         <Box component="span" sx={{ ml: 1 }}>
-            {props.status !== undefined && props.status === EventStatusEnum.COMPLETED ? (
+            {props.status !== undefined && props.status === TaskStatusEnum.COMPLETED ? (
                 <StatusDone />
             ) : (
                 <InProgressStatus />

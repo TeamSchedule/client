@@ -20,7 +20,7 @@ export default function DesktopCalendarTaskPreview(props: DesktopCalendarTaskPre
                     backgroundColor: props.task.event?.color || "none",
                     color: theme.palette.getContrastText(props.task.event?.color || "#ffffff"),
                     borderRadius: 1,
-                    marginBottom: "3px",
+                    marginBottom: "2px",
                     flexGrow: 1,
                     padding: "1px",
                     px: 1,

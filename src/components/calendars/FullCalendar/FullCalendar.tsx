@@ -4,19 +4,18 @@ import { API } from "../../../api/api";
 import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
 import buildFilterParams from "../../../api/utils/buildFilterParams";
 import DayTaskListMobile from "../dayTasksSections/DayTaskListMobile";
-import { tasksData } from "../../../testdata/data";
-import Box from "@mui/material/Box";
 import AdaptiveCalendar from "../calendarViews/AdaptiveCalendar";
+import Box from "@mui/material/Box";
 
-export default function FullCalendarMobileView() {
+export default function FullCalendar() {
     // начало просматриваемого месяца
     const [viewedDate, setViewedDate] = useState<Date>(new Date()); // дата, в диапазоне которой показываются задачи
     const [chosenDate, setChosenDate] = useState<Date>(new Date()); // выбранный день, для него показываюся задачи на мобильной версии
 
     // все задачи в диапазоне нескольких месяцев
-    const [tasks, setTasks] = useState<TaskResponseItemSchema[]>(tasksData);
+    const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([]);
     // отображаемые задачи
-    const [displayedTasks, setDisplayedTasks] = useState<TaskResponseItemSchema[]>(tasksData);
+    const [displayedTasks, setDisplayedTasks] = useState<TaskResponseItemSchema[]>([]);
 
     useEffect(() => {
         // запрашиваем еще задач, если пользователь далеко проликнул в календаре
@@ -26,6 +25,7 @@ export default function FullCalendarMobileView() {
             .getTasks(params)
             .then((tasks: TaskResponseItemSchema[]) => {
                 setTasks(tasks);
+                setDisplayedTasks(tasks);
             })
             .catch(() => {
                 //    TODO: показать сообщение об ошибке
@@ -53,16 +53,6 @@ export default function FullCalendarMobileView() {
                 }}
             >
                 <DayTaskListMobile day={chosenDate} tasks={displayedTasks} />
-            </Box>
-            <Box
-                sx={{
-                    display: {
-                        sx: "none",
-                        md: "block",
-                    },
-                }}
-            >
-                {/*<DayTaskListDesktop day={chosenDate} tasks={displayedTasks} />*/}
             </Box>
         </>
     );
