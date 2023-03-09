@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CreateEventRequestSchema } from "../../../api/schemas/requests/events";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
-import DateInput from "../../inputs/DateInput";
 import InputColor from "../../inputs/ColorInput";
 import FormInputItemWrapper from "../../common/FormInputItemWrapper";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -14,6 +13,8 @@ import { EventListPath, makeEventLinkById } from "../../../routes/paths";
 import { CreateEventResponseSchema } from "../../../api/schemas/responses/events";
 import { getRandomColor } from "../../../utils/colorUtils";
 import GoBackButton from "../../buttons/GoBackButton";
+import FullDatetimeInput from "../../inputs/FullDatetimeInput/FullDatetimeInput";
+import { getTimezoneDatetime } from "../../../utils/dateutils";
 
 export default function CreateEventForm() {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function CreateEventForm() {
     // данные нового события
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [deadline, setDeadline] = useState<Date | null>(null);
+    const [deadline, setDeadline] = useState<Date | null>(new Date());
     const [color, setColor] = useState<string>(getRandomColor());
 
     // статус загрузки
@@ -29,12 +30,13 @@ export default function CreateEventForm() {
     const [isCreatingError, setIsCreatingError] = useState<boolean>(false);
 
     function createEventHandler() {
+        if (!deadline) return;
         setInProgress(true);
-
+        
         const newEventData: CreateEventRequestSchema = {
             name: title,
             description: description,
-            endDate: deadline,
+            endDate: getTimezoneDatetime(deadline).toJSON(),
             color: color === "" ? undefined : color,
         };
 
@@ -78,9 +80,11 @@ export default function CreateEventForm() {
                     <MultilineTextInput value={description} handleChange={setDescription} label="Описание события" />
                 </FormInputItemWrapper>
 
-                <FormInputItemWrapper>
-                    <DateInput value={deadline} handleChange={setDeadline} />
-                </FormInputItemWrapper>
+                {deadline && (
+                    <FormInputItemWrapper>
+                        <FullDatetimeInput value={deadline} handleChange={setDeadline} />
+                    </FormInputItemWrapper>
+                )}
 
                 <FormInputItemWrapper className="d-flex align-items-center">
                     <span>Цвет отображения задач</span>

@@ -33,6 +33,17 @@ export function getDateRepresentation(date: Date | undefined): string {
     return date.toLocaleDateString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" });
 }
 
+export function getDatetimeRepresentation(date: Date | undefined): string {
+    if (!date) return "**-**-****";
+    return date.toLocaleDateString("ru-RU", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+}
+
 export function getPrevDayDate(d: string | Date): Date {
     let prevDate = new Date(d);
     prevDate.setDate(prevDate.getDate() - 1);
@@ -55,4 +66,13 @@ export function compareDatetime(d1: Date, d2: Date): number {
     d1.setMilliseconds(0);
     d2.setMilliseconds(0);
     return d1.getTime() - d2.getTime();
+}
+
+const timezoneOffset: number = new Date().getTimezoneOffset() / 60;
+
+export function getTimezoneDatetime(d: Date): Date {
+    d.setHours(d.getHours() - timezoneOffset);
+    d.setMilliseconds(0);
+    d.setSeconds(0);
+    return d;
 }

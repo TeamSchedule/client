@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
-import { EventDeadline, EventDescription, EventName } from "../common";
+import { EventDescription, EventName } from "../common";
 import EditIcon from "@mui/icons-material/Edit";
 import SpeedDial from "@mui/material/SpeedDial";
 import Card from "@mui/material/Card";
@@ -21,6 +21,7 @@ import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import GoBackButton from "../../buttons/GoBackButton";
 import { EventListPath } from "../../../routes/paths";
 import TaskListCollapse from "../../common/TaskListCollapse";
+import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 
 export default function FullEventView() {
     const navigate = useNavigate();
@@ -137,7 +138,8 @@ export default function FullEventView() {
         <>
             <Card>
                 <CardContent>
-                    <EventDeadline endDate={event?.endDate} status={event?.status} />
+                    {event && <DeadlineAndStatus endDate={event.endDate} status={event.status} />}
+
                     <EventName>{event?.name}</EventName>
                     <EventDescription>{event?.description}</EventDescription>
 

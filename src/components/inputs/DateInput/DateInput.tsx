@@ -17,7 +17,7 @@ export default function DateInput(props: DateInputProps) {
                     inputFormat="DD-MM-YYYY"
                     value={props.value}
                     onChange={(v) => props.handleChange(v)}
-                    renderInput={(params) => <TextField {...params} className="w-100" />}
+                    renderInput={(params) => <TextField size="small" {...params} sx={{ minWidth: "150px" }} />}
                 />
             </LocalizationProvider>
         </>

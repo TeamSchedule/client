@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { makeTaskLinkById } from "../../../routes/paths";
 import TaskName from "../common/TaskName";
 import React from "react";
-import { TaskDeadline, TaskDescription } from "../common/common";
+import { TaskDescription } from "../common/common";
+import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 
 interface TaskPreviewProps {
     task: TaskResponseItemSchema;
@@ -32,11 +33,11 @@ export default function TaskPreview(props: TaskPreviewProps) {
                 }}
             >
                 <CardContent sx={{ paddingBottom: 0 }}>
-                    <TaskDeadline endDate={props.task.expirationTime} status={props.task.taskStatus} />
+                    <DeadlineAndStatus endDate={props.task.expirationTime} status={props.task.taskStatus} />
 
                     <TaskName name={props.task.name} />
                     <TaskDescription>{props.task.description}</TaskDescription>
-                    
+
                     {props.task.event && <EventLink event={props.task?.event} />}
                     {props.task.department && (
                         <UnitLink id={props.task.department.id} name={props.task.department.name} />

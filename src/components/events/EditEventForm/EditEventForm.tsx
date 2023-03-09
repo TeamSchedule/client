@@ -47,10 +47,8 @@ export default function EditEventForm() {
                 setColor(data.color);
                 setDeadline(data.endDate ? new Date(data.endDate) : null);
             })
-            .catch(() => {
-            })
-            .finally(() => {
-            });
+            .catch(() => {})
+            .finally(() => {});
     }, [id]);
 
     function editEventHandler() {
@@ -73,7 +71,7 @@ export default function EditEventForm() {
             .editEvent(newEventData)
             .then(() => {
                 setIsEditingFinished(true);
-                navigate("..");
+                navigate(makeEventLinkById(+id));
             })
             .catch(() => {
                 setIsEditingError(true);

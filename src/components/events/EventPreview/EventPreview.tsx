@@ -8,7 +8,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import { EventColorLeft, EventDeadline, EventDescription, EventName } from "../common";
+import { EventColorLeft, EventDescription, EventName } from "../common";
+import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 
 interface EventPreviewProps {
     event: EventResponseItemSchema;
@@ -29,7 +30,8 @@ export default function EventPreview(props: EventPreviewProps) {
             <Card sx={{ minWidth: 280, marginBottom: 1 }}>
                 <CardContent sx={{ paddingBottom: 0 }}>
                     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <EventDeadline endDate={props.event.endDate} status={props.event.status} />
+                        <DeadlineAndStatus endDate={props.event.endDate} status={props.event.status} />
+
                         {openTasks !== 0 && (
                             <Tooltip title={`Открытых задач: ${openTasks} `}>
                                 <IconButton>

@@ -17,11 +17,12 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { TaskListPath } from "../../../routes/paths";
 import GoBackButton from "../../buttons/GoBackButton";
 import EventLink from "../../links/EventLink/EventLink";
-import { TaskDeadline, TaskDescription } from "../common/common";
+import { TaskDescription } from "../common/common";
 import Typography from "@mui/material/Typography";
 import UploadedFilePreview from "../../files/UploadedFilePreview";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
+import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 
 export default function FullTaskView() {
     const { id } = useParams();
@@ -116,7 +117,7 @@ export default function FullTaskView() {
     return (
         <>
             <div>
-                <TaskDeadline status={task?.taskStatus} endDate={task?.expirationTime} />
+                {task && <DeadlineAndStatus status={task.taskStatus} endDate={task.expirationTime} />}
                 <TaskName name={task?.name} />
                 <TaskDescription>{task?.description}</TaskDescription>
                 <UnitLink id={task?.department.id} name={task?.department.name} />
