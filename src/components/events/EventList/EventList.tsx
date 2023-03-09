@@ -91,7 +91,12 @@ export default function EventList() {
                     </Box>
                 )}
 
-                {!eventsLoading && showedEvents.map((event) => <EventPreview key={event.id} event={event} />)}
+                {!eventsLoading &&
+                    showedEvents
+                        .sort((a, b) => {
+                            return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+                        })
+                        .map((event) => <EventPreview key={event.id} event={event} />)}
                 <SpeedDial
                     ariaLabel="create new event"
                     sx={{ position: "fixed", bottom: 16, right: 16 }}

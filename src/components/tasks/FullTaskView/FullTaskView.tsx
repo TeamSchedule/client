@@ -114,14 +114,19 @@ export default function FullTaskView() {
         }
         setIsChangeStatusError(false);
     };
+
+    if (!task) return null;
+
     return (
         <>
             <div>
                 {task && <DeadlineAndStatus status={task.taskStatus} endDate={task.expirationTime} />}
                 <TaskName name={task?.name} />
                 <TaskDescription>{task?.description}</TaskDescription>
-                <UnitLink id={task?.department.id} name={task?.department.name} />
-                <EventLink event={task?.event} />
+
+                {task?.department && <UnitLink id={task?.department.id} name={task?.department.name} />}
+                {task?.event && <EventLink event={task?.event} />}
+
                 <Executors users={task ? task.assignee : []} />
 
                 {taskFiles.length > 0 && (
@@ -159,7 +164,7 @@ export default function FullTaskView() {
                     </LoadingButton>
                 )}
 
-                <GoBackButton to={TaskListPath} buttonText="Вернуться к календарю" />
+                <GoBackButton to={TaskListPath} buttonText="К календарю" />
             </div>
 
             <SpeedDial

@@ -6,7 +6,6 @@ import { EditEventRequestSchema } from "../../../api/schemas/requests/events";
 import FormInputItemWrapper from "../../common/FormInputItemWrapper";
 import TextField from "@mui/material/TextField";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
-import DateInput from "../../inputs/DateInput";
 import InputColor from "../../inputs/ColorInput";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
@@ -18,6 +17,7 @@ import Card from "@mui/material/Card";
 import GoBackButton from "../../buttons/GoBackButton";
 import { makeEventLinkById } from "../../../routes/paths";
 import Uploader from "../../files/Uploader";
+import FullDatetimeInput from "../../inputs/FullDatetimeInput/FullDatetimeInput";
 
 export default function EditEventForm() {
     const navigate = useNavigate();
@@ -120,9 +120,11 @@ export default function EditEventForm() {
                         />
                     </FormInputItemWrapper>
 
-                    <FormInputItemWrapper>
-                        <DateInput value={deadline} handleChange={setDeadline} />
-                    </FormInputItemWrapper>
+                    {deadline && (
+                        <FormInputItemWrapper>
+                            <FullDatetimeInput value={deadline} handleChange={setDeadline} />
+                        </FormInputItemWrapper>
+                    )}
 
                     <FormInputItemWrapper className="d-flex align-items-center">
                         <span>Цвет отображения задач</span>

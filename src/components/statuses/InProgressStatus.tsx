@@ -5,7 +5,7 @@ export default function InProgressStatus() {
     return (
         <>
             <Tooltip title="Выполняется">
-                <BuildCircleIcon color="info" />
+                <BuildCircleIcon color="info" fontSize="small" />
             </Tooltip>
         </>
     );

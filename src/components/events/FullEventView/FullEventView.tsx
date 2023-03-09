@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
-import { EventDescription, EventName } from "../common";
+import { EventColorLeft, EventDescription, EventName } from "../common";
 import EditIcon from "@mui/icons-material/Edit";
 import SpeedDial from "@mui/material/SpeedDial";
 import Card from "@mui/material/Card";
@@ -22,6 +22,7 @@ import GoBackButton from "../../buttons/GoBackButton";
 import { EventListPath } from "../../../routes/paths";
 import TaskListCollapse from "../../common/TaskListCollapse";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
+import { Box } from "@mui/material";
 
 export default function FullEventView() {
     const navigate = useNavigate();
@@ -140,7 +141,11 @@ export default function FullEventView() {
                 <CardContent>
                     {event && <DeadlineAndStatus endDate={event.endDate} status={event.status} />}
 
-                    <EventName>{event?.name}</EventName>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "stretch" }}>
+                        <EventColorLeft color={event?.color} />
+                        <EventName>{event?.name}</EventName>
+                    </Box>
+
                     <EventDescription>{event?.description}</EventDescription>
 
                     {eventFiles.length > 0 && (

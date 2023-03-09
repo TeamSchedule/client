@@ -9,14 +9,19 @@ interface DateInputProps {
 }
 
 export default function DateInput(props: DateInputProps) {
+    function handleChangeDate(value: Date | null) {
+        // @ts-ignore
+        props.handleChange(value["$d"]);
+    }
+
     return (
         <>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
                 <DatePicker
-                    label="Дата завершения события"
+                    label="Дата"
                     inputFormat="DD-MM-YYYY"
                     value={props.value}
-                    onChange={(v) => props.handleChange(v)}
+                    onChange={handleChangeDate}
                     renderInput={(params) => <TextField size="small" {...params} sx={{ minWidth: "150px" }} />}
                 />
             </LocalizationProvider>

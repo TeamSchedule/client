@@ -10,7 +10,7 @@ export interface WorkStatusPlateProps {
 
 export default function WorkStatusPlate(props: WorkStatusPlateProps) {
     return (
-        <Box component="span" sx={{ ml: 1 }}>
+        <Box component="span">
             {props.status === EventStatusEnum.COMPLETED || props.status === TaskStatusEnum.COMPLETED ? (
                 <StatusDone />
             ) : (

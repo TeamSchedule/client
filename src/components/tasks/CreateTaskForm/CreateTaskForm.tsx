@@ -7,7 +7,7 @@ import { FormControlLabel, FormGroup, Switch } from "@mui/material";
 import { CreateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import useAuth from "../../../hooks/useAuth";
-import { getPrevDayDate } from "../../../utils/dateutils";
+import { getPrevDayDate, getTimezoneDatetime } from "../../../utils/dateutils";
 import UnitSelector from "../../selectors/UnitSelector/UnitSelector";
 import EventSelector from "../../selectors/EventSelector/EventSelector";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
@@ -17,11 +17,11 @@ import { UserPostsEnum } from "../../../enums/usersEnums";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
-import DateInput from "../../inputs/DateInput";
 import Box from "@mui/material/Box";
 import TextHelp from "../../TextHelp/TextHelp";
 import { makeTaskLinkById } from "../../../routes/paths";
 import { CreateTasksResponseSchema } from "../../../api/schemas/responses/tasks";
+import FullDatetimeInput from "../../inputs/FullDatetimeInput/FullDatetimeInput";
 
 function CreateTaskForm() {
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ function CreateTaskForm() {
 
     const [taskDescription, setTaskDescription] = useState<string>("");
     const [taskName, setTaskName] = useState<string>("");
-    const [taskExpirationDate, setTaskExpirationDate] = useState<Date>(new Date());
+    const [deadline, setDeadline] = useState<Date>(new Date());
 
     const [isPrivateFlag, setIsPrivateFlag] = useState<boolean>(false); // флаг приватной задачи, в этом случае отдел и исполнители устанавливаются автоматически
 
@@ -43,7 +43,7 @@ function CreateTaskForm() {
     const [isCreatingError, setIsCreatingError] = useState<boolean>(false);
 
     useEffect(() => {
-        setTaskExpirationDate(getPrevDayDate(date || ""));
+        setDeadline(getPrevDayDate(date || ""));
     }, [date]);
 
     useEffect(() => {
@@ -72,7 +72,7 @@ function CreateTaskForm() {
         const createTaskData: CreateTaskRequestSchema = {
             name: taskName,
             description: taskDescription,
-            expirationTime: taskExpirationDate,
+            expirationTime: getTimezoneDatetime(deadline),
             departmentId: selectedUnit?.id,
             assigneeIds: selectedExecutors.map((user) => user.id),
             eventId: selectedEvent?.id,
@@ -128,8 +128,8 @@ function CreateTaskForm() {
             />
 
             <Box sx={{ mb: 3 }}>
-                {/*@ts-ignore*/}
-                <DateInput value={taskExpirationDate} handleChange={setTaskExpirationDate} />
+                {/* @ts-ignore */}
+                <FullDatetimeInput value={deadline} handleChange={setDeadline} />
             </Box>
 
             <FormGroup row sx={{ alignItems: "center" }}>

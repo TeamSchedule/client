@@ -74,7 +74,7 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                     <Box
                         sx={{
                             width: "100%",
-                            px: 1,
+                            px: "3px",
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "stretch",

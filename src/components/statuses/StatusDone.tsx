@@ -5,7 +5,7 @@ export default function StatusDone() {
     return (
         <>
             <Tooltip title="Завершено">
-                <CheckCircleIcon color="success" />
+                <CheckCircleIcon color="success" fontSize="small" />
             </Tooltip>
         </>
     );

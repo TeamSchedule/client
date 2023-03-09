@@ -10,17 +10,29 @@ interface FullDatetimeInputProps {
 }
 
 export default function FullDatetimeInput(props: FullDatetimeInputProps) {
-    const [deadlineTime, setDeadlineTime] = useState<TimeUnit>({
-        h: props.value.getHours(),
-        m: Math.floor((props.value.getMinutes() + 7) / 15) * 15,
-    });
+    const [deadlineTime, setDeadlineTime] = useState<TimeUnit>(
+        props.value
+            ? {
+                  h: props.value.getHours(),
+                  m: Math.floor((props.value.getMinutes() + 7) / 15) * 15,
+              }
+            : { h: new Date().getHours() + 1, m: 0 }
+    );
 
-    useEffect(() => {
+    function updateTime() {
         let nd: Date = props.value;
         nd.setHours(deadlineTime.h);
         nd.setMinutes(deadlineTime.m);
         props.handleChange(nd);
+    }
 
+    useEffect(() => {
+        updateTime();
+        /* eslint-disable */
+    }, []);
+
+    useEffect(() => {
+        updateTime();
         /* eslint-disable */
     }, [deadlineTime]);
 

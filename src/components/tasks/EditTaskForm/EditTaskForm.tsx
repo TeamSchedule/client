@@ -7,12 +7,14 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../../inputs/SimpleTextInput";
-import DateInput from "../../inputs/DateInput";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { makeEventLinkById, makeTaskLinkById } from "../../../routes/paths";
 import GoBackButton from "../../buttons/GoBackButton";
 import Uploader from "../../files/Uploader";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
+import Box from "@mui/material/Box";
+import FullDatetimeInput from "../../inputs/FullDatetimeInput/FullDatetimeInput";
+import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
@@ -20,10 +22,10 @@ export default function EditTaskForm() {
     const { id } = useParams();
 
     // task data
-    const [taskName, setTaskName] = useState("");
-    const [taskDescription, setTaskDescription] = useState("");
+    const [taskName, setTaskName] = useState<string>("");
+    const [taskDescription, setTaskDescription] = useState<string>("");
     const [taskExpirationDate, setTaskExpirationDate] = useState<Date>(new Date());
-    const [taskTeamName, setTaskTeamName] = useState("");
+    const [taskUnit, setTaskUnit] = useState<UnitResponseItemSchema | null>(null);
 
     // circular loaders
     const [isUpdateActionInProgress, setIsUpdateActionInProgress] = useState(false);
@@ -38,7 +40,7 @@ export default function EditTaskForm() {
             setTaskName(task.name);
             setTaskDescription(task.description);
             setTaskExpirationDate(new Date(task.expirationTime));
-            setTaskTeamName(task.department.name);
+            setTaskUnit(task.department);
         });
     }, [id]);
 
@@ -97,12 +99,10 @@ export default function EditTaskForm() {
                 className="mb-3"
             />
 
-            {/*@ts-ignore*/}
-            <DateInput value={taskExpirationDate} handleChange={setTaskExpirationDate} />
-
-            <div>
-                <p className="my-1">{taskTeamName === "" ? "персональная задача" : `Команда: ${taskTeamName}`}</p>
-            </div>
+            <Box sx={{ mb: 3 }}>
+                {/*@ts-ignore*/}
+                <FullDatetimeInput value={taskExpirationDate} handleChange={setTaskExpirationDate} />
+            </Box>
 
             <LoadingButton
                 onClick={onSubmit}
