@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { makeEventLinkById } from "../../../routes/paths";
 import Typography from "@mui/material/Typography";
 import SkeletonWrapper from "../../SkeletonWrapper";
@@ -6,12 +5,15 @@ import { IconButton } from "@mui/material";
 import Link from "@mui/material/Link";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import { useNavigate } from "react-router-dom";
 
 interface EventLinkProps {
     event?: EventResponseItemSchema;
 }
 
 export default function EventLink(props: EventLinkProps) {
+    const navigate = useNavigate();
+
     return (
         <>
             {props.event && (
@@ -22,6 +24,10 @@ export default function EventLink(props: EventLinkProps) {
                         variant="body2"
                         onClick={(e) => {
                             e.stopPropagation();
+                            e.preventDefault();
+                            if (props.event?.id) {
+                                navigate(makeEventLinkById(props.event?.id));
+                            }
                         }}
                         sx={{ display: "flex", alignItems: "center" }}
                     >
