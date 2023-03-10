@@ -7,6 +7,7 @@ import TaskPreview from "../tasks/TaskPreview";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import { TaskResponseItemSchema } from "../../api/schemas/responses/tasks";
+import { compareTasks } from "../../utils/taskUtils";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -24,6 +25,7 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface TaskListCollapseProps {
     tasks: TaskResponseItemSchema[];
+    setTasks: (tasks: TaskResponseItemSchema[]) => void;
     title?: string;
 }
 
@@ -44,7 +46,7 @@ export default function TaskListCollapse(props: TaskListCollapseProps) {
                     }}
                     onClick={() => setExpanded(!expanded)}
                 >
-                    <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold" }}>
+                    <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
                         {props.title ? props.title : "Задачи"} - {props.tasks.length}
                     </Typography>
                     <ExpandMore expand={expanded} aria-expanded={expanded} aria-label="show more">
@@ -54,8 +56,8 @@ export default function TaskListCollapse(props: TaskListCollapseProps) {
             )}
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-                {props.tasks.map((task) => (
-                    <TaskPreview key={task.id} task={task} />
+                {props.tasks.sort(compareTasks).map((task) => (
+                    <TaskPreview key={task.id} task={task} setTasks={props.setTasks} />
                 ))}
             </Collapse>
         </>

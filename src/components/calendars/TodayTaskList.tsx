@@ -3,6 +3,7 @@ import { getDateRepresentation, isEqualYearMonthDate } from "../../utils/dateuti
 import TaskPreview from "../tasks/TaskPreview";
 import React from "react";
 import Typography from "@mui/material/Typography";
+import { compareTasks } from "../../utils/taskUtils";
 
 interface todayTaskListProps {
     day: Date;
@@ -31,15 +32,11 @@ export function TodayTaskList(props: todayTaskListProps) {
                 </Typography>
             )}
 
-            {dayTasks
-                .sort((a, b) => {
-                    return new Date(a.expirationTime).getTime() - new Date(b.expirationTime).getTime();
-                })
-                .map((task) => (
-                    <div className="mb-2" key={task.id}>
-                        <TaskPreview key={task.id} task={task} setTasks={props.setTasks} />
-                    </div>
-                ))}
+            {dayTasks.sort(compareTasks).map((task) => (
+                <div className="mb-2" key={task.id}>
+                    <TaskPreview key={task.id} task={task} setTasks={props.setTasks} />
+                </div>
+            ))}
         </>
     );
 }

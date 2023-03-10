@@ -118,9 +118,11 @@ export const router = createBrowserRouter(
 
                         <Route element={<FullScreenWrapper />}>
                             {/* ==================== events routes ==================== */}
-                            <Route path={EventListPath} element={<EventList />} />
+                            <Route path={EventListPath} element={<EventList />}>
+                                <Route path={FullViewEventPath} element={<FullEventView />} />
+                            </Route>
+                            
                             <Route path={CreateNewEventPath} element={<CreateEventForm />} />
-                            <Route path={FullViewEventPath} element={<FullEventView />} />
                             <Route path={EditEventPath} element={<EditEventForm />} />
 
                             {/* ==================== notifications routes ==================== */}

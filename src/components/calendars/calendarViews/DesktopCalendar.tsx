@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { compareDatetime, isEqualYearMonthDate, weekCount } from "../../../utils/dateutils";
+import { isEqualYearMonthDate, weekCount } from "../../../utils/dateutils";
 import { PickersDay, PickersDayProps, StaticDatePicker } from "@mui/x-date-pickers";
 import Paper from "@mui/material/Paper";
 
@@ -13,6 +13,7 @@ import { AdaptiveCalendarProps } from "./AdaptiveCalendar";
 import DesktopCalendarTaskPreview from "../../tasks/DesktopCalendarTaskPreview/DesktopCalendarTaskPreview";
 import { TodayTaskList } from "../TodayTaskList";
 import { UtilSection } from "./common";
+import { compareTasks } from "../../../utils/taskUtils";
 
 const MaxDateSize = 400; // максимальный размер отображаемого на десктопном календаре дня
 const BaseDateHeight = 120; // базовая высота ячейки
@@ -87,9 +88,7 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                                 // @ts-ignore
                                 return isEqualYearMonthDate(new Date(task.expirationTime), date["$d"]);
                             })
-                            .sort((t1, t2) => {
-                                return compareDatetime(new Date(t1.expirationTime), new Date(t2.expirationTime));
-                            })
+                            .sort(compareTasks)
                             .map((task) => (
                                 <DesktopCalendarTaskPreview key={task.id} task={task} />
                             ))}

@@ -29,7 +29,7 @@ export default function FullEventView() {
 
     const { id } = useParams();
     const { state } = useLocation();
-    const { created = 0, eventData = null } = state || {}; // считываем значения из state
+    const { created = 0 } = state || {}; // считываем значения из state
     window.history.replaceState({}, document.title); // очищаем state
 
     // если произошел редирект после создания, то true
@@ -44,7 +44,7 @@ export default function FullEventView() {
     const [isChangingStatusSuccess, setIsChangingStatusSuccess] = useState<boolean>(false);
 
     // данные события
-    const [event, setEvent] = useState<EventResponseItemSchema | undefined>(Boolean(eventData) ? eventData : undefined);
+    const [event, setEvent] = useState<EventResponseItemSchema | undefined>(undefined);
     const [eventTasks, setEventTasks] = useState<TaskResponseItemSchema[]>([]);
     const [eventFiles, setEventFiles] = useState<FileResponseItemSchema[]>([]);
 
@@ -55,16 +55,14 @@ export default function FullEventView() {
             return;
         }
 
-        if (!eventData) {
-            API.events
-                .getById(+id)
-                .then((event: EventResponseItemSchema) => {
-                    setEvent(event);
-                })
-                .catch(() => {
-                    setIsLoadingError(true);
-                });
-        }
+        API.events
+            .getById(+id)
+            .then((event: EventResponseItemSchema) => {
+                setEvent({ ...event });
+            })
+            .catch(() => {
+                setIsLoadingError(true);
+            });
 
         const params: FilterTasksParamsSchema = {
             events: [+id],
@@ -72,7 +70,7 @@ export default function FullEventView() {
         API.tasks.getTasks(params).then((tasks: TaskResponseItemSchema[]) => {
             setEventTasks(tasks);
         });
-    }, [eventData, id]);
+    }, [id]);
 
     useEffect(() => {
         if (!id) {
@@ -82,7 +80,7 @@ export default function FullEventView() {
         API.files.getEventFiles(+id).then((files: FileResponseItemSchema[]) => {
             setEventFiles(files);
         });
-    }, [eventData, id]);
+    }, [id]);
 
     const onChangeEventStatus = (open: boolean) => (e: React.MouseEvent) => {
         e.preventDefault();
@@ -159,7 +157,7 @@ export default function FullEventView() {
                         </>
                     )}
 
-                    <TaskListCollapse tasks={eventTasks} />
+                    <TaskListCollapse tasks={eventTasks} setTasks={setEventTasks} />
 
                     {event && (
                         <ToggleWorkStatusButton
@@ -169,7 +167,9 @@ export default function FullEventView() {
                         />
                     )}
 
-                    <GoBackButton to={EventListPath} buttonText="Вернуться к списку событий" />
+                    <Box sx={{ display: { md: "none" } }}>
+                        <GoBackButton to={EventListPath} buttonText="Вернуться к списку событий" />
+                    </Box>
                 </CardContent>
             </Card>
             <SpeedDial

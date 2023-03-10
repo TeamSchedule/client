@@ -90,7 +90,7 @@ export default function FullUnitView() {
                 <CardContent>
                     <ScreenSectionHeader text="Состав отдела" />
                     <UnitParticipants admin={unit?.admin} members={unit?.members || []} />
-                    <TaskListCollapse tasks={openTasks} title="Открытые задачи" />
+                    <TaskListCollapse tasks={openTasks} title="Открытые задачи" setTasks={setUnitTasks} />
 
                     <GoBackButton to={UnitListPath} buttonText="Вернуться к списку отделов" />
                 </CardContent>
