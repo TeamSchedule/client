@@ -11,13 +11,13 @@ import Paper from "@mui/material/Paper";
 import "dayjs/locale/ru";
 import { AdaptiveCalendarProps } from "./AdaptiveCalendar";
 import DesktopCalendarTaskPreview from "../../tasks/DesktopCalendarTaskPreview/DesktopCalendarTaskPreview";
-import { TodayTaskList } from "../dayTasksSections/common";
+import { TodayTaskList } from "../TodayTaskList";
 import { UtilSection } from "./common";
 
 const MaxDateSize = 400; // максимальный размер отображаемого на десктопном календаре дня
 const BaseDateHeight = 120; // базовая высота ячейки
-export const minDate = new Date("2000-01-01");
-export const maxDate = new Date("2100-01-01");
+export const minDate = new Date("2010-01-01");
+export const maxDate = new Date("2050-01-01");
 
 export interface DesktopCalendarProps extends AdaptiveCalendarProps {}
 
@@ -191,9 +191,9 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
             </Box>
 
             <Box sx={{ width: "300px" }}>
-                <Paper elevation={0} sx={{ pl: 3, width: "100%" }}>
-                    <UtilSection tasks={props.tasks} setDisplayedTasks={props.setDisplayedTasks} />
-                    <TodayTaskList day={props.chosenDate} tasks={props.tasks} />
+                <Paper elevation={0} sx={{ px: 2, width: "100%" }}>
+                    <UtilSection viewedDate={props.viewedDate} setFilterObject={props.setFilterObject} />
+                    <TodayTaskList day={props.chosenDate} tasks={props.tasks} setTasks={props.setTasks} />
                 </Paper>
             </Box>
         </Box>

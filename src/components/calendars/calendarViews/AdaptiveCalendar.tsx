@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Box } from "@mui/material";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import MobileCalendar from "./MobileCalendar";
 import DesktopCalendar from "./DesktopCalendar";
+import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
 
 export interface AdaptiveCalendarProps {
     viewedDate: Date;
@@ -10,12 +11,11 @@ export interface AdaptiveCalendarProps {
     chosenDate: Date;
     setChosenDate: (value: Date) => void;
     tasks: TaskResponseItemSchema[];
-    setDisplayedTasks: (tasks: TaskResponseItemSchema[]) => void;
+    setTasks: (tasks: TaskResponseItemSchema[]) => void;
+    setFilterObject: (params: FilterTasksParamsSchema) => void;
 }
 
 export default function AdaptiveCalendar(props: AdaptiveCalendarProps) {
-    const desktopRef = useRef(null);
-
     return (
         <>
             <Box
@@ -29,7 +29,6 @@ export default function AdaptiveCalendar(props: AdaptiveCalendarProps) {
                 <MobileCalendar {...props} />
             </Box>
             <Box
-                ref={desktopRef}
                 sx={{
                     display: {
                         xs: "none",

@@ -3,57 +3,51 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { API } from "../../../api/api";
 import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
 import buildFilterParams from "../../../api/utils/buildFilterParams";
-import DayTaskListMobile from "../dayTasksSections/DayTaskListMobile";
 import AdaptiveCalendar from "../calendarViews/AdaptiveCalendar";
-import Box from "@mui/material/Box";
 
 export default function FullCalendar() {
     // начало просматриваемого месяца
     const [viewedDate, setViewedDate] = useState<Date>(new Date()); // дата, в диапазоне которой показываются задачи
     const [chosenDate, setChosenDate] = useState<Date>(new Date()); // выбранный день, для него показываюся задачи на мобильной версии
 
-    // все задачи в диапазоне нескольких месяцев
+    // все задачи в диапазоне нескольких месяцев в соответствии с фильтрами
     const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([]);
-    // отображаемые задачи
-    const [displayedTasks, setDisplayedTasks] = useState<TaskResponseItemSchema[]>([]);
 
-    useEffect(() => {
-        // запрашиваем еще задач, если пользователь далеко проликнул в календаре
-        const params: FilterTasksParamsSchema = buildFilterParams(viewedDate);
+    //текущие фильтры
+    const [filterObject, setFilterObject] = useState<FilterTasksParamsSchema>(buildFilterParams(viewedDate));
 
+    /*
+     * Запросить задачи с сервера в соответствии с фильтрами в `params`
+     * */
+    function fetchSetTasks() {
         API.tasks
-            .getTasks(params)
+            .getTasks(filterObject)
             .then((tasks: TaskResponseItemSchema[]) => {
                 setTasks(tasks);
-                setDisplayedTasks(tasks);
             })
             .catch(() => {
                 //    TODO: показать сообщение об ошибке
             })
             .finally(() => {});
-    }, [viewedDate]);
+    }
+
+    useEffect(() => {
+        // запрашиваем еще задач, если пользователь далеко проликнул в календаре
+        fetchSetTasks();
+        /* eslint-disable */
+    }, [viewedDate, filterObject]);
 
     return (
         <>
             <AdaptiveCalendar
-                tasks={displayedTasks}
+                tasks={tasks}
+                setTasks={setTasks}
                 viewedDate={viewedDate}
                 setViewedDate={setViewedDate}
                 chosenDate={chosenDate}
                 setChosenDate={setChosenDate}
-                setDisplayedTasks={setDisplayedTasks}
+                setFilterObject={setFilterObject}
             />
-
-            <Box
-                sx={{
-                    display: {
-                        sx: "block",
-                        md: "none",
-                    },
-                }}
-            >
-                <DayTaskListMobile day={chosenDate} tasks={displayedTasks} />
-            </Box>
         </>
     );
 }

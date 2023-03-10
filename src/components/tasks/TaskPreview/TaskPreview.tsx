@@ -2,27 +2,70 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import UnitLink from "../../links/UnitLink/UnitLink";
 import EventLink from "../../links/EventLink/EventLink";
 import { useNavigate } from "react-router-dom";
 import { makeTaskLinkById } from "../../../routes/paths";
 import TaskName from "../common/TaskName";
-import React from "react";
+import React, { useState } from "react";
 import { TaskDescription } from "../common/common";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import EditIcon from "@mui/icons-material/Edit";
+import Collapse from "@mui/material/Collapse";
+import { ExpandMore } from "../../common/TaskListCollapse";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import { IconButton, Tooltip } from "@mui/material";
+import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
+import { TaskStatusEnum, TaskStatusStrings } from "../../../enums/tasksEnums";
+import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
+import { API } from "../../../api/api";
 
 interface TaskPreviewProps {
     task: TaskResponseItemSchema;
+    setTasks?: (tasks: TaskResponseItemSchema[]) => void;
 }
 
 export default function TaskPreview(props: TaskPreviewProps) {
     const navigate = useNavigate();
+    // раскрыть подробнее
+    const [expanded, setExpanded] = useState<boolean>(false);
 
-    const onClickMore = (e: React.MouseEvent<any>) => {
-        e.stopPropagation();
-        navigate(makeTaskLinkById(props.task.id));
+    // статус изменения статуса задачи
+    const [isChangingStatus, setIsChangingStatus] = useState<boolean>(false);
+
+    const toggleTaskStatus = (open: boolean) => (e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsChangingStatus(true);
+
+        const newStatus: TaskStatusStrings = open ? TaskStatusEnum.IN_PROGRESS : TaskStatusEnum.COMPLETED;
+        const updateStatusData: UpdateTaskRequestSchema = {
+            taskId: props.task.id,
+            status: newStatus,
+        };
+
+        API.tasks
+            .updateTaskById(updateStatusData)
+            .then(() => {
+                // rerender task in list
+                if (props.setTasks) {
+                    // @ts-ignore
+                    props.setTasks((prev: TaskResponseItemSchema[]) => [
+                        ...prev.filter((task) => task.id !== props.task.id),
+                        {
+                            ...props.task,
+                            taskStatus: newStatus,
+                        },
+                    ]);
+                }
+            })
+            .catch(() => {})
+            .finally(() => {
+                setIsChangingStatus(false);
+            });
     };
+
     return (
         <>
             <Card
@@ -32,22 +75,64 @@ export default function TaskPreview(props: TaskPreviewProps) {
                     marginBottom: 1,
                 }}
             >
-                <CardContent sx={{ paddingBottom: 0 }}>
-                    <DeadlineAndStatus endDate={props.task.expirationTime} status={props.task.taskStatus} />
+                <CardContent sx={{ p: 2, paddingBottom: 0 }}>
+                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                        <DeadlineAndStatus endDate={props.task.expirationTime} status={props.task.taskStatus} />
 
-                    <TaskName name={props.task.name} />
+                        <Tooltip title="Редактировать">
+                            <IconButton
+                                sx={{ p: 0 }}
+                                onClick={() => navigate(makeTaskLinkById(props.task.id) + "/edit")}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+
+                    <Link
+                        component="a"
+                        href={makeTaskLinkById(props.task.id)}
+                        onClick={(e) => e.stopPropagation()}
+                        sx={{
+                            "&:hover": {
+                                cursor: "pointer",
+                            },
+                        }}
+                    >
+                        <TaskName name={props.task.name} />
+                    </Link>
                     <TaskDescription>{props.task.description}</TaskDescription>
 
-                    {props.task.event && <EventLink event={props.task?.event} />}
-                    {props.task.department && (
-                        <UnitLink id={props.task.department.id} name={props.task.department.name} />
-                    )}
+                    <Collapse in={expanded} timeout="auto" unmountOnExit sx={{ mb: 0, pb: 0 }}>
+                        {props.task.event && <EventLink event={props.task?.event} />}
+                        {props.task.department && (
+                            <UnitLink id={props.task.department.id} name={props.task.department.name} />
+                        )}
+
+                        <ToggleWorkStatusButton
+                            status={props.task.taskStatus}
+                            toggleStatus={toggleTaskStatus}
+                            loading={isChangingStatus}
+                        />
+                    </Collapse>
                 </CardContent>
 
-                <CardActions>
-                    <Button size="small" onClick={onClickMore}>
-                        Подробнее
-                    </Button>
+                <CardActions
+                    disableSpacing
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        py: 0,
+                        "&:hover": {
+                            cursor: "pointer",
+                        },
+                        px: 0,
+                    }}
+                    onClick={() => setExpanded(!expanded)}
+                >
+                    <ExpandMore expand={expanded}>
+                        <ExpandMoreIcon />
+                    </ExpandMore>
                 </CardActions>
             </Card>
         </>

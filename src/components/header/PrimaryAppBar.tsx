@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext } from "react";
+import { ElementType, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { EventListPath, NotificationListPath, SettingsPath, TaskListPath, UnitListPath } from "../../routes/paths";
 import { NotificationsContext } from "../App";
-import { Paper, Tooltip, useTheme } from "@mui/material";
+import { Paper, SvgIcon, Tooltip, useTheme } from "@mui/material";
 import { NotificationsResponseItemSchema } from "../../api/schemas/responses/notifications";
 import MenuIcon from "@mui/icons-material/Menu";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
@@ -28,10 +28,12 @@ import { lightBlue } from "@mui/material/colors";
 import MainAvatar from "../MainAvatar";
 import { makeAvatarLink } from "../../utils/fileUtils";
 import { makeFullName } from "../../utils/userUtils";
+import Link from "@mui/material/Link";
 
 export default function PrimaryAppBar() {
     const navigate = useNavigate();
     const theme = useTheme();
+    const contrastPrimaryTextColor: string = theme.palette.getContrastText(theme.palette.primary.main);
 
     const { user, logout } = useAuth();
 
@@ -120,20 +122,30 @@ export default function PrimaryAppBar() {
     }
 
     function SwipeableAppBarItem(props: SwipeableAppBarItemProps) {
-        const navigate = useNavigate();
-
         return (
             <>
-                <MenuItem
+                <Link
+                    color={contrastPrimaryTextColor}
+                    href={props.linkTo}
                     onClick={(e) => {
+                        e.preventDefault();
                         navigate(props.linkTo);
                         toggleDrawer(false)(e);
                     }}
-                    sx={{ py: { xs: 1, sm: 2 } }}
+                    sx={{
+                        "&:hover": {
+                            color: contrastPrimaryTextColor,
+                        },
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%",
+                        px: 2,
+                        py: { xs: "10px", sm: "20px" },
+                    }}
                 >
                     {props.icon}
                     <Typography sx={{ ml: 1 }}>{props.title}</Typography>
-                </MenuItem>
+                </Link>
             </>
         );
     }
@@ -194,59 +206,46 @@ export default function PrimaryAppBar() {
         </SwipeableDrawer>
     );
 
+    interface DesktopHeaderLinkItemProps {
+        tooltipText: string;
+        to: string;
+        Icon: ElementType;
+    }
+
+    function DesktopHeaderLinkItem(props: DesktopHeaderLinkItemProps) {
+        return (
+            <Tooltip title={props.tooltipText}>
+                <Link
+                    href={props.to}
+                    color={contrastPrimaryTextColor}
+                    sx={{
+                        "&:hover": {
+                            color: contrastPrimaryTextColor,
+                        },
+                    }}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        navigate(props.to);
+                    }}
+                >
+                    <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
+                        <SvgIcon component={props.Icon} />
+                    </IconButton>
+                </Link>
+            </Tooltip>
+        );
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             {renderSwipeableAppBar}
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
-                    <Box sx={{ display: { xs: "none", md: "block" } }}>
-                        <Tooltip title="Календарь">
-                            <IconButton
-                                size="large"
-                                edge="start"
-                                color="inherit"
-                                sx={{ mr: 2 }}
-                                onClick={() => navigate(TaskListPath)}
-                            >
-                                <CalendarMonthIcon />
-                            </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title="События">
-                            <IconButton
-                                size="large"
-                                edge="start"
-                                color="inherit"
-                                sx={{ mr: 2 }}
-                                onClick={() => navigate(EventListPath)}
-                            >
-                                <LocalActivityIcon />
-                            </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title="Отделы">
-                            <IconButton
-                                size="large"
-                                edge="start"
-                                color="inherit"
-                                sx={{ mr: 2 }}
-                                onClick={() => navigate(UnitListPath)}
-                            >
-                                <PeopleIcon />
-                            </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title="Настройки профиля">
-                            <IconButton
-                                size="large"
-                                edge="start"
-                                color="inherit"
-                                sx={{ mr: 2 }}
-                                onClick={() => navigate(SettingsPath)}
-                            >
-                                <SettingsIcon />
-                            </IconButton>
-                        </Tooltip>
+                    <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                        <DesktopHeaderLinkItem tooltipText="Календарь" to={TaskListPath} Icon={CalendarMonthIcon} />
+                        <DesktopHeaderLinkItem tooltipText="События" to={EventListPath} Icon={LocalActivityIcon} />
+                        <DesktopHeaderLinkItem tooltipText="Отделы" to={UnitListPath} Icon={PeopleIcon} />
+                        <DesktopHeaderLinkItem tooltipText="Настройки профиля" to={SettingsPath} Icon={SettingsIcon} />
                     </Box>
 
                     <Box sx={{ display: { xs: "block", md: "none" } }}>

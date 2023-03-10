@@ -22,9 +22,9 @@ export default function DeadlineAndStatus(props: DeadlineAndStatusProps) {
     }
 
     return (
-        <Box sx={{ display: "flex" }}>
-            <DeadlinePlate endDate={props.endDate} color={deadlineTextColor} />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
             <WorkStatusPlate status={props.status} />
+            <DeadlinePlate endDate={props.endDate} color={deadlineTextColor} />
         </Box>
     );
 }

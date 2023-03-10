@@ -2,15 +2,11 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { CreateNewTaskPath } from "../../../routes/paths";
-import FiltersDrawer from "../filters/FiltersDrawer";
+import FiltersDrawer, { FiltersDrawerProps } from "../filters/FiltersDrawer";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 
-interface UtilSectionProps {
-    setDisplayedTasks: (tasks: TaskResponseItemSchema[]) => void;
-    tasks: TaskResponseItemSchema[];
-}
+interface UtilSectionProps extends FiltersDrawerProps {}
 
 export function UtilSection(props: UtilSectionProps) {
     const navigate = useNavigate();
@@ -30,7 +26,7 @@ export function UtilSection(props: UtilSectionProps) {
                 >
                     Задача
                 </Button>
-                <FiltersDrawer tasks={props.tasks} setDisplayedTasks={props.setDisplayedTasks} />
+                <FiltersDrawer {...props} />
             </Box>
         </>
     );

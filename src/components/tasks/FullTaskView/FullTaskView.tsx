@@ -7,13 +7,10 @@ import Executors from "../common/Executors";
 import UnitLink from "../../links/UnitLink/UnitLink";
 import SpeedDial from "@mui/material/SpeedDial";
 import EditIcon from "@mui/icons-material/Edit";
-import DoneIcon from "@mui/icons-material/Done";
 import { TaskStatusEnum, TaskStatusStrings } from "../../../enums/tasksEnums";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { TaskListPath } from "../../../routes/paths";
 import GoBackButton from "../../buttons/GoBackButton";
 import EventLink from "../../links/EventLink/EventLink";
@@ -23,6 +20,7 @@ import UploadedFilePreview from "../../files/UploadedFilePreview";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
+import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
 
 export default function FullTaskView() {
     const { id } = useParams();
@@ -34,6 +32,7 @@ export default function FullTaskView() {
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
 
     // статус успешности изменения статуса задачи
+    const [isChangingStatus, setIsChangingStatus] = useState<boolean>(false);
     const [isChangeStatusOk, setIsChangeStatusOk] = useState<boolean>(false);
     const [isChangeStatusError, setIsChangeStatusError] = useState<boolean>(false);
 
@@ -76,6 +75,7 @@ export default function FullTaskView() {
         if (!id) {
             return;
         }
+        setIsChangingStatus(true);
 
         const newStatus: TaskStatusStrings = open ? TaskStatusEnum.IN_PROGRESS : TaskStatusEnum.COMPLETED;
         const updateStatusData: UpdateTaskRequestSchema = {
@@ -84,14 +84,17 @@ export default function FullTaskView() {
         };
 
         API.tasks
-            .updateTaskById(+id, updateStatusData)
+            .updateTaskById(updateStatusData)
             .then(() => {
                 setIsChangeStatusOk(true);
                 if (task) {
                     setTask({ ...task, taskStatus: newStatus });
                 }
             })
-            .catch(() => {});
+            .catch(() => {})
+            .finally(() => {
+                setIsChangingStatus(false);
+            });
     };
 
     const handleCloseSuccessSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -124,7 +127,7 @@ export default function FullTaskView() {
                 <TaskName name={task?.name} />
                 <TaskDescription>{task?.description}</TaskDescription>
 
-                {task?.department && <UnitLink id={task?.department.id} name={task?.department.name} />}
+                {task?.department && <UnitLink id={task.department?.id} name={task.department?.name} />}
                 {task?.event && <EventLink event={task?.event} />}
 
                 <Executors users={task ? task.assignee : []} />
@@ -140,29 +143,11 @@ export default function FullTaskView() {
                     </>
                 )}
 
-                {task?.taskStatus === TaskStatusEnum.IN_PROGRESS && (
-                    <LoadingButton
-                        fullWidth
-                        variant="contained"
-                        startIcon={<DoneIcon />}
-                        onClick={toggleTaskStatus(false)}
-                        sx={{ my: 2 }}
-                    >
-                        Задача выполнена
-                    </LoadingButton>
-                )}
-
-                {task?.taskStatus === TaskStatusEnum.COMPLETED && (
-                    <LoadingButton
-                        fullWidth
-                        variant="outlined"
-                        startIcon={<RestartAltIcon />}
-                        onClick={toggleTaskStatus(true)}
-                        sx={{ my: 2 }}
-                    >
-                        Задача не выполнена
-                    </LoadingButton>
-                )}
+                <ToggleWorkStatusButton
+                    status={task.taskStatus}
+                    toggleStatus={toggleTaskStatus}
+                    loading={isChangingStatus}
+                />
 
                 <GoBackButton to={TaskListPath} buttonText="К календарю" />
             </div>

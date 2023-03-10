@@ -10,7 +10,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { EventStatusEnum, EventStatusStrings } from "../../../enums/eventsEnums";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import Typography from "@mui/material/Typography";
@@ -23,6 +22,7 @@ import { EventListPath } from "../../../routes/paths";
 import TaskListCollapse from "../../common/TaskListCollapse";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 import { Box } from "@mui/material";
+import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
 
 export default function FullEventView() {
     const navigate = useNavigate();
@@ -84,12 +84,12 @@ export default function FullEventView() {
         });
     }, [eventData, id]);
 
-    const onChangeEventStatus = (complete: boolean) => (e: React.MouseEvent) => {
+    const onChangeEventStatus = (open: boolean) => (e: React.MouseEvent) => {
         e.preventDefault();
         if (!id) return;
         setIsChangingStatus(true);
 
-        const newStatus: EventStatusStrings = complete ? EventStatusEnum.COMPLETED : EventStatusEnum.IN_PROGRESS;
+        const newStatus: EventStatusStrings = open ? EventStatusEnum.IN_PROGRESS : EventStatusEnum.COMPLETED;
         const newEventData: EditEventRequestSchema = { eventId: +id, status: newStatus };
 
         API.events
@@ -161,28 +161,12 @@ export default function FullEventView() {
 
                     <TaskListCollapse tasks={eventTasks} />
 
-                    {event?.status === EventStatusEnum.IN_PROGRESS && (
-                        <LoadingButton
-                            fullWidth
-                            onClick={onChangeEventStatus(true)}
+                    {event && (
+                        <ToggleWorkStatusButton
+                            status={event?.status}
+                            toggleStatus={onChangeEventStatus}
                             loading={isChangingStatus}
-                            variant="contained"
-                            sx={{ my: 2 }}
-                        >
-                            Завершить событие
-                        </LoadingButton>
-                    )}
-
-                    {event?.status === EventStatusEnum.COMPLETED && (
-                        <LoadingButton
-                            fullWidth
-                            onClick={onChangeEventStatus(false)}
-                            loading={isChangingStatus}
-                            variant="outlined"
-                            sx={{ my: 2 }}
-                        >
-                            Запустить событие
-                        </LoadingButton>
+                        />
                     )}
 
                     <GoBackButton to={EventListPath} buttonText="Вернуться к списку событий" />

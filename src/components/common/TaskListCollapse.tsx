@@ -12,9 +12,9 @@ interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
 }
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
+export const ExpandMore = styled((props: ExpandMoreProps) => {
     const { expand, ...other } = props;
-    return <IconButton {...other} />;
+    return <IconButton {...other} sx={{ width: "100%", borderRadius: 1 }} />;
 })(({ theme, expand }) => ({
     transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
     transition: theme.transitions.create("transform", {

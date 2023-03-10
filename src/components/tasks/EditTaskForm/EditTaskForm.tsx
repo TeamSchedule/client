@@ -59,7 +59,7 @@ export default function EditTaskForm() {
         };
 
         API.tasks
-            .updateTaskById(+id, updateTaskRequestBody)
+            .updateTaskById(updateTaskRequestBody)
             .then(() => {
                 navigate(-1);
             })

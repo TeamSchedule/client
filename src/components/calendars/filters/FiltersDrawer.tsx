@@ -19,13 +19,14 @@ import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import Badge from "@mui/material/Badge";
 import DefaultDict from "../../../utils/defaultdict";
 import { API } from "../../../api/api";
-import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { eventsData, unitsData } from "../../../testdata/data";
 import Toolbar from "@mui/material/Toolbar";
+import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
+import buildFilterParams from "../../../api/utils/buildFilterParams";
 
-interface FiltersDrawerProps {
-    tasks: TaskResponseItemSchema[];
-    setDisplayedTasks: (tasks: TaskResponseItemSchema[]) => void;
+export interface FiltersDrawerProps {
+    viewedDate: Date;
+    setFilterObject: (params: FilterTasksParamsSchema) => void;
 }
 
 export default function FiltersDrawer(props: FiltersDrawerProps) {
@@ -73,32 +74,26 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
     }, []);
 
     function filterTasks(e: React.MouseEvent) {
-        let filteredTasks: TaskResponseItemSchema[] = props.tasks.slice();
+        const params: FilterTasksParamsSchema = buildFilterParams(props.viewedDate);
+
         if (selectedUnits > 0) {
-            filteredTasks = filteredTasks.filter((task) => {
-                // @ts-ignore
-                return selectedUnitsIds[task.department.id];
-            });
+            params.departments = Object.entries(selectedUnitsIds)
+                .filter((item) => item[1])
+                .map((item) => +item[0]);
         }
 
         if (selectedEvents > 0) {
-            filteredTasks = filteredTasks.filter((task) => {
-                // @ts-ignore
-                return selectedEventsIds[task.event.id];
-            });
+            params.events = Object.entries(selectedEventsIds)
+                .filter((item) => item[1])
+                .map((item) => +item[0]);
         }
 
         if (selectedUsers > 0) {
-            filteredTasks = filteredTasks.filter((task) => {
-                for (let u of task.assignee) {
-                    // @ts-ignore
-                    if (selectedUsersIds[u.id] === true) return true;
-                }
-                return false;
-            });
+            params.assignee = Object.entries(selectedUsersIds)
+                .filter((item) => item[1])
+                .map((item) => +item[0]);
         }
-
-        props.setDisplayedTasks(filteredTasks);
+        props.setFilterObject(params);
         toggleDrawer(false)(e);
     }
 
@@ -114,6 +109,8 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
     };
 
     function resetFilters() {
+        props.setFilterObject(buildFilterParams(props.viewedDate));
+
         setSelectedUnitsIds(() => DefaultDict());
         setSelectedUsersIds(() => DefaultDict());
         setSelectedEventsIds(() => DefaultDict());

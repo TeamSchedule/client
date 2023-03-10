@@ -1,12 +1,13 @@
-import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
-import { getDateRepresentation, isEqualYearMonthDate } from "../../../utils/dateutils";
-import TaskPreview from "../../tasks/TaskPreview";
+import { TaskResponseItemSchema } from "../../api/schemas/responses/tasks";
+import { getDateRepresentation, isEqualYearMonthDate } from "../../utils/dateutils";
+import TaskPreview from "../tasks/TaskPreview";
 import React from "react";
 import Typography from "@mui/material/Typography";
 
 interface todayTaskListProps {
     day: Date;
     tasks: TaskResponseItemSchema[];
+    setTasks: (tasks: TaskResponseItemSchema[]) => void;
 }
 
 export function TodayTaskList(props: todayTaskListProps) {
@@ -30,11 +31,15 @@ export function TodayTaskList(props: todayTaskListProps) {
                 </Typography>
             )}
 
-            {dayTasks.map((task) => (
-                <div className="mb-2" key={task.id}>
-                    <TaskPreview key={task.id} task={task} />
-                </div>
-            ))}
+            {dayTasks
+                .sort((a, b) => {
+                    return new Date(a.expirationTime).getTime() - new Date(b.expirationTime).getTime();
+                })
+                .map((task) => (
+                    <div className="mb-2" key={task.id}>
+                        <TaskPreview key={task.id} task={task} setTasks={props.setTasks} />
+                    </div>
+                ))}
         </>
     );
 }

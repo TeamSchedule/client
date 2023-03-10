@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { makeUnitLinkById } from "../../../routes/paths";
 import Typography from "@mui/material/Typography";
 import SkeletonWrapper from "../../SkeletonWrapper";
@@ -12,24 +11,28 @@ interface UnitLinkProps {
 }
 
 export default function UnitLink(props: UnitLinkProps) {
-    const navigate = useNavigate();
-
-    function onClick(e: React.MouseEvent<any>) {
-        e.stopPropagation();
-        if (!props.id) return;
-        navigate(makeUnitLinkById(props.id), { state: { id: props.id } });
-    }
-
     return (
         <>
-            <Typography variant="body1" component="div">
-                <IconButton>
-                    <PeopleIcon />
-                </IconButton>
-                <Link component="button" variant="body2" onClick={onClick}>
-                    {props.name ? props.name : <SkeletonWrapper />}
-                </Link>
-            </Typography>
+            {props.id && (
+                <Typography variant="body1" component="p">
+                    <Link
+                        href={makeUnitLinkById(props.id)}
+                        component="a"
+                        variant="body2"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                        sx={{ display: "flex", alignItems: "center" }}
+                    >
+                        <IconButton sx={{ p: 0, pr: 1 }}>
+                            <PeopleIcon />
+                        </IconButton>
+                        <Typography sx={{ fontSize: "0.9rem" }}>
+                            {props.name ? props.name : <SkeletonWrapper />}
+                        </Typography>
+                    </Link>
+                </Typography>
+            )}
         </>
     );
 }

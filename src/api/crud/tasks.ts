@@ -27,7 +27,7 @@ export class tasks {
         return requestApi.GET(`${this.prefixUrl}/${id}`);
     }
 
-    static async updateTaskById(id: number, data: UpdateTaskRequestSchema) {
+    static async updateTaskById(data: UpdateTaskRequestSchema) {
         return requestApi.PATCH(`${this.prefixUrl}`, { body: data });
     }
 
