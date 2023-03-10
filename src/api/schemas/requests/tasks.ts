@@ -1,4 +1,5 @@
 import { TaskStatusStrings } from "../../../enums/tasksEnums";
+import { EventStatusStrings } from "../../../enums/eventsEnums";
 
 export interface CreateTaskRequestSchema {
     name: string;
@@ -25,4 +26,5 @@ export interface FilterTasksParamsSchema {
     departments?: number[];
     assignee?: number[];
     events?: number[];
+    status?: TaskStatusStrings | EventStatusStrings;
 }

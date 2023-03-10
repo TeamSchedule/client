@@ -23,6 +23,10 @@ import { eventsData, unitsData } from "../../../testdata/data";
 import Toolbar from "@mui/material/Toolbar";
 import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
 import buildFilterParams from "../../../api/utils/buildFilterParams";
+import { TaskStatusEnum } from "../../../enums/tasksEnums";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControl from "@mui/material/FormControl";
 
 export interface FiltersDrawerProps {
     viewedDate: Date;
@@ -41,14 +45,14 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
     const [selectedUsersIds, setSelectedUsersIds] = useState<object>(DefaultDict()); // map(unitId: boolean)
     const [selectedUnitsIds, setSelectedUnitsIds] = useState<object>(DefaultDict());
     const [selectedEventsIds, setSelectedEventsIds] = useState<object>(DefaultDict());
-    const [showClosed, setShowClosed] = useState<boolean>(false); // показывать закрытые и выполненные
+    const [selectedStatus, setSelectedStatus] = useState<string>(""); // статус задач
 
     // Количество выбранных параметров каждого типа в фильтрах
     const selectedUnits: number = Object.values(selectedUnitsIds).filter(Boolean).length;
     const selectedUsers: number = Object.values(selectedUsersIds).filter(Boolean).length;
     const selectedEvents: number = Object.values(selectedEventsIds).filter(Boolean).length;
 
-    const isAnyFiltersActive: number = selectedUnits + selectedUsers + selectedEvents + +showClosed;
+    const isAnyFiltersActive: number = selectedUnits + selectedUsers + selectedEvents + +Boolean(selectedStatus);
 
     useEffect(() => {
         // Получение данных по отделам (пользователи внутри) и событиям для формирования фильтров
@@ -93,6 +97,12 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                 .filter((item) => item[1])
                 .map((item) => +item[0]);
         }
+
+        if (selectedStatus) {
+            // @ts-ignore
+            params.status = selectedStatus;
+        }
+
         props.setFilterObject(params);
         toggleDrawer(false)(e);
     }
@@ -114,7 +124,12 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
         setSelectedUnitsIds(() => DefaultDict());
         setSelectedUsersIds(() => DefaultDict());
         setSelectedEventsIds(() => DefaultDict());
+        setSelectedStatus("");
     }
+
+    const handleChangeRadioStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedStatus((event.target as HTMLInputElement).value);
+    };
 
     return (
         <>
@@ -132,14 +147,33 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
             >
                 <Box sx={{ minWidth: "280px", p: 2 }}>
                     <Toolbar />
-                    <FormGroup>
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={showClosed} onChange={(e) => setShowClosed(e.target.checked)} />
-                            }
-                            label="Показывать завершенные"
-                        />
-                    </FormGroup>
+                    <Divider />
+
+                    <FormControl>
+                        <Typography variant="subtitle1" component="span" sx={{ fontWeight: "bold" }}>
+                            Статус
+                        </Typography>
+                        <RadioGroup
+                            defaultValue={""}
+                            value={selectedStatus}
+                            onChange={handleChangeRadioStatus}
+                            sx={{ "& .MuiRadio-root": { p: "5px" } }}
+                        >
+                            <FormControlLabel value={""} control={<Radio />} label="Любой" sx={{ m: 0 }} />
+                            <FormControlLabel
+                                value={TaskStatusEnum.COMPLETED}
+                                control={<Radio />}
+                                label="Завершено"
+                                sx={{ m: 0 }}
+                            />
+                            <FormControlLabel
+                                value={TaskStatusEnum.IN_PROGRESS}
+                                control={<Radio />}
+                                label="В работе"
+                                sx={{ m: 0 }}
+                            />
+                        </RadioGroup>
+                    </FormControl>
 
                     <Divider />
                     <FilterSection title="Отделы" selectedValueCount={selectedUnits}>
