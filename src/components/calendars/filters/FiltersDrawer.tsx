@@ -27,6 +27,7 @@ import { TaskStatusEnum } from "../../../enums/tasksEnums";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
+import { EventStatusEnum } from "../../../enums/eventsEnums";
 
 export interface FiltersDrawerProps {
     viewedDate: Date;
@@ -200,26 +201,33 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                     </FilterSection>
 
                     <FilterSection title="События" selectedValueCount={selectedEvents}>
-                        {events.map((event) => (
-                            <FormGroup key={event.id}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            // @ts-ignore
-                                            checked={selectedEventsIds[event.id]}
-                                            onChange={() => {
-                                                setSelectedEventsIds({
-                                                    ...selectedEventsIds,
-                                                    // @ts-ignore
-                                                    [event.id]: !selectedEventsIds[event.id],
-                                                });
-                                            }}
-                                        />
-                                    }
-                                    label={event.name}
-                                />
-                            </FormGroup>
-                        ))}
+                        {events
+                            .filter((event) => {
+                                return selectedStatus ? event.status === selectedStatus : true;
+                            })
+                            .map((event) => (
+                                <FormGroup
+                                    key={event.id}
+                                    sx={{ color: event.status === EventStatusEnum.COMPLETED ? "grey" : "inherit" }}
+                                >
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                // @ts-ignore
+                                                checked={selectedEventsIds[event.id]}
+                                                onChange={() => {
+                                                    setSelectedEventsIds({
+                                                        ...selectedEventsIds,
+                                                        // @ts-ignore
+                                                        [event.id]: !selectedEventsIds[event.id],
+                                                    });
+                                                }}
+                                            />
+                                        }
+                                        label={event.name}
+                                    />
+                                </FormGroup>
+                            ))}
                     </FilterSection>
                     <FilterSection title="Исполнители" selectedValueCount={selectedUsers}>
                         {units.map((unit) => (

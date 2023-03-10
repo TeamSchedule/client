@@ -18,10 +18,10 @@ import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
 import UploadedFilePreview from "../../files/UploadedFilePreview";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import GoBackButton from "../../buttons/GoBackButton";
-import { EventListPath } from "../../../routes/paths";
+import { EventListPath, makeEventLinkById } from "../../../routes/paths";
 import TaskListCollapse from "../../common/TaskListCollapse";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
-import { Box } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
 
 export default function FullEventView() {
@@ -137,7 +137,19 @@ export default function FullEventView() {
         <>
             <Card>
                 <CardContent>
-                    {event && <DeadlineAndStatus endDate={event.endDate} status={event.status} />}
+                    {event && (
+                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <DeadlineAndStatus endDate={event.endDate} status={event.status} />
+                            <Tooltip title="Редактировать">
+                                <IconButton
+                                    sx={{ p: 0 }}
+                                    onClick={() => navigate(makeEventLinkById(event.id) + "/edit")}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                    )}
 
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "stretch" }}>
                         <EventColorLeft color={event?.color} />
