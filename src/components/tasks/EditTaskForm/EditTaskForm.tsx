@@ -13,8 +13,9 @@ import GoBackButton from "../../buttons/GoBackButton";
 import Uploader from "../../files/Uploader";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import Box from "@mui/material/Box";
-import FullDatetimeInput from "../../inputs/FullDatetimeInput/FullDatetimeInput";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
+import { getTimezoneDatetime } from "../../../utils/dateutils";
+import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function EditTaskForm() {
     // task data
     const [taskName, setTaskName] = useState<string>("");
     const [taskDescription, setTaskDescription] = useState<string>("");
-    const [taskExpirationDate, setTaskExpirationDate] = useState<Date>(new Date());
+    const [deadline, setDeadline] = useState<Date | null>(null);
     const [taskUnit, setTaskUnit] = useState<UnitResponseItemSchema | null>(null);
 
     // circular loaders
@@ -39,7 +40,7 @@ export default function EditTaskForm() {
             // Available use full info about task in data
             setTaskName(task.name);
             setTaskDescription(task.description);
-            setTaskExpirationDate(new Date(task.expirationTime));
+            setDeadline(task.expirationTime ? new Date(task.expirationTime) : null);
             setTaskUnit(task.department);
         });
     }, [id]);
@@ -49,13 +50,14 @@ export default function EditTaskForm() {
         if (id === undefined) {
             return;
         }
+        if (!deadline) return;
         setIsUpdateActionInProgress(true);
 
         const updateTaskRequestBody: UpdateTaskRequestSchema = {
             taskId: +id,
             name: taskName,
             description: taskDescription,
-            expirationTime: new Date(taskExpirationDate).toJSON(),
+            expirationTime: getTimezoneDatetime(deadline),
         };
 
         API.tasks
@@ -99,10 +101,11 @@ export default function EditTaskForm() {
                 className="mb-3"
             />
 
-            <Box sx={{ mb: 3 }}>
-                {/*@ts-ignore*/}
-                <FullDatetimeInput value={taskExpirationDate} handleChange={setTaskExpirationDate} />
-            </Box>
+            {deadline && (
+                <Box sx={{ mb: 3 }}>
+                    <DatetimeInput datetime={deadline} setDatetime={setDeadline} />
+                </Box>
+            )}
 
             <LoadingButton
                 onClick={onSubmit}

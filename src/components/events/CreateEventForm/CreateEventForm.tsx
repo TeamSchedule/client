@@ -13,8 +13,8 @@ import { EventListPath, makeEventLinkById } from "../../../routes/paths";
 import { CreateEventResponseSchema } from "../../../api/schemas/responses/events";
 import { getRandomColor } from "../../../utils/colorUtils";
 import GoBackButton from "../../buttons/GoBackButton";
-import FullDatetimeInput from "../../inputs/FullDatetimeInput/FullDatetimeInput";
 import { getTimezoneDatetime } from "../../../utils/dateutils";
+import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 
 export default function CreateEventForm() {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function CreateEventForm() {
     // данные нового события
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [deadline, setDeadline] = useState<Date | null>(new Date());
+    const [deadline, setDeadline] = useState<Date | null>(null);
     const [color, setColor] = useState<string>(getRandomColor());
 
     // статус загрузки
@@ -32,11 +32,11 @@ export default function CreateEventForm() {
     function createEventHandler() {
         if (!deadline) return;
         setInProgress(true);
-        
+
         const newEventData: CreateEventRequestSchema = {
             name: title,
             description: description,
-            endDate: getTimezoneDatetime(deadline).toJSON(),
+            endDate: getTimezoneDatetime(deadline),
             color: color === "" ? undefined : color,
         };
 
@@ -80,11 +80,9 @@ export default function CreateEventForm() {
                     <MultilineTextInput value={description} handleChange={setDescription} label="Описание события" />
                 </FormInputItemWrapper>
 
-                {deadline && (
-                    <FormInputItemWrapper>
-                        <FullDatetimeInput value={deadline} handleChange={setDeadline} />
-                    </FormInputItemWrapper>
-                )}
+                <FormInputItemWrapper>
+                    <DatetimeInput datetime={deadline} setDatetime={setDeadline} />
+                </FormInputItemWrapper>
 
                 <FormInputItemWrapper className="d-flex align-items-center">
                     <span>Цвет отображения задач</span>
@@ -93,7 +91,7 @@ export default function CreateEventForm() {
 
                 <LoadingButton
                     fullWidth
-                    disabled={title.length === 0}
+                    disabled={title.length === 0 || !deadline}
                     onClick={createEventHandler}
                     loading={inProgress}
                     variant="contained"

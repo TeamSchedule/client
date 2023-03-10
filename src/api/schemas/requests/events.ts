@@ -6,7 +6,7 @@ import { EventStatusStrings } from "../../../enums/eventsEnums";
 export interface CreateEventRequestSchema {
     name: string;
     description?: string;
-    endDate?: Date | string;
+    endDate?: Date;
     color?: string;
 }
 

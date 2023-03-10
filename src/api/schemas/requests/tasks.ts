@@ -15,7 +15,7 @@ export interface UpdateTaskRequestSchema {
     departmentId?: number;
     name?: string;
     description?: string;
-    expirationTime?: string;
+    expirationTime?: Date;
     status?: TaskStatusStrings;
 }
 

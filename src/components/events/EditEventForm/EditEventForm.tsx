@@ -17,7 +17,7 @@ import Card from "@mui/material/Card";
 import GoBackButton from "../../buttons/GoBackButton";
 import { makeEventLinkById } from "../../../routes/paths";
 import Uploader from "../../files/Uploader";
-import FullDatetimeInput from "../../inputs/FullDatetimeInput/FullDatetimeInput";
+import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 
 export default function EditEventForm() {
     const navigate = useNavigate();
@@ -120,11 +120,9 @@ export default function EditEventForm() {
                         />
                     </FormInputItemWrapper>
 
-                    {deadline && (
-                        <FormInputItemWrapper>
-                            <FullDatetimeInput value={deadline} handleChange={setDeadline} />
-                        </FormInputItemWrapper>
-                    )}
+                    <FormInputItemWrapper>
+                        <DatetimeInput datetime={deadline} setDatetime={setDeadline} />
+                    </FormInputItemWrapper>
 
                     <FormInputItemWrapper className="d-flex align-items-center">
                         <span>Цвет отображения задач</span>

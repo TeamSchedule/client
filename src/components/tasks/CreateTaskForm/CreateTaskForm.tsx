@@ -21,7 +21,7 @@ import Box from "@mui/material/Box";
 import TextHelp from "../../TextHelp/TextHelp";
 import { makeTaskLinkById } from "../../../routes/paths";
 import { CreateTasksResponseSchema } from "../../../api/schemas/responses/tasks";
-import FullDatetimeInput from "../../inputs/FullDatetimeInput/FullDatetimeInput";
+import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 
 function CreateTaskForm() {
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ function CreateTaskForm() {
 
     const [taskDescription, setTaskDescription] = useState<string>("");
     const [taskName, setTaskName] = useState<string>("");
-    const [deadline, setDeadline] = useState<Date>(new Date());
+    const [deadline, setDeadline] = useState<Date | null>(null);
 
     const [isPrivateFlag, setIsPrivateFlag] = useState<boolean>(false); // флаг приватной задачи, в этом случае отдел и исполнители устанавливаются автоматически
 
@@ -43,7 +43,10 @@ function CreateTaskForm() {
     const [isCreatingError, setIsCreatingError] = useState<boolean>(false);
 
     useEffect(() => {
-        setDeadline(getPrevDayDate(date || ""));
+        // если в форму пришли из календаря или другого перенаправления для быстрого создания задачи
+        if (date) {
+            setDeadline(getPrevDayDate(date || ""));
+        }
     }, [date]);
 
     useEffect(() => {
@@ -67,6 +70,8 @@ function CreateTaskForm() {
             navigate("/");
             return;
         }
+
+        if (!deadline) return;
 
         setInProgress(true);
         const createTaskData: CreateTaskRequestSchema = {
@@ -98,6 +103,8 @@ function CreateTaskForm() {
         setIsCreatingError(false);
     };
 
+    console.log("deadline");
+    console.log(deadline);
     return (
         <>
             <div className="d-flex justify-content-between position-relative">
@@ -128,8 +135,7 @@ function CreateTaskForm() {
             />
 
             <Box sx={{ mb: 3 }}>
-                {/* @ts-ignore */}
-                <FullDatetimeInput value={deadline} handleChange={setDeadline} />
+                <DatetimeInput datetime={deadline} setDatetime={setDeadline} />
             </Box>
 
             <FormGroup row sx={{ alignItems: "center" }}>
@@ -158,7 +164,7 @@ function CreateTaskForm() {
 
             <LoadingButton
                 fullWidth
-                disabled={taskName.length === 0}
+                disabled={taskName.length === 0 || !deadline}
                 onClick={onCreateTaskHandler}
                 loading={inProgress}
                 variant="contained"
