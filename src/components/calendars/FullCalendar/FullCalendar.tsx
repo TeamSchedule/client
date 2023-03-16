@@ -5,6 +5,7 @@ import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
 import buildFilterParams from "../../../api/utils/buildFilterParams";
 import AdaptiveCalendar from "../calendarViews/AdaptiveCalendar";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import { CalendarElemTypeEnum } from "../../../enums/common";
 
 export default function FullCalendar() {
     // начало просматриваемого месяца
@@ -39,11 +40,14 @@ export default function FullCalendar() {
      * Запросить события с сервера в соответствии со статусом
      * */
     function fetchSetEvents() {
-        // TODO: add filter by status
         API.events
             .all()
             .then((events: EventResponseItemSchema[]) => {
-                setEvents(events);
+                if (!filterObject.status) {
+                    setEvents(events);
+                } else {
+                    setEvents(events.filter((event) => event.status === filterObject.status));
+                }
             })
             .catch(() => {
                 //    TODO: показать сообщение об ошибке
@@ -51,10 +55,24 @@ export default function FullCalendar() {
             .finally(() => {});
     }
 
+    function getSetData() {
+        // @ts-ignore
+        if (!filterObject.type || filterObject.type === CalendarElemTypeEnum.ALL) {
+            fetchSetTasks();
+            fetchSetEvents();
+        } else if (filterObject.type === CalendarElemTypeEnum.TASK) {
+            fetchSetTasks();
+            setEvents([]);
+        } else if (filterObject.type === CalendarElemTypeEnum.EVENT) {
+            fetchSetEvents();
+            setTasks(() => []);
+        }
+    }
+
     useEffect(() => {
-        // запрашиваем еще задач, если пользователь далеко проликнул в календаре
-        fetchSetTasks();
-        fetchSetEvents();
+        // запрашиваем еще задач, если пользователь далеко прокликнул в календаре или при изменение фильтров
+        getSetData();
+
         /* eslint-disable */
     }, [viewedDate, filterObject]);
 

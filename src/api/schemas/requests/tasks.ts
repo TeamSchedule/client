@@ -1,5 +1,6 @@
 import { TaskStatusStrings } from "../../../enums/tasksEnums";
 import { EventStatusStrings } from "../../../enums/eventsEnums";
+import { CalendarElemTypeStrings } from "../../../enums/common";
 
 export interface CreateTaskRequestSchema {
     name: string;
@@ -27,4 +28,5 @@ export interface FilterTasksParamsSchema {
     assignee?: number[];
     events?: number[];
     status?: TaskStatusStrings | EventStatusStrings;
+    type?: CalendarElemTypeStrings;
 }

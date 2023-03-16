@@ -96,7 +96,7 @@ export default function EventList() {
                             md={5}
                             lg={4}
                             sx={{
-                                minHeight: { xs: 0, md: "calc(100vh - 130px)" },
+                                minHeight: { xs: 0, md: "calc(100vh - 65px)" },
                                 maxHeight: { md: "calc(100vh - 130px)" },
                                 overflowY: "auto",
                             }}
@@ -132,7 +132,7 @@ export default function EventList() {
                                 md={5}
                                 lg={4}
                                 sx={{
-                                    minHeight: { xs: 0, md: "calc(100vh - 130px)" },
+                                    minHeight: { xs: 0, md: "calc(100vh - 65px)" },
                                     maxHeight: { md: "calc(100vh - 130px)" },
                                     overflowY: "auto",
                                 }}

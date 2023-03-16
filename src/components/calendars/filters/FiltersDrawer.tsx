@@ -28,6 +28,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import { EventStatusEnum } from "../../../enums/eventsEnums";
+import { CalendarElemTypeEnum } from "../../../enums/common";
 
 export interface FiltersDrawerProps {
     viewedDate: Date;
@@ -47,13 +48,15 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
     const [selectedUnitsIds, setSelectedUnitsIds] = useState<object>(DefaultDict());
     const [selectedEventsIds, setSelectedEventsIds] = useState<object>(DefaultDict());
     const [selectedStatus, setSelectedStatus] = useState<string>(""); // статус задач
+    const [selectedType, setSelectedType] = useState<string>(CalendarElemTypeEnum.ALL); // Тип отображаемых элементов
 
     // Количество выбранных параметров каждого типа в фильтрах
     const selectedUnits: number = Object.values(selectedUnitsIds).filter(Boolean).length;
     const selectedUsers: number = Object.values(selectedUsersIds).filter(Boolean).length;
     const selectedEvents: number = Object.values(selectedEventsIds).filter(Boolean).length;
 
-    const isAnyFiltersActive: number = selectedUnits + selectedUsers + selectedEvents + +Boolean(selectedStatus);
+    const isAnyFiltersActive: number =
+        selectedUnits + selectedUsers + selectedEvents + +Boolean(selectedStatus) + +Boolean(selectedType);
 
     useEffect(() => {
         // Получение данных по отделам (пользователи внутри) и событиям для формирования фильтров
@@ -104,6 +107,11 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
             params.status = selectedStatus;
         }
 
+        if (selectedType) {
+            // @ts-ignore
+            params.type = selectedType;
+        }
+
         props.setFilterObject(params);
         toggleDrawer(false)(e);
     }
@@ -126,10 +134,15 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
         setSelectedUsersIds(() => DefaultDict());
         setSelectedEventsIds(() => DefaultDict());
         setSelectedStatus("");
+        setSelectedType(CalendarElemTypeEnum.ALL);
     }
 
     const handleChangeRadioStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedStatus((event.target as HTMLInputElement).value);
+    };
+
+    const handleChangeRadioType = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedType((event.target as HTMLInputElement).value);
     };
 
     return (
@@ -149,7 +162,33 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                 <Box sx={{ minWidth: "280px", p: 2 }}>
                     <Toolbar />
                     <Divider />
+                    <FormControl sx={{ mb: 2 }}>
+                        <Typography variant="subtitle1" component="span" sx={{ fontWeight: "bold" }}>
+                            Тип
+                        </Typography>
+                        <RadioGroup
+                            defaultValue={""}
+                            value={selectedType}
+                            onChange={handleChangeRadioType}
+                            sx={{ "& .MuiRadio-root": { p: "5px" } }}
+                        >
+                            <FormControlLabel value={""} control={<Radio />} label="Любой" sx={{ m: 0 }} />
+                            <FormControlLabel
+                                value={CalendarElemTypeEnum.TASK}
+                                control={<Radio />}
+                                label="Задачи"
+                                sx={{ m: 0 }}
+                            />
+                            <FormControlLabel
+                                value={CalendarElemTypeEnum.EVENT}
+                                control={<Radio />}
+                                label="События"
+                                sx={{ m: 0 }}
+                            />
+                        </RadioGroup>
+                    </FormControl>
 
+                    <Divider />
                     <FormControl>
                         <Typography variant="subtitle1" component="span" sx={{ fontWeight: "bold" }}>
                             Статус
