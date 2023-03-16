@@ -22,7 +22,7 @@ import { AuthUserKey } from "../../consts/common";
 
 export default function UserProfileSettings() {
     return (
-        <Box sx={{ px: 1 }}>
+        <Box sx={{ px: 1, width: "100%" }}>
             <UserAvatarSection />
             <UsernameSection />
             <BackupEmailSection />

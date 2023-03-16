@@ -4,6 +4,7 @@ import { API } from "../../../api/api";
 import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
 import buildFilterParams from "../../../api/utils/buildFilterParams";
 import AdaptiveCalendar from "../calendarViews/AdaptiveCalendar";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 
 export default function FullCalendar() {
     // начало просматриваемого месяца
@@ -12,6 +13,9 @@ export default function FullCalendar() {
 
     // все задачи в диапазоне нескольких месяцев в соответствии с фильтрами
     const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([]);
+
+    // все события
+    const [events, setEvents] = useState<EventResponseItemSchema[]>([]);
 
     //текущие фильтры
     const [filterObject, setFilterObject] = useState<FilterTasksParamsSchema>(buildFilterParams(viewedDate));
@@ -31,9 +35,26 @@ export default function FullCalendar() {
             .finally(() => {});
     }
 
+    /*
+     * Запросить события с сервера в соответствии со статусом
+     * */
+    function fetchSetEvents() {
+        // TODO: add filter by status
+        API.events
+            .all()
+            .then((events: EventResponseItemSchema[]) => {
+                setEvents(events);
+            })
+            .catch(() => {
+                //    TODO: показать сообщение об ошибке
+            })
+            .finally(() => {});
+    }
+
     useEffect(() => {
         // запрашиваем еще задач, если пользователь далеко проликнул в календаре
         fetchSetTasks();
+        fetchSetEvents();
         /* eslint-disable */
     }, [viewedDate, filterObject]);
 
@@ -42,6 +63,8 @@ export default function FullCalendar() {
             <AdaptiveCalendar
                 tasks={tasks}
                 setTasks={setTasks}
+                events={events}
+                setEvents={setEvents}
                 viewedDate={viewedDate}
                 setViewedDate={setViewedDate}
                 chosenDate={chosenDate}

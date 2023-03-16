@@ -14,6 +14,8 @@ import DesktopCalendarTaskPreview from "../../tasks/DesktopCalendarTaskPreview/D
 import { TodayTaskList } from "../TodayTaskList";
 import { UtilSection } from "./common";
 import { compareTasks } from "../../../utils/taskUtils";
+import DesktopCalendarEventPreview from "../../events/DesktopCalendarEventPreview/DesktopCalendarEventPreview";
+import { compareEvent } from "../../../utils/eventUtils";
 
 const MaxDateSize = 400; // максимальный размер отображаемого на десктопном календаре дня
 const BaseDateHeight = 120; // базовая высота ячейки
@@ -83,6 +85,15 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                         }}
                     >
                         {dayNumber}
+                        {props.events
+                            .filter((event) => {
+                                // @ts-ignore
+                                return isEqualYearMonthDate(new Date(event.endDate), date["$d"]);
+                            })
+                            .sort(compareEvent)
+                            .map((event) => (
+                                <DesktopCalendarEventPreview key={event.id} event={event} />
+                            ))}
                         {props.tasks
                             .filter((task) => {
                                 // @ts-ignore

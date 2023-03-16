@@ -93,8 +93,8 @@ export default function EventList() {
                         <Grid
                             item
                             xs={0}
-                            md={4}
-                            lg={3}
+                            md={5}
+                            lg={4}
                             sx={{
                                 minHeight: { xs: 0, md: "calc(100vh - 130px)" },
                                 maxHeight: { md: "calc(100vh - 130px)" },
@@ -115,8 +115,8 @@ export default function EventList() {
                                 {!eventsLoading && DisplayedEvents}
                             </Box>
                         </Grid>
-                        <Grid item xs={12} md={8} lg={6} xl={6}>
-                            <Box sx={{ mt: { md: "56px" } }}>
+                        <Grid item xs={12} md={7} lg={8}>
+                            <Box sx={{ mt: { md: "56px" }, width: "100%" }}>
                                 <Outlet />
                             </Box>
                         </Grid>
@@ -129,8 +129,8 @@ export default function EventList() {
                             <Grid
                                 item
                                 xs={12}
-                                md={4}
-                                lg={3}
+                                md={5}
+                                lg={4}
                                 sx={{
                                     minHeight: { xs: 0, md: "calc(100vh - 130px)" },
                                     maxHeight: { md: "calc(100vh - 130px)" },
@@ -151,7 +151,7 @@ export default function EventList() {
                                     {!eventsLoading && DisplayedEvents}
                                 </Box>
                             </Grid>
-                            <Grid item xs={0} md={8} lg={6} xl={6}></Grid>
+                            <Grid item xs={0} md={7} lg={8}></Grid>
                         </Grid>
                     </>
                 )}

@@ -4,6 +4,7 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import MobileCalendar from "./MobileCalendar";
 import DesktopCalendar from "./DesktopCalendar";
 import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 
 export interface AdaptiveCalendarProps {
     viewedDate: Date;
@@ -12,6 +13,8 @@ export interface AdaptiveCalendarProps {
     setChosenDate: (value: Date) => void;
     tasks: TaskResponseItemSchema[];
     setTasks: (tasks: TaskResponseItemSchema[]) => void;
+    events: EventResponseItemSchema[];
+    setEvents: (events: EventResponseItemSchema[]) => void;
     setFilterObject: (params: FilterTasksParamsSchema) => void;
 }
 
