@@ -12,6 +12,7 @@ import { AdaptiveCalendarProps } from "./AdaptiveCalendar";
 import { styled } from "@mui/material/styles";
 import { maxDate, minDate } from "./DesktopCalendar";
 import { TodayTaskList } from "../TodayTaskList";
+import { UtilSection } from "./common";
 
 const MaxDateSize = 80; // максимальный размер отображаемого на мобильном календаре дня
 
@@ -71,8 +72,10 @@ export default function MobileCalendar(props: MobileCalendarProps) {
         selectedDays: Array<Date | null>,
         pickersDayProps: PickersDayProps<Date>
     ) {
+        // @ts-ignore
         return (
-            <>
+            // @ts-ignore
+            <Box key={date}>
                 <MobileCalendarDayBadge
                     badgeContent={
                         props.tasks.filter((task) => {
@@ -81,11 +84,13 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         }).length
                     }
                     color="secondary"
-                    key={date.toJSON()}
+                    /*@ts-ignore*/
+                    key={date}
                 >
-                    <PickersDay {...pickersDayProps} />
+                    {/*@ts-ignore*/}
+                    <PickersDay {...pickersDayProps} key={date} />
                 </MobileCalendarDayBadge>
-            </>
+            </Box>
         );
     }
 
@@ -143,6 +148,7 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         },
                     }}
                 >
+                    <UtilSection viewedDate={props.viewedDate} setFilterObject={props.setFilterObject} />
                     <StaticDatePicker
                         minDate={minDate}
                         maxDate={maxDate}

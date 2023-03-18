@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
@@ -14,12 +14,8 @@ import { styled } from "@mui/material/styles";
 import { IconButtonProps } from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import Divider from "@mui/material/Divider";
-import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
-import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import Badge from "@mui/material/Badge";
 import DefaultDict from "../../../utils/defaultdict";
-import { API } from "../../../api/api";
-import { eventsData, unitsData } from "../../../testdata/data";
 import Toolbar from "@mui/material/Toolbar";
 import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
 import buildFilterParams from "../../../api/utils/buildFilterParams";
@@ -29,6 +25,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import { EventStatusEnum } from "../../../enums/eventsEnums";
 import { CalendarElemTypeEnum } from "../../../enums/common";
+import useEvents from "../../../hooks/useEvents";
+import useUnits from "../../../hooks/useUnits";
 
 export interface FiltersDrawerProps {
     viewedDate: Date;
@@ -37,8 +35,8 @@ export interface FiltersDrawerProps {
 
 export default function FiltersDrawer(props: FiltersDrawerProps) {
     // данные для фильтров
-    const [units, setUnits] = useState<UnitResponseItemSchema[]>(unitsData);
-    const [events, setEvents] = useState<EventResponseItemSchema[]>(eventsData);
+    const { units } = useUnits();
+    const { events } = useEvents();
 
     // открыт sidebar или нет
     const [state, setState] = React.useState<boolean>(false);
@@ -57,29 +55,6 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
 
     const isAnyFiltersActive: number =
         selectedUnits + selectedUsers + selectedEvents + +Boolean(selectedStatus) + +Boolean(selectedType);
-
-    useEffect(() => {
-        // Получение данных по отделам (пользователи внутри) и событиям для формирования фильтров
-        API.units
-            .all()
-            .then((units: UnitResponseItemSchema[]) => {
-                setUnits(units);
-            })
-            .catch(() => {
-                // TODO: ЧТо-то пошло не так
-            })
-            .finally(() => {});
-
-        API.events
-            .all()
-            .then((events: EventResponseItemSchema[]) => {
-                setEvents(events);
-            })
-            .catch(() => {
-                // TODO: ЧТо-то пошло не так
-            })
-            .finally(() => {});
-    }, []);
 
     function filterTasks(e: React.MouseEvent) {
         const params: FilterTasksParamsSchema = buildFilterParams(props.viewedDate);
@@ -152,159 +127,161 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                     <TuneIcon fontSize="large" sx={{ p: 0, m: 0 }} />
                 </IconButton>
             </Badge>
-            <SwipeableDrawer
-                disableBackdropTransition
-                anchor="right"
-                open={state}
-                onClose={toggleDrawer(false)}
-                onOpen={toggleDrawer(true)}
-            >
-                <Box sx={{ minWidth: "280px", p: 2 }}>
-                    <Toolbar />
-                    <Divider />
-                    <FormControl sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1" component="span" sx={{ fontWeight: "bold" }}>
-                            Тип
-                        </Typography>
-                        <RadioGroup
-                            defaultValue={""}
-                            value={selectedType}
-                            onChange={handleChangeRadioType}
-                            sx={{ "& .MuiRadio-root": { p: "5px" } }}
-                        >
-                            <FormControlLabel value={""} control={<Radio />} label="Любой" sx={{ m: 0 }} />
-                            <FormControlLabel
-                                value={CalendarElemTypeEnum.TASK}
-                                control={<Radio />}
-                                label="Задачи"
-                                sx={{ m: 0 }}
-                            />
-                            <FormControlLabel
-                                value={CalendarElemTypeEnum.EVENT}
-                                control={<Radio />}
-                                label="События"
-                                sx={{ m: 0 }}
-                            />
-                        </RadioGroup>
-                    </FormControl>
-
-                    <Divider />
-                    <FormControl>
-                        <Typography variant="subtitle1" component="span" sx={{ fontWeight: "bold" }}>
-                            Статус
-                        </Typography>
-                        <RadioGroup
-                            defaultValue={""}
-                            value={selectedStatus}
-                            onChange={handleChangeRadioStatus}
-                            sx={{ "& .MuiRadio-root": { p: "5px" } }}
-                        >
-                            <FormControlLabel value={""} control={<Radio />} label="Любой" sx={{ m: 0 }} />
-                            <FormControlLabel
-                                value={TaskStatusEnum.COMPLETED}
-                                control={<Radio />}
-                                label="Завершено"
-                                sx={{ m: 0 }}
-                            />
-                            <FormControlLabel
-                                value={TaskStatusEnum.IN_PROGRESS}
-                                control={<Radio />}
-                                label="В работе"
-                                sx={{ m: 0 }}
-                            />
-                        </RadioGroup>
-                    </FormControl>
-
-                    <Divider />
-                    <FilterSection title="Отделы" selectedValueCount={selectedUnits}>
-                        {units.map((unit) => (
-                            <FormGroup key={unit.id}>
+            {state && (
+                <SwipeableDrawer
+                    disableBackdropTransition
+                    anchor="right"
+                    open={state}
+                    onClose={toggleDrawer(false)}
+                    onOpen={toggleDrawer(true)}
+                >
+                    <Box sx={{ minWidth: "280px", p: 2 }}>
+                        <Toolbar />
+                        <Divider />
+                        <FormControl sx={{ mb: 2 }}>
+                            <Typography variant="subtitle1" component="span" sx={{ fontWeight: "bold" }}>
+                                Тип
+                            </Typography>
+                            <RadioGroup
+                                defaultValue={""}
+                                value={selectedType}
+                                onChange={handleChangeRadioType}
+                                sx={{ "& .MuiRadio-root": { p: "5px" } }}
+                            >
+                                <FormControlLabel value={""} control={<Radio />} label="Любой" sx={{ m: 0 }} />
                                 <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            // @ts-ignore
-                                            checked={selectedUnitsIds[unit.id]}
-                                            onChange={() => {
-                                                setSelectedUnitsIds({
-                                                    ...selectedUnitsIds,
-                                                    // @ts-ignore
-                                                    [unit.id]: !selectedUnitsIds[unit.id],
-                                                });
-                                            }}
-                                        />
-                                    }
-                                    label={unit.name}
+                                    value={CalendarElemTypeEnum.TASK}
+                                    control={<Radio />}
+                                    label="Задачи"
+                                    sx={{ m: 0 }}
                                 />
-                            </FormGroup>
-                        ))}
-                    </FilterSection>
+                                <FormControlLabel
+                                    value={CalendarElemTypeEnum.EVENT}
+                                    control={<Radio />}
+                                    label="События"
+                                    sx={{ m: 0 }}
+                                />
+                            </RadioGroup>
+                        </FormControl>
 
-                    <FilterSection title="События" selectedValueCount={selectedEvents}>
-                        {events
-                            .filter((event) => {
-                                return selectedStatus ? event.status === selectedStatus : true;
-                            })
-                            .map((event) => (
-                                <FormGroup
-                                    key={event.id}
-                                    sx={{ color: event.status === EventStatusEnum.COMPLETED ? "grey" : "inherit" }}
-                                >
+                        <Divider />
+                        <FormControl>
+                            <Typography variant="subtitle1" component="span" sx={{ fontWeight: "bold" }}>
+                                Статус
+                            </Typography>
+                            <RadioGroup
+                                defaultValue={""}
+                                value={selectedStatus}
+                                onChange={handleChangeRadioStatus}
+                                sx={{ "& .MuiRadio-root": { p: "5px" } }}
+                            >
+                                <FormControlLabel value={""} control={<Radio />} label="Любой" sx={{ m: 0 }} />
+                                <FormControlLabel
+                                    value={TaskStatusEnum.COMPLETED}
+                                    control={<Radio />}
+                                    label="Завершено"
+                                    sx={{ m: 0 }}
+                                />
+                                <FormControlLabel
+                                    value={TaskStatusEnum.IN_PROGRESS}
+                                    control={<Radio />}
+                                    label="В работе"
+                                    sx={{ m: 0 }}
+                                />
+                            </RadioGroup>
+                        </FormControl>
+
+                        <Divider />
+                        <FilterSection title="Отделы" selectedValueCount={selectedUnits}>
+                            {units.map((unit) => (
+                                <FormGroup key={unit.id}>
                                     <FormControlLabel
                                         control={
                                             <Checkbox
                                                 // @ts-ignore
-                                                checked={selectedEventsIds[event.id]}
+                                                checked={selectedUnitsIds[unit.id]}
                                                 onChange={() => {
-                                                    setSelectedEventsIds({
-                                                        ...selectedEventsIds,
+                                                    setSelectedUnitsIds({
+                                                        ...selectedUnitsIds,
                                                         // @ts-ignore
-                                                        [event.id]: !selectedEventsIds[event.id],
+                                                        [unit.id]: !selectedUnitsIds[unit.id],
                                                     });
                                                 }}
                                             />
                                         }
-                                        label={event.name}
+                                        label={unit.name}
                                     />
                                 </FormGroup>
                             ))}
-                    </FilterSection>
-                    <FilterSection title="Исполнители" selectedValueCount={selectedUsers}>
-                        {units.map((unit) => (
-                            <Box key={unit.id} sx={{ mb: 1 }}>
-                                {unit.members.map((user) => (
-                                    <FormGroup key={user.id}>
+                        </FilterSection>
+
+                        <FilterSection title="События" selectedValueCount={selectedEvents}>
+                            {events
+                                .filter((event) => {
+                                    return selectedStatus ? event.status === selectedStatus : true;
+                                })
+                                .map((event) => (
+                                    <FormGroup
+                                        key={event.id}
+                                        sx={{ color: event.status === EventStatusEnum.COMPLETED ? "grey" : "inherit" }}
+                                    >
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
                                                     // @ts-ignore
-                                                    checked={selectedUsersIds[user.id]}
+                                                    checked={selectedEventsIds[event.id]}
                                                     onChange={() => {
-                                                        setSelectedUsersIds({
-                                                            ...selectedUsersIds,
+                                                        setSelectedEventsIds({
+                                                            ...selectedEventsIds,
                                                             // @ts-ignore
-                                                            [user.id]: !selectedUsersIds[user.id],
+                                                            [event.id]: !selectedEventsIds[event.id],
                                                         });
                                                     }}
                                                 />
                                             }
-                                            label={user.fullName}
+                                            label={event.name}
                                         />
                                     </FormGroup>
                                 ))}
-                                <Divider />
-                            </Box>
-                        ))}
-                    </FilterSection>
+                        </FilterSection>
+                        <FilterSection title="Исполнители" selectedValueCount={selectedUsers}>
+                            {units.map((unit) => (
+                                <Box key={unit.id} sx={{ mb: 1 }}>
+                                    {unit.members.map((user) => (
+                                        <FormGroup key={user.id}>
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox
+                                                        // @ts-ignore
+                                                        checked={selectedUsersIds[user.id]}
+                                                        onChange={() => {
+                                                            setSelectedUsersIds({
+                                                                ...selectedUsersIds,
+                                                                // @ts-ignore
+                                                                [user.id]: !selectedUsersIds[user.id],
+                                                            });
+                                                        }}
+                                                    />
+                                                }
+                                                label={user.fullName}
+                                            />
+                                        </FormGroup>
+                                    ))}
+                                    <Divider />
+                                </Box>
+                            ))}
+                        </FilterSection>
 
-                    <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={filterTasks}>
-                        Применить
-                    </Button>
+                        <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={filterTasks}>
+                            Применить
+                        </Button>
 
-                    <Button fullWidth variant="outlined" sx={{ mt: 3 }} onClick={resetFilters}>
-                        Сбросить
-                    </Button>
-                </Box>
-            </SwipeableDrawer>
+                        <Button fullWidth variant="outlined" sx={{ mt: 3 }} onClick={resetFilters}>
+                            Сбросить
+                        </Button>
+                    </Box>
+                </SwipeableDrawer>
+            )}
         </>
     );
 }

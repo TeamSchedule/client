@@ -48,21 +48,4 @@ export class UnitsApi {
     static update(id: number, data: UpdateTeamRequestSchema) {
         return requestApi.PATCH(`${this.apiPrefix}/${id}`, { body: data });
     }
-
-    static async setAvatar(teamId: string, avatarImage: string | Blob) {
-        let formData = new FormData();
-        formData.append("avatar", avatarImage);
-
-        return await requestApi
-            .POST(`/avatar/teams/${teamId}`, {
-                body: formData,
-            })
-            .catch(() => {
-                alert("Could not save image! Try later");
-            });
-    }
-
-    static async deleteAvatar(teamId: string) {
-        return requestApi.DELETE(`/avatar/teams/${teamId}`);
-    }
 }

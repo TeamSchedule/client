@@ -6,6 +6,7 @@ import buildFilterParams from "../../../api/utils/buildFilterParams";
 import AdaptiveCalendar from "../calendarViews/AdaptiveCalendar";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { CalendarElemTypeEnum } from "../../../enums/common";
+import useEvents from "../../../hooks/useEvents";
 
 export default function FullCalendar() {
     // начало просматриваемого месяца
@@ -16,7 +17,8 @@ export default function FullCalendar() {
     const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([]);
 
     // все события
-    const [events, setEvents] = useState<EventResponseItemSchema[]>([]);
+    const { events } = useEvents();
+    const [displayedEvents, setDisplayedEvents] = useState<EventResponseItemSchema[]>(events);
 
     //текущие фильтры
     const [filterObject, setFilterObject] = useState<FilterTasksParamsSchema>(buildFilterParams(viewedDate));
@@ -39,35 +41,31 @@ export default function FullCalendar() {
     /*
      * Запросить события с сервера в соответствии со статусом
      * */
-    function fetchSetEvents() {
-        API.events
-            .all()
-            .then((events: EventResponseItemSchema[]) => {
-                if (!filterObject.status) {
-                    setEvents(events);
-                } else {
-                    setEvents(events.filter((event) => event.status === filterObject.status));
-                }
-            })
-            .catch(() => {
-                //    TODO: показать сообщение об ошибке
-            })
-            .finally(() => {});
+    function setEvents() {
+        if (!filterObject.status) {
+            setDisplayedEvents(events);
+        } else {
+            setDisplayedEvents(events.filter((event) => event.status === filterObject.status));
+        }
     }
 
     function getSetData() {
         // @ts-ignore
         if (!filterObject.type || filterObject.type === CalendarElemTypeEnum.ALL) {
             fetchSetTasks();
-            fetchSetEvents();
+            setEvents();
         } else if (filterObject.type === CalendarElemTypeEnum.TASK) {
             fetchSetTasks();
-            setEvents([]);
+            setDisplayedEvents([]);
         } else if (filterObject.type === CalendarElemTypeEnum.EVENT) {
-            fetchSetEvents();
+            setEvents();
             setTasks(() => []);
         }
     }
+
+    useEffect(() => {
+        setEvents();
+    }, [events]);
 
     useEffect(() => {
         // запрашиваем еще задач, если пользователь далеко прокликнул в календаре или при изменение фильтров
@@ -81,8 +79,8 @@ export default function FullCalendar() {
             <AdaptiveCalendar
                 tasks={tasks}
                 setTasks={setTasks}
-                events={events}
-                setEvents={setEvents}
+                events={displayedEvents}
+                setEvents={setDisplayedEvents}
                 viewedDate={viewedDate}
                 setViewedDate={setViewedDate}
                 chosenDate={chosenDate}

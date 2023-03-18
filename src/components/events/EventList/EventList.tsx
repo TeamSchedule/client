@@ -1,20 +1,17 @@
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import React, { useEffect, useState } from "react";
-import { API } from "../../../api/api";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import EventPreview from "../EventPreview/EventPreview";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
-import { eventsData } from "../../../testdata/data";
 import PlainSelector from "../../selectors/PlainSelector";
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { CreateNewEventPath } from "../../../routes/paths";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import { EventStatusEnum } from "../../../enums/eventsEnums";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import Grid from "@mui/material/Grid";
-import { compareEvent } from "../../../utils/eventUtils";
+import useEvents, { getOnlyCompletedEvents, getOnlyOpenEvents } from "../../../hooks/useEvents";
 
 enum EventFilterEnum {
     All = 0,
@@ -34,8 +31,8 @@ export default function EventList() {
     const { id } = useParams();
 
     // все существующие события
-    const [events, setEvents] = useState<EventResponseItemSchema[]>(eventsData);
-    const [eventsLoading, setEventsLoading] = useState<boolean>(true);
+    const { loadingStatus, events } = useEvents();
+
     const [isLoadingError, setIsLoadingError] = useState<boolean>(false);
 
     // список отображаемых событий
@@ -45,26 +42,12 @@ export default function EventList() {
     const [eventFilterValue, setEventFilterValue] = useState(EventFilterEnum.InProgress);
 
     useEffect(() => {
-        API.events
-            .all()
-            .then((events: EventResponseItemSchema[]) => {
-                setEvents(events);
-            })
-            .catch(() => {
-                setIsLoadingError(true);
-            })
-            .finally(() => {
-                setEventsLoading(false);
-            });
-    }, []);
-
-    useEffect(() => {
         if (+eventFilterValue === +EventFilterEnum.All) {
             setShowedEvents(() => [...events]);
         } else if (+eventFilterValue === +EventFilterEnum.InProgress) {
-            setShowedEvents(() => [...events.filter((event) => event.status === EventStatusEnum.IN_PROGRESS)]);
+            setShowedEvents(getOnlyOpenEvents(events));
         } else if (+eventFilterValue === +EventFilterEnum.Done) {
-            setShowedEvents(() => [...events.filter((event) => event.status === EventStatusEnum.COMPLETED)]);
+            setShowedEvents(getOnlyCompletedEvents(events));
         }
     }, [eventFilterValue, events]);
 
@@ -75,14 +58,12 @@ export default function EventList() {
         setIsLoadingError(false);
     };
 
-    const DisplayedEvents = showedEvents
-        .sort(compareEvent)
-        .map((event) => <EventPreview key={event.id} event={event} />);
+    const DisplayedEvents = showedEvents.map((event) => <EventPreview key={event.id} event={event} />);
 
     return (
         <>
             <div>
-                {eventsLoading && (
+                {loadingStatus && (
                     <Box sx={{ display: "flex", justifyContent: "center", mt: "50%" }}>
                         <CircularProgress />
                     </Box>
@@ -112,7 +93,7 @@ export default function EventList() {
                                         filterObj={EventFilters}
                                     />
                                 </div>
-                                {!eventsLoading && DisplayedEvents}
+                                {!loadingStatus && DisplayedEvents}
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={7} lg={8}>
@@ -148,7 +129,7 @@ export default function EventList() {
                                             filterObj={EventFilters}
                                         />
                                     </div>
-                                    {!eventsLoading && DisplayedEvents}
+                                    {!loadingStatus && DisplayedEvents}
                                 </Box>
                             </Grid>
                             <Grid item xs={0} md={7} lg={8}></Grid>

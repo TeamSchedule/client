@@ -1,8 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
-import { API } from "../../../api/api";
-import { unitsData } from "../../../testdata/data";
+import useUnits from "../../../hooks/useUnits";
 
 interface UnitSelectorProps {
     setInputValue: (unit: UnitResponseItemSchema) => void;
@@ -11,16 +9,7 @@ interface UnitSelectorProps {
 }
 
 export default function UnitSelector(props: UnitSelectorProps) {
-    const [units, setUnits] = useState<UnitResponseItemSchema[]>(unitsData);
-
-    useEffect(() => {
-        API.units
-            .all()
-            .then((units: UnitResponseItemSchema[]) => {
-                setUnits(units);
-            })
-            .catch(() => {});
-    }, []);
+    const { units } = useUnits();
 
     return (
         <>
