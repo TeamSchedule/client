@@ -24,11 +24,14 @@ import { API } from "../../../api/api";
 
 interface TaskPreviewProps {
     task: TaskResponseItemSchema;
-    setTasks?: (tasks: TaskResponseItemSchema[]) => void;
 }
 
 export default function TaskPreview(props: TaskPreviewProps) {
     const navigate = useNavigate();
+
+    // раскрыть подробнее
+    const [task, setTask] = useState<TaskResponseItemSchema>(props.task);
+
     // раскрыть подробнее
     const [expanded, setExpanded] = useState<boolean>(false);
 
@@ -41,24 +44,14 @@ export default function TaskPreview(props: TaskPreviewProps) {
 
         const newStatus: TaskStatusStrings = open ? TaskStatusEnum.IN_PROGRESS : TaskStatusEnum.COMPLETED;
         const updateStatusData: UpdateTaskRequestSchema = {
-            taskId: props.task.id,
+            taskId: task.id,
             status: newStatus,
         };
 
         API.tasks
             .updateTaskById(updateStatusData)
             .then(() => {
-                // rerender task in list
-                if (props.setTasks) {
-                    // @ts-ignore
-                    props.setTasks((prev: TaskResponseItemSchema[]) => [
-                        ...prev.filter((task) => task.id !== props.task.id),
-                        {
-                            ...props.task,
-                            taskStatus: newStatus,
-                        },
-                    ]);
-                }
+                setTask({ ...task, taskStatus: newStatus });
             })
             .catch(() => {})
             .finally(() => {
@@ -77,13 +70,10 @@ export default function TaskPreview(props: TaskPreviewProps) {
             >
                 <CardContent sx={{ p: 2, paddingBottom: 0 }}>
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                        <DeadlineAndStatus endDate={props.task.expirationTime} status={props.task.taskStatus} />
+                        <DeadlineAndStatus endDate={task.expirationTime} status={task.taskStatus} />
 
                         <Tooltip title="Редактировать">
-                            <IconButton
-                                sx={{ p: 0 }}
-                                onClick={() => navigate(makeTaskLinkById(props.task.id) + "/edit")}
-                            >
+                            <IconButton sx={{ p: 0 }} onClick={() => navigate(makeTaskLinkById(task.id) + "/edit")}>
                                 <EditIcon />
                             </IconButton>
                         </Tooltip>
@@ -91,7 +81,7 @@ export default function TaskPreview(props: TaskPreviewProps) {
 
                     <Link
                         component="a"
-                        href={makeTaskLinkById(props.task.id)}
+                        href={makeTaskLinkById(task.id)}
                         onClick={(e) => e.stopPropagation()}
                         sx={{
                             "&:hover": {
@@ -99,18 +89,16 @@ export default function TaskPreview(props: TaskPreviewProps) {
                             },
                         }}
                     >
-                        <TaskName name={props.task.name} />
+                        <TaskName name={task.name} />
                     </Link>
-                    <TaskDescription>{props.task.description}</TaskDescription>
+                    <TaskDescription>{task.description}</TaskDescription>
 
                     <Collapse in={expanded} timeout="auto" unmountOnExit sx={{ mb: 0, pb: 0 }}>
-                        {props.task.event && <EventLink event={props.task?.event} />}
-                        {props.task.department && (
-                            <UnitLink id={props.task.department.id} name={props.task.department.name} />
-                        )}
+                        {task.event && <EventLink event={task?.event} />}
+                        {task.department && <UnitLink id={task.department.id} name={task.department.name} />}
 
                         <ToggleWorkStatusButton
-                            status={props.task.taskStatus}
+                            status={task.taskStatus}
                             toggleStatus={toggleTaskStatus}
                             loading={isChangingStatus}
                         />

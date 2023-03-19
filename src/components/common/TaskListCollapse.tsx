@@ -25,7 +25,6 @@ export const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface TaskListCollapseProps {
     tasks: TaskResponseItemSchema[];
-    setTasks: (tasks: TaskResponseItemSchema[]) => void;
     title?: string;
 }
 
@@ -57,7 +56,7 @@ export default function TaskListCollapse(props: TaskListCollapseProps) {
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 {props.tasks.sort(compareTasks).map((task) => (
-                    <TaskPreview key={task.id} task={task} setTasks={props.setTasks} />
+                    <TaskPreview key={task.id} task={task} />
                 ))}
             </Collapse>
         </>

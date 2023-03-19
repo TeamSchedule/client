@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { API } from "../../../api/api";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
@@ -8,8 +8,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import SpeedDial from "@mui/material/SpeedDial";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
-import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
 import { EventStatusEnum, EventStatusStrings } from "../../../enums/eventsEnums";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import Typography from "@mui/material/Typography";
@@ -23,6 +21,7 @@ import TaskListCollapse from "../../common/TaskListCollapse";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
+import useTasks from "../../../hooks/useTasks";
 
 export default function FullEventView() {
     const navigate = useNavigate();
@@ -31,6 +30,16 @@ export default function FullEventView() {
     const { state } = useLocation();
     const { created = 0 } = state || {}; // считываем значения из state
     window.history.replaceState({}, document.title); // очищаем state
+
+    const params = useMemo(() => {
+        return {
+            events: [id ? +id : 0],
+        };
+    }, [id]);
+
+    const { tasks } = useTasks({
+        filterTaskObject: params,
+    });
 
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
@@ -45,7 +54,6 @@ export default function FullEventView() {
 
     // данные события
     const [event, setEvent] = useState<EventResponseItemSchema | undefined>(undefined);
-    const [eventTasks, setEventTasks] = useState<TaskResponseItemSchema[]>([]);
     const [eventFiles, setEventFiles] = useState<FileResponseItemSchema[]>([]);
 
     useEffect(() => {
@@ -63,13 +71,6 @@ export default function FullEventView() {
             .catch(() => {
                 setIsLoadingError(true);
             });
-
-        const params: FilterTasksParamsSchema = {
-            events: [+id],
-        };
-        API.tasks.getTasks(params).then((tasks: TaskResponseItemSchema[]) => {
-            setEventTasks(tasks);
-        });
     }, [id]);
 
     useEffect(() => {
@@ -133,6 +134,11 @@ export default function FullEventView() {
         setIsChangingStatusSuccess(false);
     };
 
+    if (id === undefined) {
+        navigate("/");
+        return null;
+    }
+
     return (
         <>
             <Card>
@@ -169,7 +175,7 @@ export default function FullEventView() {
                         </>
                     )}
 
-                    <TaskListCollapse tasks={eventTasks} setTasks={setEventTasks} />
+                    <TaskListCollapse tasks={tasks} />
 
                     {event && (
                         <ToggleWorkStatusButton
