@@ -9,21 +9,23 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import useUnits from "../../../hooks/useUnits";
+import { LoadingStatusEnum } from "../../../enums/loadingStatusEnum";
 
 export default function UnitList() {
     const navigate = useNavigate();
 
-    const { units, isUnitsLoadingError, isUnitsLoading } = useUnits();
+    const { units, unitsLoadingStatus, closeSnackbar } = useUnits();
 
     return (
         <>
             <ScreenHeader text="Отделы департамента информационной политики" />
-            {isUnitsLoading && (
+            {unitsLoadingStatus === LoadingStatusEnum.LOADING && (
                 <Box sx={{ display: "flex", justifyContent: "center", mt: "50%" }}>
                     <CircularProgress />
                 </Box>
             )}
-            {!isUnitsLoading && units.map((unit) => <UnitPreview key={unit.id} unit={unit} />)}
+            {unitsLoadingStatus !== LoadingStatusEnum.FINISH_ERROR &&
+                units.map((unit) => <UnitPreview key={unit.id} unit={unit} />)}
 
             <SpeedDial
                 ariaLabel="create new event"
@@ -34,7 +36,7 @@ export default function UnitList() {
                 }}
             ></SpeedDial>
 
-            <ErrorSnackbar isOpen={isUnitsLoadingError} handleClose={() => {}}>
+            <ErrorSnackbar isOpen={unitsLoadingStatus === LoadingStatusEnum.FINISH_ERROR} handleClose={closeSnackbar}>
                 Не удалось загрузить данные!
             </ErrorSnackbar>
         </>

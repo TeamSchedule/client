@@ -8,7 +8,6 @@ import { compareTasks } from "../../utils/taskUtils";
 interface todayTaskListProps {
     day: Date;
     tasks: TaskResponseItemSchema[];
-    setTasks: (tasks: TaskResponseItemSchema[]) => void;
 }
 
 export function TodayTaskList(props: todayTaskListProps) {
@@ -34,7 +33,7 @@ export function TodayTaskList(props: todayTaskListProps) {
 
             {dayTasks.sort(compareTasks).map((task) => (
                 <div className="mb-2" key={task.id}>
-                    <TaskPreview key={task.id} task={task} setTasks={props.setTasks} />
+                    <TaskPreview key={task.id} task={task} />
                 </div>
             ))}
         </>

@@ -1,7 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useMemo, useState } from "react";
 import { API } from "../../../api/api";
-import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import { EventColorLeft, EventDescription, EventName } from "../common";
 import EditIcon from "@mui/icons-material/Edit";
@@ -22,6 +21,8 @@ import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
 import useTasks from "../../../hooks/useTasks";
+import useEvent from "../../../hooks/useEvent";
+import { LoadingStatusEnum } from "../../../enums/loadingStatusEnum";
 
 export default function FullEventView() {
     const navigate = useNavigate();
@@ -44,34 +45,14 @@ export default function FullEventView() {
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
 
-    // статус загрузки данных события
-    const [isLoadingError, setIsLoadingError] = useState<boolean>(false);
-
     // статус запроса на изменения статуса события
     const [isChangingStatus, setIsChangingStatus] = useState<boolean>(false);
     const [isChangingStatusError, setIsChangingStatusError] = useState<boolean>(false);
     const [isChangingStatusSuccess, setIsChangingStatusSuccess] = useState<boolean>(false);
 
     // данные события
-    const [event, setEvent] = useState<EventResponseItemSchema | undefined>(undefined);
+    const { event, setEvent, eventLoadingStatus, closeSnackbar } = useEvent(id ? +id : 0);
     const [eventFiles, setEventFiles] = useState<FileResponseItemSchema[]>([]);
-
-    useEffect(() => {
-        /* Получение  данных события */
-        if (!id) {
-            setIsLoadingError(true);
-            return;
-        }
-
-        API.events
-            .getById(+id)
-            .then((event: EventResponseItemSchema) => {
-                setEvent({ ...event });
-            })
-            .catch(() => {
-                setIsLoadingError(true);
-            });
-    }, [id]);
 
     useEffect(() => {
         if (!id) {
@@ -111,13 +92,6 @@ export default function FullEventView() {
             return;
         }
         setIsCreatingFinished(false);
-    };
-
-    const handleCloseErrorLoadedSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setIsLoadingError(false);
     };
 
     const handleCloseErrorChangeStatusSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -203,7 +177,7 @@ export default function FullEventView() {
                 Событие создано!
             </SuccessSnackbar>
 
-            <ErrorSnackbar handleClose={handleCloseErrorLoadedSnackbar} isOpen={isLoadingError}>
+            <ErrorSnackbar handleClose={closeSnackbar} isOpen={eventLoadingStatus === LoadingStatusEnum.FINISH_ERROR}>
                 Ошибка загрузки
             </ErrorSnackbar>
 

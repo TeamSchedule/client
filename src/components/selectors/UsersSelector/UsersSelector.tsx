@@ -1,9 +1,8 @@
 import { Autocomplete, TextField } from "@mui/material";
 import styles from "../UserSelector/UserSelector.module.scss";
 import UserPreview from "../../users/UsersPreview/UserPreview";
-import { useEffect, useState } from "react";
 import { UserSchema } from "../../../api/schemas/responses/users";
-import { API } from "../../../api/api";
+import useUsers from "../../../hooks/useUsers";
 
 interface UsersSelectorProps {
     setInputValue: (users: UserSchema[]) => void;
@@ -16,21 +15,7 @@ interface UsersSelectorProps {
 }
 
 export default function UsersSelector(props: UsersSelectorProps) {
-    const [users, setUsers] = useState<UserSchema[]>([]);
-
-    useEffect(() => {
-        if (props.users) {
-            setUsers(props.users);
-            return;
-        }
-        API.users
-            .all()
-            .then((users: UserSchema[]) => {
-                setUsers(users);
-            })
-            .catch(() => {})
-            .finally(() => {});
-    }, [props.users]);
+    const { users } = useUsers();
 
     return (
         <>
@@ -39,7 +24,7 @@ export default function UsersSelector(props: UsersSelectorProps) {
                     id="users-selector"
                     disabled={props.disabled}
                     multiple
-                    options={users}
+                    options={props.users ? (props.users.length === 0 ? users : props.users) : users}
                     disableCloseOnSelect
                     fullWidth
                     freeSolo={true}

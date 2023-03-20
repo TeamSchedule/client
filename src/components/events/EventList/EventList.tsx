@@ -12,6 +12,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import Grid from "@mui/material/Grid";
 import useEvents, { getOnlyCompletedEvents, getOnlyOpenEvents } from "../../../hooks/useEvents";
+import { LoadingStatusEnum } from "../../../enums/loadingStatusEnum";
 
 enum EventFilterEnum {
     All = 0,
@@ -31,9 +32,7 @@ export default function EventList() {
     const { id } = useParams();
 
     // все существующие события
-    const { loadingStatus, events } = useEvents();
-
-    const [isLoadingError, setIsLoadingError] = useState<boolean>(false);
+    const { eventsLoadingStatus, events, closeSnackbar } = useEvents();
 
     // список отображаемых событий
     const [showedEvents, setShowedEvents] = useState<EventResponseItemSchema[]>([]);
@@ -51,19 +50,12 @@ export default function EventList() {
         }
     }, [eventFilterValue, events]);
 
-    const handleCloseErrorSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setIsLoadingError(false);
-    };
-
     const DisplayedEvents = showedEvents.map((event) => <EventPreview key={event.id} event={event} />);
 
     return (
         <>
             <div>
-                {loadingStatus && (
+                {eventsLoadingStatus === LoadingStatusEnum.LOADING && (
                     <Box sx={{ display: "flex", justifyContent: "center", mt: "50%" }}>
                         <CircularProgress />
                     </Box>
@@ -93,7 +85,7 @@ export default function EventList() {
                                         filterObj={EventFilters}
                                     />
                                 </div>
-                                {!loadingStatus && DisplayedEvents}
+                                {eventsLoadingStatus === LoadingStatusEnum.FINISH_SUCCESS && DisplayedEvents}
                             </Box>
                         </Grid>
                         <Grid item xs={12} md={7} lg={8}>
@@ -129,7 +121,7 @@ export default function EventList() {
                                             filterObj={EventFilters}
                                         />
                                     </div>
-                                    {!loadingStatus && DisplayedEvents}
+                                    {eventsLoadingStatus === LoadingStatusEnum.FINISH_SUCCESS && DisplayedEvents}
                                 </Box>
                             </Grid>
                             <Grid item xs={0} md={7} lg={8}></Grid>
@@ -146,7 +138,7 @@ export default function EventList() {
                     }}
                 ></SpeedDial>
             </div>
-            <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isLoadingError}>
+            <ErrorSnackbar handleClose={closeSnackbar} isOpen={eventsLoadingStatus === LoadingStatusEnum.FINISH_ERROR}>
                 Не удалось загрузить данные!
             </ErrorSnackbar>
         </>

@@ -11,15 +11,18 @@ import UsersSelector from "../../selectors/UsersSelector";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { makeUnitLinkById } from "../../../routes/paths";
 import GoBackButton from "../../buttons/GoBackButton";
-import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
+import useUnit from "../../../hooks/useUnit";
 
 export default function EditUnitForm() {
     const navigate = useNavigate();
 
     // id отдела из пути
     const { id } = useParams();
+
+    // данные отдела
+    const { unit } = useUnit(id ? +id : 0);
 
     // данные отдела
     const [title, setTitle] = useState<string>("");
@@ -34,25 +37,13 @@ export default function EditUnitForm() {
     const [isEditingError, setIsEditingError] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!id) {
-            navigate("..");
-            return;
+        if (unit !== undefined) {
+            setTitle(unit.name);
+            setDescription(unit.description);
+            setUnitMembers(unit.members);
+            setUnitHead(unit.admin);
         }
-
-        API.units
-            .getById(+id)
-            .then((data: UnitResponseItemSchema) => {
-                setTitle(data.name);
-                setDescription(data.description);
-                setUnitMembers(data.members);
-                setUnitHead(data.admin);
-            })
-            .catch(() => {
-            })
-            .finally(() => {
-            });
-        /* eslint-disable react-hooks/exhaustive-deps */
-    }, [id]);
+    }, [unit]);
 
     function editUnitHandler(event: React.MouseEvent) {
         event.preventDefault();

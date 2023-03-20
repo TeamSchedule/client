@@ -3,24 +3,36 @@ import { API } from "../api/api";
 import { EventResponseItemSchema } from "../api/schemas/responses/events";
 import { EventStatusEnum } from "../enums/eventsEnums";
 import { compareEvent } from "../utils/eventUtils";
+import { LoadingStatusEnum, LoadingStatusStrings } from "../enums/loadingStatusEnum";
 
-export default function useEvents() {
-    const [loadingStatus, setLoadingStatus] = useState<boolean>(true);
+export interface UseEventsInterface {
+    events: EventResponseItemSchema[];
+    eventsLoadingStatus: LoadingStatusStrings;
+    closeSnackbar: () => void;
+}
+
+export default function useEvents(): UseEventsInterface {
+    const [eventsLoadingStatus, setEventsLoadingStatus] = useState<LoadingStatusStrings>(LoadingStatusEnum.LOADING);
     const [events, setEvents] = useState<EventResponseItemSchema[]>([]);
+
+    function closeSnackbar() {
+        setEventsLoadingStatus(LoadingStatusEnum._DEFAULT);
+    }
 
     useEffect(() => {
         API.events
             .all()
             .then((events: EventResponseItemSchema[]) => {
                 setEvents(events);
+                setEventsLoadingStatus(LoadingStatusEnum.FINISH_SUCCESS);
             })
-            .catch(() => {})
-            .finally(() => {
-                setLoadingStatus(false);
-            });
+            .catch(() => {
+                setEventsLoadingStatus(LoadingStatusEnum.FINISH_ERROR);
+            })
+            .finally(() => {});
     }, []);
 
-    return { loadingStatus: loadingStatus, events: events.sort(compareEvent) };
+    return { eventsLoadingStatus, events: events.sort(compareEvent), closeSnackbar };
 }
 
 export function getOnlyCompletedEvents(events: EventResponseItemSchema[]): EventResponseItemSchema[] {

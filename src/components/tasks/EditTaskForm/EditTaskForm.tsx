@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { API } from "../../../api/api";
 import CloseFormIcon from "../../generic/CloseFormIcon";
-import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../../inputs/SimpleTextInput";
@@ -16,11 +15,14 @@ import Box from "@mui/material/Box";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import { getTimezoneDatetime } from "../../../utils/dateutils";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
+import useTask from "../../../hooks/useTask";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
 
     const { id } = useParams();
+
+    const { task } = useTask(id ? +id : 0);
 
     // task data
     const [taskName, setTaskName] = useState<string>("");
@@ -33,17 +35,13 @@ export default function EditTaskForm() {
     const [isDeleteActionInProgress, setIsDeleteActionInProgress] = useState(false);
 
     useEffect(() => {
-        if (id === undefined) {
-            return;
-        }
-        API.tasks.getTaskById(+id).then((task: TaskResponseItemSchema) => {
-            // Available use full info about task in data
+        if (task !== undefined) {
             setTaskName(task.name);
             setTaskDescription(task.description);
             setDeadline(task.expirationTime ? new Date(task.expirationTime) : null);
             setTaskUnit(task.department);
-        });
-    }, [id]);
+        }
+    }, [task]);
 
     function onSubmit(event: React.FormEvent) {
         event.preventDefault();

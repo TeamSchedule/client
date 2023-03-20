@@ -3,13 +3,13 @@ import { API } from "../api/api";
 import { TaskResponseItemSchema } from "../api/schemas/responses/tasks";
 import { FilterTasksParamsSchema } from "../api/schemas/requests/tasks";
 import { compareTasks } from "../utils/taskUtils";
+import { TaskStatusEnum } from "../enums/tasksEnums";
+import { LoadingStatusEnum, LoadingStatusStrings } from "../enums/loadingStatusEnum";
 
 interface UseTasksInterface {
     tasks: TaskResponseItemSchema[];
-    setTasks: (value: TaskResponseItemSchema[]) => void;
-    isTasksLoadingError: boolean;
-    isTasksLoadingSuccess: boolean;
-    isTasksLoading: boolean;
+    tasksLoadingStatus: LoadingStatusStrings;
+    closeSnackbar: () => void;
 }
 
 interface useTasksParam {
@@ -17,25 +17,34 @@ interface useTasksParam {
 }
 
 export default function useTasks(param: useTasksParam): UseTasksInterface {
-    const [isTasksLoading, setIsTasksLoading] = useState<boolean>(true);
-    const [isTasksLoadingError, setIsTasksLoadingError] = useState<boolean>(false);
-    const [isTasksLoadingSuccess, setIsTasksLoadingSuccess] = useState<boolean>(false);
     const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([]);
+    const [tasksLoadingStatus, setTasksLoadingStatus] = useState<LoadingStatusStrings>(LoadingStatusEnum.LOADING);
+
+    function closeSnackbar() {
+        setTasksLoadingStatus(LoadingStatusEnum._DEFAULT);
+    }
 
     useEffect(() => {
         API.tasks
             .getTasks(param.filterTaskObject)
             .then((data: TaskResponseItemSchema[]) => {
                 setTasks(data.sort(compareTasks));
-                setIsTasksLoadingSuccess(true);
+                setTasksLoadingStatus(LoadingStatusEnum.FINISH_SUCCESS);
             })
             .catch(() => {
-                setIsTasksLoadingError(true);
+                setTasksLoadingStatus(LoadingStatusEnum.FINISH_ERROR);
             })
             .finally(() => {
-                setIsTasksLoading(false);
             });
     }, [param.filterTaskObject]);
 
-    return { isTasksLoading, tasks, setTasks, isTasksLoadingError, isTasksLoadingSuccess };
+    return { tasks, tasksLoadingStatus, closeSnackbar };
+}
+
+export function getOnlyCompletedTasks(tasks: TaskResponseItemSchema[]): TaskResponseItemSchema[] {
+    return tasks.filter((task) => task.taskStatus === TaskStatusEnum.COMPLETED);
+}
+
+export function getOnlyOpenTasks(events: TaskResponseItemSchema[]): TaskResponseItemSchema[] {
+    return events.filter((task) => task.taskStatus === TaskStatusEnum.IN_PROGRESS);
 }

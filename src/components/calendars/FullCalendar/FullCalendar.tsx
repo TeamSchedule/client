@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
-import { API } from "../../../api/api";
 import { FilterTasksParamsSchema } from "../../../api/schemas/requests/tasks";
 import buildFilterParams from "../../../api/utils/buildFilterParams";
 import AdaptiveCalendar from "../calendarViews/AdaptiveCalendar";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { CalendarElemTypeEnum } from "../../../enums/common";
 import useEvents from "../../../hooks/useEvents";
+import useTasks from "../../../hooks/useTasks";
 
 export default function FullCalendar() {
     // начало просматриваемого месяца
     const [viewedDate, setViewedDate] = useState<Date>(new Date()); // дата, в диапазоне которой показываются задачи
     const [chosenDate, setChosenDate] = useState<Date>(new Date()); // выбранный день, для него показываюся задачи на мобильной версии
-
-    // все задачи в диапазоне нескольких месяцев в соответствии с фильтрами
-    const [tasks, setTasks] = useState<TaskResponseItemSchema[]>([]);
 
     // все события
     const { events } = useEvents();
@@ -23,62 +20,42 @@ export default function FullCalendar() {
     //текущие фильтры
     const [filterObject, setFilterObject] = useState<FilterTasksParamsSchema>(buildFilterParams(viewedDate));
 
+    const params = useMemo(() => filterObject, [filterObject]);
+
     /*
      * Запросить задачи с сервера в соответствии с фильтрами в `params`
      * */
-    function fetchSetTasks() {
-        API.tasks
-            .getTasks(filterObject)
-            .then((tasks: TaskResponseItemSchema[]) => {
-                setTasks(tasks);
-            })
-            .catch(() => {
-                //    TODO: показать сообщение об ошибке
-            })
-            .finally(() => {});
-    }
+    const { tasks } = useTasks({
+        filterTaskObject: params,
+    });
+    const [displayedTasks, setDisplayedTasks] = useState<TaskResponseItemSchema[]>([]);
 
-    /*
-     * Запросить события с сервера в соответствии со статусом
-     * */
-    function setEvents() {
-        if (!filterObject.status) {
-            setDisplayedEvents(events);
-        } else {
-            setDisplayedEvents(events.filter((event) => event.status === filterObject.status));
-        }
-    }
+    useEffect(() => {
+        const setEvents = () => {
+            if (!filterObject.status) {
+                setDisplayedEvents(events);
+            } else {
+                setDisplayedEvents(events.filter((event) => event.status === filterObject.status));
+            }
+        };
 
-    function getSetData() {
         // @ts-ignore
         if (!filterObject.type || filterObject.type === CalendarElemTypeEnum.ALL) {
-            fetchSetTasks();
             setEvents();
+            setDisplayedTasks(tasks);
         } else if (filterObject.type === CalendarElemTypeEnum.TASK) {
-            fetchSetTasks();
             setDisplayedEvents([]);
+            setDisplayedTasks(tasks);
         } else if (filterObject.type === CalendarElemTypeEnum.EVENT) {
             setEvents();
-            setTasks(() => []);
+            setDisplayedTasks([]);
         }
-    }
-
-    useEffect(() => {
-        setEvents();
-    }, [events]);
-
-    useEffect(() => {
-        // запрашиваем еще задач, если пользователь далеко прокликнул в календаре или при изменение фильтров
-        getSetData();
-
-        /* eslint-disable */
-    }, [viewedDate, filterObject]);
+    }, [tasks, events, filterObject]);
 
     return (
         <>
             <AdaptiveCalendar
-                tasks={tasks}
-                setTasks={setTasks}
+                tasks={displayedTasks}
                 events={displayedEvents}
                 setEvents={setDisplayedEvents}
                 viewedDate={viewedDate}

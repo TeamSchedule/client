@@ -1,7 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
-import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import TaskName from "../common/TaskName";
 import Executors from "../common/Executors";
 import UnitLink from "../../links/UnitLink/UnitLink";
@@ -21,6 +20,7 @@ import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
+import useTask from "../../../hooks/useTask";
 
 export default function FullTaskView() {
     const { id } = useParams();
@@ -39,26 +39,8 @@ export default function FullTaskView() {
     const navigate = useNavigate();
 
     // данные задачи
-    const [task, setTask] = useState<TaskResponseItemSchema | undefined>(taskData);
+    const { task, setTask } = useTask(id ? +id : 0);
     const [taskFiles, setTaskFiles] = useState<FileResponseItemSchema[]>([]);
-
-    function getTaskData() {
-        if (!id) {
-            return;
-        }
-        API.tasks
-            .getTaskById(+id)
-            .then((task: TaskResponseItemSchema) => {
-                setTask(task);
-            })
-            .catch(() => {})
-            .finally(() => {});
-    }
-
-    useEffect(() => {
-        getTaskData();
-        /* eslint-disable react-hooks/exhaustive-deps */
-    }, []);
 
     useEffect(() => {
         if (!id) {
