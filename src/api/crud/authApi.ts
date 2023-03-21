@@ -12,13 +12,13 @@ export class AuthApi {
 
     static signIn(data: SignInRequestSchema) {
         return requestApi.POST(`/jwt/obtain`, {
-            body: data,
+            body: { ...data, login: "login" },
         });
     }
 
     static signUp(data: SignUpRequestSchema) {
         return requestApi.POST(`/registration`, {
-            body: data,
+            body: { ...data, login: "login" },
         });
     }
 
