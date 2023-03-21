@@ -17,8 +17,11 @@ function NotificationTray() {
         setShowNotifications(!showNotifications);
     };
 
+    const unreadCount = notifications.filter(notification => !notification.read).length;
+
     return (
         <div>
+            <span className="notification-count">{unreadCount}</span>
             <NotificationsIcon onClick={handleIconClick} />
             {showNotifications && (
                 <div className="notification-tray">

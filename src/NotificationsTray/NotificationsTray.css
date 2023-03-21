@@ -1,14 +1,41 @@
+.notification-count {
+    display: inline-block;
+    top: -10px;
+    right: -10px;
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 15px;
+}
+
 .notification-tray {
     position: absolute;
     display: inline-block;
-    width: 15%;
     top: 50px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
     z-index: 999;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     padding: 10px;
+}
+
+.notification-tray h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.notification-tray p {
+    margin-top: 0;
+    margin-bottom: 10px;
 }
 
 .read-notification-item {
