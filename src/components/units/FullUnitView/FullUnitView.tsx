@@ -13,9 +13,10 @@ import TaskListCollapse from "../../common/TaskListCollapse";
 import GoBackButton from "../../buttons/GoBackButton";
 import { UnitListPath } from "../../../routes/paths";
 import { UnitParticipants } from "../common";
-import useTasks, { getOnlyOpenTasks } from "../../../hooks/useTasks";
-import useUnit from "../../../hooks/useUnit";
-import { LoadingStatusEnum } from "../../../enums/loadingStatusEnum";
+import { getOnlyOpenTasks } from "../../../utils/taskUtils";
+import { API } from "../../../api/api";
+import useApiCall from "../../../hooks/useApiCall";
+import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 
 export default function FullUnitView() {
     const navigate = useNavigate();
@@ -31,15 +32,17 @@ export default function FullUnitView() {
         };
     }, [id]);
 
-    const { tasks } = useTasks({
-        filterTaskObject: params,
-    });
+    const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(() => API.tasks.getTasks(params), []);
 
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
 
     // данные отдела
-    const { unit, unitLoadingStatus, closeSnackbar } = useUnit(id ? +id : 0);
+    const getUnitApiCall = useApiCall<UnitResponseItemSchema | undefined>(
+        () => API.units.getById(id ? +id : 0),
+        undefined
+    );
+    const unit = getUnitApiCall.data;
 
     const handleCloseSuccessSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
@@ -48,7 +51,7 @@ export default function FullUnitView() {
         setIsCreatingFinished(false);
     };
 
-    const openTasks: TaskResponseItemSchema[] = getOnlyOpenTasks(tasks);
+    const openTasks: TaskResponseItemSchema[] = getOnlyOpenTasks(getTasksApiCall.data);
 
     return (
         <>
@@ -76,7 +79,7 @@ export default function FullUnitView() {
                 Отдел создан!
             </SuccessSnackbar>
 
-            <ErrorSnackbar handleClose={closeSnackbar} isOpen={unitLoadingStatus === LoadingStatusEnum.FINISH_ERROR}>
+            <ErrorSnackbar handleClose={getUnitApiCall.resetApiCallStatus} isOpen={getUnitApiCall.error}>
                 Ошибка загрузки
             </ErrorSnackbar>
         </>

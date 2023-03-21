@@ -1,6 +1,7 @@
 import { Autocomplete, TextField } from "@mui/material";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
-import useUnits from "../../../hooks/useUnits";
+import useApiCall from "../../../hooks/useApiCall";
+import { API } from "../../../api/api";
 
 interface UnitSelectorProps {
     setInputValue: (unit: UnitResponseItemSchema) => void;
@@ -9,7 +10,7 @@ interface UnitSelectorProps {
 }
 
 export default function UnitSelector(props: UnitSelectorProps) {
-    const { units } = useUnits();
+    const getUnitsApiCall = useApiCall<UnitResponseItemSchema[]>(() => API.units.all(), []);
 
     return (
         <>
@@ -18,7 +19,7 @@ export default function UnitSelector(props: UnitSelectorProps) {
                 disabled={props.disabled}
                 autoHighlight
                 fullWidth
-                options={units}
+                options={getUnitsApiCall.data}
                 renderOption={(props, option) => {
                     return (
                         <li {...props} key={option.id}>

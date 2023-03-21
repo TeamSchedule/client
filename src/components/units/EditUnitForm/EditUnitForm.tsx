@@ -13,7 +13,8 @@ import { makeUnitLinkById } from "../../../routes/paths";
 import GoBackButton from "../../buttons/GoBackButton";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
-import useUnit from "../../../hooks/useUnit";
+import useApiCall from "../../../hooks/useApiCall";
+import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 
 export default function EditUnitForm() {
     const navigate = useNavigate();
@@ -22,7 +23,11 @@ export default function EditUnitForm() {
     const { id } = useParams();
 
     // данные отдела
-    const { unit } = useUnit(id ? +id : 0);
+    const getUnitApiCall = useApiCall<UnitResponseItemSchema | undefined>(
+        () => API.units.getById(id ? +id : 0),
+        undefined
+    );
+    const unit = getUnitApiCall.data;
 
     // данные отдела
     const [title, setTitle] = useState<string>("");

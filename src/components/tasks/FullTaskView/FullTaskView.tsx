@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { API } from "../../../api/api";
 import TaskName from "../common/TaskName";
 import Executors from "../common/Executors";
@@ -20,7 +20,8 @@ import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
-import useTask from "../../../hooks/useTask";
+import useApiCall from "../../../hooks/useApiCall";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 
 export default function FullTaskView() {
     const { id } = useParams();
@@ -39,7 +40,16 @@ export default function FullTaskView() {
     const navigate = useNavigate();
 
     // данные задачи
-    const { task, setTask } = useTask(id ? +id : 0);
+    const getTaskFunc: () => Promise<TaskResponseItemSchema> = useMemo(
+        () => () => API.tasks.getTaskById(id ? +id : 0),
+        [id]
+    );
+    const getTaskApiCall = useApiCall<TaskResponseItemSchema | undefined>(
+        () => API.tasks.getTaskById(id ? +id : 0),
+        undefined
+    );
+    const task = getTaskApiCall.data;
+
     const [taskFiles, setTaskFiles] = useState<FileResponseItemSchema[]>([]);
 
     useEffect(() => {
@@ -70,7 +80,7 @@ export default function FullTaskView() {
             .then(() => {
                 setIsChangeStatusOk(true);
                 if (task) {
-                    setTask({ ...task, taskStatus: newStatus });
+                    getTaskApiCall.setData({ ...task, taskStatus: newStatus });
                 }
             })
             .catch(() => {})

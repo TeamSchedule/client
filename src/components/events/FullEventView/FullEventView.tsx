@@ -20,9 +20,9 @@ import TaskListCollapse from "../../common/TaskListCollapse";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
-import useTasks from "../../../hooks/useTasks";
-import useEvent from "../../../hooks/useEvent";
-import { LoadingStatusEnum } from "../../../enums/loadingStatusEnum";
+import useApiCall from "../../../hooks/useApiCall";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 
 export default function FullEventView() {
     const navigate = useNavigate();
@@ -38,9 +38,7 @@ export default function FullEventView() {
         };
     }, [id]);
 
-    const { tasks } = useTasks({
-        filterTaskObject: params,
-    });
+    const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(() => API.tasks.getTasks(params), []);
 
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
@@ -50,8 +48,13 @@ export default function FullEventView() {
     const [isChangingStatusError, setIsChangingStatusError] = useState<boolean>(false);
     const [isChangingStatusSuccess, setIsChangingStatusSuccess] = useState<boolean>(false);
 
+    const getEventApiCall = useApiCall<EventResponseItemSchema | undefined>(
+        () => API.events.getById(id ? +id : 0),
+        undefined
+    );
     // данные события
-    const { event, setEvent, eventLoadingStatus, closeSnackbar } = useEvent(id ? +id : 0);
+    const event = getEventApiCall.data;
+
     const [eventFiles, setEventFiles] = useState<FileResponseItemSchema[]>([]);
 
     useEffect(() => {
@@ -76,7 +79,8 @@ export default function FullEventView() {
             .editEvent(newEventData)
             .then(() => {
                 if (event) {
-                    setEvent({ ...event, status: newStatus });
+                    // setEvent({ ...event, status: newStatus });
+                    getEventApiCall.setData({ ...event, status: newStatus });
                 }
             })
             .catch(() => {
@@ -149,7 +153,7 @@ export default function FullEventView() {
                         </>
                     )}
 
-                    <TaskListCollapse tasks={tasks} />
+                    <TaskListCollapse tasks={getTasksApiCall.data} />
 
                     {event && (
                         <ToggleWorkStatusButton
@@ -177,7 +181,7 @@ export default function FullEventView() {
                 Событие создано!
             </SuccessSnackbar>
 
-            <ErrorSnackbar handleClose={closeSnackbar} isOpen={eventLoadingStatus === LoadingStatusEnum.FINISH_ERROR}>
+            <ErrorSnackbar handleClose={getEventApiCall.resetApiCallStatus} isOpen={getEventApiCall.error}>
                 Ошибка загрузки
             </ErrorSnackbar>
 

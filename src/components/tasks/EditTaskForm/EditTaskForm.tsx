@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { API } from "../../../api/api";
@@ -15,14 +15,20 @@ import Box from "@mui/material/Box";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import { getTimezoneDatetime } from "../../../utils/dateutils";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
-import useTask from "../../../hooks/useTask";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
+import useApiCall from "../../../hooks/useApiCall";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
 
     const { id } = useParams();
 
-    const { task } = useTask(id ? +id : 0);
+    // данные задачи
+    const getTaskApiCall = useApiCall<TaskResponseItemSchema | undefined>(
+        () => API.tasks.getTaskById(id ? +id : 0),
+        undefined
+    );
+    const task = getTaskApiCall.data;
 
     // task data
     const [taskName, setTaskName] = useState<string>("");

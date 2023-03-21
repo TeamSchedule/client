@@ -25,8 +25,10 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControl from "@mui/material/FormControl";
 import { EventStatusEnum } from "../../../enums/eventsEnums";
 import { CalendarElemTypeEnum } from "../../../enums/common";
-import useEvents from "../../../hooks/useEvents";
-import useUnits from "../../../hooks/useUnits";
+import useApiCall from "../../../hooks/useApiCall";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import { API } from "../../../api/api";
+import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 
 export interface FiltersDrawerProps {
     viewedDate: Date;
@@ -35,8 +37,9 @@ export interface FiltersDrawerProps {
 
 export default function FiltersDrawer(props: FiltersDrawerProps) {
     // данные для фильтров
-    const { units } = useUnits();
-    const { events } = useEvents();
+    const getUnitsApiCall = useApiCall<UnitResponseItemSchema[]>(() => API.units.all(), []);
+    const getEventsApiCall = useApiCall<EventResponseItemSchema[]>(() => API.events.all(), []);
+    const events: EventResponseItemSchema[] = getEventsApiCall.data;
 
     // открыт sidebar или нет
     const [state, setState] = React.useState<boolean>(false);
@@ -193,7 +196,7 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
 
                         <Divider />
                         <FilterSection title="Отделы" selectedValueCount={selectedUnits}>
-                            {units.map((unit) => (
+                            {getUnitsApiCall.data.map((unit) => (
                                 <FormGroup key={unit.id}>
                                     <FormControlLabel
                                         control={
@@ -245,7 +248,7 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                                 ))}
                         </FilterSection>
                         <FilterSection title="Исполнители" selectedValueCount={selectedUsers}>
-                            {units.map((unit) => (
+                            {getUnitsApiCall.data.map((unit) => (
                                 <Box key={unit.id} sx={{ mb: 1 }}>
                                     {unit.members.map((user) => (
                                         <FormGroup key={user.id}>

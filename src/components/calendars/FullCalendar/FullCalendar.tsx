@@ -5,8 +5,8 @@ import buildFilterParams from "../../../api/utils/buildFilterParams";
 import AdaptiveCalendar from "../calendarViews/AdaptiveCalendar";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { CalendarElemTypeEnum } from "../../../enums/common";
-import useEvents from "../../../hooks/useEvents";
-import useTasks from "../../../hooks/useTasks";
+import useApiCall from "../../../hooks/useApiCall";
+import { API } from "../../../api/api";
 
 export default function FullCalendar() {
     // начало просматриваемого месяца
@@ -14,43 +14,42 @@ export default function FullCalendar() {
     const [chosenDate, setChosenDate] = useState<Date>(new Date()); // выбранный день, для него показываюся задачи на мобильной версии
 
     // все события
-    const { events } = useEvents();
-    const [displayedEvents, setDisplayedEvents] = useState<EventResponseItemSchema[]>(events);
+    const getEventsApiCall = useApiCall<EventResponseItemSchema[]>(() => API.events.all(), []);
+
+    const [displayedEvents, setDisplayedEvents] = useState<EventResponseItemSchema[]>(getEventsApiCall.data);
 
     //текущие фильтры
     const [filterObject, setFilterObject] = useState<FilterTasksParamsSchema>(buildFilterParams(viewedDate));
-
     const params = useMemo(() => filterObject, [filterObject]);
 
     /*
      * Запросить задачи с сервера в соответствии с фильтрами в `params`
      * */
-    const { tasks } = useTasks({
-        filterTaskObject: params,
-    });
+    const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(() => API.tasks.getTasks(params), [], [params]);
+
     const [displayedTasks, setDisplayedTasks] = useState<TaskResponseItemSchema[]>([]);
 
     useEffect(() => {
         const setEvents = () => {
             if (!filterObject.status) {
-                setDisplayedEvents(events);
+                setDisplayedEvents(getEventsApiCall.data);
             } else {
-                setDisplayedEvents(events.filter((event) => event.status === filterObject.status));
+                setDisplayedEvents(getEventsApiCall.data.filter((event) => event.status === filterObject.status));
             }
         };
 
         // @ts-ignore
         if (!filterObject.type || filterObject.type === CalendarElemTypeEnum.ALL) {
             setEvents();
-            setDisplayedTasks(tasks);
+            setDisplayedTasks(getTasksApiCall.data);
         } else if (filterObject.type === CalendarElemTypeEnum.TASK) {
             setDisplayedEvents([]);
-            setDisplayedTasks(tasks);
+            setDisplayedTasks(getTasksApiCall.data);
         } else if (filterObject.type === CalendarElemTypeEnum.EVENT) {
             setEvents();
             setDisplayedTasks([]);
         }
-    }, [tasks, events, filterObject]);
+    }, [getTasksApiCall.data, getEventsApiCall.data, filterObject]);
 
     return (
         <>

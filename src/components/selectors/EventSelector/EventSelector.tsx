@@ -1,6 +1,7 @@
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { Autocomplete, TextField } from "@mui/material";
-import useEvents from "../../../hooks/useEvents";
+import useApiCall from "../../../hooks/useApiCall";
+import { API } from "../../../api/api";
 
 interface EventSelectorProps {
     setInputValue: (event: EventResponseItemSchema) => void;
@@ -9,7 +10,8 @@ interface EventSelectorProps {
 }
 
 export default function EventSelecLtor(props: EventSelectorProps) {
-    const { events } = useEvents();
+    const getEventsApiCall = useApiCall<EventResponseItemSchema[]>(() => API.events.all(), []);
+    const events: EventResponseItemSchema[] = getEventsApiCall.data;
 
     return (
         <>
