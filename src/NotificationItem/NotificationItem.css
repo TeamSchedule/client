@@ -4,6 +4,7 @@
 }
 
 .unread-notification {
+    cursor: pointer;
     background-color: rgb(209, 231, 200);
     border-left: 5px solid #5fff5f;
 }

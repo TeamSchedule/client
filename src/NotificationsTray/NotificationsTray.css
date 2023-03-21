@@ -1,7 +1,10 @@
+.notification-tray-icon {
+    position: relative;
+    cursor: pointer;
+}
+
 .notification-count {
     display: inline-block;
-    top: -10px;
-    right: -10px;
     width: 15px;
     height: 15px;
     background-color: red;
@@ -17,15 +20,20 @@
     position: absolute;
     display: inline-block;
     top: 50px;
-    width: 300px;
+    width: 350px;
     max-height: 400px;
     overflow-y: auto;
-    z-index: 999;
+    z-index: 1;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 10px;
+    padding: 7px;
+}
+
+.mark-all-as-read-text {
+    width: auto;
+    cursor: pointer;
 }
 
 .notification-tray h3 {
