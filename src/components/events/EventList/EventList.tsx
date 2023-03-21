@@ -54,15 +54,15 @@ export default function EventList() {
 
     const DisplayedEvents = showedEvents.map((event) => <EventPreview key={event.id} event={event} />);
 
+    const Progress = () => (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 3, width: "100%" }}>
+            <CircularProgress />
+        </Box>
+    );
+
     return (
         <>
             <div>
-                {getEventsApiCall.loading && (
-                    <Box sx={{ display: "flex", justifyContent: "center", mt: "50%" }}>
-                        <CircularProgress />
-                    </Box>
-                )}
-
                 {id && (
                     <Grid container sx={{ justifyContent: "flex-start" }} spacing={1}>
                         <Grid
@@ -87,6 +87,7 @@ export default function EventList() {
                                         filterObj={EventFilters}
                                     />
                                 </div>
+                                {getEventsApiCall.loading && <Progress />}
                                 {getEventsApiCall.success && DisplayedEvents}
                             </Box>
                         </Grid>
@@ -123,6 +124,7 @@ export default function EventList() {
                                             filterObj={EventFilters}
                                         />
                                     </div>
+                                    {getEventsApiCall.loading && <Progress />}
                                     {getEventsApiCall.success && DisplayedEvents}
                                 </Box>
                             </Grid>

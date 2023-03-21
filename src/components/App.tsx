@@ -10,14 +10,15 @@ import Toolbar from "@mui/material/Toolbar";
 import { UserSchema } from "../api/schemas/responses/users";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { AuthUserKey } from "../consts/common";
+import { getOnlyUnreadNotifications } from "../utils/notificationUtils";
 
-const NotificationRequestPeriodMS: number = 100000000;
+const NotificationRequestPeriodMS: number = 30000;
 
 export const NotificationsContext = React.createContext<NotificationsResponseItemSchema[]>([]);
 
 export default function App() {
     const meData: UserSchema | unknown = useLoaderData();
-    const [, setUser] = useLocalStorage(AuthUserKey);
+    const [user, setUser] = useLocalStorage(AuthUserKey);
 
     const [newNotifications, setNewNotifications] = useState<NotificationsResponseItemSchema[]>([]);
 
@@ -28,10 +29,14 @@ export default function App() {
     }, [meData]);
 
     useEffect(() => {
+        API.notifications.all(user.id).then((notifications: NotificationsResponseItemSchema[]) => {
+            setNewNotifications(getOnlyUnreadNotifications(notifications));
+        });
+
         // запрос количества новых оповещений каждые NotificationRequestPeriodMS секунд
         const notificationIntervalId = setInterval(() => {
-            API.notifications.all().then((notifications: NotificationsResponseItemSchema[]) => {
-                setNewNotifications(notifications);
+            API.notifications.all(user.id).then((notifications: NotificationsResponseItemSchema[]) => {
+                setNewNotifications(getOnlyUnreadNotifications(notifications));
             });
         }, NotificationRequestPeriodMS);
 

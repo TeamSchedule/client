@@ -50,7 +50,7 @@ export default function NotificationList(props: NotificationListProps) {
                 />
 
                 {displayedNotifications.map((notification) => (
-                    <div key={notification.id}>{notification.text}</div>
+                    <div key={notification.id}>{notification.message}</div>
                 ))}
             </div>
         </>

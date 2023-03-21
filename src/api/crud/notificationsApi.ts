@@ -1,17 +1,20 @@
 import requestApi from "../fetchApi";
-import { NotificationsResponseItemSchema } from "../schemas/responses/notifications";
+import { GetNotificationsResponseSchema, NotificationsResponseItemSchema } from "../schemas/responses/notifications";
+import { NotificationsStatusStrings } from "../../enums/notificationsEnum";
 
 /**
  * Класс с методами доступа к api оповещений.
  * */
 export class NotificationsApi {
-    static apiPrefix = "/notifications";
+    static apiPrefix = "/schedule/notification";
 
     /**
      * Получить все оповещения.
      * */
-    static async all(): Promise<NotificationsResponseItemSchema[]> {
-        return requestApi.GET(`${this.apiPrefix}`);
+    static async all(id: number | string): Promise<NotificationsResponseItemSchema[]> {
+        return requestApi.GET(`${this.apiPrefix}?recipient_id=${id}`).then((data: GetNotificationsResponseSchema) => {
+            return data.notifications;
+        });
     }
 
     /**
@@ -32,9 +35,10 @@ export class NotificationsApi {
      * Отметить оповещение c указанным `id` прочитанным.
      *
      * @param id - Идентификатор оповещения
+     * @param status - Новый статус оповещения
      * */
-    static async makeNotificationRead(id: number): Promise<any> {
-        return requestApi.GET(`${this.apiPrefix}`);
+    static async makeNotificationRead(id: number | string, status: NotificationsStatusStrings): Promise<any> {
+        return requestApi.PATCH(`${this.apiPrefix}/${id}?status=${status}`);
     }
 
     /**

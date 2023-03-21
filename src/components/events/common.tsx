@@ -41,9 +41,10 @@ export function EventColorLeft(props: EventColorProps) {
                     sx={{
                         borderRadius: "50%",
                         backgroundColor: props.color || "white",
-                        width: "18px",
-                        height: "18px",
+                        width: "20px",
+                        height: "20px",
                         mr: 1,
+                        ml: "2px",
                         flexGrow: 0,
                     }}
                 ></Box>

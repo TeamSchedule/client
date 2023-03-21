@@ -50,7 +50,8 @@ export default function FullEventView() {
 
     const getEventApiCall = useApiCall<EventResponseItemSchema | undefined>(
         () => API.events.getById(id ? +id : 0),
-        undefined
+        undefined,
+        [id]
     );
     // данные события
     const event = getEventApiCall.data;

@@ -1,6 +1,6 @@
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { useNavigate } from "react-router-dom";
-import { makeEventLinkById, makeTaskLinkById } from "../../../routes/paths";
+import { makeEventLinkById } from "../../../routes/paths";
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import Link from "@mui/material/Link";

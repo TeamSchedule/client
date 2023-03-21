@@ -1,10 +1,15 @@
+import { NotificationsStatusStrings } from "../../../enums/notificationsEnum";
+
 export interface GetNotificationsResponseSchema {
     notifications: Array<NotificationsResponseItemSchema>;
 }
 
 export interface NotificationsResponseItemSchema {
     id: number;
-    date: string;
-    text: string;
-    isRead: boolean;
+    taskId: number;
+    eventId: number;
+    recipientId: number;
+    message: string;
+    status: NotificationsStatusStrings;
+    creationTime: string;
 }
