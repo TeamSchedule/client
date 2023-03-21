@@ -1,0 +1,24 @@
+.notification-tray {
+    position: absolute;
+    display: inline-block;
+    width: 15%;
+    top: 50px;
+    z-index: 999;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+.read-notification-item {
+    margin: 10px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ccc;
+}
+
+.unread-notification-item {
+    margin: 10px;
+    background-color: rgba(209, 231, 200, 0.281);
+    border-bottom: 1px solid #5fff5f;
+}
