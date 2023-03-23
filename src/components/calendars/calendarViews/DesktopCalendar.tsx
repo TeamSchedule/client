@@ -11,7 +11,7 @@ import Paper from "@mui/material/Paper";
 import "dayjs/locale/ru";
 import { AdaptiveCalendarProps } from "./AdaptiveCalendar";
 import DesktopCalendarTaskPreview from "../../tasks/DesktopCalendarTaskPreview/DesktopCalendarTaskPreview";
-import { TodayTaskList } from "../TodayTaskList";
+import { TodayList } from "../TodayTaskList";
 import { UtilSection } from "./common";
 import { compareTasks } from "../../../utils/taskUtils";
 import DesktopCalendarEventPreview from "../../events/DesktopCalendarEventPreview/DesktopCalendarEventPreview";
@@ -203,7 +203,7 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
             <Box sx={{ width: "300px" }}>
                 <Paper elevation={0} sx={{ px: 2, width: "100%" }}>
                     <UtilSection viewedDate={props.viewedDate} setFilterObject={props.setFilterObject} />
-                    <TodayTaskList day={props.chosenDate} tasks={props.tasks} />
+                    <TodayList day={props.chosenDate} tasks={props.tasks} events={props.events} />
                 </Paper>
             </Box>
         </Box>

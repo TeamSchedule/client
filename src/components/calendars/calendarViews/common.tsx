@@ -15,9 +15,7 @@ import Menu from "@mui/material/Menu";
 import { CreateNewEventPath, CreateNewTaskPath } from "../../../routes/paths";
 import Link from "@mui/material/Link";
 
-interface UtilSectionProps extends FiltersDrawerProps {}
-
-export function UtilSection(props: UtilSectionProps) {
+function CreateNewMenu() {
     const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -32,64 +30,73 @@ export function UtilSection(props: UtilSectionProps) {
 
     return (
         <>
-            <Box sx={{ display: "flex", justifyContent: "center", mx: 2, mb: 2 }}>
-                <Button
-                    fullWidth
-                    variant="contained"
-                    startIcon={<AddCircleIcon />}
-                    onClick={handleClickCreateNewMenu}
-                    color="secondary"
-                    sx={{ mr: 2 }}
-                >
-                    Создать
-                </Button>
-                <Menu
-                    id="basic-button"
-                    aria-controls={open ? "basic-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                    open={open}
-                    onClose={handleCloseCreateNewMenu}
-                >
-                    <MenuList sx={{ minWidth: "200px" }}>
-                        <Link
-                            href={CreateNewTaskPath}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                navigate(CreateNewTaskPath);
-                            }}
-                            sx={{ textDecoration: "none" }}
-                        >
-                            <MenuItem>
-                                <ListItemIcon>
-                                    <TaskIcon fontSize="small" />
-                                </ListItemIcon>
-                                <ListItemText>Задача</ListItemText>
-                            </MenuItem>
-                        </Link>
-                        <Divider />
-                        <Link
-                            href={CreateNewEventPath}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                navigate(CreateNewEventPath);
-                            }}
-                            sx={{ textDecoration: "none" }}
-                        >
-                            <MenuItem>
-                                <ListItemIcon>
-                                    <LocalActivityIcon fontSize="small" />
-                                </ListItemIcon>
-                                <ListItemText>Событие</ListItemText>
-                            </MenuItem>
-                        </Link>
-                    </MenuList>
-                </Menu>
+            <Button
+                fullWidth
+                variant="contained"
+                startIcon={<AddCircleIcon />}
+                onClick={handleClickCreateNewMenu}
+                color="secondary"
+                sx={{ mr: 2 }}
+            >
+                Создать
+            </Button>
+            <Menu
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                anchorEl={anchorEl}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                open={open}
+                onClose={handleCloseCreateNewMenu}
+            >
+                <MenuList sx={{ minWidth: "180px" }}>
+                    <Link
+                        href={CreateNewTaskPath}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            navigate(CreateNewTaskPath);
+                        }}
+                        sx={{ textDecoration: "none" }}
+                    >
+                        <MenuItem>
+                            <ListItemIcon>
+                                <TaskIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Задача</ListItemText>
+                        </MenuItem>
+                    </Link>
+                    <Divider />
+                    <Link
+                        href={CreateNewEventPath}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            navigate(CreateNewEventPath);
+                        }}
+                        sx={{ textDecoration: "none" }}
+                    >
+                        <MenuItem>
+                            <ListItemIcon>
+                                <LocalActivityIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Событие</ListItemText>
+                        </MenuItem>
+                    </Link>
+                </MenuList>
+            </Menu>
+        </>
+    );
+}
 
+interface UtilSectionProps extends FiltersDrawerProps {}
+
+export function UtilSection(props: UtilSectionProps) {
+    return (
+        <>
+            <Box sx={{ display: "flex", justifyContent: "center", mx: 2, mb: 2 }}>
+                <CreateNewMenu />
                 <FiltersDrawer {...props} />
             </Box>
         </>

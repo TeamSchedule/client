@@ -15,6 +15,12 @@ import useApiCall from "../../../hooks/useApiCall";
 import { API } from "../../../api/api";
 import { getOnlyCompletedEvents, getOnlyOpenEvents } from "../../../utils/eventUtils";
 
+const Progress = () => (
+    <Box sx={{ display: "flex", justifyContent: "center", mt: 3, width: "100%" }}>
+        <CircularProgress />
+    </Box>
+);
+
 enum EventFilterEnum {
     All = 0,
     InProgress = 1,
@@ -53,12 +59,6 @@ export default function EventList() {
     }, [eventFilterValue, events]);
 
     const DisplayedEvents = showedEvents.map((event) => <EventPreview key={event.id} event={event} />);
-
-    const Progress = () => (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 3, width: "100%" }}>
-            <CircularProgress />
-        </Box>
-    );
 
     return (
         <>

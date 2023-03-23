@@ -123,6 +123,13 @@ export const router = createBrowserRouter(
                             <Route path={FullViewNotificationPath} element={<FullNotificationView />} />
                         </Route>
 
+                        {/* ==================== units routes ==================== */}
+                        <Route path={UnitListPath} element={<UnitList />}>
+                            <Route path={FullViewUnitPath} element={<FullUnitView />} />
+                            <Route path={EditUnitPath} element={<EditUnitForm />} />
+                        </Route>
+                        <Route path={CreateNewUnitPath} element={<CreateUnitForm />} />
+
                         <Route element={<FullScreenWrapper />}>
                             {/* ==================== events routes ==================== */}
                             <Route path={EventListPath} element={<EventList />}>
@@ -131,12 +138,6 @@ export const router = createBrowserRouter(
 
                             <Route path={CreateNewEventPath} element={<CreateEventForm />} />
                             <Route path={EditEventPath} element={<EditEventForm />} />
-
-                            {/* ==================== units routes ==================== */}
-                            <Route path={UnitListPath} element={<UnitList />} />
-                            <Route path={CreateNewUnitPath} element={<CreateUnitForm />} />
-                            <Route path={FullViewUnitPath} element={<FullUnitView />} />
-                            <Route path={EditUnitPath} element={<EditUnitForm />} />
 
                             {/* ==================== task routes ==================== */}
                             <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />

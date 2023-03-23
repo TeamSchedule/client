@@ -1,8 +1,8 @@
 import styles from "./UserPreview.module.scss";
-import { useNavigate } from "react-router-dom";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import MainAvatar from "../../MainAvatar";
 import { makeFullName } from "../../../utils/userUtils";
+import Box from "@mui/material/Box";
 
 interface UserPreviewProps {
     user: UserSchema;
@@ -11,24 +11,14 @@ interface UserPreviewProps {
 }
 
 export default function UserPreview(props: UserPreviewProps) {
-    const navigate = useNavigate();
-
-    function onClickHandler() {
-        if (!props.clickable) return;
-        navigate("/users/" + props.user.id);
-    }
-
     return (
         <>
-            <div
-                className={[styles.userPreview, props.clickable ? styles.userPreview_clickable : ""].join(" ")}
-                onClick={onClickHandler}
-            >
+            <div className={[styles.userPreview, props.clickable ? styles.userPreview_clickable : ""].join(" ")}>
                 <MainAvatar placeholder={props.user.fullName} src={props.user.avatar} />
-                <div className="ml-2">
+                <Box sx={{ ml: 1 }}>
                     <p className={styles.userPreview__name}>{makeFullName(props.user)}</p>
                     <p className={styles.userPreview__post}>{props.userPost ? props.userPost : props.user.post}</p>
-                </div>
+                </Box>
             </div>
         </>
     );

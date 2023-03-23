@@ -11,7 +11,7 @@ import "dayjs/locale/ru";
 import { AdaptiveCalendarProps } from "./AdaptiveCalendar";
 import { styled } from "@mui/material/styles";
 import { maxDate, minDate } from "./DesktopCalendar";
-import { TodayTaskList } from "../TodayTaskList";
+import { TodayList } from "../TodayTaskList";
 import { UtilSection } from "./common";
 
 const MaxDateSize = 80; // максимальный размер отображаемого на мобильном календаре дня
@@ -178,7 +178,7 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         }}
                     />
                 </Box>
-                <TodayTaskList day={props.chosenDate} tasks={props.tasks} />
+                <TodayList day={props.chosenDate} tasks={props.tasks} events={props.events} />
             </LocalizationProvider>
         </>
     );

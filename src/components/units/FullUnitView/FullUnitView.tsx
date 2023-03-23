@@ -1,22 +1,20 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useMemo, useState } from "react";
-import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionHeader";
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
-import SpeedDial from "@mui/material/SpeedDial";
 import EditIcon from "@mui/icons-material/Edit";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import TaskListCollapse from "../../common/TaskListCollapse";
-import GoBackButton from "../../buttons/GoBackButton";
-import { UnitListPath } from "../../../routes/paths";
 import { UnitParticipants } from "../common";
 import { getOnlyOpenTasks } from "../../../utils/taskUtils";
 import { API } from "../../../api/api";
 import useApiCall from "../../../hooks/useApiCall";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 export default function FullUnitView() {
     const navigate = useNavigate();
@@ -32,7 +30,7 @@ export default function FullUnitView() {
         };
     }, [id]);
 
-    const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(() => API.tasks.getTasks(params), []);
+    const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(() => API.tasks.getTasks(params), [], [id]);
 
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
@@ -40,7 +38,8 @@ export default function FullUnitView() {
     // данные отдела
     const getUnitApiCall = useApiCall<UnitResponseItemSchema | undefined>(
         () => API.units.getById(id ? +id : 0),
-        undefined
+        undefined,
+        [id]
     );
     const unit = getUnitApiCall.data;
 
@@ -55,25 +54,38 @@ export default function FullUnitView() {
 
     return (
         <>
-            <Card>
-                <ScreenHeader text={unit?.name || ""} />
-                <CardContent>
+            <Card
+                elevation={0}
+                sx={{
+                    borderRadius: 0,
+                    p: 1,
+                    pt: 0,
+                    mt: 0,
+                    // border: "1px solid red",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+            >
+                <Typography component="h2" variant="subtitle1" sx={{ textAlign: "center" }}>
+                    {unit?.name || ""}
+                </Typography>
+                <CardContent sx={{ px: 0 }}>
                     <ScreenSectionHeader text="Состав отдела" />
                     <UnitParticipants admin={unit?.admin} members={unit?.members || []} />
                     <TaskListCollapse tasks={openTasks} title="Открытые задачи" />
-
-                    <GoBackButton to={UnitListPath} buttonText="Вернуться к списку отделов" />
                 </CardContent>
+                <Button
+                    variant="outlined"
+                    startIcon={<EditIcon />}
+                    size="medium"
+                    onClick={() => {
+                        navigate("edit");
+                    }}
+                >
+                    Редактировать
+                </Button>
             </Card>
-
-            <SpeedDial
-                ariaLabel="edit unit"
-                sx={{ position: "fixed", bottom: 16, right: 16 }}
-                icon={<EditIcon />}
-                onClick={() => {
-                    navigate("edit");
-                }}
-            ></SpeedDial>
 
             <SuccessSnackbar handleClose={handleCloseSuccessSnackbar} isOpen={isCreatingFinished}>
                 Отдел создан!
