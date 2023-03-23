@@ -11,8 +11,12 @@ export const successRegistrationPath: string = "/ready";
 
 /* ---------------------------------------------------- */
 
-export const baseNotificationPath: string = "notifications/";
 export const NotificationListPath: string = "/notifications";
+export const FullViewNotificationPath: string = "/notifications/:id";
+
+export function makeNotificationLinkById(id: number): string {
+    return NotificationListPath + "/" + id.toString();
+}
 
 /* ---------------------------------------------------- */
 

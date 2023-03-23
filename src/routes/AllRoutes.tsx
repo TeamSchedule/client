@@ -11,7 +11,6 @@ import EditUnitForm from "../components/units/EditUnitForm/EditUnitForm";
 import EventList from "../components/events/EventList/EventList";
 import CreateEventForm from "../components/events/CreateEventForm/CreateEventForm";
 import {
-    baseNotificationPath,
     CreateNewEventPath,
     CreateNewTaskPath,
     CreateNewUnitPath,
@@ -21,11 +20,13 @@ import {
     EventListPath,
     forgotPasswordPath,
     FullViewEventPath,
+    FullViewNotificationPath,
     FullViewTaskPath,
     FullViewUnitPath,
     loginPath,
     newPasswordPath,
     notFound,
+    NotificationListPath,
     registrationPath,
     resetPasswordCodePath,
     SettingsPath,
@@ -49,6 +50,7 @@ import SignUp from "../components/auth/SignUp";
 import UserProfileSettings from "../components/UserProfileSettings";
 import FullScreenWrapper from "../components/common/FullScreenWrapper";
 import { API } from "../api/api";
+import FullNotificationView from "../components/notifications/FullNotificationView";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -116,19 +118,19 @@ export const router = createBrowserRouter(
                     <Route element={<App />} loader={API.users.getMe} /*errorElement={<ErrorPage />}*/>
                         <Route index element={<Navigate to={EventListPath} replace={true} />} />
 
+                        {/* ==================== notifications routes ==================== */}
+                        <Route path={NotificationListPath} element={<NotificationList />}>
+                            <Route path={FullViewNotificationPath} element={<FullNotificationView />} />
+                        </Route>
+
                         <Route element={<FullScreenWrapper />}>
                             {/* ==================== events routes ==================== */}
                             <Route path={EventListPath} element={<EventList />}>
                                 <Route path={FullViewEventPath} element={<FullEventView />} />
                             </Route>
-                            
+
                             <Route path={CreateNewEventPath} element={<CreateEventForm />} />
                             <Route path={EditEventPath} element={<EditEventForm />} />
-
-                            {/* ==================== notifications routes ==================== */}
-                            <Route path={baseNotificationPath} element={<Outlet />}>
-                                <Route index element={<NotificationList />} />
-                            </Route>
 
                             {/* ==================== units routes ==================== */}
                             <Route path={UnitListPath} element={<UnitList />} />

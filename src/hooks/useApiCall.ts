@@ -14,7 +14,8 @@ export interface UseApiCallInterface<ResultDataType> {
 export default function useApiCall<ResultDataType>(
     apiCall: () => Promise<ResultDataType>,
     defaultValue: ResultDataType,
-    recallDeps: any[] = []
+    recallDeps: any[] = [],
+    callCondition: boolean | undefined = undefined
 ): UseApiCallInterface<ResultDataType> {
     const [loadingStatus, setLoadingStatus] = useState<LoadingStatusStrings>(LoadingStatusEnum.LOADING);
     const [data, setData] = useState<ResultDataType>(defaultValue);
@@ -24,15 +25,17 @@ export default function useApiCall<ResultDataType>(
     }
 
     useEffect(() => {
-        apiCall()
-            .then((data: ResultDataType) => {
-                setData(data);
-                setLoadingStatus(LoadingStatusEnum.FINISH_SUCCESS);
-            })
-            .catch(() => {
-                setLoadingStatus(LoadingStatusEnum.FINISH_ERROR);
-            })
-            .finally(() => {});
+        if (callCondition === undefined || callCondition) {
+            apiCall()
+                .then((data: ResultDataType) => {
+                    setData(data);
+                    setLoadingStatus(LoadingStatusEnum.FINISH_SUCCESS);
+                })
+                .catch(() => {
+                    setLoadingStatus(LoadingStatusEnum.FINISH_ERROR);
+                })
+                .finally(() => {});
+        }
         /* eslint-disable react-hooks/exhaustive-deps */
     }, [...recallDeps]);
 

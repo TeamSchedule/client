@@ -1,3 +1,11 @@
+import dayjs from "dayjs";
+
+const relativeTime = require("dayjs/plugin/relativeTime");
+require("dayjs/locale/ru");
+
+dayjs.extend(relativeTime);
+dayjs.locale("ru");
+
 /**
  * Get count of days in month
  *
@@ -75,4 +83,10 @@ export function getTimezoneDatetime(d: Date): Date {
     d.setMilliseconds(0);
     d.setSeconds(0);
     return d;
+}
+
+export function getPastPeriod(dt: Date): string {
+    dt.setHours(dt.getHours() - timezoneOffset);
+    // @ts-ignore
+    return dayjs(dt).fromNow();
 }

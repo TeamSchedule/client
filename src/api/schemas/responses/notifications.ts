@@ -6,8 +6,8 @@ export interface GetNotificationsResponseSchema {
 
 export interface NotificationsResponseItemSchema {
     id: number;
-    taskId: number;
-    eventId: number;
+    taskId?: number;
+    eventId?: number;
     recipientId: number;
     message: string;
     status: NotificationsStatusStrings;

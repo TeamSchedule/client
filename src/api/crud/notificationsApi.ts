@@ -18,6 +18,17 @@ export class NotificationsApi {
     }
 
     /**
+     * Получить оповещение с указанным идентификатором.
+     *
+     * @param id - Идентификатор оповещения
+     * */
+    static async getById(id: number | string): Promise<NotificationsResponseItemSchema> {
+        return requestApi.GET(`${this.apiPrefix}/${id}`).then((data: NotificationsResponseItemSchema) => {
+            return data;
+        });
+    }
+
+    /**
      * Получить непрочитанные оповещения.
      * */
     static async unread(): Promise<NotificationsResponseItemSchema[]> {
@@ -37,7 +48,7 @@ export class NotificationsApi {
      * @param id - Идентификатор оповещения
      * @param status - Новый статус оповещения
      * */
-    static async makeNotificationRead(id: number | string, status: NotificationsStatusStrings): Promise<any> {
+    static async changeNotificationStatus(id: number | string, status: NotificationsStatusStrings): Promise<any> {
         return requestApi.PATCH(`${this.apiPrefix}/${id}?status=${status}`);
     }
 

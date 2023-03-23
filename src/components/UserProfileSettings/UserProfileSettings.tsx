@@ -172,9 +172,9 @@ function UsernameSection() {
 
         setIsEditPersonalDataInProgress(true);
         const newUserData: UpdateUserInfoRequestSchema = {
-            firstName: firstName || undefined,
-            lastName: lastName || undefined,
-            patronymic: patronymic || undefined,
+            firstName: firstName,
+            lastName: lastName,
+            patronymic: patronymic,
         };
         API.users
             .updateUserInfo(user?.id, newUserData)
@@ -184,6 +184,7 @@ function UsernameSection() {
                     .getMe()
                     .then((data) => {
                         setUser(data);
+                        window.location.reload();
                     })
                     .catch(() => {});
             })

@@ -15,4 +15,14 @@ const SkeletonColor: string = "grey.400";
 
 const AllowedEmailDomain: string = "@sfu-kras.ru";
 
-export { AllowedEmailDomain, AuthUserKey, MIN_PASSWORD_LENGTH, MIN_TEAM_NAME_LEN, MIN_USERNAME_LENGTH, SkeletonColor };
+const NotificationRequestPeriodMS: number = 30000;
+
+export {
+    AllowedEmailDomain,
+    AuthUserKey,
+    MIN_PASSWORD_LENGTH,
+    MIN_TEAM_NAME_LEN,
+    MIN_USERNAME_LENGTH,
+    SkeletonColor,
+    NotificationRequestPeriodMS,
+};
