@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import { Box, IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { EventColorLeft, EventDescription, EventName } from "../common";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
@@ -14,29 +14,46 @@ import EditIcon from "@mui/icons-material/Edit";
 
 interface EventPreviewProps {
     event: EventResponseItemSchema;
+    selected?: boolean;
 }
 
 export default function EventPreview(props: EventPreviewProps) {
     const navigate = useNavigate();
+    const theme = useTheme();
 
     const onClickEvent = (event: React.MouseEvent<any>) => {
         event.preventDefault();
         event.stopPropagation();
-        navigate(makeEventLinkById(props.event.id), { state: { eventData: props.event } });
+        navigate(makeEventLinkById(props.event.id));
     };
 
     const openTasks: number = 0;
 
     return (
         <>
-            <Card sx={{ minWidth: 240, marginBottom: 1 }}>
+            <Card
+                sx={{
+                    minWidth: 280,
+                    my: 0,
+                    "&:hover": { cursor: "pointer", backgroundColor: "#f1f7ff" },
+                    backgroundColor: props.selected ? theme.palette.divider : "none",
+                    borderRadius: 0,
+                }}
+                onClick={() => {
+                    navigate(makeEventLinkById(props.event.id));
+                }}
+                elevation={0}
+            >
                 <CardContent sx={{ paddingBottom: 0 }}>
                     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <DeadlineAndStatus endDate={props.event.endDate} status={props.event.status} />
                         <Tooltip title="Редактировать">
                             <IconButton
                                 sx={{ p: 0 }}
-                                onClick={() => navigate(makeEventLinkById(props.event.id) + "/edit")}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(makeEventLinkById(props.event.id) + "/edit");
+                                }}
                             >
                                 <EditIcon />
                             </IconButton>

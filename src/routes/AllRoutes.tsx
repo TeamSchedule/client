@@ -48,7 +48,6 @@ import FullTaskView from "../components/tasks/FullTaskView";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
 import UserProfileSettings from "../components/UserProfileSettings";
-import FullScreenWrapper from "../components/common/FullScreenWrapper";
 import { API } from "../api/api";
 import FullNotificationView from "../components/notifications/FullNotificationView";
 
@@ -130,23 +129,21 @@ export const router = createBrowserRouter(
                         </Route>
                         <Route path={CreateNewUnitPath} element={<CreateUnitForm />} />
 
-                        <Route element={<FullScreenWrapper />}>
-                            {/* ==================== events routes ==================== */}
-                            <Route path={EventListPath} element={<EventList />}>
-                                <Route path={FullViewEventPath} element={<FullEventView />} />
-                            </Route>
-
-                            <Route path={CreateNewEventPath} element={<CreateEventForm />} />
+                        {/* ==================== events routes ==================== */}
+                        <Route path={EventListPath} element={<EventList />}>
+                            <Route path={FullViewEventPath} element={<FullEventView />} />
                             <Route path={EditEventPath} element={<EditEventForm />} />
-
-                            {/* ==================== task routes ==================== */}
-                            <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />
-                            <Route path={EditTaskPath} element={<EditTaskForm />} />
-                            <Route path={FullViewTaskPath} element={<FullTaskView />} />
-
-                            {/* ==================== settings routes ==================== */}
-                            <Route path={SettingsPath} element={<UserProfileSettings />} />
                         </Route>
+
+                        <Route path={CreateNewEventPath} element={<CreateEventForm />} />
+
+                        {/* ==================== task routes ==================== */}
+                        <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />
+                        <Route path={EditTaskPath} element={<EditTaskForm />} />
+                        <Route path={FullViewTaskPath} element={<FullTaskView />} />
+
+                        {/* ==================== settings routes ==================== */}
+                        <Route path={SettingsPath} element={<UserProfileSettings />} />
 
                         {/* ==================== calendar routes ==================== */}
                         <Route path={TaskListPath} element={<FullCalendar />} />

@@ -37,13 +37,15 @@ export default function MobileCalendar(props: MobileCalendarProps) {
     const [dateSize, setDateSize] = useState<number>(44);
 
     useEffect(() => {
-        let timerId = setInterval(() => {
+        const onWindowResize = () => {
             const newDs = window.innerWidth / 7 - 5;
             setDateSize(Math.min(newDs, MaxDateSize));
-        }, 1000);
+        };
+        onWindowResize();
+        window.addEventListener("resize", onWindowResize);
 
         return () => {
-            clearInterval(timerId);
+            window.removeEventListener("resize", onWindowResize);
         };
     }, []);
 

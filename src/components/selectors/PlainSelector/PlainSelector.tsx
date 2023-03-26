@@ -16,6 +16,9 @@ export default function PlainSelector(props: PlainSelectorProps) {
                 "& .MuiOutlinedInput-notchedOutline": {
                     border: "none",
                 },
+                "& .MuiSelect-select": {
+                    py: 0,
+                },
             }}
         >
             <Select

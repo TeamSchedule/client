@@ -34,13 +34,15 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
     const [dateSize, setDateSize] = useState<number>((window.innerWidth - 300) / 7 - 5);
 
     useEffect(() => {
-        let timerId = setInterval(() => {
+        const onWindowResize = () => {
             const newDs = (window.innerWidth - 300) / 7 - 5;
             setDateSize(Math.min(newDs, MaxDateSize));
-        }, 1000);
+        };
+        onWindowResize();
+        window.addEventListener("resize", onWindowResize);
 
         return () => {
-            clearInterval(timerId);
+            window.removeEventListener("resize", onWindowResize);
         };
     }, []);
 
@@ -164,8 +166,11 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                                 color: theme.palette.getContrastText("#ffffff"),
                             },
                             "& .Mui-selected": {
-                                backgroundColor: theme.palette.primary.light,
+                                backgroundColor: "#c8d5ff",
                                 color: theme.palette.getContrastText(theme.palette.primary.light),
+                            },
+                            "& .Mui-selected:hover": {
+                                backgroundColor: "#8ea8ff",
                             },
                         }}
                     >

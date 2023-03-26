@@ -1,6 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useMemo, useState } from "react";
-import ScreenSectionHeader from "../../common/ScreenSectionHeader/ScreenSectionHeader";
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import EditIcon from "@mui/icons-material/Edit";
@@ -61,7 +60,6 @@ export default function FullUnitView() {
                     p: 1,
                     pt: 0,
                     mt: 0,
-                    // border: "1px solid red",
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
@@ -71,7 +69,9 @@ export default function FullUnitView() {
                     {unit?.name || ""}
                 </Typography>
                 <CardContent sx={{ px: 0 }}>
-                    <ScreenSectionHeader text="Состав отдела" />
+                    <Typography component="h3" variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                        Состав отдела
+                    </Typography>
                     <UnitParticipants admin={unit?.admin} members={unit?.members || []} />
                     <TaskListCollapse tasks={openTasks} title="Открытые задачи" />
                 </CardContent>

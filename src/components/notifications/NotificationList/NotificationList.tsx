@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import PlainSelector from "../../selectors/PlainSelector";
 import { NotificationsResponseItemSchema } from "../../../api/schemas/responses/notifications";
 import NotificationItem from "../NotificationItem/NotificationItem";
@@ -7,16 +6,12 @@ import { API } from "../../../api/api";
 import useApiCall from "../../../hooks/useApiCall";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import { AuthUserKey } from "../../../consts/common";
-import { Outlet, useParams } from "react-router-dom";
-import Grid from "@mui/material/Grid";
+import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-
-const Progress = () => (
-    <Box sx={{ display: "flex", justifyContent: "center", mt: 3, width: "100%" }}>
-        <CircularProgress />
-    </Box>
-);
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material";
+import ListViewContainer from "../../common/ListViewContainer/ListViewContainer";
+import Progress from "../../common/Progress";
 
 enum NotificationFilterEnum {
     All = 1, // показать все
@@ -31,6 +26,8 @@ const NotificationFilters: Array<[string, string]> = [
 ];
 
 export default function NotificationList() {
+    const theme = useTheme();
+
     const [user] = useLocalStorage(AuthUserKey);
 
     // Идентификатор оповещения, если пользователь на него нажал
@@ -56,19 +53,6 @@ export default function NotificationList() {
         }
     }, [filterValue, notifications]);
 
-    const NotificationsFilter = (
-        <>
-            <ScreenHeader text="Уведомления" />
-
-            <PlainSelector
-                filterValue={filterValue}
-                setFilterValue={setFilterValue}
-                id="notifications-filter"
-                filterObj={NotificationFilters}
-            />
-        </>
-    );
-
     const Notifications = (
         <>
             {displayedNotifications.map((notification) => (
@@ -77,120 +61,49 @@ export default function NotificationList() {
                         key={notification.id}
                         notification={notification}
                         setNotifications={getAllNotificationsCallApi.setData}
+                        selected={id === notification.id.toString()}
                     />
                 </>
             ))}
         </>
     );
 
+    const TopBar = (
+        <>
+            <Box sx={{ display: "flex", alignItems: "center", my: 0, py: 0 }}>
+                <Typography
+                    component="h1"
+                    variant="h1"
+                    sx={{ fontSize: { xs: "1rem", md: "1.5rem" }, color: theme.palette.grey.A700, mb: 2, py: 1, my: 0 }}
+                >
+                    Уведомления
+                </Typography>
+                <PlainSelector
+                    filterValue={filterValue}
+                    setFilterValue={setFilterValue}
+                    id="notifications-filter"
+                    filterObj={NotificationFilters}
+                />
+            </Box>
+        </>
+    );
+
+    const LeftBar = (
+        <Box>
+            {getAllNotificationsCallApi.loading && <Progress />}
+            {getAllNotificationsCallApi.success && Notifications}
+        </Box>
+    );
+
+    const RightBar = (
+        <Typography sx={{ textAlign: "center", mt: 3 }}>
+            Выберите уведомление, чтобы увидеть подробную информацию
+        </Typography>
+    );
+
     return (
         <>
-            {!id && (
-                <>
-                    <Grid container sx={{ justifyContent: "flex-start" }} spacing={1}>
-                        <Grid
-                            item
-                            xs={12}
-                            md={5}
-                            lg={4}
-                            sx={{
-                                minHeight: { xs: 0, md: "calc(100vh - 65px)" },
-                                maxHeight: { md: "calc(100vh - 130px)" },
-                                overflowY: "auto",
-                            }}
-                        >
-                            <Box>
-                                <div className="d-flex justify-content-center align-items-center">
-                                    {NotificationsFilter}
-                                </div>
-                                {getAllNotificationsCallApi.loading && <Progress />}
-                                {getAllNotificationsCallApi.success && (
-                                    <>
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                    </>
-                                )}
-                            </Box>
-                        </Grid>
-                        <Grid item xs={0} md={7} lg={8}></Grid>
-                    </Grid>
-                </>
-            )}
-
-            {id && (
-                <>
-                    <Grid container sx={{ justifyContent: "flex-start" }} spacing={1}>
-                        <Grid
-                            item
-                            xs={0}
-                            md={5}
-                            lg={4}
-                            sx={{
-                                minHeight: { xs: 0, md: "calc(100vh - 65px)" },
-                                maxHeight: { md: "calc(100vh - 130px)" },
-                                overflowY: "auto",
-                            }}
-                        >
-                            <Box sx={{ display: { xs: "none", md: "block" } }}>
-                                <div className="d-flex justify-content-center align-items-center">
-                                    {NotificationsFilter}
-                                </div>
-                                {getAllNotificationsCallApi.loading && <Progress />}
-                                {getAllNotificationsCallApi.success && (
-                                    <>
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                        {Notifications}
-                                    </>
-                                )}
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12} md={7} lg={8}>
-                            <Box sx={{ mt: { md: "56px" }, width: "100%" }}>
-                                <Outlet />
-                            </Box>
-                        </Grid>
-                    </Grid>
-                </>
-            )}
-
-            {/*            <div className="d-flex justify-content-center align-items-center">{NotificationsFilter}</div>
-            <div>
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-                {Notifications}
-            </div>*/}
+            <ListViewContainer TopBar={TopBar} LeftBar={LeftBar} RightBar={RightBar} id={id} />
         </>
     );
 }
