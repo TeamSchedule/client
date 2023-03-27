@@ -209,6 +209,10 @@ function UsernameSection() {
         setIsEditPersonalDataError(false);
     };
 
+    let warningText: string = "";
+    if (!firstName && !lastName) warningText = "Укажите Ваше имя и фамилию!";
+    else if (!firstName && lastName) warningText = "Укажите Ваше имя!";
+    else if (firstName && !lastName) warningText = "Укажите Вашу фамилию!";
     return (
         <>
             <Typography variant="h6" component="h2" sx={{ mt: 3 }}>
@@ -216,7 +220,8 @@ function UsernameSection() {
             </Typography>
             <Divider />
 
-            {(!firstName || !lastName) && <Alert severity="error">Укажите Ваше имя!</Alert>}
+            {warningText && <Alert severity="error">{warningText}</Alert>}
+
             <TextField
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value.trim())}
