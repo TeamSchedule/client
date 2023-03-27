@@ -126,6 +126,34 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                 >
                     <Box
                         sx={{
+                            "& .MuiDayPicker-weekDayLabel:nth-child(1)::after": {
+                                content: `"н"`,
+                                display: "inline",
+                            },
+                            "& .MuiDayPicker-weekDayLabel:nth-child(2)::after": {
+                                content: `"т"`,
+                                display: "inline",
+                            },
+                            "& .MuiDayPicker-weekDayLabel:nth-child(3)::after": {
+                                content: `"р"`,
+                                display: "inline",
+                            },
+                            "& .MuiDayPicker-weekDayLabel:nth-child(4)::after": {
+                                content: `"т"`,
+                                display: "inline",
+                            },
+                            "& .MuiDayPicker-weekDayLabel:nth-child(5)::after": {
+                                content: `"т"`,
+                                display: "inline",
+                            },
+                            "& .MuiDayPicker-weekDayLabel:nth-child(6)::after": {
+                                content: `"б"`,
+                                display: "inline",
+                            },
+                            "& .MuiDayPicker-weekDayLabel:nth-child(7)::after": {
+                                content: `"с"`,
+                                display: "inline",
+                            },
                             "& .MuiPickersCalendarHeader-root": {
                                 m: 0,
                             },
