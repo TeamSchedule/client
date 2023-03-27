@@ -56,14 +56,12 @@ export default function NotificationList() {
     const Notifications = (
         <>
             {displayedNotifications.map((notification) => (
-                <>
-                    <NotificationItem
-                        key={notification.id}
-                        notification={notification}
-                        setNotifications={getAllNotificationsCallApi.setData}
-                        selected={id === notification.id.toString()}
-                    />
-                </>
+                <NotificationItem
+                    key={notification.id}
+                    notification={notification}
+                    setNotifications={getAllNotificationsCallApi.setData}
+                    selected={id === notification.id.toString()}
+                />
             ))}
         </>
     );

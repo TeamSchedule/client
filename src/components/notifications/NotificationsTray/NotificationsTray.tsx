@@ -1,76 +1,90 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./NotificationsTray.css";
-import { sampleNotifications } from "../../../testdata/SampleNotifications";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { NotificationsResponseItemSchema } from "../../../api/schemas/responses/notifications";
-import { NotificationsStatusEnum } from "../../../enums/notificationsEnum";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import { NotificationListPath } from "../../../routes/paths";
+import { useNavigate } from "react-router-dom";
+import NotificationItem from "../NotificationItem/NotificationItem";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import ClickAwayListener from "@mui/base/ClickAwayListener";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuList from "@mui/material/MenuList";
 
-export default function NotificationTray() {
-    const [notifications, setNotifications] = useState<NotificationsResponseItemSchema[]>([]);
+interface NotificationTrayProps {
+    notification: NotificationsResponseItemSchema[];
+}
 
-    React.useEffect(() => {
-        setNotifications(sampleNotifications);
-    }, []);
+export default function NotificationTray(props: NotificationTrayProps) {
+    const navigate = useNavigate();
 
-    const [showNotifications, setShowNotifications] = useState(false);
-    const notificationRef = useRef<HTMLDivElement>(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const handleIconClick = () => {
-        setShowNotifications(!showNotifications);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(anchorEl ? null : event.currentTarget);
     };
 
-    const handleMarkAllAsRead = () => {
-        const updatedNotifications = notifications.map((notification) => {
-            notification.status = NotificationsStatusEnum.READ;
-            return notification;
-        });
-        setNotifications(updatedNotifications);
-    };
-
-    const handleClickOutside = (event: MouseEvent) => {
-        if (notificationRef.current && event.target && !notificationRef.current.contains(event.target as Node)) {
-            setShowNotifications(false);
-        }
-    };
+    const [notifications, setNotifications] = useState<NotificationsResponseItemSchema[]>(props.notification);
 
     useEffect(() => {
-        document.addEventListener("click", handleClickOutside, true);
-        return () => {
-            document.removeEventListener("click", handleClickOutside, true);
-        };
-    });
+        setNotifications(props.notification);
+    }, [props.notification]);
 
-    const unreadCount = notifications.filter(
-        (notification) => notification.status === NotificationsStatusEnum.UNREAD
-    ).length;
+    const open = Boolean(anchorEl);
 
     return (
-        <div ref={notificationRef}>
-            <div className="notification-tray-icon" onClick={handleIconClick}>
-                <NotificationsIcon />
-                <span className="notification-count">{unreadCount}</span>
-            </div>
-            {showNotifications && (
-                <div className="notification-tray">
-                    <span className="mark-all-as-read-text" onClick={handleMarkAllAsRead}>
-                        Прочитать все
-                    </span>
-                    {notifications.map((notification) => (
-                        <div
-                            key={notification.id}
-                            className={
-                                notification.status === NotificationsStatusEnum.READ
-                                    ? "read-notification-item"
-                                    : "unread-notification-item"
-                            }
-                        >
-                            {/*<h3>{notification.title}</h3>*/}
-                            <p>{notification.message}</p>
-                            <small>{notification.creationTime}</small>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
+        <ClickAwayListener
+            onClickAway={() => {
+                setAnchorEl(null);
+            }}
+        >
+            <Box>
+                <IconButton
+                    size="large"
+                    aria-label="show new notifications"
+                    color="inherit"
+                    onClick={handleClick}
+                    sx={{ p: "5px", py: 0 }}
+                >
+                    <NotificationsIcon />
+                </IconButton>
+
+                <Menu
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                    open={open}
+                    onClose={() => setAnchorEl(null)}
+                >
+                    <MenuList sx={{ minWidth: "250px", px: 1 }}>
+                        <Box>
+                            {notifications.slice(0, 4).map((notification) => (
+                                <NotificationItem
+                                    key={notification.id}
+                                    notification={notification}
+                                    setNotifications={() => {}}
+                                />
+                            ))}
+
+                            <Link
+                                href={NotificationListPath}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    navigate(NotificationListPath);
+                                }}
+                            >
+                                <Typography sx={{ textAlign: "center" }}>Посмотреть все</Typography>
+                            </Link>
+                        </Box>
+                    </MenuList>
+                </Menu>
+            </Box>
+        </ClickAwayListener>
     );
 }

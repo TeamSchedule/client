@@ -29,6 +29,7 @@ import MainAvatar from "../MainAvatar";
 import { makeAvatarLink } from "../../utils/fileUtils";
 import { makeFullName } from "../../utils/userUtils";
 import Link from "@mui/material/Link";
+import NotificationTray from "../notifications/NotificationsTray/NotificationsTray";
 
 export default function PrimaryAppBar() {
     const navigate = useNavigate();
@@ -42,7 +43,6 @@ export default function PrimaryAppBar() {
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-    const [isNotificationsBarOpen, setIsNotificationsBarOpen] = React.useState<boolean>(false);
 
     // открыт sidebar или нет
     const [state, setState] = React.useState<boolean>(false);
@@ -56,13 +56,6 @@ export default function PrimaryAppBar() {
             return;
         }
         setState(open);
-    };
-
-    const handleNotificationsButtonClick = () => {
-        if (isNotificationsBarOpen) {
-            navigate(NotificationListPath);
-        }
-        setIsNotificationsBarOpen(!isNotificationsBarOpen);
     };
 
     const handleLogout = (
@@ -263,16 +256,9 @@ export default function PrimaryAppBar() {
                     <Box sx={{ flexGrow: 1 }} />
 
                     <Tooltip title="Уведомления">
-                        <IconButton
-                            size="large"
-                            aria-label="show new notifications"
-                            color="inherit"
-                            onClick={handleNotificationsButtonClick}
-                        >
-                            <Badge badgeContent={newNotifications.length} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
+                        <Badge badgeContent={newNotifications.length} color="error" sx={{ left: "-20px" }}>
+                            <NotificationTray notification={newNotifications} />
+                        </Badge>
                     </Tooltip>
 
                     <Box sx={{ display: { xs: "none", md: "flex", alignItems: "center" } }}>

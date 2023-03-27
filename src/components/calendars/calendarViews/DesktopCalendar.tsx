@@ -126,6 +126,9 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                 >
                     <Box
                         sx={{
+                            "& .MuiDayPicker-weekDayLabel": {
+                                fontSize: "1rem",
+                            },
                             "& .MuiDayPicker-weekDayLabel:nth-child(1)::after": {
                                 content: `"н"`,
                                 display: "inline",
