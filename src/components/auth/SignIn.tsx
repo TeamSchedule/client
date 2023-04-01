@@ -50,7 +50,7 @@ export default function SignIn() {
                 });
             })
             .catch((err) => {
-                const statusCode = err.response ? err.response.status : 500;
+                const statusCode = err.status || err.response?.status || 500;
                 if (statusCode >= 500) {
                     setIsWrongCredentials(false);
                     setIsServiceUnavailableErrShown(true);
@@ -113,6 +113,7 @@ export default function SignIn() {
                         loading={isActionInProgress}
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        disabled={!email || !password}
                     >
                         Войти
                     </LoadingButton>

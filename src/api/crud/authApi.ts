@@ -10,19 +10,19 @@ import requestApi from "../fetchApi";
 export class AuthApi {
     static baseUrl: string = "jwt";
 
-    static signIn(data: SignInRequestSchema) {
+    static async signIn(data: SignInRequestSchema): Promise<any> {
         return requestApi.POST(`/jwt/obtain`, {
-            body: { ...data, login: "login" },
+            body: data,
         });
     }
 
-    static signUp(data: SignUpRequestSchema) {
+    static async signUp(data: SignUpRequestSchema): Promise<any> {
         return requestApi.POST(`/registration`, {
             body: { ...data, login: "login" },
         });
     }
 
-    static sendResetPswEmail(data: ResetPasswordEmailRequestSchema) {
+    static async sendResetPswEmail(data: ResetPasswordEmailRequestSchema): Promise<any> {
         return requestApi.POST(`/resetpassword`, {
             body: data,
         });

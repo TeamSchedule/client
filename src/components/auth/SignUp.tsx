@@ -82,7 +82,6 @@ export default function SignUp() {
             email: email,
             password: password,
         };
-
         API.auth
             .signUp(signUpRequestData)
             .then(() => {
@@ -183,8 +182,13 @@ export default function SignUp() {
                     <Grid container justifyContent="flex-end">
                         <Grid item>
                             <Link
-                                onClick={() => navigate(loginPath)}
-                                variant="body2"
+                                href={loginPath}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    navigate(loginPath);
+                                }}
+                                variant="body1"
                                 sx={{
                                     "&:hover": {
                                         cursor: "pointer",

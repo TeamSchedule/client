@@ -73,8 +73,8 @@ const makeRequest = async (
             continue;
         }
 
-        if (response.status === 404) throw new APIRequestError("Сервис недоступен", {}, response.status);
-        if (response.status === 401) {
+        // if (response.status === 404) throw new APIRequestError("Сервис недоступен", {}, response.status);
+        if (response.status >= 400 && !isAuthentication) {
             const makeRequestAgain = () => makeRequest(requestUrl, fetchOptions, additionalHeaders);
             await refresh(() => {
                 localStorage.clear();

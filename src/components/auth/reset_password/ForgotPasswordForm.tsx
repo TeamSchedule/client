@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React, { FormEvent, useState } from "react";
-import validateEmail from "../../../utils/validateEmail";
+import { validateEmailFormat } from "../../../utils/validateEmail";
 import { API } from "../../../api/api";
 import { ResetPasswordEmailRequestSchema } from "../../../api/schemas/requests/auth";
 import { resetPasswordCodePath } from "../../../routes/paths";
@@ -42,7 +42,7 @@ export default function ForgotPasswordForm() {
 
     function onChangeEmail(email: string) {
         setEmail(email);
-        setIsEmailValid(validateEmail(email));
+        setIsEmailValid(validateEmailFormat(email));
     }
 
     return (
@@ -67,7 +67,6 @@ export default function ForgotPasswordForm() {
                         fullWidth
                         id="email"
                         label="Email"
-                        helperText="*****@mail.sfu-kras.ru"
                         name="email"
                         autoComplete="email"
                     />
