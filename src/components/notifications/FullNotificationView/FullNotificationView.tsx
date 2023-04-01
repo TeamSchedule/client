@@ -9,7 +9,6 @@ import useApiCall from "../../../hooks/useApiCall";
 import { API } from "../../../api/api";
 import { NotificationsResponseItemSchema } from "../../../api/schemas/responses/notifications";
 import { NotificationsStatusEnum } from "../../../enums/notificationsEnum";
-import { sampleNotifications } from "../../../testdata/SampleNotifications";
 import EventLink from "../../links/EventLink/EventLink";
 import TaskLink from "../../links/TaskLink";
 
@@ -18,11 +17,10 @@ interface FullNotificationViewProps {}
 export default function FullNotificationView(props: FullNotificationViewProps) {
     const navigate = useNavigate();
 
-    // const { id } = useParams();
+    const { id } = useParams();
 
-    // const getNotificationApiCall = useApiCall(() => API.notifications.getById(id || 0), undefined, [id]);
-    // const notification: NotificationsResponseItemSchema | undefined = getNotificationApiCall.data;
-    const notification: NotificationsResponseItemSchema | undefined = sampleNotifications[0];
+    const getNotificationApiCall = useApiCall(() => API.notifications.getById(id || 0), undefined, [id]);
+    const notification: NotificationsResponseItemSchema | undefined = getNotificationApiCall.data;
     const read: boolean = notification?.status === NotificationsStatusEnum.READ;
 
     const getTaskApiCall = useApiCall(

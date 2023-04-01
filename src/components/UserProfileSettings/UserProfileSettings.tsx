@@ -347,6 +347,7 @@ function BackupEmailSection() {
                 helperText="При утере пароля эта почта будет использоваться для восстановления доступа к аккаунту"
                 name="email"
                 autoComplete="email"
+                disabled
             />
 
             <LoadingButton
@@ -356,6 +357,7 @@ function BackupEmailSection() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled
             >
                 Сохранить новую почту
             </LoadingButton>

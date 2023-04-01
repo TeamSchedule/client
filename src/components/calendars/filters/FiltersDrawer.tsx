@@ -29,6 +29,7 @@ import useApiCall from "../../../hooks/useApiCall";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { API } from "../../../api/api";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 export interface FiltersDrawerProps {
     viewedDate: Date;
@@ -39,6 +40,7 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
     // данные для фильтров
     const getUnitsApiCall = useApiCall<UnitResponseItemSchema[]>(() => API.units.all(), []);
     const getEventsApiCall = useApiCall<EventResponseItemSchema[]>(() => API.events.all(), []);
+    const getUsersApiCall = useApiCall<UserSchema[]>(() => API.users.all(), []);
     const events: EventResponseItemSchema[] = getEventsApiCall.data;
 
     // открыт sidebar или нет
@@ -248,30 +250,25 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                                 ))}
                         </FilterSection>
                         <FilterSection title="Исполнители" selectedValueCount={selectedUsers}>
-                            {getUnitsApiCall.data.map((unit) => (
-                                <Box key={unit.id} sx={{ mb: 1 }}>
-                                    {unit.members.map((user) => (
-                                        <FormGroup key={user.id}>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
+                            {getUsersApiCall.data.map((user) => (
+                                <FormGroup key={user.id}>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                // @ts-ignore
+                                                checked={selectedUsersIds[user.id]}
+                                                onChange={() => {
+                                                    setSelectedUsersIds({
+                                                        ...selectedUsersIds,
                                                         // @ts-ignore
-                                                        checked={selectedUsersIds[user.id]}
-                                                        onChange={() => {
-                                                            setSelectedUsersIds({
-                                                                ...selectedUsersIds,
-                                                                // @ts-ignore
-                                                                [user.id]: !selectedUsersIds[user.id],
-                                                            });
-                                                        }}
-                                                    />
-                                                }
-                                                label={user.fullName}
+                                                        [user.id]: !selectedUsersIds[user.id],
+                                                    });
+                                                }}
                                             />
-                                        </FormGroup>
-                                    ))}
-                                    <Divider />
-                                </Box>
+                                        }
+                                        label={user.fullName}
+                                    />
+                                </FormGroup>
                             ))}
                         </FilterSection>
 

@@ -7,9 +7,11 @@ import { UnitParticipants } from "../common";
 import React from "react";
 import { useTheme } from "@mui/material";
 import { makeUnitLinkById } from "../../../routes/paths";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 interface UnitPreviewProps {
     unit: UnitResponseItemSchema;
+    members: UserSchema[];
     selected?: boolean;
 }
 
@@ -39,7 +41,7 @@ export default function UnitPreview(props: UnitPreviewProps) {
                     <Typography variant="subtitle1" component="div">
                         {props.unit.name}
                     </Typography>
-                    <UnitParticipants admin={props.unit.admin} members={props.unit.members || []} />
+                    <UnitParticipants admin={props.unit.admin} members={props.members || []} />
                 </CardContent>
             </Card>
         </>

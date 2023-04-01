@@ -1,5 +1,4 @@
 import { UserSchema } from "./users";
-import { TaskResponseItemSchema } from "./tasks";
 
 /**
  * Схема ответа на запрос получения всех отделов.
@@ -25,5 +24,4 @@ export interface UnitResponseItemSchema {
     admin: UserSchema;
     color: string;
     description: string;
-    members: UserSchema[];
 }

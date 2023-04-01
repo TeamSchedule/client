@@ -4,6 +4,7 @@ import styles from "./UserSelector.module.scss";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import useApiCall from "../../../hooks/useApiCall";
 import { API } from "../../../api/api";
+import Box from "@mui/material/Box";
 
 interface UserSelectorProps {
     setInputValue: (users: UserSchema | null) => void;
@@ -34,20 +35,28 @@ export default function UserSelector(props: UserSelectorProps) {
                     fullWidth
                     freeSolo={true}
                     // @ts-ignore
-                    getOptionLabel={(option) => option.fullName}
+                    getOptionLabel={(option: UserSchema) =>
+                        [option.lastName, option.firstName, option.patronymic].join(" ")
+                    }
                     renderOption={(props, option, { selected }) => (
-                        <li {...props} key={option.id} className={styles.selectorItem}>
-                            <input type="checkbox" checked={selected} className="mx-3" />
+                        <Box
+                            component="li"
+                            {...props}
+                            key={option.id}
+                            className={styles.selectorItem}
+                            sx={{ "&:hover": { cursor: "pointer" } }}
+                        >
+                            <input type="checkbox" checked={selected} className="mx-3 cursor-pointer" />
                             <UserPreview user={option} />
-                        </li>
+                        </Box>
                     )}
                     value={props.inputValue}
                     onChange={(e, value) => {
                         props.setInputValue(value as any);
                     }}
-                    renderInput={(params) => (
-                        <TextField required {...params} label={props.label} placeholder={props.placeholder} />
-                    )}
+                    renderInput={(params) => {
+                        return <TextField required {...params} label={props.label} placeholder={props.placeholder} />;
+                    }}
                     className={props.className}
                 />
             </div>

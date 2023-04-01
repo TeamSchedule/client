@@ -14,6 +14,7 @@ import useApiCall from "../../../hooks/useApiCall";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 export default function FullUnitView() {
     const navigate = useNavigate();
@@ -41,6 +42,11 @@ export default function FullUnitView() {
         [id]
     );
     const unit = getUnitApiCall.data;
+
+    // пользователи отдела
+    const getAllUsersApiCall = useApiCall<UserSchema[]>(() => API.users.all(), [], []);
+    /*// TODO: Add filter on unit*/
+    const members: UserSchema[] = getAllUsersApiCall.data.filter((user: UserSchema) => true);
 
     const handleCloseSuccessSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
@@ -72,7 +78,7 @@ export default function FullUnitView() {
                     <Typography component="h3" variant="subtitle1" sx={{ fontWeight: "bold" }}>
                         Состав отдела
                     </Typography>
-                    <UnitParticipants admin={unit?.admin} members={unit?.members || []} />
+                    <UnitParticipants admin={unit?.admin} members={members} />
                     <TaskListCollapse tasks={openTasks} title="Открытые задачи" />
                 </CardContent>
                 <Button

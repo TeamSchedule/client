@@ -1,6 +1,6 @@
 import React from "react";
 import { NotificationsResponseItemSchema } from "../../../api/schemas/responses/notifications";
-import { NotificationsStatusEnum, NotificationsStatusStrings } from "../../../enums/notificationsEnum";
+import { NotificationsStatusEnum } from "../../../enums/notificationsEnum";
 import { useNavigate } from "react-router-dom";
 import { makeEventLinkById, makeNotificationLinkById, makeTaskLinkById } from "../../../routes/paths";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
@@ -29,18 +29,20 @@ function NotificationItem(props: NotificationItemProps) {
     const read: boolean = props.notification.status === NotificationsStatusEnum.READ;
 
     function handleChangeStatus() {
-        const newStatus: NotificationsStatusStrings = read
-            ? NotificationsStatusEnum.UNREAD
-            : NotificationsStatusEnum.READ;
+        if (notification.status === NotificationsStatusEnum.READ) {
+            navigate(makeNotificationLinkById(notification.id));
+            return;
+        }
+
         API.notifications
-            .changeNotificationStatus(notification.id, newStatus)
+            .changeNotificationStatus(notification.id, NotificationsStatusEnum.READ)
             .then(() => {
                 // @ts-ignore
                 props.setNotifications((prev) => [
                     ...prev.filter((n: NotificationsResponseItemSchema) => n.id !== notification.id),
                     {
                         ...notification,
-                        status: newStatus,
+                        status: NotificationsStatusEnum.READ,
                     },
                 ]);
                 navigate(makeNotificationLinkById(notification.id));

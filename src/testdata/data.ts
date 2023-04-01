@@ -7,7 +7,14 @@ import { TaskStatusEnum } from "../enums/tasksEnums";
 import { EventStatusEnum } from "../enums/eventsEnums";
 
 const user1: UserSchema = {
-    avatar: "",
+    avatar: {
+        filename: "1",
+        id: 1,
+        size: 1,
+        content_type: " ",
+        owner_id: 1,
+        dt_created: "",
+    },
     id: 1,
     firstName: "Name",
     lastName: "Secondname",
@@ -18,7 +25,14 @@ const user1: UserSchema = {
     post: UserPostsEnum.UNIT_HEAD,
 };
 const user2: UserSchema = {
-    avatar: "",
+    avatar: {
+        filename: "2",
+        id: 2,
+        size: 1,
+        content_type: " ",
+        owner_id: 2,
+        dt_created: "",
+    },
     id: 2,
     firstName: "Name",
     lastName: "Secondname",
@@ -29,7 +43,14 @@ const user2: UserSchema = {
     post: UserPostsEnum.MEMBER,
 };
 const user3: UserSchema = {
-    avatar: "",
+    avatar: {
+        filename: "3",
+        id: 3,
+        size: 1,
+        content_type: " ",
+        owner_id: 3,
+        dt_created: "",
+    },
     id: 3,
     firstName: "Name",
     lastName: "Secondname",
@@ -41,7 +62,14 @@ const user3: UserSchema = {
 };
 
 const user4: UserSchema = {
-    avatar: "",
+    avatar: {
+        filename: "4",
+        id: 4,
+        size: 1,
+        content_type: " ",
+        owner_id: 4,
+        dt_created: "",
+    },
     id: 4,
     firstName: "Name",
     lastName: "Secondname",
@@ -59,7 +87,6 @@ export const unitsData: UnitResponseItemSchema[] = [
         id: 1,
         name: "Отдел социальных медиа",
         description: "Описание",
-        members: usersData.slice(0, 2),
         admin: user1,
         color: "",
         creationDate: new Date().toJSON(),
@@ -68,7 +95,6 @@ export const unitsData: UnitResponseItemSchema[] = [
         id: 2,
         name: "Отдел социальных медиа",
         description: "Описание",
-        members: usersData.slice(0, 2),
         admin: user1,
         color: "",
         creationDate: new Date().toJSON(),
@@ -77,7 +103,6 @@ export const unitsData: UnitResponseItemSchema[] = [
         id: 3,
         name: "Отдел социальных медиа",
         description: "Описание",
-        members: usersData.slice(0, 2),
         admin: user1,
         color: "",
         creationDate: new Date().toJSON(),

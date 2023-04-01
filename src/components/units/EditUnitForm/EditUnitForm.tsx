@@ -29,6 +29,8 @@ export default function EditUnitForm() {
     );
     const unit = getUnitApiCall.data;
 
+    const getUsersApiCall = useApiCall<UserSchema[]>(() => API.users.all(), []);
+
     // данные отдела
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -45,10 +47,14 @@ export default function EditUnitForm() {
         if (unit !== undefined) {
             setTitle(unit.name);
             setDescription(unit.description);
-            setUnitMembers(unit.members);
             setUnitHead(unit.admin);
         }
     }, [unit]);
+
+    useEffect(() => {
+        /*// TODO: Add filter on unit*/
+        setUnitMembers(getUsersApiCall.data);
+    }, [getUsersApiCall]);
 
     function editUnitHandler(event: React.MouseEvent) {
         event.preventDefault();

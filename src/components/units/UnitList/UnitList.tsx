@@ -13,6 +13,7 @@ import Progress from "../../common/Progress";
 import CreateNewButton from "../../common/CreateNewButton";
 import Divider from "@mui/material/Divider";
 import { useTheme } from "@mui/material";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 export default function UnitList() {
     const navigate = useNavigate();
@@ -22,13 +23,21 @@ export default function UnitList() {
 
     const getUnitsApiCall = useApiCall<UnitResponseItemSchema[]>(() => API.units.all(), []);
 
+    const getUsersApiCall = useApiCall<UserSchema[]>(() => API.users.all(), []);
+
     const LeftBar = (
         <Box>
             {getUnitsApiCall.loading && <Progress />}
             {getUnitsApiCall.success &&
                 getUnitsApiCall.data.map((unit) => (
                     <>
-                        <UnitPreview key={unit.id} unit={unit} selected={unit.id.toString() === (id || "0")} />
+                        {/*// TODO: Add filter on unit*/}
+                        <UnitPreview
+                            key={unit.id}
+                            unit={unit}
+                            selected={unit.id.toString() === (id || "0")}
+                            members={getUsersApiCall.data.filter((user: UserSchema) => true)}
+                        />
                         <Divider sx={{ m: 0, backgroundColor: theme.palette.grey.A700 }} />
                     </>
                 ))}

@@ -20,6 +20,6 @@ export function fileSize(bytes: number): string {
     return Math.floor(kilobytes * 10) / 10 + "KB";
 }
 
-export function makeAvatarPath(id: number): string {
-    return [MEDIA_STATIC_SERVER, "avatar", id].join("/");
+export function makeAvatarPath(owner_id: number, filename: string): string {
+    return [MEDIA_STATIC_SERVER, "USER", owner_id, filename].join("/");
 }

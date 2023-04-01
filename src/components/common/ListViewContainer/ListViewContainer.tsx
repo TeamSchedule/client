@@ -10,6 +10,7 @@ const commonSX: SxProps = {
     overflowY: "auto",
     msOverflowStyle: "none",
     scrollbarWidth: "none",
+    p: 0,
 };
 
 const borderSX: SxProps = {
@@ -64,7 +65,6 @@ export default function ListViewContainer(props: ListViewContainerProps) {
                                 xl={3}
                                 sx={{
                                     ...commonSX,
-                                    borderRight: "1px solid #ababab",
                                 }}
                             >
                                 <LeftWrapper sx={{ display: { xs: "none", md: "block" } }}>{props.LeftBar}</LeftWrapper>

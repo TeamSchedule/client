@@ -13,7 +13,6 @@ import EventSelector from "../../selectors/EventSelector/EventSelector";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import UsersSelector from "../../selectors/UsersSelector";
-import { UserPostsEnum } from "../../../enums/usersEnums";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
@@ -22,11 +21,14 @@ import TextHelp from "../../TextHelp/TextHelp";
 import { makeTaskLinkById } from "../../../routes/paths";
 import { CreateTasksResponseSchema } from "../../../api/schemas/responses/tasks";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
+import useApiCall from "../../../hooks/useApiCall";
 
 function CreateTaskForm() {
     const navigate = useNavigate();
     const { user } = useAuth();
     const { date } = useParams();
+
+    const getUsersApiCall = useApiCall<UserSchema[]>(() => API.users.all(), []);
 
     const [taskDescription, setTaskDescription] = useState<string>("");
     const [taskName, setTaskName] = useState<string>("");
@@ -60,7 +62,7 @@ function CreateTaskForm() {
 
     useEffect(() => {
         if (selectedUnit) {
-            setSelectedExecutors(selectedUnit?.members.filter((member) => member.post === UserPostsEnum.UNIT_HEAD));
+            setSelectedExecutors([selectedUnit?.admin]);
         }
     }, [selectedUnit]);
 
@@ -155,7 +157,7 @@ function CreateTaskForm() {
             </Box>
 
             <UsersSelector
-                users={selectedUnit ? selectedUnit.members : undefined}
+                users={getUsersApiCall.data}
                 setInputValue={setSelectedExecutors}
                 inputValue={selectedExecutors}
                 label="Выберите исполнителей"
