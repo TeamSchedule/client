@@ -17,13 +17,13 @@ import { ExpandMore } from "../../common/TaskListCollapse";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { IconButton, Tooltip } from "@mui/material";
-import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
 import { TaskStatusEnum, TaskStatusStrings } from "../../../enums/tasksEnums";
 import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import { API } from "../../../api/api";
 
 interface TaskPreviewProps {
     task: TaskResponseItemSchema;
+    setTasks?: (tasks: TaskResponseItemSchema[]) => void;
 }
 
 export default function TaskPreview(props: TaskPreviewProps) {
@@ -52,6 +52,16 @@ export default function TaskPreview(props: TaskPreviewProps) {
             .updateTaskById(updateStatusData)
             .then(() => {
                 setTask({ ...task, taskStatus: newStatus });
+                if (props.setTasks) {
+                    // @ts-ignore
+                    props.setTasks((tasks: TaskResponseItemSchema[]) => [
+                        ...tasks.filter((task) => task.id !== props.task.id),
+                        {
+                            ...task,
+                            taskStatus: newStatus,
+                        },
+                    ]);
+                }
             })
             .catch(() => {})
             .finally(() => {
@@ -70,7 +80,11 @@ export default function TaskPreview(props: TaskPreviewProps) {
             >
                 <CardContent sx={{ p: 2, paddingBottom: 0 }}>
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                        <DeadlineAndStatus endDate={task.expirationTime} status={task.taskStatus} />
+                        <DeadlineAndStatus
+                            endDate={task.expirationTime}
+                            status={task.taskStatus}
+                            onChangeStatus={toggleTaskStatus(task.taskStatus === TaskStatusEnum.COMPLETED)}
+                        />
 
                         <Tooltip title="Редактировать">
                             <IconButton sx={{ p: 0 }} onClick={() => navigate(makeTaskLinkById(task.id) + "/edit")}>
@@ -96,12 +110,6 @@ export default function TaskPreview(props: TaskPreviewProps) {
                     <Collapse in={expanded} timeout="auto" unmountOnExit sx={{ mb: 0, pb: 0 }}>
                         {task.event && <EventLink event={task?.event} />}
                         {task.department && <UnitLink id={task.department.id} name={task.department.name} />}
-
-                        <ToggleWorkStatusButton
-                            status={task.taskStatus}
-                            toggleStatus={toggleTaskStatus}
-                            loading={isChangingStatus}
-                        />
                     </Collapse>
                 </CardContent>
 

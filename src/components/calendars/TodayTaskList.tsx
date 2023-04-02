@@ -26,8 +26,8 @@ export function TodayList(props: TodayListProps) {
                 <Tab label="События" sx={{ width: "50%" }} />
             </Tabs>
 
-            {tab === 0 && <TodayTaskList day={props.day} tasks={props.tasks} />}
-            {tab === 1 && <TodayEventList day={props.day} events={props.events} />}
+            {tab === 0 && <TodayTaskList day={props.day} tasks={props.tasks} setTasks={props.setTasks} />}
+            {tab === 1 && <TodayEventList day={props.day} events={props.events} setEvents={props.setEvents} />}
         </>
     );
 }
@@ -35,6 +35,7 @@ export function TodayList(props: TodayListProps) {
 interface TodayTaskListProps {
     day: Date;
     tasks: TaskResponseItemSchema[];
+    setTasks: (tasks: TaskResponseItemSchema[]) => void;
 }
 
 function TodayTaskList(props: TodayTaskListProps) {
@@ -60,7 +61,7 @@ function TodayTaskList(props: TodayTaskListProps) {
 
             {dayTasks.sort(compareTasks).map((task) => (
                 <div className="mb-2" key={task.id}>
-                    <TaskPreview key={task.id} task={task} />
+                    <TaskPreview key={task.id} task={task} setTasks={props.setTasks} />
                 </div>
             ))}
         </>
@@ -70,6 +71,7 @@ function TodayTaskList(props: TodayTaskListProps) {
 interface todayEventListProps {
     day: Date;
     events: EventResponseItemSchema[];
+    setEvents: (events: EventResponseItemSchema[]) => void;
 }
 
 function TodayEventList(props: todayEventListProps) {
@@ -95,7 +97,7 @@ function TodayEventList(props: todayEventListProps) {
 
             {dayEvents.sort(compareEvent).map((event) => (
                 <div className="mb-2" key={event.id}>
-                    <EventPreview key={event.id} event={event} />
+                    <EventPreview key={event.id} event={event} setEvents={props.setEvents} />
                 </div>
             ))}
         </>

@@ -19,7 +19,6 @@ import UploadedFilePreview from "../../files/UploadedFilePreview";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
-import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
 import useApiCall from "../../../hooks/useApiCall";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 
@@ -63,6 +62,7 @@ export default function FullTaskView() {
     }, [taskData, id]);
 
     const toggleTaskStatus = (open: boolean) => (e: React.MouseEvent) => {
+        e.stopPropagation();
         e.preventDefault();
         if (!id) {
             return;
@@ -115,7 +115,13 @@ export default function FullTaskView() {
     return (
         <>
             <div>
-                {task && <DeadlineAndStatus status={task.taskStatus} endDate={task.expirationTime} />}
+                {task && (
+                    <DeadlineAndStatus
+                        status={task.taskStatus}
+                        endDate={task.expirationTime}
+                        onChangeStatus={toggleTaskStatus(task.taskStatus === TaskStatusEnum.COMPLETED)}
+                    />
+                )}
                 <TaskName name={task?.name} />
                 <TaskDescription>{task?.description}</TaskDescription>
 
@@ -134,12 +140,6 @@ export default function FullTaskView() {
                         ))}
                     </>
                 )}
-
-                <ToggleWorkStatusButton
-                    status={task.taskStatus}
-                    toggleStatus={toggleTaskStatus}
-                    loading={isChangingStatus}
-                />
 
                 <GoBackButton to={TaskListPath} buttonText="К календарю" />
             </div>

@@ -12,6 +12,7 @@ export interface AdaptiveCalendarProps {
     chosenDate: Date;
     setChosenDate: (value: Date) => void;
     tasks: TaskResponseItemSchema[];
+    setTasks: (tasks: TaskResponseItemSchema[]) => void;
     events: EventResponseItemSchema[];
     setEvents: (events: EventResponseItemSchema[]) => void;
     setFilterObject: (params: FilterTasksParamsSchema) => void;

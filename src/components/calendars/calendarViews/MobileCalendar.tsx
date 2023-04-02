@@ -180,7 +180,13 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         }}
                     />
                 </Box>
-                <TodayList day={props.chosenDate} tasks={props.tasks} events={props.events} />
+                <TodayList
+                    day={props.chosenDate}
+                    tasks={props.tasks}
+                    setTasks={props.setTasks}
+                    events={props.events}
+                    setEvents={props.setEvents}
+                />
             </LocalizationProvider>
         </>
     );

@@ -239,7 +239,13 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
             <Box sx={{ width: "300px" }}>
                 <Paper elevation={0} sx={{ px: 2, width: "100%" }}>
                     <UtilSection viewedDate={props.viewedDate} setFilterObject={props.setFilterObject} />
-                    <TodayList day={props.chosenDate} tasks={props.tasks} events={props.events} />
+                    <TodayList
+                        day={props.chosenDate}
+                        tasks={props.tasks}
+                        setTasks={props.setTasks}
+                        events={props.events}
+                        setEvents={props.setEvents}
+                    />
                 </Paper>
             </Box>
         </Box>

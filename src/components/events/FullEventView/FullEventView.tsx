@@ -19,7 +19,6 @@ import { EventListPath, makeEventLinkById } from "../../../routes/paths";
 import TaskListCollapse from "../../common/TaskListCollapse";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import ToggleWorkStatusButton from "../../common/tasks_events/ToggleWorkStatusButton";
 import useApiCall from "../../../hooks/useApiCall";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
@@ -69,6 +68,7 @@ export default function FullEventView() {
     }, [id]);
 
     const onChangeEventStatus = (open: boolean) => (e: React.MouseEvent) => {
+        e.stopPropagation();
         e.preventDefault();
         if (!id) return;
         setIsChangingStatus(true);
@@ -124,7 +124,11 @@ export default function FullEventView() {
                 <CardContent>
                     {event && (
                         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <DeadlineAndStatus endDate={event.endDate} status={event.status} />
+                            <DeadlineAndStatus
+                                endDate={event.endDate}
+                                status={event.status}
+                                onChangeStatus={onChangeEventStatus(event.status === EventStatusEnum.COMPLETED)}
+                            />
                             <Tooltip title="Редактировать">
                                 <IconButton
                                     sx={{ p: 0 }}
@@ -155,14 +159,6 @@ export default function FullEventView() {
                     )}
 
                     <TaskListCollapse tasks={getTasksApiCall.data} />
-
-                    {event && (
-                        <ToggleWorkStatusButton
-                            status={event?.status}
-                            toggleStatus={onChangeEventStatus}
-                            loading={isChangingStatus}
-                        />
-                    )}
 
                     <Box sx={{ display: { md: "none" } }}>
                         <GoBackButton to={EventListPath} buttonText="Вернуться к списку событий" />

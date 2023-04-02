@@ -1,12 +1,9 @@
 import BuildCircleIcon from "@mui/icons-material/BuildCircle";
-import { Tooltip } from "@mui/material";
 
 export default function InProgressStatus() {
     return (
         <>
-            <Tooltip title="Выполняется">
-                <BuildCircleIcon color="info" fontSize="medium" />
-            </Tooltip>
+            <BuildCircleIcon color="info" fontSize="medium" />
         </>
     );
 }

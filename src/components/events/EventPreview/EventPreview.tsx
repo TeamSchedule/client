@@ -9,17 +9,23 @@ import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { EventColorLeft, EventDescription, EventName } from "../common";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
-import React from "react";
+import React, { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import { EventStatusEnum, EventStatusStrings } from "../../../enums/eventsEnums";
+import { EditEventRequestSchema } from "../../../api/schemas/requests/events";
+import { API } from "../../../api/api";
 
 interface EventPreviewProps {
     event: EventResponseItemSchema;
     selected?: boolean;
+    setEvents?: (events: EventResponseItemSchema[]) => void;
 }
 
 export default function EventPreview(props: EventPreviewProps) {
     const navigate = useNavigate();
     const theme = useTheme();
+
+    const [event, setEvent] = useState<EventResponseItemSchema>(props.event);
 
     const onClickEvent = (event: React.MouseEvent<any>) => {
         event.preventDefault();
@@ -28,6 +34,32 @@ export default function EventPreview(props: EventPreviewProps) {
     };
 
     const openTasks: number = 0;
+
+    const onChangeEventStatus = (open: boolean) => (e: React.MouseEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        const newStatus: EventStatusStrings = open ? EventStatusEnum.IN_PROGRESS : EventStatusEnum.COMPLETED;
+        const newEventData: EditEventRequestSchema = { eventId: props.event.id, status: newStatus };
+
+        API.events
+            .editEvent(newEventData)
+            .then(() => {
+                setEvent({ ...event, status: newStatus });
+                if (props.setEvents) {
+                    // @ts-ignore
+                    props.setEvents((events: EventResponseItemSchema[]) => [
+                        ...events.filter((ev) => ev.id !== event.id),
+                        {
+                            ...props.event,
+                            status: newStatus,
+                        },
+                    ]);
+                }
+            })
+            .catch(() => {})
+            .finally(() => {});
+    };
 
     return (
         <>
@@ -46,7 +78,11 @@ export default function EventPreview(props: EventPreviewProps) {
             >
                 <CardContent sx={{ paddingBottom: 0 }}>
                     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <DeadlineAndStatus endDate={props.event.endDate} status={props.event.status} />
+                        <DeadlineAndStatus
+                            endDate={props.event.endDate}
+                            status={props.event.status}
+                            onChangeStatus={onChangeEventStatus(event.status === EventStatusEnum.COMPLETED)}
+                        />
                         <Tooltip title="Редактировать">
                             <IconButton
                                 sx={{ p: 0 }}

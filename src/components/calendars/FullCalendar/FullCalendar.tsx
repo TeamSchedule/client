@@ -55,6 +55,7 @@ export default function FullCalendar() {
         <>
             <AdaptiveCalendar
                 tasks={displayedTasks}
+                setTasks={getTasksApiCall.setData}
                 events={displayedEvents}
                 setEvents={setDisplayedEvents}
                 viewedDate={viewedDate}
