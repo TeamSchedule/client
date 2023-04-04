@@ -4,23 +4,19 @@ import React from "react";
 import Divider from "@mui/material/Divider";
 
 interface UnitParticipantsProps {
-    admin?: UserSchema;
+    admin: UserSchema;
     members: UserSchema[];
 }
 
 export function UnitParticipants(props: UnitParticipantsProps) {
-    const members = props.members.map((user) => (
-        <UserPreview user={user} key={user.id} clickable={true} userPost="Специалист" />
-    ));
+    const members = props.members
+        .filter((user) => user.id !== props.admin.id)
+        .map((user) => <UserPreview user={user} key={user.id} clickable={true} userPost="Специалист" />);
 
     return (
         <>
-            {props.admin && (
-                <>
-                    <UserPreview user={props.admin} userPost="Руководитель отдела" />
-                    <Divider />
-                </>
-            )}
+            <UserPreview user={props.admin} userPost="Руководитель отдела" />
+            <Divider />
             {members}
         </>
     );

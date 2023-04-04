@@ -265,7 +265,16 @@ export default function PrimaryAppBar() {
                         <Typography color="inherit" sx={{ mx: 1 }}>
                             {makeFullName(user)}
                         </Typography>
-                        <MainAvatar src={makeAvatarLink(user?.id ? +user?.id : 0)} fullPath size={40} />
+
+                        <Link
+                            href={SettingsPath}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                navigate(SettingsPath);
+                            }}
+                        >
+                            <MainAvatar src={makeAvatarLink(user?.id ? +user?.id : 0)} fullPath size={40} />
+                        </Link>
                     </Box>
 
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>

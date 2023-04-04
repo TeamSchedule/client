@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { API } from "../../../api/api";
@@ -7,7 +7,7 @@ import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import SimpleTextInput from "../../inputs/SimpleTextInput";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { makeEventLinkById, makeTaskLinkById } from "../../../routes/paths";
+import { makeTaskLinkById } from "../../../routes/paths";
 import GoBackButton from "../../buttons/GoBackButton";
 import Uploader from "../../files/Uploader";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
@@ -17,6 +17,8 @@ import { getTimezoneDatetime } from "../../../utils/dateutils";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import useApiCall from "../../../hooks/useApiCall";
+import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
+import UploadFileList from "../../files/UploadFileList";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
@@ -29,6 +31,7 @@ export default function EditTaskForm() {
         undefined
     );
     const task = getTaskApiCall.data;
+    const getFilesApiCall = useApiCall<FileResponseItemSchema[]>(() => API.files.getTaskFiles(id ? +id : 0), []);
 
     // task data
     const [taskName, setTaskName] = useState<string>("");
@@ -67,7 +70,7 @@ export default function EditTaskForm() {
         API.tasks
             .updateTaskById(updateTaskRequestBody)
             .then(() => {
-                navigate(-1);
+                navigate(makeTaskLinkById(+id));
             })
             .finally(() => {
                 setIsUpdateActionInProgress(false);
@@ -122,6 +125,8 @@ export default function EditTaskForm() {
                 Сохранить изменения
             </LoadingButton>
 
+            <UploadFileList files={getFilesApiCall.data} eventType={FileOwnerTypesEnum.TASK} isEditModeOn />
+
             {id && (
                 <Uploader
                     destType={FileOwnerTypesEnum.TASK}
@@ -144,7 +149,7 @@ export default function EditTaskForm() {
                 Удалить задачу
             </LoadingButton>
 
-            <GoBackButton to={id ? makeEventLinkById(+id) : ".."} />
+            <GoBackButton to={id ? makeTaskLinkById(+id) : ".."} />
         </>
     );
 }

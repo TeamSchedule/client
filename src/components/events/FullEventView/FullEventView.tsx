@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { API } from "../../../api/api";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import { EventColorLeft, EventDescription, EventName } from "../common";
@@ -9,10 +9,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { EventStatusEnum, EventStatusStrings } from "../../../enums/eventsEnums";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
-import Typography from "@mui/material/Typography";
 import { EditEventRequestSchema } from "../../../api/schemas/requests/events";
 import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
-import UploadedFilePreview from "../../files/UploadedFilePreview";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import GoBackButton from "../../buttons/GoBackButton";
 import { EventListPath, makeEventLinkById } from "../../../routes/paths";
@@ -22,6 +20,7 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import useApiCall from "../../../hooks/useApiCall";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
+import UploadFileList from "../../files/UploadFileList";
 
 export default function FullEventView() {
     const navigate = useNavigate();
@@ -38,12 +37,12 @@ export default function FullEventView() {
     }, [id]);
 
     const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(() => API.tasks.getTasks(params), []);
+    const getFilesApiCall = useApiCall<FileResponseItemSchema[]>(() => API.files.getEventFiles(id ? +id : 0), []);
 
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
 
     // статус запроса на изменения статуса события
-    const [isChangingStatus, setIsChangingStatus] = useState<boolean>(false);
     const [isChangingStatusError, setIsChangingStatusError] = useState<boolean>(false);
     const [isChangingStatusSuccess, setIsChangingStatusSuccess] = useState<boolean>(false);
 
@@ -55,23 +54,10 @@ export default function FullEventView() {
     // данные события
     const event = getEventApiCall.data;
 
-    const [eventFiles, setEventFiles] = useState<FileResponseItemSchema[]>([]);
-
-    useEffect(() => {
-        if (!id) {
-            return;
-        }
-
-        API.files.getEventFiles(+id).then((files: FileResponseItemSchema[]) => {
-            setEventFiles(files);
-        });
-    }, [id]);
-
     const onChangeEventStatus = (open: boolean) => (e: React.MouseEvent) => {
         e.stopPropagation();
         e.preventDefault();
         if (!id) return;
-        setIsChangingStatus(true);
 
         const newStatus: EventStatusStrings = open ? EventStatusEnum.IN_PROGRESS : EventStatusEnum.COMPLETED;
         const newEventData: EditEventRequestSchema = { eventId: +id, status: newStatus };
@@ -84,12 +70,8 @@ export default function FullEventView() {
                     getEventApiCall.setData({ ...event, status: newStatus });
                 }
             })
-            .catch(() => {
-                setIsChangingStatusError(true);
-            })
-            .finally(() => {
-                setIsChangingStatus(false);
-            });
+            .catch(() => {})
+            .finally(() => {});
     };
 
     const handleCloseSuccessfullyCreatedSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -147,16 +129,7 @@ export default function FullEventView() {
 
                     <EventDescription>{event?.description}</EventDescription>
 
-                    {eventFiles.length > 0 && (
-                        <>
-                            <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold", mt: 2, p: 0 }}>
-                                Файлы
-                            </Typography>
-                            {eventFiles.map((file) => (
-                                <UploadedFilePreview key={file.id} file={file} eventType={FileOwnerTypesEnum.EVENT} />
-                            ))}
-                        </>
-                    )}
+                    <UploadFileList files={getFilesApiCall.data} eventType={FileOwnerTypesEnum.EVENT} />
 
                     <TaskListCollapse tasks={getTasksApiCall.data} />
 

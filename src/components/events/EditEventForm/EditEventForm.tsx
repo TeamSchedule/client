@@ -18,11 +18,17 @@ import GoBackButton from "../../buttons/GoBackButton";
 import { makeEventLinkById } from "../../../routes/paths";
 import Uploader from "../../files/Uploader";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
+import { getTimezoneDatetime } from "../../../utils/dateutils";
+import useApiCall from "../../../hooks/useApiCall";
+import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
+import UploadFileList from "../../files/UploadFileList";
 
 export default function EditEventForm() {
     const navigate = useNavigate();
 
     const { id } = useParams();
+
+    const getFilesApiCall = useApiCall<FileResponseItemSchema[]>(() => API.files.getEventFiles(id ? +id : 0), []);
 
     // данные события
     const [name, setName] = useState<string>("");
@@ -63,7 +69,7 @@ export default function EditEventForm() {
             eventId: +id,
             name: name,
             description: description,
-            endDate: deadline || undefined,
+            endDate: deadline ? getTimezoneDatetime(deadline) : undefined,
             color: color === "" ? undefined : color,
         };
 
@@ -138,6 +144,8 @@ export default function EditEventForm() {
                     >
                         Сохранить изменения
                     </LoadingButton>
+
+                    <UploadFileList files={getFilesApiCall.data} eventType={FileOwnerTypesEnum.EVENT} isEditModeOn />
 
                     {id && (
                         <Uploader

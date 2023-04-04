@@ -1,7 +1,6 @@
 import { FileResponseItemSchema } from "../../api/schemas/responses/files";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import DownloadIcon from "@mui/icons-material/Download";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import React, { useState } from "react";
@@ -14,10 +13,14 @@ import ErrorSnackbar from "../snackbars/ErrorSnackbar";
 import SuccessSnackbar from "../snackbars/SuccessSnackbar";
 import Divider from "@mui/material/Divider";
 import WarningDialog from "../WarningDialog/WarningDialog";
+import Link from "@mui/material/Link";
+import FileExtIcon from "./FileExtIcon";
+import { getDatetimeRepresentation } from "../../utils/dateutils";
 
 interface UploadedFilePreviewProps {
     file: FileResponseItemSchema;
     eventType: EventTypesStrings;
+    isEditModeOn?: boolean;
 }
 
 export default function UploadedFilePreview(props: UploadedFilePreviewProps) {
@@ -65,28 +68,32 @@ export default function UploadedFilePreview(props: UploadedFilePreviewProps) {
             {!isDeleted && (
                 <>
                     <Box sx={{ display: "flex", alignItems: "center", mt: 1, wordWrap: "" }}>
-                        {/*<SvgIcon component={fileIcon} sx={{ mr: 1 }} />*/}
-                        <Typography
-                            variant="body1"
-                            component="span"
-                            sx={{
-                                flexGrow: 1,
-                                overflow: "auto",
-                                fontSize: "0.9rem",
-                                "&::-webkit-scrollbar": {
-                                    display: "none",
-                                },
-                                msOverflowStyle: "none" /* IE and Edge */,
-                                scrollbarWidth: "none" /* Firefox */,
-                            }}
-                        >
-                            {props.file.filename}
-                        </Typography>
+                        <FileExtIcon fileExtension={props.file.filename.split(".").pop() || ""} />
+                        <Tooltip title={`Скачать файл "${props.file.filename}"`}>
+                            <Link href={makeFileLink(props.file, props.file.owner_id, props.eventType)} target="_blank">
+                                <Typography
+                                    variant="body1"
+                                    component="span"
+                                    sx={{
+                                        flexGrow: 1,
+                                        overflow: "auto",
+                                        fontSize: "0.9rem",
+                                        "&::-webkit-scrollbar": {
+                                            display: "none",
+                                        },
+                                        msOverflowStyle: "none" /* IE and Edge */,
+                                        scrollbarWidth: "none" /* Firefox */,
+                                    }}
+                                >
+                                    {props.file.filename}
+                                </Typography>
+                            </Link>
+                        </Tooltip>
 
                         <Typography
                             sx={{
                                 mx: 1,
-                                fontSize: "0.9rem",
+                                fontSize: "0.87rem",
                                 verticalAlign: "baseline",
                                 color: "#7a7a7a",
                             }}
@@ -94,19 +101,23 @@ export default function UploadedFilePreview(props: UploadedFilePreviewProps) {
                             {fileSize(props.file.size)}
                         </Typography>
 
-                        <Tooltip title="Скачать файл">
-                            <IconButton sx={{ p: 0, m: 0 }}>
-                                <a href={makeFileLink(props.file, props.file.owner_id, props.eventType)}>
-                                    <DownloadIcon />
-                                </a>
-                            </IconButton>
-                        </Tooltip>
-
-                        <Tooltip title="Удалить файл">
-                            <IconButton sx={{ p: 0, m: 0, ml: 3 }} color="error" onClick={onClickDelete}>
-                                <DeleteForeverIcon />
-                            </IconButton>
-                        </Tooltip>
+                        <Typography
+                            sx={{
+                                mx: 1,
+                                fontSize: "0.87rem",
+                                verticalAlign: "baseline",
+                                color: "#7a7a7a",
+                            }}
+                        >
+                            {getDatetimeRepresentation(new Date(props.file.dt_created))}
+                        </Typography>
+                        {props.isEditModeOn && (
+                            <Tooltip title="Удалить файл">
+                                <IconButton sx={{ p: 0, m: 0, ml: 3 }} color="error" onClick={onClickDelete}>
+                                    <DeleteForeverIcon />
+                                </IconButton>
+                            </Tooltip>
+                        )}
                     </Box>
                     <Divider />
                 </>

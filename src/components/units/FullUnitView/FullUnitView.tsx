@@ -74,11 +74,15 @@ export default function FullUnitView() {
                 <Typography component="h2" variant="subtitle1" sx={{ textAlign: "center" }}>
                     {unit?.name || ""}
                 </Typography>
+                <Typography component="p" variant="body1" sx={{ textAlign: "left" }}>
+                    {unit?.description || ""}
+                </Typography>
                 <CardContent sx={{ px: 0 }}>
                     <Typography component="h3" variant="subtitle1" sx={{ fontWeight: "bold" }}>
                         Состав отдела
                     </Typography>
-                    <UnitParticipants admin={unit?.admin} members={members} />
+                    {unit?.admin && <UnitParticipants admin={unit.admin} members={members} />}
+
                     <TaskListCollapse tasks={openTasks} title="Открытые задачи" />
                 </CardContent>
                 <Button
