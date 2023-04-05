@@ -9,23 +9,22 @@ import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { EventColorLeft, EventDescription, EventName } from "../common";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
-import React, { useState } from "react";
+import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import { EventStatusEnum, EventStatusStrings } from "../../../enums/eventsEnums";
 import { EditEventRequestSchema } from "../../../api/schemas/requests/events";
 import { API } from "../../../api/api";
+import { observer } from "mobx-react-lite";
+import eventStore from "../../../store/EventStore";
 
 interface EventPreviewProps {
     event: EventResponseItemSchema;
     selected?: boolean;
-    setEvents?: (events: EventResponseItemSchema[]) => void;
 }
 
-export default function EventPreview(props: EventPreviewProps) {
+function EventPreview(props: EventPreviewProps) {
     const navigate = useNavigate();
     const theme = useTheme();
-
-    const [event, setEvent] = useState<EventResponseItemSchema>(props.event);
 
     const onClickEvent = (event: React.MouseEvent<any>) => {
         event.preventDefault();
@@ -45,17 +44,7 @@ export default function EventPreview(props: EventPreviewProps) {
         API.events
             .editEvent(newEventData)
             .then(() => {
-                setEvent({ ...event, status: newStatus });
-                if (props.setEvents) {
-                    // @ts-ignore
-                    props.setEvents((events: EventResponseItemSchema[]) => [
-                        ...events.filter((ev) => ev.id !== event.id),
-                        {
-                            ...props.event,
-                            status: newStatus,
-                        },
-                    ]);
-                }
+                eventStore.update(props.event.id, { ...props.event, status: newStatus });
             })
             .catch(() => {})
             .finally(() => {});
@@ -81,7 +70,7 @@ export default function EventPreview(props: EventPreviewProps) {
                         <DeadlineAndStatus
                             endDate={props.event.endDate}
                             status={props.event.status}
-                            onChangeStatus={onChangeEventStatus(event.status === EventStatusEnum.COMPLETED)}
+                            onChangeStatus={onChangeEventStatus(props.event.status === EventStatusEnum.COMPLETED)}
                         />
                         <Tooltip title="Редактировать">
                             <IconButton
@@ -119,3 +108,5 @@ export default function EventPreview(props: EventPreviewProps) {
         </>
     );
 }
+
+export default observer(EventPreview);

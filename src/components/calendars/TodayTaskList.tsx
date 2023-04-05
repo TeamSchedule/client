@@ -97,7 +97,7 @@ function TodayEventList(props: todayEventListProps) {
 
             {dayEvents.sort(compareEvent).map((event) => (
                 <div className="mb-2" key={event.id}>
-                    <EventPreview key={event.id} event={event} setEvents={props.setEvents} />
+                    <EventPreview key={event.id} event={event} />
                 </div>
             ))}
         </>

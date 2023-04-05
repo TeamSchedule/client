@@ -6,15 +6,15 @@ import PlainSelector from "../../selectors/PlainSelector";
 import { CreateNewEventPath } from "../../../routes/paths";
 import Box from "@mui/material/Box";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
-import useApiCall from "../../../hooks/useApiCall";
-import { API } from "../../../api/api";
-import { getOnlyCompletedEvents, getOnlyOpenEvents } from "../../../utils/eventUtils";
 import ListViewContainer from "../../common/ListViewContainer/ListViewContainer";
 import Typography from "@mui/material/Typography";
 import Progress from "../../common/Progress";
 import CreateNewButton from "../../common/CreateNewButton";
 import Divider from "@mui/material/Divider";
 import { useTheme } from "@mui/material";
+import eventStore from "../../../store/EventStore";
+import { FetchStatusEnum } from "../../../enums/fetchStatusEnum";
+import { observer } from "mobx-react-lite";
 
 enum EventFilterEnum {
     All = 0,
@@ -28,33 +28,30 @@ const EventFilters: Array<[string, string]> = [
     [EventFilterEnum.Done.toString(), "Завершенные"],
 ];
 
-export default function EventList() {
+function EventList() {
     const navigate = useNavigate();
     const theme = useTheme();
 
     const { id } = useParams();
 
-    // все события
-    const getEventsApiCall = useApiCall<EventResponseItemSchema[]>(() => API.events.all(), []);
-    const events: EventResponseItemSchema[] = getEventsApiCall.data;
-
     // список отображаемых событий
-    const [showedEvents, setShowedEvents] = useState<EventResponseItemSchema[]>([]);
+    const [events, setEvents] = useState<EventResponseItemSchema[]>(eventStore.getAllEvents);
 
     // параметр, по которому фильтруются собыития
     const [eventFilterValue, setEventFilterValue] = useState(EventFilterEnum.InProgress);
 
     useEffect(() => {
         if (+eventFilterValue === +EventFilterEnum.All) {
-            setShowedEvents(() => [...events]);
+            setEvents(eventStore.getAllEvents);
         } else if (+eventFilterValue === +EventFilterEnum.InProgress) {
-            setShowedEvents(getOnlyOpenEvents(events));
+            setEvents(eventStore.getOpenEvents);
         } else if (+eventFilterValue === +EventFilterEnum.Done) {
-            setShowedEvents(getOnlyCompletedEvents(events));
+            setEvents(eventStore.getClosedEvents);
         }
-    }, [eventFilterValue, events]);
+        /* eslint-disable react-hooks/exhaustive-deps */
+    }, [eventFilterValue, eventStore.events]);
 
-    const DisplayedEvents = showedEvents.map((event) => (
+    const DisplayedEvents = events.map((event) => (
         <>
             <EventPreview key={event.id} event={event} />
             <Divider sx={{ m: 0, backgroundColor: theme.palette.grey.A700 }} />
@@ -85,8 +82,8 @@ export default function EventList() {
 
     const LeftBar = (
         <Box>
-            {getEventsApiCall.loading && <Progress />}
-            {getEventsApiCall.success && DisplayedEvents}
+            {eventStore.getFetchStatus === FetchStatusEnum.FETCHING && <Progress />}
+            {eventStore.getFetchStatus === FetchStatusEnum.SUCCESS && DisplayedEvents}
         </Box>
     );
 
@@ -99,9 +96,14 @@ export default function EventList() {
     return (
         <>
             <ListViewContainer TopBar={TopBar} LeftBar={LeftBar} RightBar={RightBar} id={id} />
-            <ErrorSnackbar handleClose={getEventsApiCall.resetApiCallStatus} isOpen={getEventsApiCall.error}>
+            <ErrorSnackbar
+                handleClose={() => eventStore.setFetchStatus(FetchStatusEnum.IDLE)}
+                isOpen={eventStore.getFetchStatus === FetchStatusEnum.ERROR}
+            >
                 Не удалось загрузить данные!
             </ErrorSnackbar>
         </>
     );
 }
+
+export default observer(EventList);

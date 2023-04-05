@@ -21,23 +21,27 @@ import useApiCall from "../../../hooks/useApiCall";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import UploadFileList from "../../files/UploadFileList";
+import { observer } from "mobx-react-lite";
+import eventStore from "../../../store/EventStore";
+import { FetchStatusEnum } from "../../../enums/fetchStatusEnum";
 
-export default function FullEventView() {
+function FullEventView() {
     const navigate = useNavigate();
 
-    const { id } = useParams();
+    const urlParams = useParams();
+    const id: number = +(urlParams.id || 0);
     const { state } = useLocation();
     const { created = 0 } = state || {}; // считываем значения из state
     window.history.replaceState({}, document.title); // очищаем state
 
     const params = useMemo(() => {
         return {
-            events: [id ? +id : 0],
+            events: [id],
         };
     }, [id]);
 
     const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(() => API.tasks.getTasks(params), []);
-    const getFilesApiCall = useApiCall<FileResponseItemSchema[]>(() => API.files.getEventFiles(id ? +id : 0), []);
+    const getFilesApiCall = useApiCall<FileResponseItemSchema[]>(() => API.files.getEventFiles(id), []);
 
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
@@ -46,13 +50,8 @@ export default function FullEventView() {
     const [isChangingStatusError, setIsChangingStatusError] = useState<boolean>(false);
     const [isChangingStatusSuccess, setIsChangingStatusSuccess] = useState<boolean>(false);
 
-    const getEventApiCall = useApiCall<EventResponseItemSchema | undefined>(
-        () => API.events.getById(id ? +id : 0),
-        undefined,
-        [id]
-    );
     // данные события
-    const event = getEventApiCall.data;
+    const event: EventResponseItemSchema | undefined = eventStore.getById(id);
 
     const onChangeEventStatus = (open: boolean) => (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -66,8 +65,7 @@ export default function FullEventView() {
             .editEvent(newEventData)
             .then(() => {
                 if (event) {
-                    // setEvent({ ...event, status: newStatus });
-                    getEventApiCall.setData({ ...event, status: newStatus });
+                    eventStore.update(id, { ...event, status: newStatus });
                 }
             })
             .catch(() => {})
@@ -95,8 +93,7 @@ export default function FullEventView() {
         setIsChangingStatusSuccess(false);
     };
 
-    if (id === undefined) {
-        navigate("/");
+    if (event === undefined) {
         return null;
     }
 
@@ -151,7 +148,10 @@ export default function FullEventView() {
                 Событие создано!
             </SuccessSnackbar>
 
-            <ErrorSnackbar handleClose={getEventApiCall.resetApiCallStatus} isOpen={getEventApiCall.error}>
+            <ErrorSnackbar
+                handleClose={() => eventStore.setFetchStatus(FetchStatusEnum.IDLE)}
+                isOpen={eventStore.getFetchStatus === FetchStatusEnum.ERROR}
+            >
                 Ошибка загрузки
             </ErrorSnackbar>
 
@@ -164,3 +164,5 @@ export default function FullEventView() {
         </>
     );
 }
+
+export default observer(FullEventView);
