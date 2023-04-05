@@ -1,6 +1,5 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
 import WorkStatusPlate from "../../common/tasks_events/WorkStatusPlate";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
@@ -10,7 +9,6 @@ interface DesktopCalendarEventPreviewProps {
 }
 
 export default function DesktopCalendarEventPreview(props: DesktopCalendarEventPreviewProps) {
-    const theme = useTheme();
     const deadline: Date = new Date(props.event.endDate);
 
     return (

@@ -10,12 +10,12 @@ import Paper from "@mui/material/Paper";
 
 import "dayjs/locale/ru";
 import { AdaptiveCalendarProps } from "./AdaptiveCalendar";
-import DesktopCalendarTaskPreview from "../../tasks/DesktopCalendarTaskPreview/DesktopCalendarTaskPreview";
 import { TodayList } from "../TodayTaskList";
 import { UtilSection } from "./common";
 import { compareTasks } from "../../../utils/taskUtils";
 import DesktopCalendarEventPreview from "../../events/DesktopCalendarEventPreview/DesktopCalendarEventPreview";
 import { compareEvent } from "../../../utils/eventUtils";
+import DesktopCalendarTaskItem from "../../tasks/views/DesktopCalendarTaskItem";
 
 const MaxDateSize = 400; // максимальный размер отображаемого на десктопном календаре дня
 const BaseDateHeight = 120; // базовая высота ячейки
@@ -103,7 +103,7 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                             })
                             .sort(compareTasks)
                             .map((task) => (
-                                <DesktopCalendarTaskPreview key={task.id} task={task} />
+                                <DesktopCalendarTaskItem key={task.id} task={task} />
                             ))}
                     </Box>
                 </PickersDay>

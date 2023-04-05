@@ -3,14 +3,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 import WorkStatusPlate from "../../common/tasks_events/WorkStatusPlate";
+import { getTimeRepresentation } from "../../../utils/dateutils";
 
-interface DesktopCalendarTaskPreviewProps {
+interface DesktopCalendarTaskItemProps {
     task: TaskResponseItemSchema;
 }
 
-export default function DesktopCalendarTaskPreview(props: DesktopCalendarTaskPreviewProps) {
+export default function DesktopCalendarTaskItem(props: DesktopCalendarTaskItemProps) {
     const theme = useTheme();
-    const deadline: Date = new Date(props.task.expirationTime);
 
     return (
         <>
@@ -51,10 +51,7 @@ export default function DesktopCalendarTaskPreview(props: DesktopCalendarTaskPre
                             mt: "5px",
                         }}
                     >
-                        {deadline.toLocaleTimeString("ru-RU", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                        })}
+                        {getTimeRepresentation(new Date(props.task.expirationTime))}
                     </Typography>
                     <WorkStatusPlate status={props.task.taskStatus} />
                 </Box>

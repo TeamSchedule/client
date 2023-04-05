@@ -1,0 +1,55 @@
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
+import UnitLink from "../../links/UnitLink/UnitLink";
+import EventLink from "../../links/EventLink/EventLink";
+import { makeTaskLinkById } from "../../../routes/paths";
+import TaskName from "../common/TaskName";
+import React from "react";
+import { TaskDescription } from "../common/common";
+import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
+import EditIcon from "@mui/icons-material/Edit";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import { IconButton, Tooltip } from "@mui/material";
+import { TaskStatusEnum } from "../../../enums/tasksEnums";
+import { TaskActionsProps, TaskViewProps } from "./interfaces";
+
+export interface TaskPreviewProps extends TaskViewProps, TaskActionsProps {}
+
+export default function TaskPreview(props: TaskPreviewProps) {
+    const task: TaskResponseItemSchema = props.task;
+
+    return (
+        <>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <DeadlineAndStatus
+                    endDate={task.expirationTime}
+                    status={task.taskStatus}
+                    onChangeStatus={props.toggleTaskStatus(task.taskStatus === TaskStatusEnum.COMPLETED)}
+                />
+
+                <Tooltip title="Редактировать">
+                    <IconButton sx={{ p: 0 }} onClick={props.navigateToEdit}>
+                        <EditIcon />
+                    </IconButton>
+                </Tooltip>
+            </Box>
+
+            <Link
+                component="a"
+                href={makeTaskLinkById(task.id)}
+                onClick={(e) => e.stopPropagation()}
+                sx={{
+                    "&:hover": {
+                        cursor: "pointer",
+                    },
+                }}
+            >
+                <TaskName name={task.name} />
+            </Link>
+            <TaskDescription>{task.description}</TaskDescription>
+
+            {task.event && <EventLink event={task?.event} />}
+            {task.department && <UnitLink id={task.department.id} name={task.department.name} />}
+        </>
+    );
+}

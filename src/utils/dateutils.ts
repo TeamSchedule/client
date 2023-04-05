@@ -36,6 +36,14 @@ export function weekCount(year: number, monthIndex: number): number {
     return 4;
 }
 
+export function getTimeRepresentation(date: Date | undefined): string {
+    if (!date) return "--:--";
+    return date.toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+}
+
 export function getDateRepresentation(date: Date | undefined): string {
     if (!date) return "**-**-****";
     return date.toLocaleDateString("ru-RU", { year: "numeric", month: "2-digit", day: "2-digit" });

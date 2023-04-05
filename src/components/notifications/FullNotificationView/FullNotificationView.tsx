@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import { getDatetimeRepresentation, getPastPeriod } from "../../../utils/dateutils";
 import Card from "@mui/material/Card";
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useApiCall from "../../../hooks/useApiCall";
 import { API } from "../../../api/api";
 import { NotificationsResponseItemSchema } from "../../../api/schemas/responses/notifications";
@@ -15,8 +15,6 @@ import TaskLink from "../../links/TaskLink";
 interface FullNotificationViewProps {}
 
 export default function FullNotificationView(props: FullNotificationViewProps) {
-    const navigate = useNavigate();
-
     const { id } = useParams();
 
     const getNotificationApiCall = useApiCall(() => API.notifications.getById(id || 0), undefined, [id]);

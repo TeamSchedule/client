@@ -3,11 +3,11 @@ import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
-import TaskPreview from "../tasks/TaskPreview";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import { TaskResponseItemSchema } from "../../api/schemas/responses/tasks";
 import { compareTasks } from "../../utils/taskUtils";
+import BaseTask from "../tasks/BaseTask";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -56,7 +56,7 @@ export default function TaskListCollapse(props: TaskListCollapseProps) {
 
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 {props.tasks.sort(compareTasks).map((task) => (
-                    <TaskPreview key={task.id} task={task} />
+                    <BaseTask key={task.id} task={task} />
                 ))}
             </Collapse>
         </>

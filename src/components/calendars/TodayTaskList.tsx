@@ -1,6 +1,5 @@
 import { TaskResponseItemSchema } from "../../api/schemas/responses/tasks";
 import { getDateRepresentation, isEqualYearMonthDate } from "../../utils/dateutils";
-import TaskPreview from "../tasks/TaskPreview";
 import React from "react";
 import Typography from "@mui/material/Typography";
 import { compareTasks } from "../../utils/taskUtils";
@@ -8,6 +7,7 @@ import { EventResponseItemSchema } from "../../api/schemas/responses/events";
 import EventPreview from "../events/EventPreview/EventPreview";
 import { compareEvent } from "../../utils/eventUtils";
 import { Tab, Tabs } from "@mui/material";
+import BaseTask from "../tasks/BaseTask";
 
 interface TodayListProps extends TodayTaskListProps, todayEventListProps {}
 
@@ -61,7 +61,7 @@ function TodayTaskList(props: TodayTaskListProps) {
 
             {dayTasks.sort(compareTasks).map((task) => (
                 <div className="mb-2" key={task.id}>
-                    <TaskPreview key={task.id} task={task} setTasks={props.setTasks} />
+                    <BaseTask key={task.id} task={task} setTasks={props.setTasks} />
                 </div>
             ))}
         </>

@@ -10,7 +10,7 @@ import { TaskStatusEnum, TaskStatusStrings } from "../../../enums/tasksEnums";
 import { UpdateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
-import { TaskListPath } from "../../../routes/paths";
+import { TaskListPath, makeTaskLinkById } from "../../../routes/paths";
 import GoBackButton from "../../buttons/GoBackButton";
 import EventLink from "../../links/EventLink/EventLink";
 import { TaskDescription } from "../common/common";
@@ -20,6 +20,7 @@ import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 import useApiCall from "../../../hooks/useApiCall";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import UploadFileList from "../../files/UploadFileList";
+import { Box, IconButton, Tooltip } from "@mui/material";
 
 export default function FullTaskView() {
     const { id } = useParams();
@@ -95,11 +96,18 @@ export default function FullTaskView() {
         <>
             <div>
                 {task && (
-                    <DeadlineAndStatus
-                        status={task.taskStatus}
-                        endDate={task.expirationTime}
-                        onChangeStatus={toggleTaskStatus(task.taskStatus === TaskStatusEnum.COMPLETED)}
-                    />
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <DeadlineAndStatus
+                            endDate={task.expirationTime}
+                            status={task.taskStatus}
+                            onChangeStatus={toggleTaskStatus(task.taskStatus === TaskStatusEnum.COMPLETED)}
+                        />
+                        <Tooltip title="Редактировать">
+                            <IconButton sx={{ p: 0 }} onClick={() => navigate(makeTaskLinkById(task.id) + "/edit")}>
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
                 )}
                 <TaskName name={task?.name} />
                 <TaskDescription>{task?.description}</TaskDescription>
