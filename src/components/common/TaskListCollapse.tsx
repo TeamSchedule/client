@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import { TaskResponseItemSchema } from "../../api/schemas/responses/tasks";
 import { compareTasks } from "../../utils/taskUtils";
 import BaseTask from "../tasks/BaseTask";
+import Box from "@mui/material/Box";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -29,36 +27,17 @@ interface TaskListCollapseProps {
 }
 
 export default function TaskListCollapse(props: TaskListCollapseProps) {
-    // раскрыть раздел с задачами
-    const [expanded, setExpanded] = useState<boolean>(false);
-
+    if (props.tasks.length === 0) return null;
     return (
-        <>
-            {props.tasks.length > 0 && (
-                <CardActions
-                    disableSpacing
-                    sx={{
-                        "&:hover": {
-                            cursor: "pointer",
-                        },
-                        px: 0,
-                    }}
-                    onClick={() => setExpanded(!expanded)}
-                >
-                    <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
-                        {props.title ? props.title : "Задачи"} - {props.tasks.length}
-                    </Typography>
-                    <ExpandMore expand={expanded} aria-expanded={expanded} aria-label="show more">
-                        <ExpandMoreIcon />
-                    </ExpandMore>
-                </CardActions>
-            )}
-
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <Box sx={{ pt: 1 }}>
+            <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+                {props.title ? props.title : "Задачи"} - {props.tasks.length}
+            </Typography>
+            <Box>
                 {props.tasks.sort(compareTasks).map((task) => (
                     <BaseTask key={task.id} task={task} />
                 ))}
-            </Collapse>
-        </>
+            </Box>
+        </Box>
     );
 }

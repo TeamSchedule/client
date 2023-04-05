@@ -38,7 +38,7 @@ export default function FullTaskView(props: FullTaskViewProps) {
             {task?.department && <UnitLink id={task.department?.id} name={task.department?.name} />}
             {task?.event && <EventLink event={task?.event} />}
 
-            <Executors users={task.assignee} />
+            <Executors users={task.assignee} fullView />
 
             <UploadFileList files={props.files} eventType={FileOwnerTypesEnum.TASK} />
         </>

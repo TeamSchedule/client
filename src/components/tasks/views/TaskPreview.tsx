@@ -12,6 +12,8 @@ import Link from "@mui/material/Link";
 import { IconButton, Tooltip } from "@mui/material";
 import { TaskStatusEnum } from "../../../enums/tasksEnums";
 import { TaskActionsProps, TaskViewProps } from "./interfaces";
+import Executors from "../common/Executors";
+import Typography from "@mui/material/Typography";
 
 export interface TaskPreviewProps extends TaskViewProps, TaskActionsProps {}
 
@@ -19,7 +21,7 @@ export default function TaskPreview(props: TaskPreviewProps) {
     const task: TaskResponseItemSchema = props.task;
 
     return (
-        <>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <DeadlineAndStatus
                     endDate={task.expirationTime}
@@ -50,6 +52,16 @@ export default function TaskPreview(props: TaskPreviewProps) {
 
             {task.event && <EventLink event={task?.event} />}
             {task.department && <UnitLink id={task.department.id} name={task.department.name} />}
-        </>
+
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                {Boolean(props.files.length) && (
+                    <Typography component="p" variant="subtitle1" sx={{ color: "grey" }}>
+                        Файлов: {props.files.length}
+                    </Typography>
+                )}
+
+                <Executors users={task.assignee} />
+            </Box>
+        </Box>
     );
 }

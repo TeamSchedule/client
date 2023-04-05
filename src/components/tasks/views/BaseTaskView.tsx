@@ -16,9 +16,12 @@ export default function BaseTaskView(props: BaseTaskViewProps) {
                 variant="outlined"
                 sx={{
                     minWidth: "275px",
+                    "& .MuiCardContent-root": {
+                        paddingBottom: "8px !important",
+                    },
                 }}
             >
-                <CardContent sx={{ p: 2 }}>
+                <CardContent sx={{ p: 1 }}>
                     <>{props.fullMode ? <FullTaskView {...props} /> : <TaskPreview {...props} />}</>
                 </CardContent>
             </Card>

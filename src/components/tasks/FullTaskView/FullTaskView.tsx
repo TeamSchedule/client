@@ -115,7 +115,7 @@ export default function FullTaskView() {
                 {task?.department && <UnitLink id={task.department?.id} name={task.department?.name} />}
                 {task?.event && <EventLink event={task?.event} />}
 
-                <Executors users={task ? task.assignee : []} />
+                <Executors users={task ? task.assignee : []} fullView />
 
                 <UploadFileList files={getFilesApiCall.data} eventType={FileOwnerTypesEnum.TASK} />
 
