@@ -10,7 +10,6 @@ import CardContent from "@mui/material/CardContent";
 import { EventStatusEnum, EventStatusStrings } from "../../../enums/eventsEnums";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import { EditEventRequestSchema } from "../../../api/schemas/requests/events";
-import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import GoBackButton from "../../buttons/GoBackButton";
 import { EventListPath, makeEventLinkById } from "../../../routes/paths";
@@ -41,7 +40,6 @@ function FullEventView() {
     }, [id]);
 
     const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(() => API.tasks.getTasks(params), []);
-    const getFilesApiCall = useApiCall<FileResponseItemSchema[]>(() => API.files.getEventFiles(id), []);
 
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
@@ -68,8 +66,10 @@ function FullEventView() {
                     eventStore.update(id, { ...event, status: newStatus });
                 }
             })
-            .catch(() => {})
-            .finally(() => {});
+            .catch(() => {
+            })
+            .finally(() => {
+            });
     };
 
     const handleCloseSuccessfullyCreatedSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -101,32 +101,27 @@ function FullEventView() {
         <>
             <Card>
                 <CardContent>
-                    {event && (
-                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <DeadlineAndStatus
-                                endDate={event.endDate}
-                                status={event.status}
-                                onChangeStatus={onChangeEventStatus(event.status === EventStatusEnum.COMPLETED)}
-                            />
-                            <Tooltip title="Редактировать">
-                                <IconButton
-                                    sx={{ p: 0 }}
-                                    onClick={() => navigate(makeEventLinkById(event.id) + "/edit")}
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                    )}
-
-                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "stretch" }}>
-                        <EventColorLeft color={event?.color} />
-                        <EventName>{event?.name}</EventName>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <DeadlineAndStatus
+                            endDate={event.endDate}
+                            status={event.status}
+                            onChangeStatus={onChangeEventStatus(event.status === EventStatusEnum.COMPLETED)}
+                        />
+                        <Tooltip title="Редактировать">
+                            <IconButton sx={{ p: 0 }} onClick={() => navigate(makeEventLinkById(event.id) + "/edit")}>
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
 
-                    <EventDescription>{event?.description}</EventDescription>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "stretch" }}>
+                        <EventColorLeft color={event.color} />
+                        <EventName>{event.name}</EventName>
+                    </Box>
 
-                    <UploadFileList files={getFilesApiCall.data} eventType={FileOwnerTypesEnum.EVENT} />
+                    <EventDescription>{event.description}</EventDescription>
+
+                    <UploadFileList files={event.files} eventType={FileOwnerTypesEnum.EVENT} />
 
                     <TaskListCollapse tasks={getTasksApiCall.data} />
 

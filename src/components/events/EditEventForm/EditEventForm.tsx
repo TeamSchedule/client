@@ -19,16 +19,26 @@ import { makeEventLinkById } from "../../../routes/paths";
 import Uploader from "../../files/Uploader";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 import { getTimezoneDatetime } from "../../../utils/dateutils";
-import useApiCall from "../../../hooks/useApiCall";
-import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
 import UploadFileList from "../../files/UploadFileList";
+import { observer } from "mobx-react-lite";
+import eventStore from "../../../store/EventStore";
 
-export default function EditEventForm() {
+function EditEventForm() {
     const navigate = useNavigate();
 
-    const { id } = useParams();
+    const urlParams = useParams();
+    const id: number = +(urlParams.id || 0);
 
-    const getFilesApiCall = useApiCall<FileResponseItemSchema[]>(() => API.files.getEventFiles(id ? +id : 0), []);
+    const event: EventResponseItemSchema | undefined = eventStore.getById(id);
+
+    useEffect(() => {
+        if (event) {
+            setName(event.name);
+            setDescription(event.description);
+            setColor(event.color);
+            setDeadline(event.endDate ? new Date(event.endDate) : null);
+        }
+    }, [event]);
 
     // данные события
     const [name, setName] = useState<string>("");
@@ -42,42 +52,28 @@ export default function EditEventForm() {
     const [isEditingFinished, setIsEditingFinished] = useState<boolean>(false);
     const [isEditingError, setIsEditingError] = useState<boolean>(false);
 
-    useEffect(() => {
-        if (!id) return;
-
-        API.events
-            .getById(+id)
-            .then((data: EventResponseItemSchema) => {
-                setName(data.name);
-                setDescription(data.description);
-                setColor(data.color);
-                setDeadline(data.endDate ? new Date(data.endDate) : null);
-            })
-            .catch(() => {})
-            .finally(() => {});
-    }, [id]);
-
     function editEventHandler() {
-        if (!id) {
+        if (!id || !event) {
             setIsEditingError(true);
             return;
         }
 
         setInProgress(true);
-
         const newEventData: EditEventRequestSchema = {
-            eventId: +id,
+            eventId: id,
             name: name,
             description: description,
-            endDate: deadline ? getTimezoneDatetime(deadline) : undefined,
+
+            endDate: deadline ? getTimezoneDatetime(deadline).toISOString() : undefined,
             color: color === "" ? undefined : color,
         };
 
         API.events
             .editEvent(newEventData)
             .then(() => {
+                eventStore.update(event.id, { ...event, ...newEventData });
                 setIsEditingFinished(true);
-                navigate(makeEventLinkById(+id));
+                navigate(makeEventLinkById(id));
             })
             .catch(() => {
                 setIsEditingError(true);
@@ -100,6 +96,8 @@ export default function EditEventForm() {
         }
         setIsEditingError(false);
     };
+
+    if (!id || !event) return null;
 
     return (
         <>
@@ -145,19 +143,17 @@ export default function EditEventForm() {
                         Сохранить изменения
                     </LoadingButton>
 
-                    <UploadFileList files={getFilesApiCall.data} eventType={FileOwnerTypesEnum.EVENT} isEditModeOn />
+                    <UploadFileList files={event.files} eventType={FileOwnerTypesEnum.EVENT} isEditModeOn />
 
-                    {id && (
-                        <Uploader
-                            destType={FileOwnerTypesEnum.EVENT}
-                            destId={+id}
-                            successHandler={() => {
-                                navigate(makeEventLinkById(+id));
-                            }}
-                        />
-                    )}
+                    <Uploader
+                        destType={FileOwnerTypesEnum.EVENT}
+                        destId={id}
+                        successHandler={() => {
+                            navigate(makeEventLinkById(id));
+                        }}
+                    />
 
-                    <GoBackButton to={id ? makeEventLinkById(+id) : ".."} />
+                    <GoBackButton to={makeEventLinkById(id)} />
                 </CardContent>
             </Card>
 
@@ -170,3 +166,5 @@ export default function EditEventForm() {
         </>
     );
 }
+
+export default observer(EditEventForm);

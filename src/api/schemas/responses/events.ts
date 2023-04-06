@@ -1,5 +1,6 @@
 import { TaskResponseItemSchema } from "./tasks";
 import { EventStatusStrings } from "../../../enums/eventsEnums";
+import { FileResponseItemSchema } from "./files";
 
 /**
  * Схема ответа на запрос получения списка событий.
@@ -19,7 +20,7 @@ export interface EventResponseItemSchema {
     endDate: string;
     tasks?: TaskResponseItemSchema[];
     status: EventStatusStrings;
-    files?: Array<any>;
+    files: FileResponseItemSchema[];
 }
 
 /**

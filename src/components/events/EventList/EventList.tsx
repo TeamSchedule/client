@@ -34,6 +34,10 @@ function EventList() {
 
     const { id } = useParams();
 
+    useEffect(() => {
+        eventStore.prefetchData();
+    }, []);
+
     // список отображаемых событий
     const [events, setEvents] = useState<EventResponseItemSchema[]>(eventStore.getAllEvents);
 

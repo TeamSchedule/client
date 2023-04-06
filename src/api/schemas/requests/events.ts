@@ -17,7 +17,7 @@ export interface EditEventRequestSchema {
     eventId: number;
     name?: string;
     description?: string;
-    endDate?: Date;
+    endDate?: string;
     color?: string;
     status?: EventStatusStrings;
 }
