@@ -3,12 +3,13 @@ import Typography from "@mui/material/Typography";
 import WorkStatusPlate from "../../common/tasks_events/WorkStatusPlate";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
+import { observer } from "mobx-react-lite";
 
 interface DesktopCalendarEventPreviewProps {
     event: EventResponseItemSchema;
 }
 
-export default function DesktopCalendarEventPreview(props: DesktopCalendarEventPreviewProps) {
+function DesktopCalendarEventPreview(props: DesktopCalendarEventPreviewProps) {
     const deadline: Date = new Date(props.event.endDate);
 
     return (
@@ -65,3 +66,5 @@ export default function DesktopCalendarEventPreview(props: DesktopCalendarEventP
         </>
     );
 }
+
+export default observer(DesktopCalendarEventPreview);

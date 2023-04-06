@@ -54,9 +54,9 @@ export default function TaskPreview(props: TaskPreviewProps) {
             {task.department && <UnitLink id={task.department.id} name={task.department.name} />}
 
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                {Boolean(props.files.length) && (
+                {Boolean(props.task.files.length) && (
                     <Typography component="p" variant="subtitle1" sx={{ color: "grey" }}>
-                        Файлов: {props.files.length}
+                        Файлов: {props.task.files.length}
                     </Typography>
                 )}
 

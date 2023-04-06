@@ -125,8 +125,10 @@ export const taskData: TaskResponseItemSchema = {
         endDate: new Date().toJSON(),
         tasks: [],
         status: EventStatusEnum.IN_PROGRESS,
+        files: [],
     },
     department: unitsData[0],
+    files: [],
 };
 
 export const tasksData: TaskResponseItemSchema[] = [
@@ -146,8 +148,10 @@ export const tasksData: TaskResponseItemSchema[] = [
             endDate: new Date().toJSON(),
             tasks: [],
             status: EventStatusEnum.IN_PROGRESS,
+            files: [],
         },
         department: unitsData[1],
+        files: [],
     },
     {
         id: 2,
@@ -165,8 +169,10 @@ export const tasksData: TaskResponseItemSchema[] = [
             endDate: new Date().toJSON(),
             tasks: [],
             status: EventStatusEnum.IN_PROGRESS,
+            files: [],
         },
         department: unitsData[0],
+        files: [],
     },
     {
         id: 3,
@@ -182,10 +188,11 @@ export const tasksData: TaskResponseItemSchema[] = [
             color: "#ff0864",
             description: "desc",
             endDate: new Date().toJSON(),
-            tasks: [],
             status: EventStatusEnum.IN_PROGRESS,
+            files: [],
         },
         department: unitsData[0],
+        files: [],
     },
 ];
 
@@ -198,6 +205,7 @@ export const eventsData: EventResponseItemSchema[] = [
         endDate: new Date().toJSON(),
         tasks: [taskData],
         status: EventStatusEnum.IN_PROGRESS,
+        files: [],
     },
     {
         id: 2,
@@ -207,6 +215,7 @@ export const eventsData: EventResponseItemSchema[] = [
         endDate: new Date().toJSON(),
         tasks: [],
         status: EventStatusEnum.IN_PROGRESS,
+        files: [],
     },
     {
         id: 3,
@@ -216,5 +225,6 @@ export const eventsData: EventResponseItemSchema[] = [
         endDate: new Date().toJSON(),
         tasks: [],
         status: EventStatusEnum.COMPLETED,
+        files: [],
     },
 ];

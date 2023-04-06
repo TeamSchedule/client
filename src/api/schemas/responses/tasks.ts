@@ -2,6 +2,7 @@ import { UnitResponseItemSchema } from "./units";
 import { EventResponseItemSchema } from "./events";
 import { UserSchema } from "./users";
 import { TaskStatusStrings } from "../../../enums/tasksEnums";
+import { FileResponseItemSchema } from "./files";
 
 export interface GetTasksResponseSchema {
     tasks: TaskResponseItemSchema[];
@@ -23,5 +24,5 @@ export interface TaskResponseItemSchema {
 
     department: UnitResponseItemSchema;
     event?: EventResponseItemSchema;
-    files?: Array<any>;
+    files: FileResponseItemSchema[];
 }

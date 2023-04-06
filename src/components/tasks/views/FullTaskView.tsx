@@ -40,7 +40,7 @@ export default function FullTaskView(props: FullTaskViewProps) {
 
             <Executors users={task.assignee} fullView />
 
-            <UploadFileList files={props.files} eventType={FileOwnerTypesEnum.TASK} />
+            <UploadFileList files={props.task.files} eventType={FileOwnerTypesEnum.TASK} />
         </>
     );
 }

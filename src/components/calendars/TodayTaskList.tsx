@@ -8,10 +8,12 @@ import EventPreview from "../events/EventPreview/EventPreview";
 import { compareEvent } from "../../utils/eventUtils";
 import { Tab, Tabs } from "@mui/material";
 import BaseTask from "../tasks/BaseTask";
+import { observer } from "mobx-react-lite";
+import eventStore from "../../store/EventStore";
+import calendarStore from "../../store/CalendarStore";
+import taskStore from "../../store/TaskStore";
 
-interface TodayListProps extends TodayTaskListProps, todayEventListProps {}
-
-export function TodayList(props: TodayListProps) {
+export function TodayList() {
     // вкладки с задачами/событиями
     const [tab, setTab] = React.useState(0);
 
@@ -26,23 +28,17 @@ export function TodayList(props: TodayListProps) {
                 <Tab label="События" sx={{ width: "50%" }} />
             </Tabs>
 
-            {tab === 0 && <TodayTaskList day={props.day} tasks={props.tasks} setTasks={props.setTasks} />}
-            {tab === 1 && <TodayEventList day={props.day} events={props.events} setEvents={props.setEvents} />}
+            {tab === 0 && <TodayTaskList />}
+            {tab === 1 && <TodayEventList />}
         </>
     );
 }
 
-interface TodayTaskListProps {
-    day: Date;
-    tasks: TaskResponseItemSchema[];
-    setTasks: (tasks: TaskResponseItemSchema[]) => void;
-}
+const TodayTaskList = observer(() => {
+    const todayDateStr: string = calendarStore.getChosenDate ? getDateRepresentation(calendarStore.getChosenDate) : "";
 
-function TodayTaskList(props: TodayTaskListProps) {
-    const todayDateStr: string = props.day ? getDateRepresentation(props.day) : "";
-
-    const dayTasks: TaskResponseItemSchema[] = props.tasks.filter((task) =>
-        isEqualYearMonthDate(new Date(task.expirationTime), props.day)
+    const dayTasks: TaskResponseItemSchema[] = taskStore.tasks.filter((task) =>
+        isEqualYearMonthDate(new Date(task.expirationTime), calendarStore.getChosenDate)
     );
 
     return (
@@ -61,25 +57,17 @@ function TodayTaskList(props: TodayTaskListProps) {
 
             {dayTasks.sort(compareTasks).map((task) => (
                 <div className="mb-2" key={task.id}>
-                    <BaseTask key={task.id} task={task} setTasks={props.setTasks} />
+                    <BaseTask key={task.id} task={task} />
                 </div>
             ))}
         </>
     );
-}
+});
 
-interface todayEventListProps {
-    day: Date;
-    events: EventResponseItemSchema[];
-    setEvents: (events: EventResponseItemSchema[]) => void;
-}
+const TodayEventList = observer(() => {
+    const todayDateStr: string = calendarStore.getChosenDate ? getDateRepresentation(calendarStore.getChosenDate) : "";
 
-function TodayEventList(props: todayEventListProps) {
-    const todayDateStr: string = props.day ? getDateRepresentation(props.day) : "";
-
-    const dayEvents: EventResponseItemSchema[] = props.events.filter((event) =>
-        isEqualYearMonthDate(new Date(event.endDate), props.day)
-    );
+    const dayEvents: EventResponseItemSchema[] = eventStore.getDayEvents(calendarStore.getChosenDate);
 
     return (
         <>
@@ -102,4 +90,4 @@ function TodayEventList(props: todayEventListProps) {
             ))}
         </>
     );
-}
+});

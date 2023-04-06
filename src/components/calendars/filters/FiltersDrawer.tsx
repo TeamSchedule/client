@@ -30,13 +30,11 @@ import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { API } from "../../../api/api";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import { UserSchema } from "../../../api/schemas/responses/users";
+import { observer } from "mobx-react-lite";
+import calendarStore from "../../../store/CalendarStore";
+import { makeFullName } from "../../../utils/userUtils";
 
-export interface FiltersDrawerProps {
-    viewedDate: Date;
-    setFilterObject: (params: FilterTasksParamsSchema) => void;
-}
-
-export default function FiltersDrawer(props: FiltersDrawerProps) {
+function FiltersDrawer() {
     // данные для фильтров
     const getUnitsApiCall = useApiCall<UnitResponseItemSchema[]>(() => API.units.all(), []);
     const getEventsApiCall = useApiCall<EventResponseItemSchema[]>(() => API.events.all(), []);
@@ -62,7 +60,7 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
         selectedUnits + selectedUsers + selectedEvents + +Boolean(selectedStatus) + +Boolean(selectedType);
 
     function filterTasks(e: React.MouseEvent) {
-        const params: FilterTasksParamsSchema = buildFilterParams(props.viewedDate);
+        const params: FilterTasksParamsSchema = buildFilterParams(calendarStore.getViewedDate);
 
         if (selectedUnits > 0) {
             params.departments = Object.entries(selectedUnitsIds)
@@ -92,7 +90,7 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
             params.type = selectedType;
         }
 
-        props.setFilterObject(params);
+        calendarStore.setFilters(params);
         toggleDrawer(false)(e);
     }
 
@@ -107,14 +105,15 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
         setState(open);
     };
 
-    function resetFilters() {
-        props.setFilterObject(buildFilterParams(props.viewedDate));
+    function resetFilters(e: React.MouseEvent) {
+        calendarStore.cleanFilters();
 
         setSelectedUnitsIds(() => DefaultDict());
         setSelectedUsersIds(() => DefaultDict());
         setSelectedEventsIds(() => DefaultDict());
         setSelectedStatus("");
         setSelectedType(CalendarElemTypeEnum.ALL);
+        toggleDrawer(false)(e);
     }
 
     const handleChangeRadioStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -266,7 +265,7 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
                                                 }}
                                             />
                                         }
-                                        label={user.fullName}
+                                        label={makeFullName(user)}
                                     />
                                 </FormGroup>
                             ))}
@@ -285,6 +284,8 @@ export default function FiltersDrawer(props: FiltersDrawerProps) {
         </>
     );
 }
+
+export default observer(FiltersDrawer);
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;

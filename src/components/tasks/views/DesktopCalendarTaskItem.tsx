@@ -33,7 +33,6 @@ export default function DesktopCalendarTaskItem(props: DesktopCalendarTaskItemPr
                 <Typography
                     sx={{
                         fontSize: "0.9rem",
-                        fontWeight: "bold",
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "clip",

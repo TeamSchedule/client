@@ -5,16 +5,20 @@ import { EventResponseItemSchema } from "../schemas/responses/events";
 
 export const FetchingMonthRange: number = 2;
 
+export function getDateRange(d: Date): object {
+    return {
+        from: new Date(d.getFullYear(), d.getMonth() - FetchingMonthRange, 1).toJSON(),
+        to: new Date(d.getFullYear(), d.getMonth() + FetchingMonthRange).toJSON(),
+    };
+}
+
 export default function buildFilterParams(
-    chosenDate: Date,
+    viewedDate: Date,
     selectedUnits: UnitResponseItemSchema[] = [],
     selectedEvents: EventResponseItemSchema[] = [],
     selectedUsers: UserSchema[] = []
 ): FilterTasksParamsSchema {
-    const params: FilterTasksParamsSchema = {
-        from: new Date(chosenDate.getFullYear(), chosenDate.getMonth() - FetchingMonthRange, 1).toJSON(),
-        to: new Date(chosenDate.getFullYear(), chosenDate.getMonth() + FetchingMonthRange).toJSON(),
-    };
+    const params: FilterTasksParamsSchema = getDateRange(viewedDate);
 
     if (selectedUnits.length > 0) {
         params.departments = selectedUnits.map((unit) => unit.id);

@@ -1,18 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Badge, BadgeProps, Box, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { isEqualYearMonthDate, weekCount } from "../../../utils/dateutils";
 import { PickersDay, PickersDayProps, StaticDatePicker } from "@mui/x-date-pickers";
 
 import "dayjs/locale/ru";
-import { AdaptiveCalendarProps } from "./AdaptiveCalendar";
 import { styled } from "@mui/material/styles";
 import { maxDate, minDate } from "./DesktopCalendar";
 import { TodayList } from "../TodayTaskList";
 import { UtilSection } from "./common";
+import calendarStore from "../../../store/CalendarStore";
+import { observer } from "mobx-react-lite";
+import taskStore from "../../../store/TaskStore";
+import eventStore from "../../../store/EventStore";
 
 const MaxDateSize = 80; // максимальный размер отображаемого на мобильном календаре дня
 
@@ -27,14 +29,21 @@ const MobileCalendarDayBadge = styled(Badge)<BadgeProps>(() => ({
     },
 }));
 
-export interface MobileCalendarProps extends AdaptiveCalendarProps {}
+export interface CalendarProps {
+    currentMonth: number;
+    setCurrentMonth: (value: number) => void;
+    currentYear: number;
+    setCurrentYear: (value: number) => void;
+}
 
-export default function MobileCalendar(props: MobileCalendarProps) {
-    const [currentMonth, setCurrentMonth] = useState<number>(props.viewedDate.getMonth() + 1);
-    const [currentYear, setCurrentYear] = useState<number>(props.viewedDate.getFullYear());
+interface MobileCalendarProps extends CalendarProps {}
 
+function MobileCalendar(props: MobileCalendarProps) {
     // размер ячейки календаря
     const [dateSize, setDateSize] = useState<number>(44);
+
+    // Для перерисовки задач и событий на календаре после их изменения
+    useEffect(() => {}, [eventStore.events, taskStore.tasks]);
 
     useEffect(() => {
         const onWindowResize = () => {
@@ -49,26 +58,6 @@ export default function MobileCalendar(props: MobileCalendarProps) {
         };
     }, []);
 
-    useEffect(() => {
-        // Так как задачи запрашиваются в диапазоне нескольких месяцев от текущего, изменять дату, только если она вышла из диапазона
-
-        const minViewedDate: Date = new Date(
-            props.viewedDate.getFullYear(),
-            props.viewedDate.getMonth() - FetchingMonthRange
-        );
-        const maxViewedDate: Date = new Date(
-            props.viewedDate.getFullYear(),
-            props.viewedDate.getMonth() + FetchingMonthRange
-        );
-
-        const newViewedDate: Date = new Date(currentYear, currentMonth);
-
-        if (newViewedDate > maxViewedDate || newViewedDate < minViewedDate) {
-            // вышли из диапазона, надо обновить дату и запросить задачи еще раз
-            props.setViewedDate(new Date(currentYear, currentMonth));
-        }
-    }, [currentMonth, currentYear]);
-
     function MobileCustomDayRenderer(
         date: Date,
         selectedDays: Array<Date | null>,
@@ -80,7 +69,7 @@ export default function MobileCalendar(props: MobileCalendarProps) {
             <Box key={date}>
                 <MobileCalendarDayBadge
                     badgeContent={
-                        props.tasks.filter((task) => {
+                        taskStore.tasks.filter((task) => {
                             // @ts-ignore
                             return isEqualYearMonthDate(new Date(task.expirationTime), date["$d"]);
                         }).length
@@ -132,7 +121,7 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                             margin: 0,
                         },
                         "& .PrivatePickersSlideTransition-root, & .MuiDayPicker-monthContainer": {
-                            minHeight: dateSize * weekCount(currentYear, currentMonth),
+                            minHeight: dateSize * weekCount(props.currentYear, props.currentMonth),
                         },
                         '& .PrivatePickersSlideTransition-root [role="row"]': {
                             margin: 0,
@@ -150,7 +139,7 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         },
                     }}
                 >
-                    <UtilSection viewedDate={props.viewedDate} setFilterObject={props.setFilterObject} />
+                    <UtilSection />
                     <StaticDatePicker
                         minDate={minDate}
                         maxDate={maxDate}
@@ -159,17 +148,17 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         // minDate={new Date("2000-01-01")}
                         displayStaticWrapperAs="desktop"
                         openTo="day"
-                        value={props.chosenDate}
+                        value={calendarStore.chosenDate}
                         onChange={(v) => {
                             // @ts-ignore
-                            props.setChosenDate(v["$d"]);
+                            calendarStore.setChosenDate(v["$d"]);
                         }}
                         onMonthChange={(month) => {
                             // @ts-ignore
-                            setCurrentMonth(month["$M"]);
+                            props.setCurrentMonth(month["$M"]);
                         }}
                         // @ts-ignore
-                        onYearChange={setCurrentYear}
+                        onYearChange={props.setCurrentYear}
                         renderInput={(params) => <TextField {...params} />}
                         // @ts-ignore
                         renderDay={MobileCustomDayRenderer}
@@ -180,14 +169,10 @@ export default function MobileCalendar(props: MobileCalendarProps) {
                         }}
                     />
                 </Box>
-                <TodayList
-                    day={props.chosenDate}
-                    tasks={props.tasks}
-                    setTasks={props.setTasks}
-                    events={props.events}
-                    setEvents={props.setEvents}
-                />
+                <TodayList />
             </LocalizationProvider>
         </>
     );
 }
+
+export default observer(MobileCalendar);

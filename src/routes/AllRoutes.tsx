@@ -44,12 +44,12 @@ import AuthProvider from "./AuthProvider";
 import FullEventView from "../components/events/FullEventView/FullEventView";
 import EditEventForm from "../components/events/EditEventForm/EditEventForm";
 import FullCalendar from "../components/calendars/FullCalendar";
-import FullTaskView from "../components/tasks/FullTaskView";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
 import UserProfileSettings from "../components/UserProfileSettings";
 import { API } from "../api/api";
 import FullNotificationView from "../components/notifications/FullNotificationView";
+import BaseTask from "../components/tasks/BaseTask";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -140,7 +140,7 @@ export const router = createBrowserRouter(
                         {/* ==================== task routes ==================== */}
                         <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />
                         <Route path={EditTaskPath} element={<EditTaskForm />} />
-                        <Route path={FullViewTaskPath} element={<FullTaskView />} />
+                        <Route path={FullViewTaskPath} element={<BaseTask fullView />} />
 
                         {/* ==================== settings routes ==================== */}
                         <Route path={SettingsPath} element={<UserProfileSettings />} />

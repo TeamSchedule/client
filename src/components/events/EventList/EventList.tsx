@@ -28,6 +28,10 @@ const EventFilters: Array<[string, string]> = [
     [EventFilterEnum.Done.toString(), "Завершенные"],
 ];
 
+const RightBar = (
+    <Typography sx={{ textAlign: "center", mt: 3 }}>Выберите событие, чтобы увидеть подробную информацию</Typography>
+);
+
 function EventList() {
     const navigate = useNavigate();
     const theme = useTheme();
@@ -89,12 +93,6 @@ function EventList() {
             {eventStore.getFetchStatus === FetchStatusEnum.FETCHING && <Progress />}
             {eventStore.getFetchStatus === FetchStatusEnum.SUCCESS && DisplayedEvents}
         </Box>
-    );
-
-    const RightBar = (
-        <Typography sx={{ textAlign: "center", mt: 3 }}>
-            Выберите событие, чтобы увидеть подробную информацию
-        </Typography>
     );
 
     return (

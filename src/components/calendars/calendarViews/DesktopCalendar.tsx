@@ -1,37 +1,40 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, TextField, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { isEqualYearMonthDate, weekCount } from "../../../utils/dateutils";
+import { weekCount } from "../../../utils/dateutils";
 import { PickersDay, PickersDayProps, StaticDatePicker } from "@mui/x-date-pickers";
 import Paper from "@mui/material/Paper";
 
 import "dayjs/locale/ru";
-import { AdaptiveCalendarProps } from "./AdaptiveCalendar";
 import { TodayList } from "../TodayTaskList";
 import { UtilSection } from "./common";
 import { compareTasks } from "../../../utils/taskUtils";
-import DesktopCalendarEventPreview from "../../events/DesktopCalendarEventPreview/DesktopCalendarEventPreview";
-import { compareEvent } from "../../../utils/eventUtils";
 import DesktopCalendarTaskItem from "../../tasks/views/DesktopCalendarTaskItem";
+import { observer } from "mobx-react-lite";
+import calendarStore from "../../../store/CalendarStore";
+import { CalendarElemTypeEnum } from "../../../enums/common";
+import eventStore from "../../../store/EventStore";
+import { compareEvent } from "../../../utils/eventUtils";
+import DesktopCalendarEventPreview from "../../events/DesktopCalendarEventPreview/DesktopCalendarEventPreview";
+import taskStore from "../../../store/TaskStore";
+import { CalendarProps } from "./MobileCalendar";
 
 const MaxDateSize = 400; // максимальный размер отображаемого на десктопном календаре дня
 const BaseDateHeight = 120; // базовая высота ячейки
 export const minDate = new Date("2010-01-01");
 export const maxDate = new Date("2050-01-01");
 
-export interface DesktopCalendarProps extends AdaptiveCalendarProps {}
+interface DesktopCalendarProps extends CalendarProps {}
 
-export default function DesktopCalendar(props: DesktopCalendarProps) {
+function DesktopCalendar(props: DesktopCalendarProps) {
     const theme = useTheme();
-
-    const [currentMonth, setCurrentMonth] = useState<number>(props.viewedDate.getMonth() + 1);
-    const [currentYear, setCurrentYear] = useState<number>(props.viewedDate.getFullYear());
-
     // размер ячейки календаря
     const [dateSize, setDateSize] = useState<number>((window.innerWidth - 300) / 7 - 5);
+
+    // Для перерисовки задач и событий на календаре после их изменения
+    useEffect(() => {}, [eventStore.events, taskStore.tasks]);
 
     useEffect(() => {
         const onWindowResize = () => {
@@ -46,26 +49,6 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
         };
     }, []);
 
-    useEffect(() => {
-        // Так как задачи запрашиваются в диапазоне нескольких месяцев от текущего, изменять дату, только если она вышла из диапазона
-
-        const minViewedDate: Date = new Date(
-            props.viewedDate.getFullYear(),
-            props.viewedDate.getMonth() - FetchingMonthRange
-        );
-        const maxViewedDate: Date = new Date(
-            props.viewedDate.getFullYear(),
-            props.viewedDate.getMonth() + FetchingMonthRange
-        );
-
-        const newViewedDate: Date = new Date(currentYear, currentMonth);
-
-        if (newViewedDate > maxViewedDate || newViewedDate < minViewedDate) {
-            // вышли из диапазона, надо обновить дату и запросить задачи еще раз
-            props.setViewedDate(new Date(currentYear, currentMonth));
-        }
-    }, [currentMonth, currentYear]);
-
     function DesktopCustomDayRenderer(
         date: Date,
         selectedDays: Array<Date | null>,
@@ -73,6 +56,9 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
     ) {
         // @ts-ignore
         const dayNumber: number = date["$D"];
+        // @ts-ignore
+        const today: Date = new Date(date["$d"]);
+
         return (
             <Box sx={{ minHeight: dayNumber === new Date().getDate() ? "100px" : 0 }}>
                 <PickersDay {...pickersDayProps}>
@@ -87,24 +73,17 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                         }}
                     >
                         {dayNumber}
-                        {props.events
-                            .filter((event) => {
-                                // @ts-ignore
-                                return isEqualYearMonthDate(new Date(event.endDate), date["$d"]);
-                            })
-                            .sort(compareEvent)
-                            .map((event) => (
-                                <DesktopCalendarEventPreview key={event.id} event={event} />
-                            ))}
-                        {props.tasks
-                            .filter((task) => {
-                                // @ts-ignore
-                                return isEqualYearMonthDate(new Date(task.expirationTime), date["$d"]);
-                            })
-                            .sort(compareTasks)
-                            .map((task) => (
-                                <DesktopCalendarTaskItem key={task.id} task={task} />
-                            ))}
+
+                        {calendarStore.filters.type !== CalendarElemTypeEnum.TASK &&
+                            eventStore
+                                .getDayEvents(today)
+                                .sort(compareEvent)
+                                .map((event) => <DesktopCalendarEventPreview key={event.id} event={event} />)}
+                        {calendarStore.filters.type !== CalendarElemTypeEnum.EVENT &&
+                            taskStore
+                                .getDayTasks(today)
+                                .sort(compareTasks)
+                                .map((task) => <DesktopCalendarTaskItem key={task.id} task={task} />)}
                     </Box>
                 </PickersDay>
             </Box>
@@ -175,7 +154,7 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                                 margin: 0,
                             },
                             "& .PrivatePickersSlideTransition-root, & .MuiDayPicker-monthContainer": {
-                                minHeight: BaseDateHeight * weekCount(currentYear, currentMonth),
+                                minHeight: BaseDateHeight * weekCount(props.currentYear, props.currentMonth),
                             },
                             '& .PrivatePickersSlideTransition-root [role="row"]': {
                                 margin: 0,
@@ -212,17 +191,17 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
                             showDaysOutsideCurrentMonth
                             displayStaticWrapperAs="desktop"
                             openTo="day"
-                            value={props.chosenDate}
+                            value={calendarStore.getChosenDate}
                             onChange={(v) => {
                                 // @ts-ignore
-                                props.setChosenDate(v["$d"]);
+                                calendarStore.setChosenDate(v["$d"]);
                             }}
                             onMonthChange={(month) => {
                                 // @ts-ignore
-                                setCurrentMonth(month["$M"]);
+                                props.setCurrentMonth(month["$M"]);
                             }}
                             // @ts-ignore
-                            onYearChange={setCurrentYear}
+                            onYearChange={props.setCurrentYear}
                             renderInput={(params) => <TextField {...params} />}
                             // @ts-ignore
                             renderDay={DesktopCustomDayRenderer}
@@ -238,16 +217,12 @@ export default function DesktopCalendar(props: DesktopCalendarProps) {
 
             <Box sx={{ width: "300px" }}>
                 <Paper elevation={0} sx={{ px: 2, width: "100%" }}>
-                    <UtilSection viewedDate={props.viewedDate} setFilterObject={props.setFilterObject} />
-                    <TodayList
-                        day={props.chosenDate}
-                        tasks={props.tasks}
-                        setTasks={props.setTasks}
-                        events={props.events}
-                        setEvents={props.setEvents}
-                    />
+                    <UtilSection />
+                    <TodayList />
                 </Paper>
             </Box>
         </Box>
     );
 }
+
+export default observer(DesktopCalendar);

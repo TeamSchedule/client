@@ -4,6 +4,7 @@ import { API } from "../api/api";
 import { compareEvent } from "../utils/eventUtils";
 import { autorun, makeAutoObservable, runInAction } from "mobx";
 import { EventStatusEnum } from "../enums/eventsEnums";
+import { isEqualYearMonthDate } from "../utils/dateutils";
 
 class EventStore {
     events: EventResponseItemSchema[] = [];
@@ -51,6 +52,10 @@ class EventStore {
 
     delete(id: number) {
         this.events = this.events.filter((event) => event.id !== id);
+    }
+
+    getDayEvents(day: Date): EventResponseItemSchema[] {
+        return this.events.filter((event) => isEqualYearMonthDate(new Date(event.endDate), day));
     }
 
     prefetchData = () => {

@@ -1,0 +1,72 @@
+import { TaskResponseItemSchema } from "../api/schemas/responses/tasks";
+import { compareTasks } from "../utils/taskUtils";
+import { autorun, makeAutoObservable, runInAction } from "mobx";
+import { API } from "../api/api";
+import { FetchStatusEnum, FetchStatusStrings } from "../enums/fetchStatusEnum";
+import calendarStore from "./CalendarStore";
+import { isEqualYearMonthDate } from "../utils/dateutils";
+
+class TaskStore {
+    tasks: TaskResponseItemSchema[] = [];
+    fetching: FetchStatusStrings = FetchStatusEnum.FETCHING;
+
+    constructor() {
+        makeAutoObservable(this);
+        autorun(() => {
+            this.initStore();
+        });
+        runInAction(this.prefetchTasks);
+    }
+
+    getById(id: number): TaskResponseItemSchema | undefined {
+        return this.tasks.find((task) => task.id === id);
+    }
+
+    create(task: TaskResponseItemSchema): void {
+        this.tasks.push(task);
+    }
+
+    update(taskId: number, taskData: TaskResponseItemSchema) {
+        this.tasks = [...this.tasks.filter((task) => task.id !== taskId), taskData];
+    }
+
+    delete(taskId: number) {
+        this.tasks = this.tasks.filter((task) => task.id !== taskId);
+    }
+
+    getDayTasks(day: Date): TaskResponseItemSchema[] {
+        return this.tasks.filter((task) =>
+            isEqualYearMonthDate(new Date(task.expirationTime), day)
+        );
+    }
+
+    initStore(): void {
+        console.log("Task store initialized");
+    }
+
+    prefetchTasks = () => {
+        this.setFetchStatus(FetchStatusEnum.FETCHING);
+
+        API.tasks
+            .getTasks(calendarStore.getFilters)
+            .then((tasks: TaskResponseItemSchema[]) => {
+                this.setFetchStatus(FetchStatusEnum.SUCCESS);
+                this.tasks = tasks.sort(compareTasks);
+            })
+            .catch(() => {
+                this.setFetchStatus(FetchStatusEnum.ERROR);
+            })
+            .finally();
+    };
+
+    get getFetchStatus(): FetchStatusStrings {
+        return this.fetching;
+    }
+
+    setFetchStatus(newStatus: FetchStatusStrings): void {
+        this.fetching = newStatus;
+    }
+}
+
+let taskStore = new TaskStore();
+export default taskStore;
