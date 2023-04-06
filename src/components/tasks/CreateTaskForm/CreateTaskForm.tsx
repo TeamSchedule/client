@@ -105,8 +105,6 @@ function CreateTaskForm() {
         setIsCreatingError(false);
     };
 
-    console.log("deadline");
-    console.log(deadline);
     return (
         <>
             <div className="d-flex justify-content-between position-relative">

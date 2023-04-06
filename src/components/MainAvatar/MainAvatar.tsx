@@ -1,11 +1,6 @@
 import React from "react";
 import { Avatar } from "@mui/material";
-import { AVATARS_STATIC_SERVER } from "../../api/config";
 import SkeletonWrapper from "../SkeletonWrapper";
-
-function makeAvatarURL(path: string | undefined | null) {
-    return AVATARS_STATIC_SERVER + path;
-}
 
 interface MainAvatarProps {
     placeholder?: string;
@@ -33,7 +28,7 @@ export default function MainAvatar(props: MainAvatarProps) {
         <>
             <Avatar
                 alt=""
-                src={props.fullPath ? props.src : makeAvatarURL(props.src)}
+                src={props.fullPath ? props.src : ""}
                 sx={{ width: props.size || baseAvatarSize, height: props.size || baseAvatarSize }}
             >
                 {props.placeholder || ""}

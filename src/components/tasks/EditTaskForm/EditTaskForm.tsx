@@ -19,6 +19,11 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import useApiCall from "../../../hooks/useApiCall";
 import { FileResponseItemSchema } from "../../../api/schemas/responses/files";
 import UploadFileList from "../../files/UploadFileList";
+import EventSelector from "../../selectors/EventSelector/EventSelector";
+import UnitSelector from "../../selectors/UnitSelector/UnitSelector";
+import UsersSelector from "../../selectors/UsersSelector";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import { UserSchema } from "../../../api/schemas/responses/users";
 
 export default function EditTaskForm() {
     const navigate = useNavigate();
@@ -37,7 +42,10 @@ export default function EditTaskForm() {
     const [taskName, setTaskName] = useState<string>("");
     const [taskDescription, setTaskDescription] = useState<string>("");
     const [deadline, setDeadline] = useState<Date | null>(null);
-    const [taskUnit, setTaskUnit] = useState<UnitResponseItemSchema | null>(null);
+
+    const [selectedEvent, setSelectedEvent] = useState<EventResponseItemSchema | undefined>(undefined);
+    const [selectedUnit, setSelectedUnit] = useState<UnitResponseItemSchema | undefined>(undefined);
+    const [selectedExecutors, setSelectedExecutors] = useState<UserSchema[]>([]);
 
     // circular loaders
     const [isUpdateActionInProgress, setIsUpdateActionInProgress] = useState(false);
@@ -48,7 +56,9 @@ export default function EditTaskForm() {
             setTaskName(task.name);
             setTaskDescription(task.description);
             setDeadline(task.expirationTime ? new Date(task.expirationTime) : null);
-            setTaskUnit(task.department);
+            setSelectedUnit(task.department);
+            setSelectedEvent(task.event);
+            setSelectedExecutors(task.assignee);
         }
     }, [task]);
 
@@ -65,6 +75,9 @@ export default function EditTaskForm() {
             name: taskName,
             description: taskDescription,
             expirationTime: getTimezoneDatetime(deadline),
+            eventId: selectedEvent?.id,
+            departmentId: selectedUnit?.id,
+            assigneeIds: selectedExecutors.map((u) => u.id),
         };
 
         API.tasks
@@ -113,6 +126,20 @@ export default function EditTaskForm() {
                     <DatetimeInput datetime={deadline} setDatetime={setDeadline} />
                 </Box>
             )}
+
+            <Box sx={{ mb: 2 }}>
+                <EventSelector setInputValue={setSelectedEvent} inputValue={selectedEvent || null} />
+            </Box>
+
+            <Box sx={{ mb: 2 }}>
+                <UnitSelector setInputValue={setSelectedUnit} inputValue={selectedUnit || null} />
+            </Box>
+
+            <UsersSelector
+                setInputValue={setSelectedExecutors}
+                inputValue={selectedExecutors}
+                label="Выберите исполнителей"
+            />
 
             <LoadingButton
                 onClick={onSubmit}

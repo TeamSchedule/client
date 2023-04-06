@@ -17,7 +17,7 @@ interface UsersSelectorProps {
 }
 
 export default function UsersSelector(props: UsersSelectorProps) {
-    const getUsersApiCall = useApiCall<UserSchema[]>(() => API.users.all(), []);
+    const getUsersApiCall = useApiCall<UserSchema[]>(() => API.users.all(), [], [], Boolean(props.users));
 
     return (
         <>

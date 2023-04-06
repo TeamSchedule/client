@@ -350,7 +350,7 @@ function BackupEmailSection() {
                 disabled
             />
 
-            <LoadingButton
+            {/*            <LoadingButton
                 onClick={updateEmail}
                 loading={isEditEmailInProgress}
                 type="submit"
@@ -360,7 +360,7 @@ function BackupEmailSection() {
                 disabled
             >
                 Сохранить новую почту
-            </LoadingButton>
+            </LoadingButton>*/}
 
             <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isEditEmailError}>
                 Не удалось обновить резервную почту, попробуйте позже

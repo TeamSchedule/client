@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Button from "@mui/material/Button";
 import { IconButton } from "@mui/material";
@@ -50,6 +50,14 @@ function FiltersDrawer() {
     const [selectedEventsIds, setSelectedEventsIds] = useState<object>(DefaultDict());
     const [selectedStatus, setSelectedStatus] = useState<string>(""); // статус задач
     const [selectedType, setSelectedType] = useState<string>(CalendarElemTypeEnum.ALL); // Тип отображаемых элементов
+
+    useEffect(() => {
+        setSelectedStatus(calendarStore.filters.status || "");
+        setSelectedType(calendarStore.filters.type || CalendarElemTypeEnum.ALL)
+        setSelectedUsersIds(calendarStore.filters.assignee || {});
+        setSelectedUnitsIds(calendarStore.filters.departments || {});
+        setSelectedEventsIds(calendarStore.filters.events || {});
+    }, []);
 
     // Количество выбранных параметров каждого типа в фильтрах
     const selectedUnits: number = Object.values(selectedUnitsIds).filter(Boolean).length;

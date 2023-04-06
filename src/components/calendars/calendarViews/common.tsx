@@ -35,8 +35,11 @@ function CreateNewMenu() {
                 variant="contained"
                 startIcon={<AddCircleIcon />}
                 onClick={handleClickCreateNewMenu}
-                color="secondary"
-                sx={{ mr: 2 }}
+                sx={{
+                    mr: 2,
+                    backgroundColor: "rgb(25,118,210)",
+                    background: "linear-gradient(60deg, rgba(25,118,210,1) 5%, rgba(156,39,176,1) 80%)",
+                }}
             >
                 Создать
             </Button>
@@ -50,7 +53,7 @@ function CreateNewMenu() {
                 open={open}
                 onClose={handleCloseCreateNewMenu}
             >
-                <MenuList sx={{ minWidth: "180px" }}>
+                <MenuList sx={{ minWidth: "180px", py: 0 }}>
                     <Link
                         href={CreateNewTaskPath}
                         onClick={(e) => {
@@ -62,7 +65,7 @@ function CreateNewMenu() {
                     >
                         <MenuItem>
                             <ListItemIcon>
-                                <TaskIcon fontSize="small" />
+                                <TaskIcon fontSize="small" color="primary" />
                             </ListItemIcon>
                             <ListItemText>Задача</ListItemText>
                         </MenuItem>
@@ -75,11 +78,12 @@ function CreateNewMenu() {
                             e.stopPropagation();
                             navigate(CreateNewEventPath);
                         }}
+                        color="secondary"
                         sx={{ textDecoration: "none" }}
                     >
                         <MenuItem>
                             <ListItemIcon>
-                                <LocalActivityIcon fontSize="small" />
+                                <LocalActivityIcon fontSize="small" color="secondary" />
                             </ListItemIcon>
                             <ListItemText>Событие</ListItemText>
                         </MenuItem>

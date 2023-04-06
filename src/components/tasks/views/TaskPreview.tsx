@@ -60,7 +60,9 @@ export default function TaskPreview(props: TaskPreviewProps) {
                     </Typography>
                 )}
 
-                <Executors users={task.assignee} />
+                <Box sx={{ marginLeft: "auto" }}>
+                    <Executors users={task.assignee} />
+                </Box>
             </Box>
         </Box>
     );

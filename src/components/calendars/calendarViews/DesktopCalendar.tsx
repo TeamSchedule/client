@@ -16,10 +16,12 @@ import { observer } from "mobx-react-lite";
 import calendarStore from "../../../store/CalendarStore";
 import { CalendarElemTypeEnum } from "../../../enums/common";
 import eventStore from "../../../store/EventStore";
-import { compareEvent } from "../../../utils/eventUtils";
-import DesktopCalendarEventPreview from "../../events/DesktopCalendarEventPreview/DesktopCalendarEventPreview";
 import taskStore from "../../../store/TaskStore";
 import { CalendarProps } from "./MobileCalendar";
+import { compareEvent } from "../../../utils/eventUtils";
+import DesktopCalendarEventPreview from "../../events/DesktopCalendarEventPreview/DesktopCalendarEventPreview";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 
 const MaxDateSize = 400; // максимальный размер отображаемого на десктопном календаре дня
 const BaseDateHeight = 120; // базовая высота ячейки
@@ -59,6 +61,15 @@ function DesktopCalendar(props: DesktopCalendarProps) {
         // @ts-ignore
         const today: Date = new Date(date["$d"]);
 
+        const todayTasks: TaskResponseItemSchema[] = taskStore.getDayTasks(today).sort(compareTasks);
+
+        const todayEvents: EventResponseItemSchema[] = eventStore
+            .getDayEvents(today)
+            .filter((event) =>
+                !calendarStore.getFilters.status ? true : calendarStore.getFilters.status === event.status
+            )
+            .sort(compareEvent);
+
         return (
             <Box sx={{ minHeight: dayNumber === new Date().getDate() ? "100px" : 0 }}>
                 <PickersDay {...pickersDayProps}>
@@ -75,15 +86,9 @@ function DesktopCalendar(props: DesktopCalendarProps) {
                         {dayNumber}
 
                         {calendarStore.filters.type !== CalendarElemTypeEnum.TASK &&
-                            eventStore
-                                .getDayEvents(today)
-                                .sort(compareEvent)
-                                .map((event) => <DesktopCalendarEventPreview key={event.id} event={event} />)}
+                            todayEvents.map((event) => <DesktopCalendarEventPreview key={event.id} event={event} />)}
                         {calendarStore.filters.type !== CalendarElemTypeEnum.EVENT &&
-                            taskStore
-                                .getDayTasks(today)
-                                .sort(compareTasks)
-                                .map((task) => <DesktopCalendarTaskItem key={task.id} task={task} />)}
+                            todayTasks.map((task) => <DesktopCalendarTaskItem key={task.id} task={task} />)}
                     </Box>
                 </PickersDay>
             </Box>
