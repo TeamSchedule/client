@@ -30,7 +30,9 @@ export default function BaseTask(props: BaseTaskProps) {
     );
     const task = props.task || getTaskApiCall.data;
 
-    const navigateToEdit = () => {
+    const navigateToEdit = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
         navigate(makeTaskLinkById(id) + "/edit");
     };
 

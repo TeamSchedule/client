@@ -147,6 +147,12 @@ function DesktopCalendar(props: DesktopCalendarProps) {
                             "& div": {
                                 maxHeight: 2000,
                             },
+                            "& .MuiCalendarOrClockPicker-root > div, & .MuiCalendarOrClockPicker-root > div > div": {
+                                maxHeight: "2000px !important",
+                            },
+                            "& .MuiDayPicker-monthContainer": {
+                                position: "relative !important",
+                            },
                             "& .MuiCalendarOrClockPicker-root > div": {
                                 width: "100%",
                             },
@@ -166,7 +172,7 @@ function DesktopCalendar(props: DesktopCalendarProps) {
                             },
                             "& .MuiPickersDay-dayWithMargin": {
                                 margin: 0,
-                                height: "100%",
+                                minHeight: "100%",
                             },
                             "& .MuiPickersDay-root": {
                                 width: dateSize,

@@ -1,6 +1,6 @@
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CreateEventRequestSchema } from "../../../api/schemas/requests/events";
 import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInput";
 import InputColor from "../../inputs/ColorInput";
@@ -9,14 +9,16 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
 import { API } from "../../../api/api";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
-import { makeEventLinkById } from "../../../routes/paths";
-import { CreateEventResponseSchema } from "../../../api/schemas/responses/events";
+import { CreateNewEventCalendarPath, makeCalendarEventLinkById, makeEventLinkById } from "../../../routes/paths";
+import { CreateEventResponseSchema, EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { getRandomColor } from "../../../utils/colorUtils";
 import { getTimezoneDatetime } from "../../../utils/dateutils";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
+import eventStore from "../../../store/EventStore";
 
 export default function CreateEventForm() {
     const navigate = useNavigate();
+    const location = useLocation();
 
     // данные нового события
     const [title, setTitle] = useState<string>("");
@@ -42,7 +44,14 @@ export default function CreateEventForm() {
         API.events
             .createEvent(newEventData)
             .then((data: CreateEventResponseSchema) => {
-                navigate(makeEventLinkById(data.id), { state: { created: 1 } });
+                API.events.getById(data.id).then((event: EventResponseItemSchema) => {
+                    eventStore.update(event.id, event);
+                    if (location.pathname === CreateNewEventCalendarPath) {
+                        navigate(makeCalendarEventLinkById(data.id));
+                    } else {
+                        navigate(makeEventLinkById(data.id), { state: { created: 1 } });
+                    }
+                });
             })
             .catch(() => {
                 setIsCreatingError(true);

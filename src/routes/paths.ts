@@ -51,9 +51,10 @@ export function makeTaskLinkById(id: number): string {
     return CalendarPath + "/tasks/" + id.toString();
 }
 
-export const CreateNewEventCalendarPath: string = "/calendar/events/new";
-export const FullViewEventCalendarPath: string = "/calendar/events/:id";
-export const EditEventCalendarPath: string = "/calendar/events/:id/edit";
+export const BaseCalendarEventPath: string = CalendarPath + "/events";
+export const CreateNewEventCalendarPath: string = BaseCalendarEventPath + "/new";
+export const FullViewEventCalendarPath: string = BaseCalendarEventPath + "/:id";
+export const EditEventCalendarPath: string = BaseCalendarEventPath + "/:id/edit";
 
 export function makeCalendarEventLinkById(id: number): string {
     return CalendarPath + "/events/" + id.toString();

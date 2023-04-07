@@ -24,7 +24,10 @@ export default function TaskPreview(props: TaskPreviewProps) {
     const task: TaskResponseItemSchema = props.task;
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box
+            sx={{ display: "flex", flexDirection: "column", "&:hover": { cursor: "pointer", background: "#f4f9ff" } }}
+            onClick={() => navigate(makeTaskLinkById(task.id))}
+        >
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <DeadlineAndStatus
                     endDate={task.expirationTime}

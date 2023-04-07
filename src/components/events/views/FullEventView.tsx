@@ -1,10 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
+import React from "react";
 import { API } from "../../../api/api";
 import { EventColorLeft, EventDescription, EventName } from "../common";
 import EditIcon from "@mui/icons-material/Edit";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import { EventStatusEnum } from "../../../enums/eventsEnums";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import GoBackButton from "../../buttons/GoBackButton";
@@ -30,41 +28,42 @@ function FullEventView(props: FullEventViewProps) {
     const params = {
         events: [event.id],
     };
-    const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(() => API.tasks.getTasks(params), []);
+    const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(
+        () => API.tasks.getTasks(params),
+        [],
+        [props.event.id],
+        true
+    );
 
     return (
         <>
-            <Card>
-                <CardContent>
-                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <DeadlineAndStatus
-                            endDate={event.endDate}
-                            status={event.status}
-                            onChangeStatus={props.toggleEventStatus(event.status === EventStatusEnum.COMPLETED)}
-                        />
-                        <Tooltip title="Редактировать">
-                            <IconButton sx={{ p: 0 }} onClick={() => navigate(makeEventLinkById(event.id) + "/edit")}>
-                                <EditIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <DeadlineAndStatus
+                    endDate={event.endDate}
+                    status={event.status}
+                    onChangeStatus={props.toggleEventStatus(event.status === EventStatusEnum.COMPLETED)}
+                />
+                <Tooltip title="Редактировать">
+                    <IconButton sx={{ p: 0 }} onClick={() => navigate(makeEventLinkById(event.id) + "/edit")}>
+                        <EditIcon />
+                    </IconButton>
+                </Tooltip>
+            </Box>
 
-                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "stretch" }}>
-                        <EventColorLeft color={event.color} />
-                        <EventName>{event.name}</EventName>
-                    </Box>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "stretch" }}>
+                <EventColorLeft color={event.color} />
+                <EventName>{event.name}</EventName>
+            </Box>
 
-                    <EventDescription>{event.description}</EventDescription>
+            <EventDescription>{event.description}</EventDescription>
 
-                    <UploadFileList files={event.files} eventType={FileOwnerTypesEnum.EVENT} />
+            <UploadFileList files={event.files} eventType={FileOwnerTypesEnum.EVENT} />
 
-                    <TaskListCollapse tasks={getTasksApiCall.data} />
+            <TaskListCollapse tasks={getTasksApiCall.data} />
 
-                    <Box sx={{ display: { md: "none" } }}>
-                        <GoBackButton to={EventListPath} buttonText="Вернуться к списку событий" />
-                    </Box>
-                </CardContent>
-            </Card>
+            <Box sx={{ display: { md: "none" } }}>
+                <GoBackButton to={EventListPath} buttonText="Вернуться к списку событий" />
+            </Box>
         </>
     );
 }

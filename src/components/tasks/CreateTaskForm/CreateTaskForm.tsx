@@ -19,9 +19,10 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import TextHelp from "../../TextHelp/TextHelp";
 import { makeTaskLinkById } from "../../../routes/paths";
-import { CreateTasksResponseSchema } from "../../../api/schemas/responses/tasks";
+import { CreateTasksResponseSchema, TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 import useApiCall from "../../../hooks/useApiCall";
+import taskStore from "../../../store/TaskStore";
 
 function CreateTaskForm() {
     const navigate = useNavigate();
@@ -88,6 +89,9 @@ function CreateTaskForm() {
         API.tasks
             .createTask(createTaskData)
             .then((data: CreateTasksResponseSchema) => {
+                API.tasks.getTaskById(data.id).then((task: TaskResponseItemSchema) => {
+                    taskStore.update(task.id, task);
+                });
                 navigate(makeTaskLinkById(data.id), { state: { created: true } });
             })
             .catch(() => {

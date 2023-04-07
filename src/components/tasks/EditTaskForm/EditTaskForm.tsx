@@ -7,7 +7,6 @@ import MultilineTextInput from "../../inputs/MultilineTextInput/MultilineTextInp
 import SimpleTextInput from "../../inputs/SimpleTextInput";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { makeTaskLinkById } from "../../../routes/paths";
-import GoBackButton from "../../buttons/GoBackButton";
 import Uploader from "../../files/Uploader";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import Box from "@mui/material/Box";
@@ -168,8 +167,6 @@ function EditTaskForm() {
             >
                 Удалить задачу
             </LoadingButton>
-
-            <GoBackButton to={id ? makeTaskLinkById(+id) : ".."} />
         </>
     );
 }

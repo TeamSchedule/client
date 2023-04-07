@@ -6,6 +6,6 @@ export interface TaskViewProps {
 }
 
 export interface TaskActionsProps {
-    navigateToEdit: () => void;
+    navigateToEdit: (e: React.MouseEvent) => void;
     toggleTaskStatus: (open: boolean) => (e: React.MouseEvent) => void;
 }
