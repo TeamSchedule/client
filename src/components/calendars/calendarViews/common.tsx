@@ -12,7 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import TaskIcon from "@mui/icons-material/Task";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import Menu from "@mui/material/Menu";
-import { CreateNewEventPath, CreateNewTaskPath } from "../../../routes/paths";
+import { CreateNewEventCalendarPath, CreateNewEventPath, CreateNewTaskPath } from "../../../routes/paths";
 import Link from "@mui/material/Link";
 
 function CreateNewMenu() {
@@ -76,7 +76,7 @@ function CreateNewMenu() {
                         onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            navigate(CreateNewEventPath);
+                            navigate(CreateNewEventCalendarPath);
                         }}
                         color="secondary"
                         sx={{ textDecoration: "none" }}

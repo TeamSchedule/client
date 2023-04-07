@@ -23,15 +23,15 @@ class EventStore {
     }
 
     get getAllEvents(): EventResponseItemSchema[] {
-        return this.events;
+        return this.events.slice().sort(compareEvent);
     }
 
     get getOpenEvents(): EventResponseItemSchema[] {
-        return this.events.filter((event) => event.status === EventStatusEnum.IN_PROGRESS);
+        return this.events.filter((event) => event.status === EventStatusEnum.IN_PROGRESS).sort(compareEvent);
     }
 
     get getClosedEvents(): EventResponseItemSchema[] {
-        return this.events.filter((event) => event.status === EventStatusEnum.COMPLETED);
+        return this.events.filter((event) => event.status === EventStatusEnum.COMPLETED).sort(compareEvent);
     }
 
     get eventsTotal(): number {
@@ -39,6 +39,10 @@ class EventStore {
     }
 
     getById(id: number): EventResponseItemSchema | undefined {
+        if (!id) {
+            console.log("Wrong event id.");
+            return undefined;
+        }
         return this.events.find((event) => event.id === id);
     }
 
@@ -47,7 +51,13 @@ class EventStore {
     }
 
     update(eventId: number, eventData: EventResponseItemSchema): void {
+        if (!eventId) {
+            console.log("Wrong event id. Store update error!");
+            return;
+        }
         this.events = [...this.events.filter((event) => event.id !== eventId), eventData];
+        console.log("E");
+        console.log(this.events);
     }
 
     delete(id: number) {
@@ -55,7 +65,7 @@ class EventStore {
     }
 
     getDayEvents(day: Date): EventResponseItemSchema[] {
-        return this.events.filter((event) => isEqualYearMonthDate(new Date(event.endDate), day));
+        return this.events.filter((event) => isEqualYearMonthDate(new Date(event.endDate), day)).sort(compareEvent);
     }
 
     prefetchData = () => {

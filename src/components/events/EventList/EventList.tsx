@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import EventPreview from "../EventPreview/EventPreview";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import PlainSelector from "../../selectors/PlainSelector";
 import { CreateNewEventPath } from "../../../routes/paths";
@@ -15,6 +14,7 @@ import { useTheme } from "@mui/material";
 import eventStore from "../../../store/EventStore";
 import { FetchStatusEnum } from "../../../enums/fetchStatusEnum";
 import { observer } from "mobx-react-lite";
+import BaseEvent from "../BaseEvent";
 
 enum EventFilterEnum {
     All = 0,
@@ -38,15 +38,13 @@ function EventList() {
 
     const { id } = useParams();
 
-    useEffect(() => {
-        eventStore.prefetchData();
-    }, []);
-
-    // список отображаемых событий
-    const [events, setEvents] = useState<EventResponseItemSchema[]>(eventStore.getAllEvents);
-
     // параметр, по которому фильтруются собыития
     const [eventFilterValue, setEventFilterValue] = useState(EventFilterEnum.InProgress);
+
+    useEffect(() => {}, [eventStore.events]);
+    
+    // список отображаемых событий
+    const [events, setEvents] = useState<EventResponseItemSchema[]>(eventStore.getAllEvents);
 
     useEffect(() => {
         if (+eventFilterValue === +EventFilterEnum.All) {
@@ -58,13 +56,6 @@ function EventList() {
         }
         /* eslint-disable react-hooks/exhaustive-deps */
     }, [eventFilterValue, eventStore.events]);
-
-    const DisplayedEvents = events.map((event) => (
-        <>
-            <EventPreview key={event.id} event={event} />
-            <Divider sx={{ m: 0, backgroundColor: theme.palette.grey.A700 }} />
-        </>
-    ));
 
     const TopBar = (
         <>
@@ -91,7 +82,13 @@ function EventList() {
     const LeftBar = (
         <Box>
             {eventStore.getFetchStatus === FetchStatusEnum.FETCHING && <Progress />}
-            {eventStore.getFetchStatus === FetchStatusEnum.SUCCESS && DisplayedEvents}
+            {eventStore.getFetchStatus === FetchStatusEnum.SUCCESS &&
+                events.map((event) => (
+                    <Box key={event.id}>
+                        <BaseEvent event={event} key={event.id} />
+                        <Divider sx={{ m: 0, backgroundColor: theme.palette.grey.A700 }} />
+                    </Box>
+                ))}
         </Box>
     );
 

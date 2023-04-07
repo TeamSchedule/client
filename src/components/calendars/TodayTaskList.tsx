@@ -4,7 +4,6 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import { compareTasks } from "../../utils/taskUtils";
 import { EventResponseItemSchema } from "../../api/schemas/responses/events";
-import EventPreview from "../events/EventPreview/EventPreview";
 import { compareEvent } from "../../utils/eventUtils";
 import { styled, Tab, Tabs } from "@mui/material";
 import BaseTask from "../tasks/BaseTask";
@@ -12,6 +11,7 @@ import { observer } from "mobx-react-lite";
 import eventStore from "../../store/EventStore";
 import calendarStore from "../../store/CalendarStore";
 import taskStore from "../../store/TaskStore";
+import BaseEvent from "../events/BaseEvent";
 
 interface EventTabProps {
     label: string;
@@ -111,7 +111,7 @@ const TodayEventList = observer((props: TodayEventListProps) => {
 
             {props.dayEvents.sort(compareEvent).map((event) => (
                 <div className="mb-2" key={event.id}>
-                    <EventPreview key={event.id} event={event} />
+                    <BaseEvent key={event.id} event={event} />
                 </div>
             ))}
         </>

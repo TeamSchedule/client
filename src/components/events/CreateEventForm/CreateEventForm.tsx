@@ -9,10 +9,9 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
 import { API } from "../../../api/api";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
-import { EventListPath, makeEventLinkById } from "../../../routes/paths";
+import { makeEventLinkById } from "../../../routes/paths";
 import { CreateEventResponseSchema } from "../../../api/schemas/responses/events";
 import { getRandomColor } from "../../../utils/colorUtils";
-import GoBackButton from "../../buttons/GoBackButton";
 import { getTimezoneDatetime } from "../../../utils/dateutils";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 
@@ -67,6 +66,7 @@ export default function CreateEventForm() {
 
                 <FormInputItemWrapper>
                     <TextField
+                        size="small"
                         required
                         fullWidth
                         variant="outlined"
@@ -99,8 +99,6 @@ export default function CreateEventForm() {
                 >
                     Создать
                 </LoadingButton>
-
-                <GoBackButton to={EventListPath} />
             </div>
 
             <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isCreatingError}>

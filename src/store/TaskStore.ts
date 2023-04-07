@@ -35,9 +35,7 @@ class TaskStore {
     }
 
     getDayTasks(day: Date): TaskResponseItemSchema[] {
-        return this.tasks.filter((task) =>
-            isEqualYearMonthDate(new Date(task.expirationTime), day)
-        );
+        return this.tasks.filter((task) => isEqualYearMonthDate(new Date(task.expirationTime), day));
     }
 
     initStore(): void {

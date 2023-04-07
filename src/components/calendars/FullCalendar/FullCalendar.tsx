@@ -9,7 +9,7 @@ import DesktopCalendar from "../calendarViews/DesktopCalendar";
 import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import Modal from "@mui/material/Modal";
-import { TaskListPath } from "../../../routes/paths";
+import { CalendarPath } from "../../../routes/paths";
 
 function FullCalendar() {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ function FullCalendar() {
     const [isModelOpen, setIsModelOpen] = React.useState(false);
     const openModal = () => setIsModelOpen(true);
     const closeModal = () => {
-        navigate(TaskListPath);
+        navigate(CalendarPath);
         setIsModelOpen(false);
     };
 

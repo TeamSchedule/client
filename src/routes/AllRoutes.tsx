@@ -11,14 +11,18 @@ import EditUnitForm from "../components/units/EditUnitForm/EditUnitForm";
 import EventList from "../components/events/EventList/EventList";
 import CreateEventForm from "../components/events/CreateEventForm/CreateEventForm";
 import {
+    CalendarPath,
+    CreateNewEventCalendarPath,
     CreateNewEventPath,
     CreateNewTaskPath,
     CreateNewUnitPath,
+    EditEventCalendarPath,
     EditEventPath,
     EditTaskPath,
     EditUnitPath,
     EventListPath,
     forgotPasswordPath,
+    FullViewEventCalendarPath,
     FullViewEventPath,
     FullViewNotificationPath,
     FullViewTaskPath,
@@ -31,7 +35,6 @@ import {
     resetPasswordCodePath,
     SettingsPath,
     successRegistrationPath,
-    TaskListPath,
     UnitListPath,
 } from "./paths";
 import NotificationList from "../components/notifications/NotificationList/NotificationList";
@@ -41,7 +44,7 @@ import ResetPasswordCodeForm from "../components/auth/reset_password/ResetPasswo
 import NewPasswordForm from "../components/auth/reset_password/NewPasswordForm";
 import SuccessRegisteredMsg from "../components/auth/SuccessRegisteredMsg";
 import AuthProvider from "./AuthProvider";
-import FullEventView from "../components/events/FullEventView/FullEventView";
+import BaseEvent from "../components/events/BaseEvent";
 import EditEventForm from "../components/events/EditEventForm/EditEventForm";
 import FullCalendar from "../components/calendars/FullCalendar";
 import SignIn from "../components/auth/SignIn";
@@ -131,7 +134,7 @@ export const router = createBrowserRouter(
 
                         {/* ==================== events routes ==================== */}
                         <Route path={EventListPath} element={<EventList />}>
-                            <Route path={FullViewEventPath} element={<FullEventView />} />
+                            <Route path={FullViewEventPath} element={<BaseEvent fullView />} />
                             <Route path={EditEventPath} element={<EditEventForm />} />
                         </Route>
 
@@ -143,10 +146,14 @@ export const router = createBrowserRouter(
                         <Route path={SettingsPath} element={<UserProfileSettings />} />
 
                         {/* ==================== calendar routes ==================== */}
-                        <Route path={TaskListPath} element={<FullCalendar />}>
+                        <Route path={CalendarPath} element={<FullCalendar />}>
                             <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />
                             <Route path={EditTaskPath} element={<EditTaskForm />} />
                             <Route path={FullViewTaskPath} element={<BaseTask fullView />} />
+
+                            <Route path={FullViewEventCalendarPath} element={<BaseEvent fullView />} />
+                            <Route path={EditEventCalendarPath} element={<EditEventForm />} />
+                            <Route path={CreateNewEventCalendarPath} element={<CreateEventForm />} />
                         </Route>
                     </Route>
 

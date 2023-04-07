@@ -23,7 +23,7 @@ export default function BaseTask(props: BaseTaskProps) {
 
     // Получить данные задачи, если данные не переданы в пропсе
     const getTaskApiCall = useApiCall<TaskResponseItemSchema | undefined>(
-        () => API.tasks.getTaskById(id ? +id : 0),
+        () => API.tasks.getTaskById(id),
         undefined,
         [id],
         Boolean(!props.task)

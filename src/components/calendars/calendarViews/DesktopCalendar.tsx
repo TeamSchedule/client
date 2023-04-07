@@ -19,7 +19,7 @@ import eventStore from "../../../store/EventStore";
 import taskStore from "../../../store/TaskStore";
 import { CalendarProps } from "./MobileCalendar";
 import { compareEvent } from "../../../utils/eventUtils";
-import DesktopCalendarEventPreview from "../../events/DesktopCalendarEventPreview/DesktopCalendarEventPreview";
+import DesktopCalendarEventPreview from "../../events/views/DesktopCalendarEventPreview";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 

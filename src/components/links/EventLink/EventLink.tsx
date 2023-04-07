@@ -34,7 +34,7 @@ export default function EventLink(props: EventLinkProps) {
                         <IconButton sx={{ p: 0, pr: 1 }}>
                             <LocalActivityIcon sx={{ color: props.event.color || "" }} />
                         </IconButton>
-                        <Typography sx={{ fontSize: "0.9rem" }}>
+                        <Typography sx={{ fontSize: "0.9rem" }} component="span">
                             {props.event.name ? props.event.name : <SkeletonWrapper />}
                         </Typography>
                     </Link>

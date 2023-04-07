@@ -8,7 +8,7 @@ interface EventNameProps {
 export function EventName(props: EventNameProps) {
     return (
         <>
-            <Typography variant="h6" component="div">
+            <Typography variant="h6" component="div" sx={{ fontSize: "1rem" }}>
                 {props.children}
             </Typography>
         </>

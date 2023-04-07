@@ -42,13 +42,21 @@ export function makeEventLinkById(id: number): string {
 
 /* ---------------------------------------------------- */
 
-export const TaskListPath: string = "/tasks";
-export const CreateNewTaskPath: string = "/tasks/new";
-export const FullViewTaskPath: string = "/tasks/:id";
-export const EditTaskPath: string = "/tasks/:id/edit";
+export const CalendarPath: string = "/calendar";
+export const CreateNewTaskPath: string = "/calendar/tasks/new";
+export const FullViewTaskPath: string = "/calendar/tasks/:id";
+export const EditTaskPath: string = "/calendar/tasks/:id/edit";
 
 export function makeTaskLinkById(id: number): string {
-    return TaskListPath + "/" + id.toString();
+    return CalendarPath + "/tasks/" + id.toString();
+}
+
+export const CreateNewEventCalendarPath: string = "/calendar/events/new";
+export const FullViewEventCalendarPath: string = "/calendar/events/:id";
+export const EditEventCalendarPath: string = "/calendar/events/:id/edit";
+
+export function makeCalendarEventLinkById(id: number): string {
+    return CalendarPath + "/events/" + id.toString();
 }
 
 /* ---------------------------------------------------- */

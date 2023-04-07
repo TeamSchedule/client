@@ -27,7 +27,7 @@ export default function UnitLink(props: UnitLinkProps) {
                         <IconButton sx={{ p: 0, pr: 1 }}>
                             <PeopleIcon />
                         </IconButton>
-                        <Typography sx={{ fontSize: "0.9rem" }}>
+                        <Typography sx={{ fontSize: "0.9rem" }} component="span">
                             {props.name ? props.name : <SkeletonWrapper />}
                         </Typography>
                     </Link>

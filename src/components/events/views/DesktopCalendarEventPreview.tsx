@@ -19,8 +19,6 @@ function DesktopCalendarEventPreview(props: DesktopCalendarEventPreviewProps) {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    // backgroundColor: props.event?.color || "white",
-                    // color: theme.palette.getContrastText(props.event?.color || "#ffffff"),
                     borderWidth: "1px",
                     borderStyle: "solid",
                     borderRadius: 0,

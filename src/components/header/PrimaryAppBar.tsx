@@ -17,7 +17,7 @@ import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { EventListPath, NotificationListPath, SettingsPath, TaskListPath, UnitListPath } from "../../routes/paths";
+import { EventListPath, NotificationListPath, SettingsPath, CalendarPath, UnitListPath } from "../../routes/paths";
 import { NotificationsContext } from "../App";
 import { Paper, SvgIcon, Tooltip, useTheme } from "@mui/material";
 import { NotificationsResponseItemSchema } from "../../api/schemas/responses/notifications";
@@ -186,7 +186,7 @@ export default function PrimaryAppBar() {
                         }
                     />
                     <SwipeableAppBarDivider />
-                    <SwipeableAppBarItem title="Календарь" linkTo={TaskListPath} icon={<CalendarMonthIcon />} />
+                    <SwipeableAppBarItem title="Календарь" linkTo={CalendarPath} icon={<CalendarMonthIcon />} />
                     <SwipeableAppBarDivider />
                     <SwipeableAppBarItem title="События" linkTo={EventListPath} icon={<LocalActivityIcon />} />
                     <SwipeableAppBarDivider />
@@ -235,7 +235,7 @@ export default function PrimaryAppBar() {
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <DesktopHeaderLinkItem tooltipText="Календарь" to={TaskListPath} Icon={CalendarMonthIcon} />
+                        <DesktopHeaderLinkItem tooltipText="Календарь" to={CalendarPath} Icon={CalendarMonthIcon} />
                         <DesktopHeaderLinkItem tooltipText="События" to={EventListPath} Icon={LocalActivityIcon} />
                         <DesktopHeaderLinkItem tooltipText="Отделы" to={UnitListPath} Icon={PeopleIcon} />
                         <DesktopHeaderLinkItem tooltipText="Настройки профиля" to={SettingsPath} Icon={SettingsIcon} />
