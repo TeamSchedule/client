@@ -138,15 +138,16 @@ export const router = createBrowserRouter(
                         <Route path={CreateNewEventPath} element={<CreateEventForm />} />
 
                         {/* ==================== task routes ==================== */}
-                        <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />
-                        <Route path={EditTaskPath} element={<EditTaskForm />} />
-                        <Route path={FullViewTaskPath} element={<BaseTask fullView />} />
 
                         {/* ==================== settings routes ==================== */}
                         <Route path={SettingsPath} element={<UserProfileSettings />} />
 
                         {/* ==================== calendar routes ==================== */}
-                        <Route path={TaskListPath} element={<FullCalendar />} />
+                        <Route path={TaskListPath} element={<FullCalendar />}>
+                            <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />
+                            <Route path={EditTaskPath} element={<EditTaskForm />} />
+                            <Route path={FullViewTaskPath} element={<BaseTask fullView />} />
+                        </Route>
                     </Route>
 
                     <Route path={notFound} element={<NotFound />} />

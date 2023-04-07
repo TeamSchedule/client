@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Badge, BadgeProps, Box, TextField } from "@mui/material";
+import { Box, SxProps, TextField, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { isEqualYearMonthDate, weekCount } from "../../../utils/dateutils";
+import { weekCount } from "../../../utils/dateutils";
 import { PickersDay, PickersDayProps, StaticDatePicker } from "@mui/x-date-pickers";
 
 import "dayjs/locale/ru";
-import { styled } from "@mui/material/styles";
 import { maxDate, minDate } from "./DesktopCalendar";
 import { TodayList } from "../TodayTaskList";
 import { UtilSection } from "./common";
@@ -15,19 +14,22 @@ import calendarStore from "../../../store/CalendarStore";
 import { observer } from "mobx-react-lite";
 import taskStore from "../../../store/TaskStore";
 import eventStore from "../../../store/EventStore";
+import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
+import { compareTasks } from "../../../utils/taskUtils";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import { compareEvent } from "../../../utils/eventUtils";
 
-const MaxDateSize = 80; // максимальный размер отображаемого на мобильном календаре дня
+const MaxDateSize = 140; // максимальный размер отображаемого на мобильном календаре дня
 
-const MobileCalendarDayBadge = styled(Badge)<BadgeProps>(() => ({
-    "& .MuiBadge-badge": {
-        right: 10,
-        top: 8,
-        padding: 0,
-        fontSize: "0.7rem",
-        width: "15px",
-        height: "18px",
-    },
-}));
+const mobileDaySx: SxProps = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "50%",
+    aspectRatio: "1",
+    lineHeight: "1rem",
+    width: { xs: "1.2em", sm: "1.5em", md: "2em" },
+};
 
 export interface CalendarProps {
     currentMonth: number;
@@ -39,6 +41,8 @@ export interface CalendarProps {
 interface MobileCalendarProps extends CalendarProps {}
 
 function MobileCalendar(props: MobileCalendarProps) {
+    const theme = useTheme();
+
     // размер ячейки календаря
     const [dateSize, setDateSize] = useState<number>(44);
 
@@ -64,23 +68,67 @@ function MobileCalendar(props: MobileCalendarProps) {
         pickersDayProps: PickersDayProps<Date>
     ) {
         // @ts-ignore
+        const dayNumber: number = date["$D"];
+        // @ts-ignore
+        const today: Date = new Date(date["$d"]);
+
+        const todayTasks: TaskResponseItemSchema[] = taskStore.getDayTasks(today).sort(compareTasks);
+
+        const todayEvents: EventResponseItemSchema[] = eventStore
+            .getDayEvents(today)
+            .filter((event) =>
+                !calendarStore.getFilters.status ? true : calendarStore.getFilters.status === event.status
+            )
+            .sort(compareEvent);
+
+        // @ts-ignore
         return (
             // @ts-ignore
             <Box key={date}>
-                <MobileCalendarDayBadge
-                    badgeContent={
-                        taskStore.tasks.filter((task) => {
-                            // @ts-ignore
-                            return isEqualYearMonthDate(new Date(task.expirationTime), date["$d"]);
-                        }).length
-                    }
-                    color="secondary"
-                    /*@ts-ignore*/
-                    key={date}
-                >
-                    {/*@ts-ignore*/}
-                    <PickersDay {...pickersDayProps} key={date} />
-                </MobileCalendarDayBadge>
+                <PickersDay {...pickersDayProps}>
+                    <Box
+                        sx={{
+                            width: "100%",
+                            p: 0,
+                            pb: "2px",
+                        }}
+                    >
+                        {dayNumber}
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-evenly",
+                                fontSize: "0.9rem",
+                                fontWeight: "bold",
+                                lineHeight: "1rem",
+                                px: 1,
+                            }}
+                        >
+                            {todayTasks.length !== 0 && (
+                                <Box
+                                    sx={{
+                                        ...mobileDaySx,
+                                        background: theme.palette.primary.main,
+                                        color: theme.palette.getContrastText(theme.palette.primary.main),
+                                    }}
+                                >
+                                    {todayTasks.length}0
+                                </Box>
+                            )}
+                            {todayEvents.length !== 0 && (
+                                <Box
+                                    sx={{
+                                        ...mobileDaySx,
+                                        background: theme.palette.secondary.main,
+                                        color: theme.palette.getContrastText(theme.palette.secondary.main),
+                                    }}
+                                >
+                                    {todayEvents.length}0
+                                </Box>
+                            )}
+                        </Box>
+                    </Box>
+                </PickersDay>
             </Box>
         );
     }
@@ -98,6 +146,7 @@ function MobileCalendar(props: MobileCalendarProps) {
             >
                 <Box
                     sx={{
+                        width: "100%",
                         "& div": {
                             maxHeight: 5800,
                             maxWidth: "100%",
@@ -114,7 +163,7 @@ function MobileCalendar(props: MobileCalendarProps) {
                             minWidth: 256,
                         },
                         "& > div > div, & > div > div > div, & .MuiCalendarPicker-root": {
-                            minWidth: 256,
+                            // minWidth: 256,
                         },
                         "& .MuiTypography-caption": {
                             width: dateSize,
@@ -136,7 +185,17 @@ function MobileCalendar(props: MobileCalendarProps) {
                             width: dateSize,
                             height: dateSize,
                             fontSize: "1rem",
+
+                            // minHeight: `${BaseDateHeight}px`,
+                            border: "1px solid",
+                            borderColor: theme.palette.grey.A400,
+                            borderRadius: 0,
+                            alignItems: "flex-start",
+                            background: "white",
+                            color: theme.palette.getContrastText("#ffffff"),
                         },
+
+                        "&: .MuiDialogActions-spacing": { px: 0 },
                     }}
                 >
                     <UtilSection />

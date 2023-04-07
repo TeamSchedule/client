@@ -15,6 +15,7 @@ export default function UnitSelector(props: UnitSelectorProps) {
     return (
         <>
             <Autocomplete
+                size="small"
                 id="unit-selector"
                 disabled={props.disabled}
                 autoHighlight

@@ -16,6 +16,7 @@ export default function EventSelecLtor(props: EventSelectorProps) {
     return (
         <>
             <Autocomplete
+                size="small"
                 id="event-selector"
                 disabled={props.disabled}
                 autoHighlight

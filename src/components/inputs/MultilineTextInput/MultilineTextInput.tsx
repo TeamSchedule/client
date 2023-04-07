@@ -11,6 +11,7 @@ export default function MultilineTextInput(props: MultilineTextInputProps) {
     return (
         <>
             <TextField
+                size="small"
                 id="outlined-multiline-static"
                 label={props.label}
                 multiline

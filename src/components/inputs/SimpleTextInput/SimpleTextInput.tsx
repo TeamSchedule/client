@@ -14,6 +14,7 @@ export default function SimpleTextInput(props: SimpleTextInputProps) {
     return (
         <>
             <TextField
+                size="small"
                 id="standard-basic"
                 label={props.label}
                 variant="outlined"

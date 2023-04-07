@@ -7,8 +7,34 @@ import { Box } from "@mui/material";
 import MobileCalendar from "../calendarViews/MobileCalendar";
 import DesktopCalendar from "../calendarViews/DesktopCalendar";
 import { FetchingMonthRange } from "../../../api/utils/buildFilterParams";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
+import Modal from "@mui/material/Modal";
+import { TaskListPath } from "../../../routes/paths";
 
 function FullCalendar() {
+    const navigate = useNavigate();
+    let location = useLocation();
+
+    const urlParams = useParams();
+    const id: number = +(urlParams.id || 0);
+
+    //
+    const [isModelOpen, setIsModelOpen] = React.useState(false);
+    const openModal = () => setIsModelOpen(true);
+    const closeModal = () => {
+        navigate(TaskListPath);
+        setIsModelOpen(false);
+    };
+
+    useEffect(() => {
+        if (id) {
+            openModal();
+            return;
+        }
+        setIsModelOpen(location.pathname.endsWith("new"));
+    }, [id, location]);
+    //
+
     const [currentMonth, setCurrentMonth] = useState<number>(calendarStore.getViewedDate.getMonth() + 1);
     const [currentYear, setCurrentYear] = useState<number>(calendarStore.getViewedDate.getFullYear());
 
@@ -73,6 +99,22 @@ function FullCalendar() {
                     setCurrentYear={setCurrentYear}
                 />
             </Box>
+
+            <Modal
+                open={isModelOpen}
+                onClose={closeModal}
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    maxWidth: "100%",
+                    overflowY: "auto",
+                }}
+            >
+                <Box sx={{ background: "white", p: 2, borderRadius: 1, maxWidth: "100%" }}>
+                    <Outlet />
+                </Box>
+            </Modal>
         </>
     );
 }

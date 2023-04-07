@@ -23,6 +23,7 @@ export default function UsersSelector(props: UsersSelectorProps) {
         <>
             <div>
                 <Autocomplete
+                    size="small"
                     id="users-selector"
                     disabled={props.disabled}
                     multiple
