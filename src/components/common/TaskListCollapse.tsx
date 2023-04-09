@@ -31,7 +31,7 @@ export default function TaskListCollapse(props: TaskListCollapseProps) {
     return (
         <Box sx={{ pt: 1 }}>
             <Typography variant="subtitle1" component="h2" sx={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
-                {props.title ? props.title : "Задачи"} - {props.tasks.length}
+                {props.title ? props.title : "Задачи"}
             </Typography>
             <Box>
                 {props.tasks.sort(compareTasks).map((task) => (

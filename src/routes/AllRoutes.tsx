@@ -53,6 +53,7 @@ import UserProfileSettings from "../components/UserProfileSettings";
 import { API } from "../api/api";
 import FullNotificationView from "../components/notifications/FullNotificationView";
 import BaseTask from "../components/tasks/BaseTask";
+import { EventViewModeEnum } from "../enums/eventsEnums";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -134,7 +135,7 @@ export const router = createBrowserRouter(
 
                         {/* ==================== events routes ==================== */}
                         <Route path={EventListPath} element={<EventList />}>
-                            <Route path={FullViewEventPath} element={<BaseEvent fullView />} />
+                            <Route path={FullViewEventPath} element={<BaseEvent viewMode={EventViewModeEnum.FULL} />} />
                             <Route path={EditEventPath} element={<EditEventForm />} />
                         </Route>
 
@@ -151,7 +152,10 @@ export const router = createBrowserRouter(
                             <Route path={EditTaskPath} element={<EditTaskForm />} />
                             <Route path={FullViewTaskPath} element={<BaseTask fullView />} />
 
-                            <Route path={FullViewEventCalendarPath} element={<BaseEvent fullView />} />
+                            <Route
+                                path={FullViewEventCalendarPath}
+                                element={<BaseEvent viewMode={EventViewModeEnum.FULL} />}
+                            />
                             <Route path={EditEventCalendarPath} element={<EditEventForm />} />
                             <Route path={CreateNewEventCalendarPath} element={<CreateEventForm />} />
                         </Route>

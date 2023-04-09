@@ -1,12 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import React from "react";
 import { API } from "../../../api/api";
 import { EventColorLeft, EventDescription, EventName } from "../common";
 import EditIcon from "@mui/icons-material/Edit";
 import { EventStatusEnum } from "../../../enums/eventsEnums";
 import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
-import GoBackButton from "../../buttons/GoBackButton";
-import { EventListPath, makeEventLinkById } from "../../../routes/paths";
 import TaskListCollapse from "../../common/TaskListCollapse";
 import DeadlineAndStatus from "../../common/tasks_events/DeadlineAndStatus";
 import { Box, IconButton, Tooltip } from "@mui/material";
@@ -20,8 +17,6 @@ import { EventActionsProps, EventViewProps } from "./interfaces";
 interface FullEventViewProps extends EventViewProps, EventActionsProps {}
 
 function FullEventView(props: FullEventViewProps) {
-    const navigate = useNavigate();
-
     // данные события
     const event: EventResponseItemSchema = props.event;
 
@@ -31,7 +26,7 @@ function FullEventView(props: FullEventViewProps) {
     const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(
         () => API.tasks.getTasks(params),
         [],
-        [props.event.id],
+        [event.id],
         true
     );
 
@@ -44,7 +39,7 @@ function FullEventView(props: FullEventViewProps) {
                     onChangeStatus={props.toggleEventStatus(event.status === EventStatusEnum.COMPLETED)}
                 />
                 <Tooltip title="Редактировать">
-                    <IconButton sx={{ p: 0 }} onClick={() => navigate(makeEventLinkById(event.id) + "/edit")}>
+                    <IconButton sx={{ p: 0 }} onClick={props.navigateToEdit}>
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
@@ -60,10 +55,6 @@ function FullEventView(props: FullEventViewProps) {
             <UploadFileList files={event.files} eventType={FileOwnerTypesEnum.EVENT} />
 
             <TaskListCollapse tasks={getTasksApiCall.data} />
-
-            <Box sx={{ display: { md: "none" } }}>
-                <GoBackButton to={EventListPath} buttonText="Вернуться к списку событий" />
-            </Box>
         </>
     );
 }

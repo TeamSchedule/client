@@ -1,10 +1,12 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { getDatetimeRepresentation } from "../../../utils/dateutils";
+import { SxProps } from "@mui/material";
 
 export interface DeadlinePlateProps {
     endDate: string;
     color?: string;
+    sx?: SxProps;
 }
 
 export default function DeadlinePlate(props: DeadlinePlateProps) {
@@ -14,6 +16,7 @@ export default function DeadlinePlate(props: DeadlinePlateProps) {
                 sx={{
                     borderRadius: 1,
                     color: props.color ? props.color : "inherit",
+                    ...(props.sx ? props.sx : {}),
                 }}
             >
                 {getDatetimeRepresentation(new Date(props.endDate))}

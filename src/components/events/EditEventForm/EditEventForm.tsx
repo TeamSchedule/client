@@ -14,7 +14,6 @@ import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
-import GoBackButton from "../../buttons/GoBackButton";
 import { makeEventLinkById } from "../../../routes/paths";
 import Uploader from "../../files/Uploader";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
@@ -152,8 +151,6 @@ function EditEventForm() {
                             navigate(makeEventLinkById(id));
                         }}
                     />
-
-                    <GoBackButton to={makeEventLinkById(id)} />
                 </CardContent>
             </Card>
 

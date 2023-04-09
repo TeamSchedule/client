@@ -1,31 +1,59 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { API } from "../../api/api";
 import { EventResponseItemSchema } from "../../api/schemas/responses/events";
-import { makeEventLinkById } from "../../routes/paths";
-import { EventStatusEnum, EventStatusStrings } from "../../enums/eventsEnums";
+import { CalendarPath, makeCalendarEventLinkById, makeEventLinkById } from "../../routes/paths";
+import { EventStatusEnum, EventStatusStrings, EventViewModeStrings } from "../../enums/eventsEnums";
 import { EditEventRequestSchema } from "../../api/schemas/requests/events";
 import eventStore from "../../store/EventStore";
 import BaseEventView from "./views/BaseEventView";
+import useApiCall from "../../hooks/useApiCall";
 
 interface BaseEventProps {
     event?: EventResponseItemSchema;
-    fullView?: boolean;
+    viewMode?: EventViewModeStrings;
 }
 
 function BaseEvent(props: BaseEventProps) {
+    const location = useLocation();
     const navigate = useNavigate();
     const urlParams = useParams();
 
     // id события
     const id: number = +(urlParams?.id || props.event?.id || 0);
 
-    // Получить данные задачи, если данные не переданы в пропсе
-    const event = props.event || eventStore.getById(id);
+    // Получить данные события, если данные не переданы в пропсе
+    const getEventApiCall = useApiCall<EventResponseItemSchema | undefined>(
+        () => API.events.getById(id),
+        undefined,
+        [id],
+        Boolean(!props.event)
+    );
+    const event = props.event || getEventApiCall.data;
 
-    const navigateToEdit = () => {
-        navigate(makeEventLinkById(id) + "/edit");
+    const navigateToEdit = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!event) return;
+
+        if (location.pathname.startsWith(CalendarPath)) {
+            navigate(makeCalendarEventLinkById(event.id) + "/edit");
+        } else {
+            navigate(makeEventLinkById(event.id) + "/edit");
+        }
+    };
+
+    const navigateToFull = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!event) return;
+
+        if (location.pathname.startsWith(CalendarPath)) {
+            navigate(makeCalendarEventLinkById(event.id));
+        } else {
+            navigate(makeEventLinkById(event.id));
+        }
     };
 
     const onChangeEventStatus = (open: boolean) => (e: React.MouseEvent) => {
@@ -39,7 +67,7 @@ function BaseEvent(props: BaseEventProps) {
         API.events
             .editEvent(newEventData)
             .then(() => {
-                // getEventApiCall.setData({ ...event, status: newStatus });
+                getEventApiCall.setData({ ...event, status: newStatus });
                 eventStore.update(event.id, { ...event, status: newStatus });
             })
             .catch()
@@ -53,8 +81,9 @@ function BaseEvent(props: BaseEventProps) {
             <BaseEventView
                 event={event}
                 navigateToEdit={navigateToEdit}
+                navigateToFull={navigateToFull}
                 toggleEventStatus={onChangeEventStatus}
-                fullMode={props.fullView}
+                viewMode={props.viewMode}
             />
         </>
     );

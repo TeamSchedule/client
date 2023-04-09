@@ -29,13 +29,6 @@ export class NotificationsApi {
     }
 
     /**
-     * Получить непрочитанные оповещения.
-     * */
-    static async unread(): Promise<NotificationsResponseItemSchema[]> {
-        return requestApi.GET(`${this.apiPrefix}`);
-    }
-
-    /**
      * Получить прочитанные оповещения.
      * */
     static async read(): Promise<NotificationsResponseItemSchema[]> {
@@ -52,6 +45,7 @@ export class NotificationsApi {
         return requestApi.PATCH(`${this.apiPrefix}/${id}?status=${status}`);
     }
 
+    // TODO: add handler
     /**
      * Отметить все оповещения прочитанными.
      * */

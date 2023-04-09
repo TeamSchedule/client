@@ -16,7 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import { Tooltip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { makeAvatarLink } from "../../utils/fileUtils";
+import { makeAvatarPath } from "../../utils/fileUtils";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { AuthUserKey } from "../../consts/common";
 
@@ -103,7 +103,7 @@ function UserAvatarSection() {
             <Box sx={{ display: "flex", my: 2, mx: 0, px: 0 }}>
                 <Box sx={{ mr: 3 }}>
                     <MainAvatar
-                        src={makeAvatarLink(user?.id ? +user?.id : 0)}
+                        src={user ? makeAvatarPath(user.id, user.avatar.filename) : ""}
                         placeholder={avatarPlaceholder}
                         size={100}
                         fullPath
@@ -288,34 +288,34 @@ function BackupEmailSection() {
     const [email, setEmail] = useState<string>(user?.email || "");
 
     // статус запроса на обновление резервной почты
-    const [isEditEmailInProgress, setIsEditEmailInProgress] = useState<boolean>(false);
+    // const [isEditEmailInProgress, setIsEditEmailInProgress] = useState<boolean>(false);
     const [isEditEmailSuccess, setIsEditEmailSuccess] = useState<boolean>(false);
     const [isEditEmailError, setIsEditEmailError] = useState<boolean>(false);
 
-    function updateEmail() {
-        /* Обработчик обновления резервной почты. */
-        if (!user?.id) {
-            setIsEditEmailError(true);
-            return;
-        }
-
-        setIsEditEmailInProgress(true);
-
-        const data: UpdateUserInfoRequestSchema = {
-            email: email,
-        };
-        API.users
-            .updateUserInfo(user.id, data)
-            .then(() => {
-                setIsEditEmailSuccess(true);
-            })
-            .catch(() => {
+    /*    function updateEmail() {
+            /!* Обработчик обновления резервной почты. *!/
+            if (!user?.id) {
                 setIsEditEmailError(true);
-            })
-            .finally(() => {
-                setIsEditEmailInProgress(false);
-            });
-    }
+                return;
+            }
+    
+            setIsEditEmailInProgress(true);
+    
+            const data: UpdateUserInfoRequestSchema = {
+                email: email,
+            };
+            API.users
+                .updateUserInfo(user.id, data)
+                .then(() => {
+                    setIsEditEmailSuccess(true);
+                })
+                .catch(() => {
+                    setIsEditEmailError(true);
+                })
+                .finally(() => {
+                    setIsEditEmailInProgress(false);
+                });
+        }*/
 
     const handleCloseSuccessSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {

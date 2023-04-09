@@ -1,17 +1,13 @@
 import { UserPostsStrings } from "../../../enums/usersEnums";
 import { FileResponseItemSchema } from "./files";
 
-export interface GetMeResponseSchema {
-    user: UserSchema;
-}
-
 export interface GetAllUsersResponseSchema {
     users: UserSchema[];
 }
 
 export interface UserSchema {
     id: number;
-    avatar?: FileResponseItemSchema;
+    avatar: FileResponseItemSchema;
     login?: string;
     firstName: string;
     lastName: string;

@@ -5,7 +5,7 @@ import { GetTasksResponseSchema, TaskResponseItemSchema } from "../schemas/respo
 export class tasks {
     static prefixUrl = "/schedule/task";
 
-    static createTask(data: CreateTaskRequestSchema) {
+    static createTask(data: CreateTaskRequestSchema): Promise<TaskResponseItemSchema> {
         return requestApi.POST(`${this.prefixUrl}`, { body: data });
     }
 

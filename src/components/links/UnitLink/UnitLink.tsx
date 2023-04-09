@@ -14,7 +14,7 @@ export default function UnitLink(props: UnitLinkProps) {
     return (
         <>
             {props.id && (
-                <Typography variant="body1" component="p">
+                <Typography variant="body1" component="p" sx={{ display: "flex" }}>
                     <Link
                         href={makeUnitLinkById(props.id)}
                         component="a"

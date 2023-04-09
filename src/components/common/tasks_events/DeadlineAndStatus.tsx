@@ -30,17 +30,22 @@ export default function DeadlineAndStatus(props: DeadlineAndStatusProps) {
                 sx={{
                     display: "flex",
                     alignItems: "center",
-                    cursor: "pointer",
-                    px: 1,
-                    borderRadius: "3px",
-                    "&:hover": {
-                        backgroundColor: "#d2d7ff",
-                    },
                 }}
                 onClick={props.onChangeStatus}
             >
                 <WorkStatusPlate status={props.status} />
-                <DeadlinePlate endDate={props.endDate} color={deadlineTextColor} />
+                <DeadlinePlate
+                    endDate={props.endDate}
+                    color={deadlineTextColor}
+                    sx={{
+                        cursor: "pointer",
+                        borderRadius: "3px",
+                        px: 1,
+                        "&:hover": {
+                            backgroundColor: "#d2d7ff",
+                        },
+                    }}
+                />
             </Box>
         </Tooltip>
     );

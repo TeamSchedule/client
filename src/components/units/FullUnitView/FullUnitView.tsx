@@ -83,7 +83,12 @@ export default function FullUnitView() {
                     </Typography>
                     {unit?.admin && <UnitParticipants admin={unit.admin} members={members} />}
 
-                    <TaskListCollapse tasks={openTasks} title="Открытые задачи" />
+                    <TaskListCollapse
+                        tasks={openTasks}
+                        title={`Открытые задачи (${getTasksApiCall.data.length - openTasks.length}/${
+                            getTasksApiCall.data.length
+                        })`}
+                    />
                 </CardContent>
                 <Button
                     variant="outlined"

@@ -3,4 +3,13 @@ export enum EventStatusEnum {
     IN_PROGRESS = "IN_PROGRESS",
 }
 
-export type EventStatusStrings = typeof EventStatusEnum[keyof typeof EventStatusEnum];
+export type EventStatusStrings = (typeof EventStatusEnum)[keyof typeof EventStatusEnum];
+
+export enum EventViewModeEnum {
+    CREATE,
+    EDIT,
+    FULL,
+    PREVIEW,
+}
+
+export type EventViewModeStrings = (typeof EventViewModeEnum)[keyof typeof EventViewModeEnum];

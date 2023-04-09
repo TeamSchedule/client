@@ -6,32 +6,6 @@ export class FilesApi {
     static apiPrefix: string = "/files";
 
     /**
-     * Получить все файлы события.
-     *
-     * @param id - Идентификатор события
-     * */
-    static async getEventFiles(id: number): Promise<FileResponseItemSchema[]> {
-        return requestApi
-            .GET(`${this.apiPrefix}/${FileOwnerTypesEnum.EVENT}/${id}`)
-            .then((data: GetFilesResponseSchema) => {
-                return data.files;
-            });
-    }
-
-    /**
-     * Получить все файлы задачи.
-     *
-     * @param id - Идентификатор задачи
-     * */
-    static async getTaskFiles(id: number): Promise<FileResponseItemSchema[]> {
-        return requestApi
-            .GET(`${this.apiPrefix}/${FileOwnerTypesEnum.TASK}/${id}`)
-            .then((data: GetFilesResponseSchema) => {
-                return data.files;
-            });
-    }
-
-    /**
      * Получить файл по `id`.
      *
      * @param id - Идентификатор файла

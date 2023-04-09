@@ -17,7 +17,7 @@ import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { EventListPath, NotificationListPath, SettingsPath, CalendarPath, UnitListPath } from "../../routes/paths";
+import { CalendarPath, EventListPath, NotificationListPath, SettingsPath, UnitListPath } from "../../routes/paths";
 import { NotificationsContext } from "../App";
 import { Paper, SvgIcon, Tooltip, useTheme } from "@mui/material";
 import { NotificationsResponseItemSchema } from "../../api/schemas/responses/notifications";
@@ -26,7 +26,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Divider from "@mui/material/Divider";
 import { lightBlue } from "@mui/material/colors";
 import MainAvatar from "../MainAvatar";
-import { makeAvatarLink } from "../../utils/fileUtils";
+import { makeAvatarPath } from "../../utils/fileUtils";
 import { makeFullName } from "../../utils/userUtils";
 import Link from "@mui/material/Link";
 import NotificationTray from "../notifications/NotificationsTray/NotificationsTray";
@@ -169,7 +169,11 @@ export default function PrimaryAppBar() {
                 >
                     <Toolbar />
                     <Box sx={{ display: "flex", alignItems: "center", mx: 2, my: 1 }}>
-                        <MainAvatar src={makeAvatarLink(user?.id ? +user?.id : 0)} fullPath size={35} />
+                        <MainAvatar
+                            src={user ? makeAvatarPath(user.id, user.avatar.filename) : ""}
+                            fullPath
+                            size={35}
+                        />
                         <Typography variant="subtitle1" component="p" sx={{ py: 1, px: 2 }}>
                             {makeFullName(user)}
                         </Typography>
@@ -273,7 +277,11 @@ export default function PrimaryAppBar() {
                                 navigate(SettingsPath);
                             }}
                         >
-                            <MainAvatar src={makeAvatarLink(user?.id ? +user?.id : 0)} fullPath size={40} />
+                            <MainAvatar
+                                src={user ? makeAvatarPath(user.id, user.avatar.filename) : ""}
+                                fullPath
+                                size={40}
+                            />
                         </Link>
                     </Box>
 

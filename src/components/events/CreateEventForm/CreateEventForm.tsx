@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import { API } from "../../../api/api";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import { CreateNewEventCalendarPath, makeCalendarEventLinkById, makeEventLinkById } from "../../../routes/paths";
-import { CreateEventResponseSchema, EventResponseItemSchema } from "../../../api/schemas/responses/events";
+import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { getRandomColor } from "../../../utils/colorUtils";
 import { getTimezoneDatetime } from "../../../utils/dateutils";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
@@ -43,15 +43,13 @@ export default function CreateEventForm() {
 
         API.events
             .createEvent(newEventData)
-            .then((data: CreateEventResponseSchema) => {
-                API.events.getById(data.id).then((event: EventResponseItemSchema) => {
-                    eventStore.update(event.id, event);
-                    if (location.pathname === CreateNewEventCalendarPath) {
-                        navigate(makeCalendarEventLinkById(data.id));
-                    } else {
-                        navigate(makeEventLinkById(data.id), { state: { created: 1 } });
-                    }
-                });
+            .then((event: EventResponseItemSchema) => {
+                eventStore.update(event.id, event);
+                if (location.pathname === CreateNewEventCalendarPath) {
+                    navigate(makeCalendarEventLinkById(event.id));
+                } else {
+                    navigate(makeEventLinkById(event.id), { state: { created: 1 } });
+                }
             })
             .catch(() => {
                 setIsCreatingError(true);

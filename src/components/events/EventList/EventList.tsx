@@ -15,6 +15,7 @@ import eventStore from "../../../store/EventStore";
 import { FetchStatusEnum } from "../../../enums/fetchStatusEnum";
 import { observer } from "mobx-react-lite";
 import BaseEvent from "../BaseEvent";
+import { EventViewModeEnum } from "../../../enums/eventsEnums";
 
 enum EventFilterEnum {
     All = 0,
@@ -42,7 +43,7 @@ function EventList() {
     const [eventFilterValue, setEventFilterValue] = useState(EventFilterEnum.InProgress);
 
     useEffect(() => {}, [eventStore.events]);
-    
+
     // список отображаемых событий
     const [events, setEvents] = useState<EventResponseItemSchema[]>(eventStore.getAllEvents);
 
@@ -85,7 +86,7 @@ function EventList() {
             {eventStore.getFetchStatus === FetchStatusEnum.SUCCESS &&
                 events.map((event) => (
                     <Box key={event.id}>
-                        <BaseEvent event={event} key={event.id} />
+                        <BaseEvent event={event} key={event.id} viewMode={EventViewModeEnum.PREVIEW} />
                         <Divider sx={{ m: 0, backgroundColor: theme.palette.grey.A700 }} />
                     </Box>
                 ))}

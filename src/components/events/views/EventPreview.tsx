@@ -1,4 +1,4 @@
-import { CalendarPath, makeCalendarEventLinkById, makeEventLinkById } from "../../../routes/paths";
+import { makeEventLinkById } from "../../../routes/paths";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { Box, IconButton, Tooltip } from "@mui/material";
@@ -9,7 +9,6 @@ import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import { EventStatusEnum } from "../../../enums/eventsEnums";
 import { EventActionsProps, EventViewProps } from "./interfaces";
-import { useLocation, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 interface EventPreviewProps extends EventViewProps, EventActionsProps {
@@ -17,32 +16,10 @@ interface EventPreviewProps extends EventViewProps, EventActionsProps {
 }
 
 function EventPreview(props: EventPreviewProps) {
-    const navigate = useNavigate();
-    const location = useLocation();
-
     const openTasks: number = 0;
 
-    const navigateToEdit = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (location.pathname.startsWith(CalendarPath)) {
-            navigate(makeCalendarEventLinkById(props.event.id) + "/edit");
-        } else {
-            navigate(makeEventLinkById(props.event.id) + "/edit");
-        }
-    };
-
-    const navigateToFull = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (location.pathname.startsWith(CalendarPath)) {
-            navigate(makeCalendarEventLinkById(props.event.id));
-        } else {
-            navigate(makeEventLinkById(props.event.id));
-        }
-    };
     return (
-        <Box sx={{ "&:hover": { cursor: "pointer", background: "#f4f9ff" } }} onClick={navigateToFull}>
+        <Box sx={{ "&:hover": { cursor: "pointer", background: "#f4f9ff" } }} onClick={props.navigateToFull}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <DeadlineAndStatus
                     endDate={props.event.endDate}
@@ -50,7 +27,7 @@ function EventPreview(props: EventPreviewProps) {
                     onChangeStatus={props.toggleEventStatus(props.event.status === EventStatusEnum.COMPLETED)}
                 />
                 <Tooltip title="Редактировать">
-                    <IconButton sx={{ p: 0 }} onClick={navigateToEdit}>
+                    <IconButton sx={{ p: 0 }} onClick={props.navigateToEdit}>
                         <EditIcon />
                     </IconButton>
                 </Tooltip>
@@ -68,12 +45,20 @@ function EventPreview(props: EventPreviewProps) {
 
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "stretch" }}>
                 <EventColorLeft color={props.event.color} />
-                <Link href={makeEventLinkById(props.event.id)} onClick={navigateToFull}>
+                <Link href={makeEventLinkById(props.event.id)} onClick={props.navigateToFull}>
                     <EventName>{props.event.name}</EventName>
                 </Link>
             </Box>
 
             <EventDescription>{props.event.description}</EventDescription>
+
+            <Box>
+                {Boolean(props.event.files.length) && (
+                    <Typography component="p" variant="subtitle1" sx={{ color: "grey" }}>
+                        Файлов: {props.event.files.length}
+                    </Typography>
+                )}
+            </Box>
         </Box>
     );
 }

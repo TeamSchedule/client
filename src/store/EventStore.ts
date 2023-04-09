@@ -38,6 +38,14 @@ class EventStore {
         return this.events.length;
     }
 
+    get openEventsTotal(): number {
+        return this.events.filter((event) => event.status === EventStatusEnum.IN_PROGRESS).length;
+    }
+
+    get closedEventsTotal(): number {
+        return this.events.filter((event) => event.status === EventStatusEnum.COMPLETED).length;
+    }
+
     getById(id: number): EventResponseItemSchema | undefined {
         if (!id) {
             console.log("Wrong event id.");

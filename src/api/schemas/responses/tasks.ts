@@ -8,10 +8,6 @@ export interface GetTasksResponseSchema {
     tasks: TaskResponseItemSchema[];
 }
 
-export interface CreateTasksResponseSchema {
-    id: number;
-}
-
 export interface TaskResponseItemSchema {
     id: number;
     name: string;
@@ -22,6 +18,7 @@ export interface TaskResponseItemSchema {
     assignee: UserSchema[];
     author: UserSchema;
 
+    // TODO: ? department can be null?
     department: UnitResponseItemSchema;
     event?: EventResponseItemSchema;
     files: FileResponseItemSchema[];

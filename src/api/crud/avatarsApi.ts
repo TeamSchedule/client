@@ -4,10 +4,6 @@ import { FileOwnerTypesEnum } from "../../enums/filesEnums";
 export class AvatarsApi {
     static apiPrefix: string = "/files";
 
-    static async get(id: number) {
-        return (await requestApi.GET(`${this.apiPrefix}?user=${id}`)).data["avatarSrc"];
-    }
-
     /**
      * Установить аватар пользователя.
      *

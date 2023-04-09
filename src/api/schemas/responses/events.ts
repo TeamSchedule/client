@@ -26,13 +26,6 @@ export interface EventResponseItemSchema {
 /**
  * Схема ответа на запрос создания события.
  * */
-export interface CreateEventResponseSchema {
-    id: number;
-}
-
-/**
- * Схема ответа на запрос создания события.
- * */
 export interface EditEventResponseSchema {
     id: number;
 }

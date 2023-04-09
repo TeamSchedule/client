@@ -17,7 +17,7 @@ export default function EventLink(props: EventLinkProps) {
     return (
         <>
             {props.event && (
-                <Typography variant="body1" component="p">
+                <Typography variant="body1" component="p" sx={{ display: "flex" }}>
                     <Link
                         href={makeEventLinkById(props.event?.id)}
                         component="a"

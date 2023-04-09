@@ -4,6 +4,7 @@ import React from "react";
 import { EventActionsProps, EventViewProps } from "./interfaces";
 import EventPreview from "./EventPreview";
 import FullEventView from "./FullEventView";
+import { EventViewModeEnum } from "../../../enums/eventsEnums";
 
 interface BaseEventViewProps extends EventViewProps, EventActionsProps {}
 
@@ -20,7 +21,11 @@ export default function BaseEventView(props: BaseEventViewProps) {
                 }}
             >
                 <CardContent sx={{ p: 1 }}>
-                    <>{props.fullMode ? <FullEventView {...props} /> : <EventPreview {...props} />}</>
+                    {Boolean(props.viewMode === undefined || props.viewMode === EventViewModeEnum.PREVIEW) && (
+                        <EventPreview {...props} />
+                    )}
+
+                    {props.viewMode === EventViewModeEnum.FULL && <FullEventView {...props} />}
                 </CardContent>
             </Card>
         </>
