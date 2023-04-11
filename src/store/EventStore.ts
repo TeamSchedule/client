@@ -64,8 +64,6 @@ class EventStore {
             return;
         }
         this.events = [...this.events.filter((event) => event.id !== eventId), eventData];
-        console.log("E");
-        console.log(this.events);
     }
 
     delete(id: number) {

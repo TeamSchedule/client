@@ -28,7 +28,7 @@ export default function Executors(props: ExecutorsProps) {
 
                     {!props.users.length && <NoExecutorsWarning />}
                     {props.users.map((user) => (
-                        <UserPreview user={user} />
+                        <UserPreview key={user.id} user={user} />
                     ))}
                 </div>
             </>

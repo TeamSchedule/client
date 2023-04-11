@@ -10,10 +10,6 @@ export class EventsApi {
      * */
     static async all(): Promise<EventResponseItemSchema[]> {
         return requestApi.GET(`${this.apiPrefix}`).then((data: GetEventsResponseSchema) => {
-            for (let i = 0; i < data.events.length; i++) {
-                data.events[i].files = [];
-                data.events[i].tasks = [];
-            }
             return data.events;
         });
     }
