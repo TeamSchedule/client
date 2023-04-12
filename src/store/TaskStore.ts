@@ -5,6 +5,7 @@ import { API } from "../api/api";
 import { FetchStatusEnum, FetchStatusStrings } from "../enums/fetchStatusEnum";
 import calendarStore from "./CalendarStore";
 import { isEqualYearMonthDate } from "../utils/dateutils";
+import { CalendarPath } from "../routes/paths";
 
 class TaskStore {
     tasks: TaskResponseItemSchema[] = [];
@@ -43,6 +44,8 @@ class TaskStore {
     }
 
     prefetchTasks = () => {
+        if (!window.location.pathname.startsWith(CalendarPath)) return;
+
         this.setFetchStatus(FetchStatusEnum.FETCHING);
 
         API.tasks

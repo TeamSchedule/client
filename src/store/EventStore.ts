@@ -5,6 +5,7 @@ import { compareEvent } from "../utils/eventUtils";
 import { autorun, makeAutoObservable, runInAction } from "mobx";
 import { EventStatusEnum } from "../enums/eventsEnums";
 import { isEqualYearMonthDate } from "../utils/dateutils";
+import { isNonAuthenticatedURL } from "./utils";
 
 class EventStore {
     events: EventResponseItemSchema[] = [];
@@ -75,6 +76,7 @@ class EventStore {
     }
 
     prefetchData = () => {
+        if (isNonAuthenticatedURL) return;
         this.setFetchStatus(FetchStatusEnum.FETCHING);
 
         API.events

@@ -7,6 +7,14 @@ export const resetPasswordCodePath: string = "/reset";
 export const newPasswordPath: string = "/reset-psw";
 export const successRegistrationPath: string = "/ready";
 
+export const NonAuthedPaths: string[] = [
+    loginPath,
+    registrationPath,
+    forgotPasswordPath,
+    resetPasswordCodePath,
+    newPasswordPath,
+    successRegistrationPath,
+];
 /* ---------------------------------------------------- */
 
 export const NotificationListPath: string = "/notifications";
