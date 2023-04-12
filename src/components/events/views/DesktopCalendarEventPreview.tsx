@@ -1,13 +1,11 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import WorkStatusPlate from "../../common/tasks_events/WorkStatusPlate";
-import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import { observer } from "mobx-react-lite";
+import { EventActionsProps, EventViewProps } from "./interfaces";
 
-interface DesktopCalendarEventPreviewProps {
-    event: EventResponseItemSchema;
-}
+interface DesktopCalendarEventPreviewProps extends EventViewProps, EventActionsProps {}
 
 function DesktopCalendarEventPreview(props: DesktopCalendarEventPreviewProps) {
     const deadline: Date = new Date(props.event.endDate);
@@ -16,17 +14,20 @@ function DesktopCalendarEventPreview(props: DesktopCalendarEventPreviewProps) {
         <>
             <Box
                 sx={{
+                    "&:hover": {
+                        cursor: "pointer",
+                    },
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                     borderWidth: "1px",
                     borderStyle: "solid",
-                    borderRadius: 0,
-                    marginBottom: "2px",
+                    borderRadius: "1px",
+                    marginBottom: "1px",
                     flexGrow: 1,
-                    padding: "1px",
                     px: "3px",
                 }}
+                onClick={props.navigateToFull}
             >
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <LocalActivityIcon sx={{ color: props.event.color || "grey" }} />

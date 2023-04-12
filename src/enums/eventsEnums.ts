@@ -6,9 +6,9 @@ export enum EventStatusEnum {
 export type EventStatusStrings = (typeof EventStatusEnum)[keyof typeof EventStatusEnum];
 
 export enum EventViewModeEnum {
-    CREATE,
     EDIT,
     FULL,
+    CALENDAR,
     PREVIEW,
 }
 

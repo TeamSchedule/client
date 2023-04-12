@@ -45,7 +45,6 @@ import NewPasswordForm from "../components/auth/reset_password/NewPasswordForm";
 import SuccessRegisteredMsg from "../components/auth/SuccessRegisteredMsg";
 import AuthProvider from "./AuthProvider";
 import BaseEvent from "../components/events/BaseEvent";
-import EditEventForm from "../components/events/EditEventForm/EditEventForm";
 import FullCalendar from "../components/calendars/FullCalendar";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
@@ -54,6 +53,7 @@ import { API } from "../api/api";
 import FullNotificationView from "../components/notifications/FullNotificationView";
 import BaseTask from "../components/tasks/BaseTask";
 import { EventViewModeEnum } from "../enums/eventsEnums";
+import { TaskViewModeEnum } from "../enums/tasksEnums";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -136,7 +136,7 @@ export const router = createBrowserRouter(
                         {/* ==================== events routes ==================== */}
                         <Route path={EventListPath} element={<EventList />}>
                             <Route path={FullViewEventPath} element={<BaseEvent viewMode={EventViewModeEnum.FULL} />} />
-                            <Route path={EditEventPath} element={<EditEventForm />} />
+                            <Route path={EditEventPath} element={<BaseEvent viewMode={EventViewModeEnum.EDIT} />} />
                         </Route>
 
                         <Route path={CreateNewEventPath} element={<CreateEventForm />} />
@@ -150,13 +150,16 @@ export const router = createBrowserRouter(
                         <Route path={CalendarPath} element={<FullCalendar />}>
                             <Route path={CreateNewTaskPath} element={<CreateTaskForm />} />
                             <Route path={EditTaskPath} element={<EditTaskForm />} />
-                            <Route path={FullViewTaskPath} element={<BaseTask fullView />} />
+                            <Route path={FullViewTaskPath} element={<BaseTask viewMode={TaskViewModeEnum.FULL} />} />
 
                             <Route
                                 path={FullViewEventCalendarPath}
                                 element={<BaseEvent viewMode={EventViewModeEnum.FULL} />}
                             />
-                            <Route path={EditEventCalendarPath} element={<EditEventForm />} />
+                            <Route
+                                path={EditEventCalendarPath}
+                                element={<BaseEvent viewMode={EventViewModeEnum.EDIT} />}
+                            />
                             <Route path={CreateNewEventCalendarPath} element={<CreateEventForm />} />
                         </Route>
                     </Route>

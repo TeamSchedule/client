@@ -11,7 +11,6 @@ import "dayjs/locale/ru";
 import { TodayList } from "../TodayTaskList";
 import { UtilSection } from "./common";
 import { compareTasks } from "../../../utils/taskUtils";
-import DesktopCalendarTaskItem from "../../tasks/views/DesktopCalendarTaskItem";
 import { observer } from "mobx-react-lite";
 import calendarStore from "../../../store/CalendarStore";
 import { CalendarElemTypeEnum } from "../../../enums/common";
@@ -19,9 +18,12 @@ import eventStore from "../../../store/EventStore";
 import taskStore from "../../../store/TaskStore";
 import { CalendarProps } from "./MobileCalendar";
 import { compareEvent } from "../../../utils/eventUtils";
-import DesktopCalendarEventPreview from "../../events/views/DesktopCalendarEventPreview";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
+import BaseTask from "../../tasks/BaseTask";
+import { TaskViewModeEnum } from "../../../enums/tasksEnums";
+import BaseEvent from "../../events/BaseEvent";
+import { EventViewModeEnum } from "../../../enums/eventsEnums";
 
 const MaxDateSize = 400; // максимальный размер отображаемого на десктопном календаре дня
 const BaseDateHeight = 120; // базовая высота ячейки
@@ -86,9 +88,13 @@ function DesktopCalendar(props: DesktopCalendarProps) {
                         {dayNumber}
 
                         {calendarStore.filters.type !== CalendarElemTypeEnum.TASK &&
-                            todayEvents.map((event) => <DesktopCalendarEventPreview key={event.id} event={event} />)}
+                            todayEvents.map((event) => (
+                                <BaseEvent key={event.id} event={event} viewMode={EventViewModeEnum.CALENDAR} />
+                            ))}
                         {calendarStore.filters.type !== CalendarElemTypeEnum.EVENT &&
-                            todayTasks.map((task) => <DesktopCalendarTaskItem key={task.id} task={task} />)}
+                            todayTasks.map((task) => (
+                                <BaseTask key={task.id} task={task} viewMode={TaskViewModeEnum.CALENDAR} />
+                            ))}
                     </Box>
                 </PickersDay>
             </Box>

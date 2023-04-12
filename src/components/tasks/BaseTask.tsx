@@ -1,20 +1,20 @@
-import useApiCall from "../../hooks/useApiCall";
 import { API } from "../../api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { TaskResponseItemSchema } from "../../api/schemas/responses/tasks";
 import React from "react";
-import { TaskStatusEnum, TaskStatusStrings } from "../../enums/tasksEnums";
+import { TaskStatusEnum, TaskStatusStrings, TaskViewModeStrings } from "../../enums/tasksEnums";
 import { UpdateTaskRequestSchema } from "../../api/schemas/requests/tasks";
 import { makeTaskLinkById } from "../../routes/paths";
 import BaseTaskView from "./views/BaseTaskView";
 import taskStore from "../../store/TaskStore";
+import { observer } from "mobx-react-lite";
 
 interface BaseTaskProps {
     task?: TaskResponseItemSchema;
-    fullView?: boolean;
+    viewMode?: TaskViewModeStrings;
 }
 
-export default function BaseTask(props: BaseTaskProps) {
+function BaseTask(props: BaseTaskProps) {
     const navigate = useNavigate();
     const urlParams = useParams();
 
@@ -22,18 +22,20 @@ export default function BaseTask(props: BaseTaskProps) {
     const id: number = +(urlParams?.id || props.task?.id || 0);
 
     // Получить данные задачи, если данные не переданы в пропсе
-    const getTaskApiCall = useApiCall<TaskResponseItemSchema | undefined>(
-        () => API.tasks.getTaskById(id),
-        undefined,
-        [id],
-        Boolean(!props.task)
-    );
-    const task = props.task || getTaskApiCall.data;
+    const task = props.task || taskStore.getById(id);
 
     const navigateToEdit = (e: React.MouseEvent) => {
         e.stopPropagation();
         e.preventDefault();
         navigate(makeTaskLinkById(id) + "/edit");
+    };
+
+    const navigateToFull = (e: React.MouseEvent | undefined) => {
+        if (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+        navigate(makeTaskLinkById(id));
     };
 
     const toggleTaskStatus = (open: boolean) => (e: React.MouseEvent) => {
@@ -54,7 +56,6 @@ export default function BaseTask(props: BaseTaskProps) {
             .updateTaskById(updateStatusData)
             .then(() => {
                 if (task) {
-                    getTaskApiCall.setData({ ...task, taskStatus: newStatus });
                     taskStore.update(task.id, { ...task, taskStatus: newStatus });
                 }
             })
@@ -69,9 +70,12 @@ export default function BaseTask(props: BaseTaskProps) {
             <BaseTaskView
                 task={task}
                 navigateToEdit={navigateToEdit}
+                navigateToFull={navigateToFull}
                 toggleTaskStatus={toggleTaskStatus}
-                fullMode={props.fullView}
+                viewMode={props.viewMode}
             />
         </>
     );
 }
+
+export default observer(BaseTask);

@@ -14,19 +14,16 @@ import { TaskStatusEnum } from "../../../enums/tasksEnums";
 import { TaskActionsProps, TaskViewProps } from "./interfaces";
 import Executors from "../common/Executors";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
 
 export interface TaskPreviewProps extends TaskViewProps, TaskActionsProps {}
 
 export default function TaskPreview(props: TaskPreviewProps) {
-    const navigate = useNavigate();
-
     const task: TaskResponseItemSchema = props.task;
 
     return (
         <Box
             sx={{ display: "flex", flexDirection: "column", "&:hover": { cursor: "pointer", background: "#f4f9ff" } }}
-            onClick={() => navigate(makeTaskLinkById(task.id))}
+            onClick={props.navigateToFull}
         >
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <DeadlineAndStatus
@@ -48,7 +45,7 @@ export default function TaskPreview(props: TaskPreviewProps) {
                 onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
-                    navigate(makeTaskLinkById(task.id));
+                    props.navigateToFull(undefined);
                 }}
                 sx={{
                     "&:hover": {

@@ -13,6 +13,7 @@ import calendarStore from "../../store/CalendarStore";
 import taskStore from "../../store/TaskStore";
 import BaseEvent from "../events/BaseEvent";
 import { EventViewModeEnum } from "../../enums/eventsEnums";
+import { TaskViewModeEnum } from "../../enums/tasksEnums";
 
 interface EventTabProps {
     label: string;
@@ -83,7 +84,7 @@ const TodayTaskList = observer((props: TodayTaskListProps) => {
 
             {props.dayTasks.sort(compareTasks).map((task) => (
                 <div className="mb-2" key={task.id}>
-                    <BaseTask key={task.id} task={task} />
+                    <BaseTask key={task.id} task={task} viewMode={TaskViewModeEnum.PREVIEW} />
                 </div>
             ))}
         </>

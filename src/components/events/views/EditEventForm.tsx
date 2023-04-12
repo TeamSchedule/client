@@ -1,7 +1,6 @@
 import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import React, { useEffect, useState } from "react";
 import { API } from "../../../api/api";
-import { useNavigate, useParams } from "react-router-dom";
 import { EditEventRequestSchema } from "../../../api/schemas/requests/events";
 import FormInputItemWrapper from "../../common/FormInputItemWrapper";
 import TextField from "@mui/material/TextField";
@@ -12,23 +11,18 @@ import { FileOwnerTypesEnum } from "../../../enums/filesEnums";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
-import CardContent from "@mui/material/CardContent";
-import Card from "@mui/material/Card";
-import { makeEventLinkById } from "../../../routes/paths";
 import Uploader from "../../files/Uploader";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 import { getTimezoneDatetime } from "../../../utils/dateutils";
 import UploadFileList from "../../files/UploadFileList";
 import { observer } from "mobx-react-lite";
 import eventStore from "../../../store/EventStore";
+import { EventActionsProps, EventViewProps } from "./interfaces";
 
-function EditEventForm() {
-    const navigate = useNavigate();
+interface EditEventFormProps extends EventViewProps, EventActionsProps {}
 
-    const urlParams = useParams();
-    const id: number = +(urlParams.id || 0);
-
-    const event: EventResponseItemSchema | undefined = eventStore.getById(id);
+function EditEventForm(props: EditEventFormProps) {
+    const event: EventResponseItemSchema = props.event;
 
     useEffect(() => {
         if (event) {
@@ -52,27 +46,23 @@ function EditEventForm() {
     const [isEditingError, setIsEditingError] = useState<boolean>(false);
 
     function editEventHandler() {
-        if (!id || !event) {
-            setIsEditingError(true);
-            return;
-        }
-
         setInProgress(true);
         const newEventData: EditEventRequestSchema = {
-            eventId: id,
+            eventId: event.id,
             name: name,
             description: description,
 
-            endDate: deadline ? getTimezoneDatetime(deadline).toISOString() : undefined,
+            endDate: deadline ? getTimezoneDatetime(deadline) : undefined,
             color: color === "" ? undefined : color,
         };
 
         API.events
             .editEvent(newEventData)
             .then(() => {
-                eventStore.update(event.id, { ...event, ...newEventData });
                 setIsEditingFinished(true);
-                navigate(makeEventLinkById(id));
+                // eventStore.update(event.id, { ...event, ...newEventData });
+                eventStore.prefetchData();
+                props.navigateToFull(undefined);
             })
             .catch(() => {
                 setIsEditingError(true);
@@ -96,63 +86,45 @@ function EditEventForm() {
         setIsEditingError(false);
     };
 
-    if (!id || !event) return null;
-
     return (
         <>
-            <Card sx={{ minWidth: 280, marginBottom: 1 }}>
-                <CardContent sx={{ paddingBottom: 0 }}>
-                    <ScreenHeader text="Изменение события" />
+            <ScreenHeader text="Изменение события" />
 
-                    <FormInputItemWrapper>
-                        <TextField
-                            required
-                            fullWidth
-                            variant="outlined"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            label="Название события"
-                        />
-                    </FormInputItemWrapper>
+            <FormInputItemWrapper>
+                <TextField
+                    required
+                    fullWidth
+                    variant="outlined"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    label="Название события"
+                />
+            </FormInputItemWrapper>
 
-                    <FormInputItemWrapper>
-                        <MultilineTextInput
-                            value={description}
-                            handleChange={setDescription}
-                            label="Описание события"
-                        />
-                    </FormInputItemWrapper>
+            <FormInputItemWrapper>
+                <MultilineTextInput value={description} handleChange={setDescription} label="Описание события" />
+            </FormInputItemWrapper>
 
-                    <FormInputItemWrapper>
-                        <DatetimeInput datetime={deadline} setDatetime={setDeadline} />
-                    </FormInputItemWrapper>
+            <FormInputItemWrapper>
+                <DatetimeInput datetime={deadline} setDatetime={setDeadline} />
+            </FormInputItemWrapper>
 
-                    <FormInputItemWrapper className="d-flex align-items-center">
-                        <span>Цвет отображения задач</span>
-                        <InputColor color={color} setColor={setColor} className="mx-3" />
-                    </FormInputItemWrapper>
+            <FormInputItemWrapper className="d-flex align-items-center">
+                <span>Цвет отображения задач</span>
+                <InputColor color={color} setColor={setColor} className="mx-3" />
+            </FormInputItemWrapper>
 
-                    <LoadingButton
-                        fullWidth
-                        onClick={editEventHandler}
-                        loading={inProgress}
-                        variant="contained"
-                        sx={{ my: 2 }}
-                    >
-                        Сохранить изменения
-                    </LoadingButton>
+            <LoadingButton fullWidth onClick={editEventHandler} loading={inProgress} variant="contained" sx={{ my: 2 }}>
+                Сохранить изменения
+            </LoadingButton>
 
-                    <UploadFileList files={event.files} eventType={FileOwnerTypesEnum.EVENT} isEditModeOn />
+            <UploadFileList files={event.files} eventType={FileOwnerTypesEnum.EVENT} isEditModeOn />
 
-                    <Uploader
-                        destType={FileOwnerTypesEnum.EVENT}
-                        destId={id}
-                        successHandler={() => {
-                            navigate(makeEventLinkById(id));
-                        }}
-                    />
-                </CardContent>
-            </Card>
+            <Uploader
+                destType={FileOwnerTypesEnum.EVENT}
+                destId={event.id}
+                successHandler={() => props.navigateToFull(undefined)}
+            />
 
             <SuccessSnackbar handleClose={handleCloseEditSnackbar} isOpen={isEditingFinished}>
                 Изменения сохранены!

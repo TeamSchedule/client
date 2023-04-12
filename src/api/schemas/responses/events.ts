@@ -17,7 +17,7 @@ export interface EventResponseItemSchema {
     name: string;
     description: string;
     color: string;
-    endDate: string;
+    endDate: string | Date;
     tasks?: TaskResponseItemSchema[];
     status: EventStatusStrings;
     files: FileResponseItemSchema[];

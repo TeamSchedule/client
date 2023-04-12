@@ -4,12 +4,17 @@ import React from "react";
 import FullTaskView from "./FullTaskView";
 import { TaskActionsProps, TaskViewProps } from "./interfaces";
 import TaskPreview from "./TaskPreview";
+import { TaskViewModeEnum, TaskViewModeStrings } from "../../../enums/tasksEnums";
+import DesktopCalendarTaskItem from "./DesktopCalendarTaskItem";
 
 export interface BaseTaskViewProps extends TaskViewProps, TaskActionsProps {
-    fullMode?: boolean;
+    viewMode?: TaskViewModeStrings;
 }
 
 export default function BaseTaskView(props: BaseTaskViewProps) {
+    if (props.viewMode === TaskViewModeEnum.CALENDAR) {
+        return <DesktopCalendarTaskItem {...props} />;
+    }
     return (
         <>
             <Card
@@ -22,7 +27,8 @@ export default function BaseTaskView(props: BaseTaskViewProps) {
                 }}
             >
                 <CardContent sx={{ p: 1 }}>
-                    <>{props.fullMode ? <FullTaskView {...props} /> : <TaskPreview {...props} />}</>
+                    {!props.viewMode || (props.viewMode === TaskViewModeEnum.PREVIEW && <TaskPreview {...props} />)}
+                    {props.viewMode === TaskViewModeEnum.FULL && <FullTaskView {...props} />}
                 </CardContent>
             </Card>
         </>

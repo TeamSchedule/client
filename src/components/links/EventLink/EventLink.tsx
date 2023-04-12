@@ -1,32 +1,38 @@
-import { makeEventLinkById } from "../../../routes/paths";
+import { CalendarPath, makeCalendarEventLinkById, makeEventLinkById } from "../../../routes/paths";
 import Typography from "@mui/material/Typography";
 import SkeletonWrapper from "../../SkeletonWrapper";
 import { IconButton } from "@mui/material";
 import Link from "@mui/material/Link";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import { EventResponseItemSchema } from "../../../api/schemas/responses/events";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface EventLinkProps {
     event?: EventResponseItemSchema;
 }
 
 export default function EventLink(props: EventLinkProps) {
+    const location = useLocation();
     const navigate = useNavigate();
+    const id: number = props.event?.id || 0;
 
+    let navPath: string = makeEventLinkById(id);
+    if (location.pathname.startsWith(CalendarPath)) {
+        navPath = makeCalendarEventLinkById(id);
+    }
     return (
         <>
             {props.event && (
                 <Typography variant="body1" component="p" sx={{ display: "flex" }}>
                     <Link
-                        href={makeEventLinkById(props.event?.id)}
+                        href={navPath}
                         component="a"
                         variant="body2"
                         onClick={(e) => {
                             e.stopPropagation();
                             e.preventDefault();
-                            if (props.event?.id) {
-                                navigate(makeEventLinkById(props.event?.id));
+                            if (id) {
+                                navigate(navPath);
                             }
                         }}
                         sx={{ display: "flex", alignItems: "center" }}

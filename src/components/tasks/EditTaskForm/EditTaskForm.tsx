@@ -78,6 +78,7 @@ function EditTaskForm() {
         API.tasks
             .updateTaskById(updateTaskRequestBody)
             .then(() => {
+                taskStore.prefetchTasks();
                 navigate(makeTaskLinkById(+id));
             })
             .finally(() => {

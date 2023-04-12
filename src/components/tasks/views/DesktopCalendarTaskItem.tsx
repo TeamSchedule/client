@@ -1,13 +1,11 @@
-import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 import WorkStatusPlate from "../../common/tasks_events/WorkStatusPlate";
 import { getTimeRepresentation } from "../../../utils/dateutils";
+import { TaskActionsProps, TaskViewProps } from "./interfaces";
 
-interface DesktopCalendarTaskItemProps {
-    task: TaskResponseItemSchema;
-}
+interface DesktopCalendarTaskItemProps extends TaskViewProps, TaskActionsProps {}
 
 export default function DesktopCalendarTaskItem(props: DesktopCalendarTaskItemProps) {
     const theme = useTheme();
@@ -16,19 +14,22 @@ export default function DesktopCalendarTaskItem(props: DesktopCalendarTaskItemPr
         <>
             <Box
                 sx={{
+                    "&:hover": {
+                        cursor: "pointer",
+                    },
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    backgroundColor: props.task.event?.color || "white",
+                    backgroundColor: props.task.event?.color || "#f1f1f1",
                     color: theme.palette.getContrastText(props.task.event?.color || "#ffffff"),
                     borderWidth: props.task.event ? 0 : "1px",
                     borderStyle: "solid",
+                    borderColor: "#d0d0d0",
                     borderRadius: 1,
-                    marginBottom: "2px",
                     flexGrow: 1,
-                    padding: "1px",
-                    px: "3px",
+                    px: "2px",
                 }}
+                onClick={props.navigateToFull}
             >
                 <Typography
                     sx={{
