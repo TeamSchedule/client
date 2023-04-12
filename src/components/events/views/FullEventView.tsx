@@ -34,7 +34,7 @@ function FullEventView(props: FullEventViewProps) {
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <DeadlineAndStatus
-                    endDate={event.endDate}
+                    endDate={event.endDate.toString()}
                     status={event.status}
                     onChangeStatus={props.toggleEventStatus(event.status === EventStatusEnum.COMPLETED)}
                 />

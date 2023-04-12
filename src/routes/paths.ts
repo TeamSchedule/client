@@ -1,5 +1,3 @@
-import { getDateRepresentation } from "../utils/dateutils";
-
 export const notFound = "*";
 export const startPagePath = "/";
 export const loginPath: string = "/login";
@@ -58,17 +56,6 @@ export const EditEventCalendarPath: string = BaseCalendarEventPath + "/:id/edit"
 
 export function makeCalendarEventLinkById(id: number): string {
     return CalendarPath + "/events/" + id.toString();
-}
-
-/* ---------------------------------------------------- */
-
-export const baseCalendarPath: string = "/calendar";
-
-export function makeDateLink(date: Date): string {
-    const dateStr = getDateRepresentation(date);
-    const urlDateStr = dateStr.split(".").join("-");
-
-    return baseCalendarPath + "/" + urlDateStr;
 }
 
 /* ---------------------------------------------------- */

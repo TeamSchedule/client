@@ -1,7 +1,9 @@
-@use "../../../assets/styles/colors.scss";
-
 .selectorItem {
   display: flex;
   width: 100%;
-  background: colors.$light_brand;
+  background: #fff;
+
+  &:hover {
+    cursor: pointer;
+  }
 }

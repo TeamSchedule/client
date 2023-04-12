@@ -44,12 +44,4 @@ export class NotificationsApi {
     static async changeNotificationStatus(id: number | string, status: NotificationsStatusStrings): Promise<any> {
         return requestApi.PATCH(`${this.apiPrefix}/${id}?status=${status}`);
     }
-
-    // TODO: add handler
-    /**
-     * Отметить все оповещения прочитанными.
-     * */
-    static async makeAllNotificationRead(): Promise<any> {
-        return requestApi.GET(`${this.apiPrefix}`);
-    }
 }

@@ -5,9 +5,7 @@ import { router } from "./routes/AllRoutes";
 import { ThemeProvider } from "@mui/material";
 import MainTheme from "./assets/theme";
 
-import "./reset.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./assets/styles/globalStyles.scss";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";

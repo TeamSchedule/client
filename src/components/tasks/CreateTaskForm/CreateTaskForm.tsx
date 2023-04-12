@@ -18,7 +18,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import TextHelp from "../../TextHelp/TextHelp";
-import { makeTaskLinkById } from "../../../routes/paths";
+import { makeTaskLinkById, startPagePath } from "../../../routes/paths";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 import useApiCall from "../../../hooks/useApiCall";
@@ -70,7 +70,7 @@ function CreateTaskForm() {
     function onCreateTaskHandler(event: React.FormEvent) {
         event.preventDefault();
         if (!user) {
-            navigate("/");
+            navigate(startPagePath);
             return;
         }
 

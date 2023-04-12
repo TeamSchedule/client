@@ -1,20 +1,9 @@
 import requestApi from "../fetchApi";
 import { FileOwnerTypesEnum } from "../../enums/filesEnums";
-import { FileResponseItemSchema, GetFileResponseSchema, GetFilesResponseSchema } from "../schemas/responses/files";
+import { FileResponseItemSchema } from "../schemas/responses/files";
 
 export class FilesApi {
     static apiPrefix: string = "/files";
-
-    /**
-     * Получить файл по `id`.
-     *
-     * @param id - Идентификатор файла
-     * */
-    static async getFileById(id: number): Promise<FileResponseItemSchema> {
-        return requestApi.GET(`${this.apiPrefix}/${id}`).then((data: GetFileResponseSchema) => {
-            return data.file;
-        });
-    }
 
     /**
      * Прикрепить файл.

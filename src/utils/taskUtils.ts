@@ -8,10 +8,6 @@ export function compareTasks(a: TaskResponseItemSchema, b: TaskResponseItemSchem
     return a.id - b.id;
 }
 
-export function getOnlyCompletedTasks(tasks: TaskResponseItemSchema[]): TaskResponseItemSchema[] {
-    return tasks.filter((task) => task.taskStatus === TaskStatusEnum.COMPLETED);
-}
-
 export function getOnlyOpenTasks(events: TaskResponseItemSchema[]): TaskResponseItemSchema[] {
     return events.filter((task) => task.taskStatus === TaskStatusEnum.IN_PROGRESS);
 }

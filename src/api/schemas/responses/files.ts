@@ -1,13 +1,3 @@
-export interface GetFilesResponseSchema {
-    files: FileResponseItemSchema[];
-    event_id: number;
-    event_type: string;
-}
-
-export interface GetFileResponseSchema {
-    file: FileResponseItemSchema;
-}
-
 export interface FileResponseItemSchema {
     id: number;
     filename: string;

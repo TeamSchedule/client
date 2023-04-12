@@ -9,8 +9,6 @@ import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import { UserSchema } from "../../../api/schemas/responses/users";
 import UsersSelector from "../../selectors/UsersSelector";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { makeUnitLinkById } from "../../../routes/paths";
-import GoBackButton from "../../buttons/GoBackButton";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import SuccessSnackbar from "../../snackbars/SuccessSnackbar";
 import useApiCall from "../../../hooks/useApiCall";
@@ -141,8 +139,6 @@ export default function EditUnitForm() {
                 >
                     Сохранить изменения
                 </LoadingButton>
-
-                <GoBackButton to={id ? makeUnitLinkById(+id) : ".."} />
             </div>
 
             <SuccessSnackbar handleClose={handleCloseEditSnackbar} isOpen={isEditingFinished}>

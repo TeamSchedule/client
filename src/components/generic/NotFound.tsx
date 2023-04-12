@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { startPagePath } from "../../routes/paths";
 
 export default function NotFound() {
     /*
@@ -16,7 +17,7 @@ export default function NotFound() {
                     &nbsp;previous page&nbsp;
                 </a>{" "}
                 or move to&nbsp;
-                <Link to="/">main page</Link>.
+                <Link to={startPagePath}>main page</Link>.
             </p>
         </main>
     );

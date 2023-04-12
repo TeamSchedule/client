@@ -39,13 +39,7 @@ export default function UserSelector(props: UserSelectorProps) {
                         [option.lastName, option.firstName, option.patronymic].join(" ")
                     }
                     renderOption={(props, option, { selected }) => (
-                        <Box
-                            component="li"
-                            {...props}
-                            key={option.id}
-                            className={styles.selectorItem}
-                            sx={{ "&:hover": { cursor: "pointer" } }}
-                        >
+                        <Box component="li" {...props} key={option.id} className={styles.selectorItem}>
                             <input type="checkbox" checked={selected} className="mx-3 cursor-pointer" />
                             <UserPreview user={option} />
                         </Box>

@@ -288,34 +288,8 @@ function BackupEmailSection() {
     const [email, setEmail] = useState<string>(user?.email || "");
 
     // статус запроса на обновление резервной почты
-    // const [isEditEmailInProgress, setIsEditEmailInProgress] = useState<boolean>(false);
     const [isEditEmailSuccess, setIsEditEmailSuccess] = useState<boolean>(false);
     const [isEditEmailError, setIsEditEmailError] = useState<boolean>(false);
-
-    /*    function updateEmail() {
-            /!* Обработчик обновления резервной почты. *!/
-            if (!user?.id) {
-                setIsEditEmailError(true);
-                return;
-            }
-    
-            setIsEditEmailInProgress(true);
-    
-            const data: UpdateUserInfoRequestSchema = {
-                email: email,
-            };
-            API.users
-                .updateUserInfo(user.id, data)
-                .then(() => {
-                    setIsEditEmailSuccess(true);
-                })
-                .catch(() => {
-                    setIsEditEmailError(true);
-                })
-                .finally(() => {
-                    setIsEditEmailInProgress(false);
-                });
-        }*/
 
     const handleCloseSuccessSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
@@ -349,18 +323,6 @@ function BackupEmailSection() {
                 autoComplete="email"
                 disabled
             />
-
-            {/*            <LoadingButton
-                onClick={updateEmail}
-                loading={isEditEmailInProgress}
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                disabled
-            >
-                Сохранить новую почту
-            </LoadingButton>*/}
 
             <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isEditEmailError}>
                 Не удалось обновить резервную почту, попробуйте позже

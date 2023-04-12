@@ -22,7 +22,7 @@ function EventPreview(props: EventPreviewProps) {
         <Box sx={{ "&:hover": { cursor: "pointer", background: "#f4f9ff" } }} onClick={props.navigateToFull}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <DeadlineAndStatus
-                    endDate={props.event.endDate}
+                    endDate={props.event.endDate.toString()}
                     status={props.event.status}
                     onChangeStatus={props.toggleEventStatus(props.event.status === EventStatusEnum.COMPLETED)}
                 />

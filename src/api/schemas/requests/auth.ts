@@ -8,10 +8,6 @@ export interface SignUpRequestSchema {
     password: string;
 }
 
-export interface RefreshTokensRequestSchema {
-    token: string;
-}
-
 export interface ResetPasswordEmailRequestSchema {
     email: string;
 }

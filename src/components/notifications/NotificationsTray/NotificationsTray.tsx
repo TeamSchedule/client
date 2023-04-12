@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./NotificationsTray.css";
 import { NotificationsResponseItemSchema } from "../../../api/schemas/responses/notifications";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
