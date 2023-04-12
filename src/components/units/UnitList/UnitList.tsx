@@ -30,16 +30,15 @@ export default function UnitList() {
             {getUnitsApiCall.loading && <Progress />}
             {getUnitsApiCall.success &&
                 getUnitsApiCall.data.map((unit) => (
-                    <>
+                    <Box key={unit.id}>
                         {/*// TODO: Add filter on unit*/}
                         <UnitPreview
-                            key={unit.id}
                             unit={unit}
                             selected={unit.id.toString() === (id || "0")}
                             members={getUsersApiCall.data.filter((user: UserSchema) => true)}
                         />
                         <Divider sx={{ m: 0, backgroundColor: theme.palette.grey.A700 }} />
-                    </>
+                    </Box>
                 ))}
         </Box>
     );

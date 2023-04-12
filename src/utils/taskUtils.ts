@@ -11,3 +11,7 @@ export function compareTasks(a: TaskResponseItemSchema, b: TaskResponseItemSchem
 export function getOnlyOpenTasks(events: TaskResponseItemSchema[]): TaskResponseItemSchema[] {
     return events.filter((task) => task.taskStatus === TaskStatusEnum.IN_PROGRESS);
 }
+
+export function getOnlyCompletedTasks(events: TaskResponseItemSchema[]): TaskResponseItemSchema[] {
+    return events.filter((task) => task.taskStatus === TaskStatusEnum.COMPLETED);
+}

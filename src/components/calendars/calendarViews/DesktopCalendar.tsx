@@ -73,7 +73,7 @@ function DesktopCalendar(props: DesktopCalendarProps) {
             .sort(compareEvent);
 
         return (
-            <Box sx={{ minHeight: dayNumber === new Date().getDate() ? "100px" : 0 }}>
+            <Box key={today.toJSON()} sx={{ minHeight: dayNumber === new Date().getDate() ? "100px" : 0 }}>
                 <PickersDay {...pickersDayProps}>
                     <Box
                         sx={{

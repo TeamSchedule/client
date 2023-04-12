@@ -81,10 +81,8 @@ function MobileCalendar(props: MobileCalendarProps) {
             )
             .sort(compareEvent);
 
-        // @ts-ignore
         return (
-            // @ts-ignore
-            <Box key={date}>
+            <Box key={today.toJSON()}>
                 <PickersDay {...pickersDayProps}>
                     <Box
                         sx={{

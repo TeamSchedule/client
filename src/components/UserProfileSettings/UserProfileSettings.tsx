@@ -19,6 +19,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { makeAvatarPath } from "../../utils/fileUtils";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { AuthUserKey } from "../../consts/common";
+import WarningDialog from "../WarningDialog/WarningDialog";
 
 export default function UserProfileSettings() {
     return (
@@ -42,6 +43,9 @@ function UserAvatarSection() {
     // статус запроса на обновление аватара
     const [isEditAvatarInProgress, setIsEditAvatarInProgress] = useState<boolean>(false);
     const [isEditAvatarError, setIsEditAvatarError] = useState<boolean>(false);
+
+    // состояние видимости окна подтверждения удаления
+    const [openDeleteConfirm, setOpenDeleteConfirm] = useState<boolean>(false);
 
     const uploadAvatarHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newAvatar = event.target.files ? event.target.files[0] : null;
@@ -71,6 +75,10 @@ function UserAvatarSection() {
                 setIsEditAvatarInProgress(false);
             });
     };
+
+    function onClickDelete() {
+        setOpenDeleteConfirm(true);
+    }
 
     const deleteAvatarHandler = () => {
         if (!user?.id) {
@@ -132,7 +140,7 @@ function UserAvatarSection() {
                         <IconButton
                             color="error"
                             sx={{ borderWidth: 1, borderRadius: 5, borderColor: "red" }}
-                            onClick={deleteAvatarHandler}
+                            onClick={onClickDelete}
                         >
                             <DeleteIcon />
                         </IconButton>
@@ -143,6 +151,14 @@ function UserAvatarSection() {
             <ErrorSnackbar handleClose={handleCloseErrorEditAvatarSnackbar} isOpen={isEditAvatarError}>
                 Произошла ошибка, попробуйте позже
             </ErrorSnackbar>
+
+            <WarningDialog
+                open={openDeleteConfirm}
+                setOpen={setOpenDeleteConfirm}
+                title="Удалить аватар?"
+                text={`Вы уверены, что хотите удалить свой аватар?`}
+                handleAgree={deleteAvatarHandler}
+            />
         </>
     );
 }

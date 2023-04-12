@@ -31,12 +31,27 @@ class TaskStore {
         this.tasks = [...this.tasks.filter((task) => task.id !== taskId), taskData];
     }
 
+    updateMany(tasks: TaskResponseItemSchema[]) {
+        if (tasks.length === 0) return;
+
+        const updatedIds: number[] = tasks.map((task) => task.id);
+        this.tasks = [...this.tasks.filter((task) => !updatedIds.includes(task.id)), ...tasks];
+    }
+
     delete(taskId: number) {
         this.tasks = this.tasks.filter((task) => task.id !== taskId);
     }
 
     getDayTasks(day: Date): TaskResponseItemSchema[] {
         return this.tasks.filter((task) => isEqualYearMonthDate(new Date(task.expirationTime), day));
+    }
+
+    getUnitTasks(id: number): TaskResponseItemSchema[] {
+        return this.tasks.filter((task) => task.department?.id === id);
+    }
+
+    getEventTasks(id: number): TaskResponseItemSchema[] {
+        return this.tasks.filter((task) => task.event?.id === id);
     }
 
     initStore(): void {

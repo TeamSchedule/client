@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { API } from "../../../api/api";
 import { EventColorLeft, EventDescription, EventName } from "../common";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,6 +13,8 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import UploadFileList from "../../files/UploadFileList";
 import { observer } from "mobx-react-lite";
 import { EventActionsProps, EventViewProps } from "./interfaces";
+import taskStore from "../../../store/TaskStore";
+import { getOnlyCompletedTasks, getOnlyOpenTasks } from "../../../utils/taskUtils";
 
 interface FullEventViewProps extends EventViewProps, EventActionsProps {}
 
@@ -29,6 +31,13 @@ function FullEventView(props: FullEventViewProps) {
         [event.id],
         true
     );
+    useEffect(() => {
+        taskStore.updateMany(getTasksApiCall.data);
+    }, [getTasksApiCall.data]);
+
+    const eventTasks: TaskResponseItemSchema[] = taskStore.getEventTasks(event.id);
+    const openTasks: TaskResponseItemSchema[] = getOnlyOpenTasks(eventTasks);
+    const completedTasks: TaskResponseItemSchema[] = getOnlyCompletedTasks(eventTasks);
 
     return (
         <>
@@ -54,7 +63,12 @@ function FullEventView(props: FullEventViewProps) {
 
             <UploadFileList files={event.files} eventType={FileOwnerTypesEnum.EVENT} />
 
-            <TaskListCollapse tasks={getTasksApiCall.data} />
+            <TaskListCollapse
+                tasks={openTasks}
+                title={`Открытые задачи (${completedTasks.length}/${getTasksApiCall.data.length})`}
+            />
+
+            <TaskListCollapse tasks={completedTasks} title={`Закрытые задачи (${completedTasks.length})`} isCollapse />
         </>
     );
 }

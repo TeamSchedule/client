@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CardContent from "@mui/material/CardContent";
 import Card from "@mui/material/Card";
 import EditIcon from "@mui/icons-material/Edit";
@@ -8,39 +8,42 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import ErrorSnackbar from "../../snackbars/ErrorSnackbar";
 import TaskListCollapse from "../../common/TaskListCollapse";
 import { UnitParticipants } from "../common";
-import { getOnlyOpenTasks } from "../../../utils/taskUtils";
+import { getOnlyCompletedTasks, getOnlyOpenTasks } from "../../../utils/taskUtils";
 import { API } from "../../../api/api";
 import useApiCall from "../../../hooks/useApiCall";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { UserSchema } from "../../../api/schemas/responses/users";
+import taskStore from "../../../store/TaskStore";
+import { observer } from "mobx-react-lite";
 
-export default function FullUnitView() {
+function FullUnitView() {
     const navigate = useNavigate();
 
-    const { id } = useParams();
+    const urlParams = useParams();
+    const id: number = +(urlParams.id || 0);
+
     const { state } = useLocation();
     const { created = 0 } = state || {}; // считываем значения из state
     window.history.replaceState({}, document.title); // очищаем state
 
     const params = useMemo(() => {
         return {
-            departments: [id ? +id : 0],
+            departments: [id],
         };
     }, [id]);
 
     const getTasksApiCall = useApiCall<TaskResponseItemSchema[]>(() => API.tasks.getTasks(params), [], [id]);
+    useEffect(() => {
+        taskStore.updateMany(getTasksApiCall.data);
+    }, [getTasksApiCall.data]);
 
     // если произошел редирект после создания, то true
     const [isCreatingFinished, setIsCreatingFinished] = useState<boolean>(Boolean(created));
 
     // данные отдела
-    const getUnitApiCall = useApiCall<UnitResponseItemSchema | undefined>(
-        () => API.units.getById(id ? +id : 0),
-        undefined,
-        [id]
-    );
+    const getUnitApiCall = useApiCall<UnitResponseItemSchema | undefined>(() => API.units.getById(id), undefined, [id]);
     const unit = getUnitApiCall.data;
 
     // пользователи отдела
@@ -55,7 +58,11 @@ export default function FullUnitView() {
         setIsCreatingFinished(false);
     };
 
-    const openTasks: TaskResponseItemSchema[] = getOnlyOpenTasks(getTasksApiCall.data);
+    const unitTasks: TaskResponseItemSchema[] = taskStore.getUnitTasks(id);
+    const openTasks: TaskResponseItemSchema[] = getOnlyOpenTasks(unitTasks);
+    const completedTasks: TaskResponseItemSchema[] = getOnlyCompletedTasks(unitTasks);
+
+    if (!id) return null;
 
     return (
         <>
@@ -85,9 +92,13 @@ export default function FullUnitView() {
 
                     <TaskListCollapse
                         tasks={openTasks}
-                        title={`Открытые задачи (${getTasksApiCall.data.length - openTasks.length}/${
-                            getTasksApiCall.data.length
-                        })`}
+                        title={`Открытые задачи (${completedTasks.length}/${getTasksApiCall.data.length})`}
+                    />
+
+                    <TaskListCollapse
+                        tasks={completedTasks}
+                        title={`Закрытые задачи (${completedTasks.length})`}
+                        isCollapse
                     />
                 </CardContent>
                 <Button
@@ -112,3 +123,5 @@ export default function FullUnitView() {
         </>
     );
 }
+
+export default observer(FullUnitView);
