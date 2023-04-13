@@ -4,14 +4,13 @@ import { NotificationsResponseItemSchema } from "../../../api/schemas/responses/
 import NotificationItem from "../NotificationItem/NotificationItem";
 import { API } from "../../../api/api";
 import useApiCall from "../../../hooks/useApiCall";
-import useLocalStorage from "../../../hooks/useLocalStorage";
-import { AuthUserKey } from "../../../consts/common";
 import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
 import ListViewContainer from "../../common/ListViewContainer/ListViewContainer";
 import Progress from "../../common/Progress";
+import authUserStore from "../../../store/AuthUserStore";
 
 enum NotificationFilterEnum {
     All = 1, // показать все
@@ -28,7 +27,7 @@ const NotificationFilters: Array<[string, string]> = [
 export default function NotificationList() {
     const theme = useTheme();
 
-    const [user] = useLocalStorage(AuthUserKey);
+    const userId: number = authUserStore.getMe?.id || 0;
 
     // Идентификатор оповещения, если пользователь на него нажал
     const { id } = useParams();
@@ -36,7 +35,7 @@ export default function NotificationList() {
     // параметр отображения оповещений
     const [filterValue, setFilterValue] = useState<number>(NotificationFilterEnum.Unread);
 
-    const getAllNotificationsCallApi = useApiCall(() => API.notifications.all(user.id), [], [user.id]);
+    const getAllNotificationsCallApi = useApiCall(() => API.notifications.all(userId), [], [userId], Boolean(userId));
     const notifications = getAllNotificationsCallApi.data;
 
     // список отображаемых оповещений

@@ -38,12 +38,10 @@ import {
     UnitListPath,
 } from "./paths";
 import NotificationList from "../components/notifications/NotificationList/NotificationList";
-import useAuth from "../hooks/useAuth";
 import ForgotPasswordForm from "../components/auth/reset_password/ForgotPasswordForm";
 import ResetPasswordCodeForm from "../components/auth/reset_password/ResetPasswordCodeForm";
 import NewPasswordForm from "../components/auth/reset_password/NewPasswordForm";
 import SuccessRegisteredMsg from "../components/auth/SuccessRegisteredMsg";
-import AuthProvider from "./AuthProvider";
 import BaseEvent from "../components/events/BaseEvent";
 import FullCalendar from "../components/calendars/FullCalendar";
 import SignIn from "../components/auth/SignIn";
@@ -54,6 +52,9 @@ import FullNotificationView from "../components/notifications/FullNotificationVi
 import BaseTask from "../components/tasks/BaseTask";
 import { EventViewModeEnum } from "../enums/eventsEnums";
 import { TaskViewModeEnum } from "../enums/tasksEnums";
+import { observer } from "mobx-react-lite";
+import { UserSchema } from "../api/schemas/responses/users";
+import authUserStore from "../store/AuthUserStore";
 
 /**
  * Обертка для приватных роутов, доступ к которым должен быть только о авторизованных пользователей.
@@ -61,15 +62,15 @@ import { TaskViewModeEnum } from "../enums/tasksEnums";
  * Проверяет наличие объекта user в `localStorage`, если объект есть, то пользователь считается авторизованным.
  * Если объекта нет, то происходит редирект на страницу логина.
  * */
-const ProtectedLayout = () => {
-    const { user } = useAuth();
+const ProtectedLayout = observer(() => {
+    const user: UserSchema | undefined = authUserStore.getMe;
 
     if (!user) {
         return <Navigate to={loginPath} />;
     }
 
     return <Outlet />;
-};
+});
 
 /**
  * Обертка для публичных роутов, доступ к которым должен быть только у неавторизованных пользователей.
@@ -77,25 +78,21 @@ const ProtectedLayout = () => {
  * Проверяет наличие объекта user в `localStorage`, если объект есть, то пользователь считается авторизованным.
  * Авторизованные пользователи редиректятся к данным (приватным роутам).
  * */
-const PublicLayout = () => {
-    const { user } = useAuth();
+const PublicLayout = observer(() => {
+    const user: UserSchema | undefined = authUserStore.getMe;
 
     if (user) {
-        return <Navigate to={UnitListPath} />;
+        return <Navigate to={CalendarPath} />;
     }
 
     return <Outlet />;
-};
+});
 
 /**
  * Обертка предоставляющая доступ к текущему авторизованному пользователю `user` и методам `login`/`logout`.
  * */
 const AuthLayout = () => {
-    return (
-        <AuthProvider>
-            <Outlet />
-        </AuthProvider>
-    );
+    return <Outlet />;
 };
 
 // Для использования нового api react-router-dom нужно определние с помощью `createRoutesFromElements`

@@ -1,7 +1,6 @@
 import TextField from "@mui/material/TextField";
 import * as React from "react";
 import { useState } from "react";
-import useAuth from "../../hooks/useAuth";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -17,9 +16,10 @@ import IconButton from "@mui/material/IconButton";
 import { Tooltip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { makeAvatarPath } from "../../utils/fileUtils";
-import useLocalStorage from "../../hooks/useLocalStorage";
-import { AuthUserKey } from "../../consts/common";
 import WarningDialog from "../WarningDialog/WarningDialog";
+import { UserSchema } from "../../api/schemas/responses/users";
+import authUserStore from "../../store/AuthUserStore";
+import { observer } from "mobx-react-lite";
 
 export default function UserProfileSettings() {
     return (
@@ -33,9 +33,9 @@ export default function UserProfileSettings() {
 
 const availableImageFormats = ["bmp", "jpg", "jpeg", "gif", "png", "tiff", "svg"];
 
-function UserAvatarSection() {
+const UserAvatarSection = observer(() => {
     // текущий пользователь
-    const { user } = useAuth();
+    const user: UserSchema | undefined = authUserStore.getMe;
 
     const avatarPlaceholder: string =
         user?.firstName && user.patronymic ? user.firstName[0] + user.patronymic[0] : "--";
@@ -66,7 +66,7 @@ function UserAvatarSection() {
         API.avatars
             .set(+user.id, newAvatar)
             .then(() => {
-                window.location.reload();
+                authUserStore.prefetchMe();
             })
             .catch(() => {
                 setIsEditAvatarError(true);
@@ -88,7 +88,7 @@ function UserAvatarSection() {
         API.avatars
             .delete(+user.id)
             .then(() => {
-                window.location.reload();
+                authUserStore.prefetchMe();
             })
             .catch(() => {})
             .finally(() => {});
@@ -161,12 +161,11 @@ function UserAvatarSection() {
             />
         </>
     );
-}
+});
 
-function UsernameSection() {
+const UsernameSection = observer(() => {
     // текущий пользователь
-    const { user } = useAuth();
-    const [, setUser] = useLocalStorage(AuthUserKey);
+    const user: UserSchema | undefined = authUserStore.getMe;
 
     // данные пользователя
     const [firstName, setFirstName] = useState<string>(user?.firstName || "");
@@ -199,8 +198,7 @@ function UsernameSection() {
                 API.users
                     .getMe()
                     .then((data) => {
-                        setUser(data);
-                        window.location.reload();
+                        authUserStore.update(data);
                     })
                     .catch(() => {});
             })
@@ -295,30 +293,13 @@ function UsernameSection() {
             </ErrorSnackbar>
         </>
     );
-}
+});
 
 function BackupEmailSection() {
     // текущий пользователь
-    const { user } = useAuth();
+    const user: UserSchema | undefined = authUserStore.getMe;
 
     const [email, setEmail] = useState<string>(user?.email || "");
-
-    // статус запроса на обновление резервной почты
-    const [isEditEmailSuccess, setIsEditEmailSuccess] = useState<boolean>(false);
-    const [isEditEmailError, setIsEditEmailError] = useState<boolean>(false);
-
-    const handleCloseSuccessSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setIsEditEmailSuccess(false);
-    };
-    const handleCloseErrorSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setIsEditEmailError(false);
-    };
 
     return (
         <>
@@ -339,14 +320,6 @@ function BackupEmailSection() {
                 autoComplete="email"
                 disabled
             />
-
-            <ErrorSnackbar handleClose={handleCloseErrorSnackbar} isOpen={isEditEmailError}>
-                Не удалось обновить резервную почту, попробуйте позже
-            </ErrorSnackbar>
-
-            <SuccessSnackbar handleClose={handleCloseSuccessSnackbar} isOpen={isEditEmailSuccess}>
-                Резервная почта обновлена!
-            </SuccessSnackbar>
         </>
     );
 }

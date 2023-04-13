@@ -76,11 +76,16 @@ const makeRequest = async (
         // if (response.status === 404) throw new APIRequestError("Сервис недоступен", {}, response.status);
         if (response.status >= 400 && !isAuthentication) {
             const makeRequestAgain = () => makeRequest(requestUrl, fetchOptions, additionalHeaders);
-            await refresh(() => {
+            const refreshResult: boolean = await refresh(() => {
                 localStorage.clear();
                 window.location.replace("/");
             });
-            return makeRequestAgain();
+            if (refreshResult) {
+                return makeRequestAgain();
+            } else {
+                localStorage.clear();
+                window.location.pathname = "/";
+            }
         }
         const payload = response.status !== 204 ? await response.json() : undefined;
         if (!response.ok) throw new APIRequestError("Неизвестная ошибка", payload, response.status);

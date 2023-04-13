@@ -6,7 +6,6 @@ import CloseFormIcon from "../../generic/CloseFormIcon";
 import { FormControlLabel, FormGroup, Switch } from "@mui/material";
 import { CreateTaskRequestSchema } from "../../../api/schemas/requests/tasks";
 import { UnitResponseItemSchema } from "../../../api/schemas/responses/units";
-import useAuth from "../../../hooks/useAuth";
 import { getPrevDayDate, getTimezoneDatetime } from "../../../utils/dateutils";
 import UnitSelector from "../../selectors/UnitSelector/UnitSelector";
 import EventSelector from "../../selectors/EventSelector/EventSelector";
@@ -22,10 +21,11 @@ import { makeTaskLinkById, startPagePath } from "../../../routes/paths";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 import taskStore from "../../../store/TaskStore";
+import authUserStore from "../../../store/AuthUserStore";
 
 function CreateTaskForm() {
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const user: UserSchema | undefined = authUserStore.getMe;
     const { date } = useParams();
 
     const [taskDescription, setTaskDescription] = useState<string>("");

@@ -3,18 +3,18 @@ import { CreateNewPasswordRequestSchema } from "../../../api/schemas/requests/au
 import { API } from "../../../api/api";
 import { ERRORS, MIN_PASSWORD_LENGTH } from "../../../consts";
 import ErrorMsg from "../../ErrorMsg";
-import useAuth from "../../../hooks/useAuth";
 import LoadingButton from "@mui/lab/LoadingButton";
 import TextField from "@mui/material/TextField";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import { UserSchema } from "../../../api/schemas/responses/users";
+import authUserStore from "../../../store/AuthUserStore";
 
 export default function NewPasswordForm() {
     /*
      * Форма для создания пароля после сброса.
      * */
-    const { login } = useAuth();
 
     const [password, setPassword] = useState<string | undefined>();
     const [password2, setPassword2] = useState<string | undefined>();
@@ -70,7 +70,7 @@ export default function NewPasswordForm() {
                 setPassword2("");
                 API.users
                     .getMe()
-                    .then(login)
+                    .then((user: UserSchema) => authUserStore.update(user))
                     .catch(() => {});
             })
             .catch(() => {
@@ -78,7 +78,6 @@ export default function NewPasswordForm() {
             })
             .finally(() => {
                 setIsActionInProgress(false);
-                login({});
             });
     }
 

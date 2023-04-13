@@ -8,7 +8,6 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import useAuth from "../../hooks/useAuth";
 import { forgotPasswordPath, registrationPath } from "../../routes/paths";
 import ErrorMsg from "../ErrorMsg";
 import { ERRORS } from "../../consts";
@@ -18,11 +17,11 @@ import { TokenPair } from "../../api/schemas/responses/auth";
 import { ACCESS_TOKEN_STORAGE_NAME, REFRESH_TOKEN_STORAGE_NAME } from "../../api/config";
 import { UserSchema } from "../../api/schemas/responses/users";
 import { useNavigate } from "react-router-dom";
+import authUserStore from "../../store/AuthUserStore";
+import { observer } from "mobx-react-lite";
 
-export default function SignIn() {
+function SignIn() {
     const navigate = useNavigate();
-
-    const { login } = useAuth();
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -46,7 +45,7 @@ export default function SignIn() {
                 localStorage.setItem(REFRESH_TOKEN_STORAGE_NAME, tokens.refresh);
 
                 API.users.getMe().then((user: UserSchema) => {
-                    login(user);
+                    authUserStore.update(user);
                 });
             })
             .catch((err) => {
@@ -142,3 +141,5 @@ export default function SignIn() {
         </Container>
     );
 }
+
+export default observer(SignIn);

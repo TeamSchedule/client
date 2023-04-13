@@ -29,14 +29,14 @@ function makeRefresh() {
  * Когда нужно обновить токен, проверяем, не обновляется ли он уже.
  * Если за несколько попыток обновить токен не удалось, то производим logout.
  */
-const refresh = async (handleError: () => void) => {
+const refresh = async (handleError: () => void): Promise<boolean> => {
     for (let retryNumber = 0; retryNumber < REFRESH_RETRIES; retryNumber++) {
         try {
             currentRequest = currentRequest || makeRefresh();
             const res = await currentRequest;
             localStorage.setItem(ACCESS_TOKEN_STORAGE_NAME, res.access);
             localStorage.setItem(REFRESH_TOKEN_STORAGE_NAME, res.refresh);
-            break;
+            return true;
         } catch (error) {
             if (retryNumber === REFRESH_RETRIES - 1) {
                 handleError();
@@ -46,6 +46,7 @@ const refresh = async (handleError: () => void) => {
         }
     }
     currentRequest = null;
+    return false;
 };
 
 export default refresh;

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Outlet, useLoaderData } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
 import PrimaryAppBar from "./header/PrimaryAppBar";
@@ -7,35 +7,28 @@ import { Box } from "@mui/material";
 import { NotificationsResponseItemSchema } from "../api/schemas/responses/notifications";
 import { API } from "../api/api";
 import Toolbar from "@mui/material/Toolbar";
-import { UserSchema } from "../api/schemas/responses/users";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { AuthUserKey } from "../consts/common";
 import { getOnlyUnreadNotifications } from "../utils/notificationUtils";
+import authUserStore from "../store/AuthUserStore";
 
 const NotificationRequestPeriodMS: number = 30000;
 
 export const NotificationsContext = React.createContext<NotificationsResponseItemSchema[]>([]);
 
 export default function App() {
-    const meData: UserSchema | unknown = useLoaderData();
-    const [user, setUser] = useLocalStorage(AuthUserKey);
+    authUserStore.prefetchMe();
+    const userId: number = authUserStore.getMe?.id || 0;
 
     const [newNotifications, setNewNotifications] = useState<NotificationsResponseItemSchema[]>([]);
 
     useEffect(() => {
-        if (meData) {
-            setUser(meData);
-        }
-    }, [meData]);
-
-    useEffect(() => {
-        API.notifications.all(user.id).then((notifications: NotificationsResponseItemSchema[]) => {
+        if (!userId) return;
+        API.notifications.all(userId).then((notifications: NotificationsResponseItemSchema[]) => {
             setNewNotifications(getOnlyUnreadNotifications(notifications));
         });
 
         // запрос количества новых оповещений каждые NotificationRequestPeriodMS секунд
         const notificationIntervalId = setInterval(() => {
-            API.notifications.all(user.id).then((notifications: NotificationsResponseItemSchema[]) => {
+            API.notifications.all(userId).then((notifications: NotificationsResponseItemSchema[]) => {
                 setNewNotifications(getOnlyUnreadNotifications(notifications));
             });
         }, NotificationRequestPeriodMS);
@@ -43,7 +36,7 @@ export default function App() {
         return () => {
             clearInterval(notificationIntervalId);
         };
-    }, []);
+    }, [userId]);
 
     return (
         <div className="h-100 container-fluid m-0 p-0">

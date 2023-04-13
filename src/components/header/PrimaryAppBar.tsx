@@ -14,7 +14,6 @@ import PeopleIcon from "@mui/icons-material/People";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
-import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { CalendarPath, EventListPath, NotificationListPath, SettingsPath, UnitListPath } from "../../routes/paths";
@@ -30,13 +29,16 @@ import { makeAvatarPath } from "../../utils/fileUtils";
 import { makeFullName } from "../../utils/userUtils";
 import Link from "@mui/material/Link";
 import NotificationTray from "../notifications/NotificationsTray/NotificationsTray";
+import authUserStore from "../../store/AuthUserStore";
+import { observer } from "mobx-react-lite";
+import { UserSchema } from "../../api/schemas/responses/users";
 
-export default function PrimaryAppBar() {
+function PrimaryAppBar() {
     const navigate = useNavigate();
     const theme = useTheme();
     const contrastPrimaryTextColor: string = theme.palette.getContrastText(theme.palette.primary.main);
 
-    const { user, logout } = useAuth();
+    const user: UserSchema | undefined = authUserStore.getMe;
 
     const newNotifications = useContext<NotificationsResponseItemSchema[]>(NotificationsContext);
 
@@ -65,7 +67,7 @@ export default function PrimaryAppBar() {
         if (handler) {
             handler(event);
         }
-        logout();
+        authUserStore.delete();
     };
 
     const handleMobileMenuClose = () => {
@@ -170,7 +172,7 @@ export default function PrimaryAppBar() {
                     <Toolbar />
                     <Box sx={{ display: "flex", alignItems: "center", mx: 2, my: 1 }}>
                         <MainAvatar
-                            src={user ? makeAvatarPath(user.id, user.avatar.filename) : ""}
+                            src={user ? makeAvatarPath(user.id, user.avatar?.filename || "") : ""}
                             fullPath
                             size={35}
                         />
@@ -278,7 +280,7 @@ export default function PrimaryAppBar() {
                             }}
                         >
                             <MainAvatar
-                                src={user ? makeAvatarPath(user.id, user.avatar.filename) : ""}
+                                src={user ? makeAvatarPath(user.id, user.avatar?.filename || "") : ""}
                                 fullPath
                                 size={40}
                             />
@@ -310,3 +312,5 @@ export default function PrimaryAppBar() {
         </Box>
     );
 }
+
+export default observer(PrimaryAppBar);
