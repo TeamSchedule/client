@@ -80,7 +80,8 @@ export function compareDatetime(d1: Date, d2: Date): number {
 
 const timezoneOffset: number = new Date().getTimezoneOffset() / 60;
 
-export function getTimezoneDatetime(d: Date): Date {
+export function getTimezoneDatetime(dd: Date): Date {
+    const d: Date = new Date(dd);
     d.setHours(d.getHours() - timezoneOffset);
     d.setMilliseconds(0);
     d.setSeconds(0);

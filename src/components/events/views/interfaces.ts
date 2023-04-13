@@ -10,5 +10,6 @@ export interface EventViewProps {
 export interface EventActionsProps {
     navigateToEdit: (e: React.MouseEvent) => void;
     navigateToFull: (e: React.MouseEvent | undefined) => void;
+    navigateToCreateTaskForm: (e: React.MouseEvent | undefined) => void;
     toggleEventStatus: (open: boolean) => (e: React.MouseEvent) => void;
 }

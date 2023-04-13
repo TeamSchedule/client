@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { API } from "../../api/api";
 import { EventResponseItemSchema } from "../../api/schemas/responses/events";
-import { CalendarPath, makeCalendarEventLinkById, makeEventLinkById } from "../../routes/paths";
+import { CalendarPath, CreateNewTaskPath, makeCalendarEventLinkById, makeEventLinkById } from "../../routes/paths";
 import { EventStatusEnum, EventStatusStrings, EventViewModeStrings } from "../../enums/eventsEnums";
 import { EditEventRequestSchema } from "../../api/schemas/requests/events";
 import eventStore from "../../store/EventStore";
@@ -53,6 +53,16 @@ function BaseEvent(props: BaseEventProps) {
         }
     };
 
+    const navigateToCreateTaskForm = (e: React.MouseEvent | undefined) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        if (!event) return;
+
+        navigate(CreateNewTaskPath, { state: { eventId: id } });
+    };
+
     const onChangeEventStatus = (open: boolean) => (e: React.MouseEvent) => {
         e.stopPropagation();
         e.preventDefault();
@@ -76,6 +86,7 @@ function BaseEvent(props: BaseEventProps) {
         <>
             <BaseEventView
                 event={event}
+                navigateToCreateTaskForm={navigateToCreateTaskForm}
                 navigateToEdit={navigateToEdit}
                 navigateToFull={navigateToFull}
                 toggleEventStatus={onChangeEventStatus}

@@ -15,6 +15,7 @@ import { getTimezoneDatetime } from "../../../utils/dateutils";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 import eventStore from "../../../store/EventStore";
 import CloseFormIcon from "../../generic/CloseFormIcon";
+import calendarStore from "../../../store/CalendarStore";
 
 export default function CreateEventForm() {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function CreateEventForm() {
     // данные нового события
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [deadline, setDeadline] = useState<Date | null>(null);
+    const [deadline, setDeadline] = useState<Date | null>(calendarStore.getChosenDate);
     const [color, setColor] = useState<string>(getRandomColor());
 
     // статус загрузки
@@ -73,7 +74,6 @@ export default function CreateEventForm() {
                     <p className="fw-bold">Новое событие</p>
                     <CloseFormIcon />
                 </div>
-                {/*<ScreenHeader text="Создание события" />*/}
 
                 <FormInputItemWrapper>
                     <TextField

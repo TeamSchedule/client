@@ -15,6 +15,8 @@ import { observer } from "mobx-react-lite";
 import { EventActionsProps, EventViewProps } from "./interfaces";
 import taskStore from "../../../store/TaskStore";
 import { getOnlyCompletedTasks, getOnlyOpenTasks } from "../../../utils/taskUtils";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import theme from "../../../assets/theme";
 
 interface FullEventViewProps extends EventViewProps, EventActionsProps {}
 
@@ -47,11 +49,25 @@ function FullEventView(props: FullEventViewProps) {
                     status={event.status}
                     onChangeStatus={props.toggleEventStatus(event.status === EventStatusEnum.COMPLETED)}
                 />
-                <Tooltip title="Редактировать">
-                    <IconButton sx={{ p: 0 }} onClick={props.navigateToEdit}>
-                        <EditIcon />
-                    </IconButton>
-                </Tooltip>
+                <Box>
+                    <Tooltip title="Добавить задачу">
+                        <IconButton
+                            sx={{ ml: 2, p: 0, "&:hover": { color: theme.palette.primary.main } }}
+                            onClick={props.navigateToCreateTaskForm}
+                        >
+                            <NoteAddIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Редактировать">
+                        <IconButton
+                            sx={{ ml: 2, p: 0, "&:hover": { color: theme.palette.primary.main } }}
+                            onClick={props.navigateToEdit}
+                        >
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "stretch" }}>
@@ -65,7 +81,7 @@ function FullEventView(props: FullEventViewProps) {
 
             <TaskListCollapse
                 tasks={openTasks}
-                title={`Открытые задачи (${completedTasks.length}/${getTasksApiCall.data.length})`}
+                title={`Открытые задачи (${completedTasks.length} выполненных / ${getTasksApiCall.data.length})`}
             />
 
             <TaskListCollapse tasks={completedTasks} title={`Закрытые задачи (${completedTasks.length})`} isCollapse />
