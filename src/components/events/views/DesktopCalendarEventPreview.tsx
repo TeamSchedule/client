@@ -4,6 +4,7 @@ import WorkStatusPlate from "../../common/tasks_events/WorkStatusPlate";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import { observer } from "mobx-react-lite";
 import { EventActionsProps, EventViewProps } from "./interfaces";
+import theme from "../../../assets/theme";
 
 interface DesktopCalendarEventPreviewProps extends EventViewProps, EventActionsProps {}
 
@@ -16,6 +17,7 @@ function DesktopCalendarEventPreview(props: DesktopCalendarEventPreviewProps) {
                 sx={{
                     "&:hover": {
                         cursor: "pointer",
+                        background: `linear-gradient(100deg, ${theme.palette.primary.main} 40%, rgba(100,100,100,0.2) 95%)`,
                     },
                     display: "flex",
                     justifyContent: "space-between",

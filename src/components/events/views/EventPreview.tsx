@@ -10,6 +10,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { EventStatusEnum } from "../../../enums/eventsEnums";
 import { EventActionsProps, EventViewProps } from "./interfaces";
 import { observer } from "mobx-react-lite";
+import theme from "../../../assets/theme";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
 
 interface EventPreviewProps extends EventViewProps, EventActionsProps {
     selected?: boolean;
@@ -26,11 +28,25 @@ function EventPreview(props: EventPreviewProps) {
                     status={props.event.status}
                     onChangeStatus={props.toggleEventStatus(props.event.status === EventStatusEnum.COMPLETED)}
                 />
-                <Tooltip title="Редактировать">
-                    <IconButton sx={{ p: 0 }} onClick={props.navigateToEdit}>
-                        <EditIcon />
-                    </IconButton>
-                </Tooltip>
+                <Box>
+                    <Tooltip title="Добавить задачу">
+                        <IconButton
+                            sx={{ ml: 2, p: 0, "&:hover": { color: theme.palette.primary.main } }}
+                            onClick={props.navigateToCreateTaskForm}
+                        >
+                            <NoteAddIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Редактировать">
+                        <IconButton
+                            sx={{ ml: 2, p: 0, "&:hover": { color: theme.palette.primary.main } }}
+                            onClick={props.navigateToEdit}
+                        >
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
             </Box>
             {openTasks !== 0 && (
                 <Tooltip title={`Открытых задач: ${openTasks} `}>

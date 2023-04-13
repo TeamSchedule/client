@@ -91,8 +91,9 @@ const makeRequest = async (
         if (!response.ok) throw new APIRequestError("Неизвестная ошибка", payload, response.status);
         return payload;
     }
-
-    throw new APIRequestError("Ошибка", {}, 0);
+    window.localStorage.clear();
+    window.location.pathname = "/";
+    throw new APIRequestError("Ошибка обращения к серверу", {}, -1);
 };
 
 const requestApi = {

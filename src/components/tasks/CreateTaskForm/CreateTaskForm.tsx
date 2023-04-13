@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { API } from "../../../api/api";
 import CloseFormIcon from "../../generic/CloseFormIcon";
@@ -22,19 +22,26 @@ import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 import taskStore from "../../../store/TaskStore";
 import authUserStore from "../../../store/AuthUserStore";
+import eventStore from "../../../store/EventStore";
+import calendarStore from "../../../store/CalendarStore";
 
 function CreateTaskForm() {
+    const location = useLocation();
+    const eventId: number = location.state ? location.state.eventId || 0 : 0;
+
     const navigate = useNavigate();
     const user: UserSchema | undefined = authUserStore.getMe;
     const { date } = useParams();
 
     const [taskDescription, setTaskDescription] = useState<string>("");
     const [taskName, setTaskName] = useState<string>("");
-    const [deadline, setDeadline] = useState<Date | null>(null);
+    const [deadline, setDeadline] = useState<Date | null>(calendarStore.getChosenDate);
 
     const [isPrivateFlag, setIsPrivateFlag] = useState<boolean>(false); // флаг приватной задачи, в этом случае отдел и исполнители устанавливаются автоматически
 
-    const [selectedEvent, setSelectedEvent] = useState<EventResponseItemSchema | null>(null);
+    const [selectedEvent, setSelectedEvent] = useState<EventResponseItemSchema | null>(
+        eventStore.getById(eventId) || null
+    );
     const [selectedUnit, setSelectedUnit] = useState<UnitResponseItemSchema | null>(null);
     const [selectedExecutors, setSelectedExecutors] = useState<UserSchema[]>([]);
 
@@ -112,6 +119,7 @@ function CreateTaskForm() {
             </div>
 
             <TextField
+                size="small"
                 required
                 fullWidth
                 variant="outlined"
@@ -122,6 +130,7 @@ function CreateTaskForm() {
             />
 
             <TextField
+                size="small"
                 id="outlined-multiline-static"
                 label="Подробное описание"
                 multiline
