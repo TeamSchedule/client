@@ -3,6 +3,7 @@ import { FetchStatusEnum, FetchStatusStrings } from "../enums/fetchStatusEnum";
 import { API } from "../api/api";
 import { UserSchema } from "../api/schemas/responses/users";
 import { AuthUserKey } from "../consts/common";
+import { isNonAuthenticatedURL } from "./utils";
 
 class AuthUserStore {
     user: UserSchema | undefined = undefined;
@@ -47,6 +48,8 @@ class AuthUserStore {
     }
 
     prefetchMe = () => {
+        if (isNonAuthenticatedURL) return;
+
         this.setFetchStatus(FetchStatusEnum.FETCHING);
 
         API.users
