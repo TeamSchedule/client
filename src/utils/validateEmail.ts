@@ -10,5 +10,5 @@ export function validateEmailFormat(email: string): boolean {
 }
 
 export default function validateEmail(email: string): boolean {
-    return email.trim().endsWith(AllowedEmailDomain) && validateEmailFormat(email);
+    return /*email.trim().endsWith(AllowedEmailDomain) && */validateEmailFormat(email);
 }
