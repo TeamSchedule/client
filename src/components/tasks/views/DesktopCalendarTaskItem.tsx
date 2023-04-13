@@ -16,11 +16,15 @@ export default function DesktopCalendarTaskItem(props: DesktopCalendarTaskItemPr
                 sx={{
                     "&:hover": {
                         cursor: "pointer",
+                        background: `linear-gradient(100deg, ${theme.palette.primary.main} 40%, rgba(100,100,100,0.2) 95%)`,
                     },
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                     backgroundColor: props.task.event?.color || "#f1f1f1",
+                    background: `linear-gradient(100deg, ${
+                        props.task.event?.color || "#f1f1f1"
+                    } 40%, rgba(100,100,100,0.2) 95%)`,
                     color: theme.palette.getContrastText(props.task.event?.color || "#ffffff"),
                     borderWidth: props.task.event ? 0 : "1px",
                     borderStyle: "solid",
@@ -46,6 +50,10 @@ export default function DesktopCalendarTaskItem(props: DesktopCalendarTaskItemPr
                     <Typography
                         component="div"
                         sx={{
+                            color: "black",
+                            textShadow:
+                                "1px 0 #fff, -1px 0 #fff, 0 1px #fff, 0 -1px #fff, 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff",
+                            fontWeight: "bold",
                             fontSize: "0.9rem",
                             lineHeight: 1,
                             mt: "5px",

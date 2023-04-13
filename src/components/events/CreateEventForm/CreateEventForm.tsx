@@ -1,4 +1,3 @@
-import ScreenHeader from "../../common/ScreenHeader/ScreenHeader";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CreateEventRequestSchema } from "../../../api/schemas/requests/events";
@@ -15,6 +14,7 @@ import { getRandomColor } from "../../../utils/colorUtils";
 import { getTimezoneDatetime } from "../../../utils/dateutils";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
 import eventStore from "../../../store/EventStore";
+import CloseFormIcon from "../../generic/CloseFormIcon";
 
 export default function CreateEventForm() {
     const navigate = useNavigate();
@@ -69,7 +69,11 @@ export default function CreateEventForm() {
     return (
         <>
             <div>
-                <ScreenHeader text="Создание события" />
+                <div className="d-flex justify-content-between position-relative">
+                    <p className="fw-bold">Новое событие</p>
+                    <CloseFormIcon />
+                </div>
+                {/*<ScreenHeader text="Создание события" />*/}
 
                 <FormInputItemWrapper>
                     <TextField

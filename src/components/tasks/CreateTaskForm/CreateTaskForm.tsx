@@ -21,15 +21,12 @@ import TextHelp from "../../TextHelp/TextHelp";
 import { makeTaskLinkById, startPagePath } from "../../../routes/paths";
 import { TaskResponseItemSchema } from "../../../api/schemas/responses/tasks";
 import DatetimeInput from "../../inputs/DatetimeInput/DatetimeInput";
-import useApiCall from "../../../hooks/useApiCall";
 import taskStore from "../../../store/TaskStore";
 
 function CreateTaskForm() {
     const navigate = useNavigate();
     const { user } = useAuth();
     const { date } = useParams();
-
-    const getUsersApiCall = useApiCall<UserSchema[]>(() => API.users.all(), []);
 
     const [taskDescription, setTaskDescription] = useState<string>("");
     const [taskName, setTaskName] = useState<string>("");
@@ -157,7 +154,6 @@ function CreateTaskForm() {
             </Box>
 
             <UsersSelector
-                users={getUsersApiCall.data}
                 setInputValue={setSelectedExecutors}
                 inputValue={selectedExecutors}
                 label="Выберите исполнителей"

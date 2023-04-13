@@ -22,13 +22,13 @@ import { compareEvent } from "../../../utils/eventUtils";
 const MaxDateSize = 140; // максимальный размер отображаемого на мобильном календаре дня
 
 const mobileDaySx: SxProps = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
     borderRadius: "50%",
     aspectRatio: "1",
     lineHeight: "1rem",
-    width: { xs: "1.2em", sm: "1.5em", md: "2em" },
+    fontSize: "0.8rem",
+    textAlign: "center",
+    m: 0,
+    minWidth: { xs: "1.2em", sm: "1.5em", md: "2em" },
 };
 
 export interface CalendarProps {
@@ -110,7 +110,7 @@ function MobileCalendar(props: MobileCalendarProps) {
                                         color: theme.palette.getContrastText(theme.palette.primary.main),
                                     }}
                                 >
-                                    {todayTasks.length}0
+                                    {todayTasks.length}
                                 </Box>
                             )}
                             {todayEvents.length !== 0 && (
@@ -121,7 +121,7 @@ function MobileCalendar(props: MobileCalendarProps) {
                                         color: theme.palette.getContrastText(theme.palette.secondary.main),
                                     }}
                                 >
-                                    {todayEvents.length}0
+                                    {todayEvents.length}
                                 </Box>
                             )}
                         </Box>

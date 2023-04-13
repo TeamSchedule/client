@@ -22,7 +22,7 @@ function DesktopCalendarEventPreview(props: DesktopCalendarEventPreviewProps) {
                     alignItems: "center",
                     borderWidth: "1px",
                     borderStyle: "solid",
-                    borderRadius: "1px",
+                    borderRadius: "2px",
                     marginBottom: "1px",
                     flexGrow: 1,
                     px: "3px",
@@ -49,6 +49,7 @@ function DesktopCalendarEventPreview(props: DesktopCalendarEventPreviewProps) {
                     <Typography
                         component="div"
                         sx={{
+                            fontWeight: "bold",
                             fontSize: "0.9rem",
                             lineHeight: 1,
                             mt: "5px",
